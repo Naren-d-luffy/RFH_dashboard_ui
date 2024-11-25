@@ -2,31 +2,15 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../layout.css";
 import logo from "../../Assets/Images/logo.png";
-import {
-  FiGrid,
-  FiUsers,
-  FiSettings,
-  FiHelpCircle,
-  FiMenu,
-  FiX,
-  FiChevronDown,
-  FiChevronRight,
-  FiLogOut,
-} from "react-icons/fi";
-import {
-  FaBookOpenReader,
-  FaCircleUser,
-  FaDatabase,
-  FaHandHolding,
-  FaIdCardClip,
-  FaRegPenToSquare,
-  FaTeamspeak,
-} from "react-icons/fa6";
-import { FaTasks } from "react-icons/fa";
+import {FiChevronDown, FiChevronUp,} from "react-icons/fi";
 // import Swal from "sweetalert2";
-import logoutImg from "../../Assets/Images/logo.png";
 import { IoMdClose } from "react-icons/io";
-import { IoMenu } from "react-icons/io5";
+import { IoTelescopeOutline } from "react-icons/io5";
+import { MdOutlineDashboard } from "react-icons/md";
+import { GoShieldCheck } from "react-icons/go";
+import { TbCirclePercentage } from "react-icons/tb";
+import { SlGraduation } from "react-icons/sl";
+import { Bell, Handshake, LogOut, MemoryStick, MessageCircleCode, MessageSquareMore, Settings } from "lucide-react";
 
 function SidebarAdmin() {
   const navigate = useNavigate();
@@ -74,53 +58,82 @@ function SidebarAdmin() {
       <div className="overlay overlay-open" onClick={closeSidebar}></div>
     )}
 
-    <div className="sidebar-header d-flex justify-content-between align-items-center">
+    <div className="sidebar-header d-flex justify-content-center align-items-center">
         <img
           style={{ cursor: "pointer" }}
           src={logo}
-          alt="BILKINS"
+          alt="RFH"
           className="sidebar-logo"
         />
       
-      <div className=" d-lg-none" onClick={closeSidebar}>
+      <div className="d-lg-none" onClick={closeSidebar}>
         <IoMdClose size={26} />
       </div>
     </div>
           <nav className="sidebar-nav">
             <ul>
-              <li>
-                <Link
-                  to="/admin/dashboard"
-                  className={`nav-link ${
-                    location.pathname === "/admin/dashboard"
-                      ? "active-nav-links"
-                      : ""
-                  }`}
-                >
-                  <FiGrid className="sidebar-icon" />
-                  Dashboard
-                </Link>
-              </li>
-              <li>
+            <li>
                 <div
                   className={`nav-link ${
-                    expandedMenu === "recruiters" ? "active-nav-links" : ""
+                    expandedMenu === "userDashboards" ? "active-nav-links" : ""
                   }`}
-                  onClick={() => toggleMenu("recruiters")}
+                  onClick={() => toggleMenu("userDashboards")}
                 >
                   <span className="d-flex align-items-center justify-content-between">
                     <span className="d-flex align-items-center">
-                      <FiUsers className="sidebar-icon" />
-                      <span> Recruiters</span>
+                      <MdOutlineDashboard className="sidebar-icon" />
+                      <span> User Dashboards</span>
                     </span>
-                    {expandedMenu === "recruiters" ? (
-                      <FiChevronDown className="dropdown-icon" />
+                    {expandedMenu === "userDashboards" ? (
+                      <FiChevronUp className="dropdown-icon" />
                     ) : (
-                      <FiChevronRight className="dropdown-icon" />
+                      <FiChevronDown className="dropdown-icon" />
                     )}
                   </span>
                 </div>
                 <ul
+                  className={`sub-menu ${
+                    expandedMenu === "userDashboards" ? "active" : ""
+                  }`}
+                >
+                  <li className="sub-nav-list">
+                    <Link to="/" className="sub-nav-link">
+                    User Acquisition & Retention
+                    </Link>
+                  </li>
+                  <li className="sub-nav-list">
+                    <Link to="/" className="sub-nav-link">
+                    User Engagement
+                    </Link>
+                  </li>
+                  <li className="sub-nav-list">
+                    <Link to="/" className="sub-nav-link">
+                    User Feedback
+                    </Link>
+                  </li>
+                  
+                </ul>
+              </li>
+              <li>
+                <div
+                  className={`nav-link ${
+                    expandedMenu === "admin" ? "active-nav-links" : ""
+                  }`}
+                  onClick={() => toggleMenu("admin")}
+                >
+                  <span className="d-flex align-items-center justify-content-between">
+                    <span className="d-flex align-items-center">
+                      <GoShieldCheck  className="sidebar-icon" />
+                      <span> Admin</span>
+                    </span>
+                    {expandedMenu === "admin" ? (
+                      <FiChevronUp className="dropdown-icon" />
+                    ) : (
+                      <FiChevronDown className="dropdown-icon" />
+                    )}
+                  </span>
+                </div>
+                {/* <ul
                   className={`sub-menu ${
                     expandedMenu === "recruiters" ? "active" : ""
                   }`}
@@ -135,95 +148,86 @@ function SidebarAdmin() {
                       All Recruiter
                     </Link>
                   </li>
-                </ul>
+                </ul> */}
               </li>
 
               <li>
                 <div
                   className={`nav-link ${
-                    expandedMenu === "jobs" ? "active-nav-links" : ""
+                    expandedMenu === "marketing" ? "active-nav-links" : ""
                   }`}
-                  onClick={() => toggleMenu("jobs")}
+                  onClick={() => toggleMenu("marketing")}
                 >
                   <span className="d-flex align-items-center justify-content-between">
                     <span className="d-flex align-items-center">
-                      <FaBookOpenReader className="sidebar-icon" />
-                      <span> Jobs</span>
+                      <TbCirclePercentage  className="sidebar-icon" />
+                      <span> Marketing</span>
                     </span>
-                    {expandedMenu === "jobs" ? (
-                      <FiChevronDown className="dropdown-icon" />
+                    {expandedMenu === "marketing" ? (
+                      <FiChevronUp className="dropdown-icon" />
                     ) : (
-                      <FiChevronRight className="dropdown-icon" />
+                      <FiChevronDown className="dropdown-icon" />
                     )}
                   </span>
                 </div>
                 <ul
                   className={`sub-menu ${
-                    expandedMenu === "jobs" ? "active" : ""
+                    expandedMenu === "marketing" ? "active" : ""
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/admin/create-job" className="sub-nav-link">
-                      Add New Job
+                    <Link to="/" className="sub-nav-link">
+                     Campaign Performance
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/admin/ongoing-jobs" className="sub-nav-link">
-                      Ongoing Jobs
+                    <Link to="/" className="sub-nav-link">
+                     InApp Campaign
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/admin/paused-jobs" className="sub-nav-link">
-                      Paused Jobs
+                    <Link to="/" className="sub-nav-link">
+                      Patient Aquisition
                     </Link>
                   </li>
-                  <li className="sub-nav-list">
-                    <Link to="/admin/closed-jobs" className="sub-nav-link">
-                      Closed Jobs
-                    </Link>
-                  </li>
-                  <li className="sub-nav-list">
-                    <Link to="/admin/my-jobs" className="sub-nav-link">
-                      My Jobs
-                    </Link>
-                  </li>
+                  
                 </ul>
               </li>
 
               <li>
                 <Link
-                  to="/admin/applicants"
+                  to=""
                   className={`nav-link ${
-                    location.pathname === "/admin/applicants"
+                    location.pathname === ""
                       ? "active-nav-links"
                       : ""
                   }`}
                 >
-                  <FaCircleUser className="sidebar-icon" />{" "}
-                  Applicants
+                  <SlGraduation  className="sidebar-icon" />{" "}
+                  Education
                 </Link>
               </li>
 
               <li>
                 <div
                   className={`nav-link ${
-                    expandedMenu === "clients" ? "active-nav-links" : ""
+                    expandedMenu === "teleconsultation" ? "active-nav-links" : ""
                   }`}
-                  onClick={() => toggleMenu("clients")}
+                  onClick={() => toggleMenu("teleconsultation")}
                 >
                   <span className="d-flex align-items-center justify-content-between">
                     <span className="d-flex align-items-center">
-                      <FaIdCardClip className="sidebar-icon" />
-                      <span>Clients</span>
+                      <IoTelescopeOutline  className="sidebar-icon" />
+                      <span>Teleconsultation</span>
                     </span>
-                    {expandedMenu === "clients" ? (
-                      <FiChevronDown className="dropdown-icon" />
+                    {expandedMenu === "teleconsultation" ? (
+                      <FiChevronUp className="dropdown-icon" />
                     ) : (
-                      <FiChevronRight className="dropdown-icon" />
+                      <FiChevronDown className="dropdown-icon" />
                     )}
                   </span>
                 </div>
-                <ul
+                {/* <ul
                   className={`sub-menu ${
                     expandedMenu === "clients" ? "active" : ""
                   }`}
@@ -238,29 +242,29 @@ function SidebarAdmin() {
                       Top Client
                     </Link>
                   </li>
-                </ul>
+                </ul> */}
               </li>
 
               <li>
                 <div
                   className={`nav-link ${
-                    expandedMenu === "database" ? "active-nav-links" : ""
+                    expandedMenu === "feedback" ? "active-nav-links" : ""
                   }`}
-                  onClick={() => toggleMenu("database")}
+                  onClick={() => toggleMenu("feedback")}
                 >
                   <span className="d-flex align-items-center justify-content-between">
                     <span className="d-flex align-items-center">
-                      <FaDatabase className="sidebar-icon" />
-                      <span> Database</span>
+                      <MessageCircleCode className="sidebar-icon" size={14} />
+                      <span> Feedback</span>
                     </span>
-                    {expandedMenu === "database" ? (
-                      <FiChevronDown className="dropdown-icon" />
+                    {expandedMenu === "feedback" ? (
+                      <FiChevronUp className="dropdown-icon" />
                     ) : (
-                      <FiChevronRight className="dropdown-icon" />
+                      <FiChevronDown className="dropdown-icon" />
                     )}
                   </span>
                 </div>
-                <ul
+                {/* <ul
                   className={`sub-menu ${
                     expandedMenu === "database" ? "active" : ""
                   }`}
@@ -280,8 +284,145 @@ function SidebarAdmin() {
                       Total Clients
                     </Link>
                   </li>
+                </ul> */}
+              </li>
+              <li>
+                <div
+                  className={`nav-link ${
+                    expandedMenu === "operational" ? "active-nav-links" : ""
+                  }`}
+                  onClick={() => toggleMenu("operational")}
+                >
+                  <span className="d-flex align-items-center justify-content-between">
+                    <span className="d-flex align-items-center">
+                      <Handshake className="sidebar-icon" size={14}/>
+                      <span> Operational</span>
+                    </span>
+                    {expandedMenu === "operational" ? (
+                      <FiChevronUp className="dropdown-icon" />
+                    ) : (
+                      <FiChevronDown className="dropdown-icon" />
+                    )}
+                  </span>
+                </div>
+                <ul
+                  className={`sub-menu ${
+                    expandedMenu === "operational" ? "active" : ""
+                  }`}
+                >
+                  <li className="sub-nav-list">
+                    <Link to="/" className="sub-nav-link">
+                    User Acquisition & Retention
+                    </Link>
+                  </li>
+                  <li className="sub-nav-list">
+                    <Link to="/" className="sub-nav-link">
+                    User Engagement
+                    </Link>
+                  </li>
+                  <li className="sub-nav-list">
+                    <Link to="/" className="sub-nav-link">
+                    User Feedback
+                    </Link>
+                  </li>
+                  
                 </ul>
               </li>
+              <li>
+                <div
+                  className={`nav-link ${
+                    expandedMenu === "technical" ? "active-nav-links" : ""
+                  }`}
+                  onClick={() => toggleMenu("technical")}
+                >
+                  <span className="d-flex align-items-center justify-content-between">
+                    <span className="d-flex align-items-center">
+                      <MemoryStick className="sidebar-icon" size={14}/>
+                      <span> Technical</span>
+                    </span>
+                    {expandedMenu === "technical" ? (
+                      <FiChevronUp className="dropdown-icon" />
+                    ) : (
+                      <FiChevronDown className="dropdown-icon" />
+                    )}
+                  </span>
+                </div>
+                <ul
+                  className={`sub-menu ${
+                    expandedMenu === "technical" ? "active" : ""
+                  }`}
+                >
+                  <li className="sub-nav-list">
+                    <Link to="/" className="sub-nav-link">
+                    User Acquisition & Retention
+                    </Link>
+                  </li>
+                  <li className="sub-nav-list">
+                    <Link to="/" className="sub-nav-link">
+                    User Engagement
+                    </Link>
+                  </li>
+                  <li className="sub-nav-list">
+                    <Link to="/" className="sub-nav-link">
+                    User Feedback
+                    </Link>
+                  </li>
+                  
+                </ul>
+              </li>
+              <li>
+                <Link
+                  to=""
+                  className={`nav-link ${
+                    location.pathname === ""
+                      ? "active-nav-links"
+                      : ""
+                  }`}
+                >
+                  <MessageSquareMore size={14} className="sidebar-icon" />{" "}
+                  Chat
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to=""
+                  className={`nav-link ${
+                    location.pathname === ""
+                      ? "active-nav-links"
+                      : ""
+                  }`}
+                >
+                  <Bell size={14} className="sidebar-icon" />{" "}
+                  Notification
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to=""
+                  className={`nav-link ${
+                    location.pathname === ""
+                      ? "active-nav-links"
+                      : ""
+                  }`}
+                >
+                  <Settings size={14}  className="sidebar-icon" />{" "}
+                  Settings
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to=""
+                  className={`nav-link ${
+                    location.pathname === ""
+                      ? "active-nav-links"
+                      : ""
+                  }`}
+                >
+                  <LogOut size={14}  className="sidebar-icon" />{" "}
+                  LogOut
+                </Link>
+              </li>
+
             </ul>
           </nav>
         </aside>
