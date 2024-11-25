@@ -1,7 +1,17 @@
+.application-wrapper {
+    margin-left: 240px;
+    padding: 10px;
+    background: var(--white-color);
+    min-height: 87vh;
+    height: 100%;
+  }
+
+
+
 .navbar-header {
     background: var(--white-color);
     padding: 12px 24px;
-    margin-left: 240px;
+    margin-left: 280px;
     border-bottom: 1px solid var(--border-color);
     position: sticky;
     top: 0;
@@ -30,8 +40,8 @@
     color: var(--text-color);
 }
 
-.search-input {
-    border: 1px solid var(--border-color);
+.search-input-header {
+    border: none;
     padding: 8px 32px;
     background: transparent;
     border-radius: 8px;
@@ -40,14 +50,16 @@
     font-weight: 400;
     letter-spacing: 0.5px;
 }
-
+.search-input-header:focus-visible{
+    outline: none;
+}
 .search-input:focus {
     outline: none;
 }
 
 .toggle-icons {
     font-size: 14px;
-    color: var(--maroon-color);
+    color: var(--primary-green);
 }
 
 .notification-button {
@@ -65,7 +77,7 @@
     position: absolute;
     top: -10px;
     right: 0;
-    background-color: var(--maroon-color);
+    background-color: var(--primary-green);
     color: var(--white-color);
     border-radius: 50%;
     padding: 3px 6px;
@@ -95,7 +107,7 @@
     position: absolute;
     top: calc(85%);
     right: 15px;
-    background: var(--maroon-color);
+    background: var(--primary-green);
     border-radius: 4px;
     z-index: 999;
     display: block;
@@ -112,7 +124,7 @@
     right: 65%;
     border-width: 0 8px 8px 8px;
     border-style: solid;
-    border-color: transparent transparent var(--maroon-color) transparent;
+    border-color: transparent transparent var(--primary-green) transparent;
 }
 
 
@@ -122,7 +134,7 @@
 
 .dropdown-item {
     display: block;
-    padding: 8px 16px;
+    padding: 8px 0px;
     text-decoration: none;
     color: var(--white-color);
     border-radius: 2px;
@@ -167,73 +179,15 @@
 }
 
 .toggle-input:checked+.toggle-label {
-    background-color: var(--maroon-color);
+    background-color: var(--primary-green);
 }
 
 .toggle-input:checked+.toggle-label .toggle-button {
     left: 28px;
 }
-
-
-
-
-
-
-
-
-
-
 /* ================================================================================================== */
-
-.line-dashed {
-    border-bottom: 2px dashed var(--maroon-color);
-    margin: 8px 0 16px 0;
-}
-
-.documentation-section {
-    border-radius: 12px;
-    padding: 12px;
-    /* background-image: url(../../Assets/bg/sidebar-bg.png); */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.icon-documentation {
-    background: var(--white-color);
-    padding: 0px;
-    border-radius: 12px;
-    color: var(--maroon-color);
-    font-size: 24px;
-    font-weight: 600;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.content-documentation span {
-    color: var(--white-color);
-    font-size: 14px;
-    font-weight: 600;
-    margin-top: 12px;
-}
-
-.btn-documentation {
-    text-transform: uppercase;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-color);
-    background: var(--white-color);
-    border-radius: 12px;
-    text-align: center;
-    padding: 8px 12px;
-    margin-top: 12px;
-}
-
 .sidebar {
-    width: 240px;
+    width: 280px;
     position: fixed;
     top: 0;
     left: 0;
@@ -242,20 +196,16 @@
     transition: left 0.3s ease;
     z-index: 1000;
     border-right: 1px solid var(--border-color);
+    padding: 32px 18px 32px 32px;
 }
 
 .sidebar.open {
     left: 0;
 }
-
 .toggle-btn {
     position: absolute;
     top: 20px;
     left: 20px;
-}
-
-.sidebar-content {
-    padding: 8px 12px 24px 12px;
 }
 
 .sidebar-header {
@@ -263,10 +213,8 @@
 }
 
 .sidebar-header img {
-    width: 160px;
-    padding: 0 0 20px 0;
-    margin-left: 10px;
-    margin-top: 35px;
+    width: 146px;
+    padding: 0 40px 20px 0;
 }
 
 .sidebar-nav {
@@ -299,12 +247,12 @@
 .sidebar-nav ul li div {
     font-size: 14px;
     font-weight: 500;
-    line-height: normal;
+    line-height: 21px;
     letter-spacing: 0;
-    color: var(--text-semi-color);
-    border-radius: 24px;
+    color: var(--grey-color);
+    border-radius: 4px;
     text-decoration: none;
-    padding: 8px 16px;
+    padding: 8px 0px;
     width: 100%;
     background-color: transparent;
     cursor: pointer;
@@ -313,13 +261,13 @@
 
 .sidebar-nav ul li a:focus,
 .sidebar-nav ul li div:focus {
-    color: var(--maroon-color) !important;
+    color: var(--primary-green) !important;
     background: var(--nav-color) !important;
 }
 
 .sidebar-nav ul li a:hover,
 .sidebar-nav ul li div:hover {
-    color: var(--maroon-color);
+    color: var(--primary-green);
     background: var(--nav-color);
 }
 
@@ -350,12 +298,12 @@
     font-weight: 600;
     line-height: normal;
     letter-spacing: 0;
-    background: var(--maroon-color);
+    background: var(--white-color);
 }
 
 /* .sidebar-nav ul li a:hover .sidebar-icon,
 .sidebar-nav ul li div:hover .sidebar-icon {
-    color: var(--maroon-color) !important;
+    color: var(--primary-green) !important;
 } */
 
 .sub-menu {
@@ -370,7 +318,6 @@
 .sub-nav-list {
     margin-bottom: 0 !important;
     margin-top: 4px !important;
-    margin-left: 20px !important;
     margin-right: 20px !important;
 }
 
@@ -378,34 +325,33 @@
     padding: 8px 20px;
     text-decoration: none;
     display: block;
-    color: var(--maroon-color) !important;
-    background-color: var(--nav-color) !important;
-    border-radius: 8px !important;
+    color: var(--primary-grey-color) !important;
 }
 
 .sidebar-nav ul li a.active-nav-links,
 .sidebar-nav ul li div.active-nav-links,
 .sub-menu li .sub-nav-link .active-nav-links {
-    background-color: var(--maroon-color);
-    color: var(--white-color);
+    background-color: var(--white-color);
+    color:  var(--primary-green);
+    border-right: 3px solid var(--primary-green);
 }
 
 .sub-nav-link:hover {
-    padding: 8px 16px;
+    padding: 8px 0px;
     text-decoration: none;
     display: block;
-    color: var(--white-color) !important;
-    background-color: var(--maroon-color) !important;
+    color: var(--primary-green) !important;
+    background-color: var(--white-color) !important;
     border-radius: 8px !important;
 }
 
 .sub-nav-link:hover {
-    background-color: var(--maroon-color);
+    background-color: var(--primary-green);
 }
 
 .main-wrapper {
     padding: 16px;
-    margin-left: 240px;
+    margin-left: 280px;
     background: var(--white-color);
     min-height: 80vh;
     height: 100%;
