@@ -1,0 +1,160 @@
+.campaign-performance-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 5px 10px;
+  border-right: 3px solid var(--primary-green);
+}
+
+.campaign-performance-icon {
+  border-radius: 5px;
+  width: 29px;
+  height: 29px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.campaign-performance-head h3 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.campaign-performance-head p {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -2%;
+  line-height: 16.8px;
+}
+
+.rfh-basic-button {
+  background-color: var(--primary-green);
+  color: var(--white-color);
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px;
+}
+
+.campaign-performance-card h3 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.campaign-performance-card p {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -2%;
+  line-height: 19.6px;
+}
+
+.campaign-performance-stats {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--secondary-text-color);
+}
+
+.campaign-performance-percentage {
+  color: var(--primary-green);
+  font-weight: bold;
+}
+
+.campaign-performance-graph-card {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+.campaign-performance-graph-card h3 {
+  font-weight: 500;
+  font-size: 18px;
+  text-align: left;
+}
+
+.campaign-performance-graph-status-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 10%;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.campaign-performance-graph-status-circle.subscribe {
+  background-color: var(--primary-green);
+}
+
+.campaign-performance-graph-status-circle.unsubscribe {
+  background-color: #f2efff;
+}
+
+.campaign-performance-graph-status-text {
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 15px;
+}
+
+.campaign-performance-graph-dropdown-btn {
+  background: #f7f7f7;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.campaign-performance-table {
+  border: none;
+}
+
+.campaign-performance-table .ant-table-tbody > tr > td {
+  border-bottom: none !important; 
+}
+
+.campaign-performance-table-column {
+  text-align: center;
+}
+
+.campaign-performance-table-status {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.campaign-performance-table-action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.campaign-performance-table {
+  border: none;
+  overflow-x: hidden !important; 
+}
+
+.campaign-performance-table-icon {
+  color: #000;
+  cursor: pointer;
+}
+
+.campaign-performance-table-icon:hover {
+  color: #1890ff;
+}
