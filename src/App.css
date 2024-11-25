@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+  overflow-x: hidden;
+  font-family: "Poppins";
+}
+
+body,
+.ant-typography,
+.ant-btn,
+.ant-input,
+.ant-select,
+.ant-checkbox,
+.ant-radio,
+.ant-form-item-label {
+  font-family: 'Poppins' !important;
+  color: var(--black-color) !important;
+}
+
+.ant-table-container{
+  overflow-x: scroll;
+}
