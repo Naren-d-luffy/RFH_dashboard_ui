@@ -107,36 +107,35 @@
   font-weight: 500;
 }
 
+.campaign-performance-table-head {
+  border: 1px solid #e6e4e4;
+  padding: 17px;
+  border-radius: 9px;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.campaign-performance-table {
-  border: none;
+.campaign-performance-table-head h6 {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -2%;
+  line-height: 19px;
+  color: var(--secondary-text-color);
 }
 
 .campaign-performance-table .ant-table-tbody > tr > td {
-  border-bottom: none !important; 
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -2%;
+  line-height: 18px;
 }
 
-.campaign-performance-table-column {
-  text-align: center;
-}
-
-.campaign-performance-table-status {
-  font-weight: bold;
-  text-transform: capitalize;
+.campaign-performance-table .ant-table-thead > tr > th {
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -2%;
+  line-height: 18px;
+  color: #acb5bb;
 }
 
 .campaign-performance-table-action-buttons {
@@ -145,16 +144,104 @@
   gap: 8px;
 }
 
-.campaign-performance-table {
-  border: none;
-  overflow-x: hidden !important; 
+.campaign-performance-table-action-icons {
+  display: flex;
+  gap: 8px;
 }
 
-.campaign-performance-table-icon {
-  color: #000;
-  cursor: pointer;
+.campaign-performance-table-eye-icon,
+.campaign-performance-table-edit-icon,
+.campaign-performance-table-delete-icon {
+  padding: 9.48px;
+  border-radius: 7.59px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white-color);
 }
 
-.campaign-performance-table-icon:hover {
-  color: #1890ff;
+.campaign-performance-table-eye-icon {
+  background-color: #2b7f75;
+}
+
+.campaign-performance-table-edit-icon {
+  background-color: #54a6ff;
+}
+
+.campaign-performance-table-delete-icon {
+  background-color: #e61313;
+}
+
+.create-campaign-head {
+  color: var(--primary-green);
+}
+
+.create-campaign-modal-title {
+  color: var(--primary-green);
+}
+
+.create-campaign-save-button {
+  background-color: var(--primary-green);
+  color: var(--white-color) !important;
+}
+
+.create-campaign-cancel-button {
+  color: var(--primary-green) !important;
+  border-color: var(--primary-green) !important;
+}
+
+.create-campaign-save-button:hover {
+  border-color: var(--primary-green) !important;
+  color: var(--primary-green) !important;
+}
+
+.create-campaign-ant-upload-text {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27px;
+  text-decoration-skip-ink: none;
+  color: #9da2a7;
+}
+
+.create-campaign-ant-upload-drag-icon {
+  border: 1px dotted #c6c8cb;
+  padding: 10px;
+  border-radius: 12px;
+}
+
+.create-campaign-ant-upload-drag-icon {
+  border: 1px dotted #c6c8cb;
+  padding: 8px;
+  border-radius: 12px;
+}
+
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+  height: 120px;
+}
+.create-campaign-input input {
+  position: relative;
+}
+
+.create-campaign-input-span {
+  position: absolute;
+  top: -10px;
+  font-size: 12px;
+  color: var(--secondary-text-color);
+  left: 4%;
+  z-index: 1;
+  background-color: var(--white-color);
+  padding: 0 6px;
+}
+
+.ant-input.create-camapign-input {
+  height: 40px;
+}
+
+.create-camapign-add-button {
+  color: var(--primary-green) !important;
+  border-color: var(--primary-green) !important;
+  width: Fixed (153px) px;
+  height: Fixed (53px) px;
+  padding: 19px 32px;
+  border-radius: 8px;
 }
