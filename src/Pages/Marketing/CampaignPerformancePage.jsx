@@ -13,7 +13,7 @@ const CampaignPerformancePage = () => {
       <HeaderAdmin />
       <SidebarAdmin />
 
-      <div className="application-wrapper">
+      <div className="main-wrapper">
         <CampaignPerformance />
         <CampaignPerformanceGraph />
         <CampaignPerformanceTable />
