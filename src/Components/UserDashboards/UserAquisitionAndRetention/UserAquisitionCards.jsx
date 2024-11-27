@@ -26,7 +26,7 @@ export const UserAquisitionCards = () => {
       heading: 'Total new user',
       value: '5.715',
       percentage: (
-        <span>
+        <span style={{ color: 'red'}}>
           <FaArrowDown style={{ color: 'red', marginRight: '4px' }} />
           -0.10%
         </span>

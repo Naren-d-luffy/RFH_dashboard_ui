@@ -33,8 +33,9 @@
 }
 
 .userAquisition-card p,
-.application-dashboard-graph h2, .userAquisition-model p, span  {
+.application-dashboard-graph h2, .userAquisition-model p, span, .userManaggement-card h2, .userManaggement-card p {
     font-size: 14px;
+    text-align: left;
     color: var(--secondary-text-color);
     font-weight: 500;
     line-height: 19.6px;
