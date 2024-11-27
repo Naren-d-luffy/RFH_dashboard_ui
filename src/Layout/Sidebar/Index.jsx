@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../layout.css";
 import logo from "../../Assets/Images/logo.png";
-import {FiChevronDown, FiChevronUp,} from "react-icons/fi";
+import { FiChevronDown, FiChevronUp, } from "react-icons/fi";
 // import Swal from "sweetalert2";
 import { IoMdClose } from "react-icons/io";
 import { IoTelescopeOutline } from "react-icons/io5";
@@ -17,7 +17,7 @@ function SidebarAdmin() {
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState(null);
-  
+
 
   const toggleSidebar = () => {
     console.log("Toggle Sidebar Clicked");
@@ -31,10 +31,10 @@ function SidebarAdmin() {
   const toggleMenu = (menu) => {
     setExpandedMenu(expandedMenu === menu ? null : menu);
   };
-  
+
   useEffect(() => {
     const pathToMenuMap = {
-     
+
     };
 
     const currentPath = location.pathname;
@@ -49,34 +49,33 @@ function SidebarAdmin() {
         <FiMenu size={26} />
       </div> */}
       <div
-  className={`sidebar ${isSidebarOpen ? "open" : ""} `}
->
-  <aside
-    className={`sidebar-content ${isSidebarOpen ? "open" : ""} `}
-  >
-    {isSidebarOpen && (
-      <div className="overlay overlay-open" onClick={closeSidebar}></div>
-    )}
+        className={`sidebar ${isSidebarOpen ? "open" : ""} `}
+      >
+        <aside
+          className={`sidebar-content ${isSidebarOpen ? "open" : ""} `}
+        >
+          {isSidebarOpen && (
+            <div className="overlay overlay-open" onClick={closeSidebar}></div>
+          )}
 
-    <div className="sidebar-header d-flex justify-content-center align-items-center">
-        <img
-          style={{ cursor: "pointer" }}
-          src={logo}
-          alt="RFH"
-          className="sidebar-logo"
-        />
-      
-      <div className="d-lg-none" onClick={closeSidebar}>
-        <IoMdClose size={26} />
-      </div>
-    </div>
+          <div className="sidebar-header d-flex justify-content-center align-items-center">
+            <img
+              style={{ cursor: "pointer" }}
+              src={logo}
+              alt="RFH"
+              className="sidebar-logo"
+            />
+
+            <div className="d-lg-none" onClick={closeSidebar}>
+              <IoMdClose size={26} />
+            </div>
+          </div>
           <nav className="sidebar-nav">
             <ul>
-            <li>
+              <li>
                 <div
-                  className={`nav-link ${
-                    expandedMenu === "userDashboards" ? "active-nav-links" : ""
-                  }`}
+                  className={`nav-link ${expandedMenu === "userDashboards" ? "active-nav-links" : ""
+                    }`}
                   onClick={() => toggleMenu("userDashboards")}
                 >
                   <span className="d-flex align-items-center justify-content-between">
@@ -92,38 +91,36 @@ function SidebarAdmin() {
                   </span>
                 </div>
                 <ul
-                  className={`sub-menu ${
-                    expandedMenu === "userDashboards" ? "active" : ""
-                  }`}
+                  className={`sub-menu ${expandedMenu === "userDashboards" ? "active" : ""
+                    }`}
                 >
                   <li className="sub-nav-list">
                     <Link to="/" className="sub-nav-link">
-                    User Acquisition & Retention
+                      User Acquisition & Retention
                     </Link>
                   </li>
                   <li className="sub-nav-list">
                     <Link to="/" className="sub-nav-link">
-                    User Engagement
+                      User Engagement
                     </Link>
                   </li>
                   <li className="sub-nav-list">
                     <Link to="/" className="sub-nav-link">
-                    User Feedback
+                      User Feedback
                     </Link>
                   </li>
-                  
+
                 </ul>
               </li>
               <li>
                 <div
-                  className={`nav-link ${
-                    expandedMenu === "admin" ? "active-nav-links" : ""
-                  }`}
+                  className={`nav-link ${expandedMenu === "admin" ? "active-nav-links" : ""
+                    }`}
                   onClick={() => toggleMenu("admin")}
                 >
                   <span className="d-flex align-items-center justify-content-between">
                     <span className="d-flex align-items-center">
-                      <GoShieldCheck  className="sidebar-icon" />
+                      <GoShieldCheck className="sidebar-icon" />
                       <span> Admin</span>
                     </span>
                     {expandedMenu === "admin" ? (
@@ -133,34 +130,33 @@ function SidebarAdmin() {
                     )}
                   </span>
                 </div>
-                {/* <ul
+                <ul
                   className={`sub-menu ${
-                    expandedMenu === "recruiters" ? "active" : ""
+                    expandedMenu === "admin" ? "active" : ""
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/admin/add-recruiter" className="sub-nav-link">
-                      Add Recruiter
+                    <Link to="/admin-usermanagement" className="sub-nav-link">
+                      User Management
                     </Link>
                   </li>
-                  <li className="sub-nav-list">
+                  {/* <li className="sub-nav-list">
                     <Link to="/admin/all-recruiters" className="sub-nav-link">
-                      All Recruiter
+                      System Health
                     </Link>
-                  </li>
-                </ul> */}
+                  </li> */}
+                </ul>
               </li>
 
               <li>
                 <div
-                  className={`nav-link ${
-                    expandedMenu === "marketing" ? "active-nav-links" : ""
-                  }`}
+                  className={`nav-link ${expandedMenu === "marketing" ? "active-nav-links" : ""
+                    }`}
                   onClick={() => toggleMenu("marketing")}
                 >
                   <span className="d-flex align-items-center justify-content-between">
                     <span className="d-flex align-items-center">
-                      <TbCirclePercentage  className="sidebar-icon" />
+                      <TbCirclePercentage className="sidebar-icon" />
                       <span> Marketing</span>
                     </span>
                     {expandedMenu === "marketing" ? (
@@ -171,18 +167,17 @@ function SidebarAdmin() {
                   </span>
                 </div>
                 <ul
-                  className={`sub-menu ${
-                    expandedMenu === "marketing" ? "active" : ""
-                  }`}
+                  className={`sub-menu ${expandedMenu === "marketing" ? "active" : ""
+                    }`}
                 >
                   <li className="sub-nav-list">
                     <Link to="/campaign-performance-page" className="sub-nav-link">
-                     Campaign Performance
+                      Campaign Performance
                     </Link>
                   </li>
                   <li className="sub-nav-list">
                     <Link to="/" className="sub-nav-link">
-                     InApp Campaign
+                      InApp Campaign
                     </Link>
                   </li>
                   <li className="sub-nav-list">
@@ -190,34 +185,32 @@ function SidebarAdmin() {
                       Patient Aquisition
                     </Link>
                   </li>
-                  
+
                 </ul>
               </li>
 
               <li>
                 <Link
                   to=""
-                  className={`nav-link ${
-                    location.pathname === ""
+                  className={`nav-link ${location.pathname === ""
                       ? "active-nav-links"
                       : ""
-                  }`}
+                    }`}
                 >
-                  <SlGraduation  className="sidebar-icon" />{" "}
+                  <SlGraduation className="sidebar-icon" />{" "}
                   Education
                 </Link>
               </li>
 
               <li>
                 <div
-                  className={`nav-link ${
-                    expandedMenu === "teleconsultation" ? "active-nav-links" : ""
-                  }`}
+                  className={`nav-link ${expandedMenu === "teleconsultation" ? "active-nav-links" : ""
+                    }`}
                   onClick={() => toggleMenu("teleconsultation")}
                 >
                   <span className="d-flex align-items-center justify-content-between">
                     <span className="d-flex align-items-center">
-                      <IoTelescopeOutline  className="sidebar-icon" />
+                      <IoTelescopeOutline className="sidebar-icon" />
                       <span>Teleconsultation</span>
                     </span>
                     {expandedMenu === "teleconsultation" ? (
@@ -247,9 +240,8 @@ function SidebarAdmin() {
 
               <li>
                 <div
-                  className={`nav-link ${
-                    expandedMenu === "feedback" ? "active-nav-links" : ""
-                  }`}
+                  className={`nav-link ${expandedMenu === "feedback" ? "active-nav-links" : ""
+                    }`}
                   onClick={() => toggleMenu("feedback")}
                 >
                   <span className="d-flex align-items-center justify-content-between">
@@ -288,14 +280,13 @@ function SidebarAdmin() {
               </li>
               <li>
                 <div
-                  className={`nav-link ${
-                    expandedMenu === "operational" ? "active-nav-links" : ""
-                  }`}
+                  className={`nav-link ${expandedMenu === "operational" ? "active-nav-links" : ""
+                    }`}
                   onClick={() => toggleMenu("operational")}
                 >
                   <span className="d-flex align-items-center justify-content-between">
                     <span className="d-flex align-items-center">
-                      <Handshake className="sidebar-icon" size={14}/>
+                      <Handshake className="sidebar-icon" size={14} />
                       <span> Operational</span>
                     </span>
                     {expandedMenu === "operational" ? (
@@ -306,38 +297,36 @@ function SidebarAdmin() {
                   </span>
                 </div>
                 <ul
-                  className={`sub-menu ${
-                    expandedMenu === "operational" ? "active" : ""
-                  }`}
+                  className={`sub-menu ${expandedMenu === "operational" ? "active" : ""
+                    }`}
                 >
                   <li className="sub-nav-list">
                     <Link to="/" className="sub-nav-link">
-                    User Acquisition & Retention
+                      User Acquisition & Retention
                     </Link>
                   </li>
                   <li className="sub-nav-list">
                     <Link to="/" className="sub-nav-link">
-                    User Engagement
+                      User Engagement
                     </Link>
                   </li>
                   <li className="sub-nav-list">
                     <Link to="/" className="sub-nav-link">
-                    User Feedback
+                      User Feedback
                     </Link>
                   </li>
-                  
+
                 </ul>
               </li>
               <li>
                 <div
-                  className={`nav-link ${
-                    expandedMenu === "technical" ? "active-nav-links" : ""
-                  }`}
+                  className={`nav-link ${expandedMenu === "technical" ? "active-nav-links" : ""
+                    }`}
                   onClick={() => toggleMenu("technical")}
                 >
                   <span className="d-flex align-items-center justify-content-between">
                     <span className="d-flex align-items-center">
-                      <MemoryStick className="sidebar-icon" size={14}/>
+                      <MemoryStick className="sidebar-icon" size={14} />
                       <span> Technical</span>
                     </span>
                     {expandedMenu === "technical" ? (
@@ -348,36 +337,34 @@ function SidebarAdmin() {
                   </span>
                 </div>
                 <ul
-                  className={`sub-menu ${
-                    expandedMenu === "technical" ? "active" : ""
-                  }`}
+                  className={`sub-menu ${expandedMenu === "technical" ? "active" : ""
+                    }`}
                 >
                   <li className="sub-nav-list">
                     <Link to="/" className="sub-nav-link">
-                    User Acquisition & Retention
+                      User Acquisition & Retention
                     </Link>
                   </li>
                   <li className="sub-nav-list">
                     <Link to="/" className="sub-nav-link">
-                    User Engagement
+                      User Engagement
                     </Link>
                   </li>
                   <li className="sub-nav-list">
                     <Link to="/" className="sub-nav-link">
-                    User Feedback
+                      User Feedback
                     </Link>
                   </li>
-                  
+
                 </ul>
               </li>
               <li>
                 <Link
                   to=""
-                  className={`nav-link ${
-                    location.pathname === ""
+                  className={`nav-link ${location.pathname === ""
                       ? "active-nav-links"
                       : ""
-                  }`}
+                    }`}
                 >
                   <MessageSquareMore size={14} className="sidebar-icon" />{" "}
                   Chat
@@ -386,11 +373,10 @@ function SidebarAdmin() {
               <li>
                 <Link
                   to=""
-                  className={`nav-link ${
-                    location.pathname === ""
+                  className={`nav-link ${location.pathname === ""
                       ? "active-nav-links"
                       : ""
-                  }`}
+                    }`}
                 >
                   <Bell size={14} className="sidebar-icon" />{" "}
                   Notification
@@ -399,26 +385,24 @@ function SidebarAdmin() {
               <li>
                 <Link
                   to=""
-                  className={`nav-link ${
-                    location.pathname === ""
+                  className={`nav-link ${location.pathname === ""
                       ? "active-nav-links"
                       : ""
-                  }`}
+                    }`}
                 >
-                  <Settings size={14}  className="sidebar-icon" />{" "}
+                  <Settings size={14} className="sidebar-icon" />{" "}
                   Settings
                 </Link>
               </li>
               <li>
                 <Link
                   to=""
-                  className={`nav-link ${
-                    location.pathname === ""
+                  className={`nav-link ${location.pathname === ""
                       ? "active-nav-links"
                       : ""
-                  }`}
+                    }`}
                 >
-                  <LogOut size={14}  className="sidebar-icon" />{" "}
+                  <LogOut size={14} className="sidebar-icon" />{" "}
                   LogOut
                 </Link>
               </li>
