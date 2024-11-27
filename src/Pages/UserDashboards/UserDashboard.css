@@ -215,7 +215,7 @@
     height: 12px;
     border-radius: 6px;
   }
-  .userAquisition-model h3,p{
+  .userAquisition-model h3,.userAquisition-model p{
     text-align: center;
   }
 
@@ -355,7 +355,7 @@ margin-bottom: 0;
 }
 .total-users-display {
   position: absolute;
-  top: 45%;
+  top: 43%;
   left: 50%;
   font-weight: bold;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
