@@ -138,8 +138,8 @@ export const UserEngagementChart = () => {
                   data={trafficData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={80}
-                  outerRadius={120}
+                  innerRadius={70}
+                  outerRadius={100}
                   dataKey="value"
                   startAngle={90}
                   endAngle={450}
@@ -207,7 +207,7 @@ export const UserEngagementChart = () => {
                       style={{
                         display: "flex",
                         justifyContent: "center",
-                        gap: "15px",
+                        gap: "8px",
                       }}
                     >
                       {payload.map((entry, index) => (
