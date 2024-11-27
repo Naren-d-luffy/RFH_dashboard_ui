@@ -1,50 +1,53 @@
 import React from "react";
-import { Table, Dropdown, Button, Space,} from "antd";
-import { FiEdit, FiEye, FiFilter, FiSearch, FiTrash2 } from "react-icons/fi";
+import { Table, Dropdown, Button, Space } from "antd";
+import { FiSearch, FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
-const CampaignPerformanceTable = () => {
+const PatientAcquisitionTable = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
+
   const columns = [
     {
-      title: "Campaign Name",
-      dataIndex: "name",
-      key: "name",
+      title: "Patient ID",
+      dataIndex: "patientId",
+      key: "patientId",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Impressions",
-      dataIndex: "impressions",
-      key: "impressions",
+      title: "Patient Name",
+      dataIndex: "patientName",
+      key: "patientName",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Clicks",
-      dataIndex: "clicks",
-      key: "clicks",
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
       className: "campaign-performance-table-column",
     },
     {
-      title: "CTR (%)",
-      dataIndex: "ctr",
-      key: "ctr",
+      title: "Consult type",
+      dataIndex: "consultType",
+      key: "consultType",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Conversions",
-      dataIndex: "conversions",
-      key: "conversions",
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Conversion Rate (%)",
-      dataIndex: "conversionRate",
-      key: "conversionRate",
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
       className: "campaign-performance-table-column",
     },
     {
-      title: "CPC (₹)",
-      dataIndex: "cpc",
-      key: "cpc",
+      title: "Last Visit",
+      dataIndex: "lastVisit",
+      key: "lastVisit",
       className: "campaign-performance-table-column",
     },
     {
@@ -52,20 +55,11 @@ const CampaignPerformanceTable = () => {
       dataIndex: "status",
       key: "status",
       render: (status) => {
-        const color =
-          status === "Active"
-            ? "green"
-            : status === "Paused"
-            ? "orange"
-            : "blue";
+        const color = status === "Active" ? "green" : "red";
         return (
           <span
             className="campaign-performance-table-status"
-            style={{
-              color: color,
-              borderRadius: "5px",
-              fontWeight: "bold",
-            }}
+            style={{ color, fontWeight: "bold" }}
           >
             {status}
           </span>
@@ -76,9 +70,13 @@ const CampaignPerformanceTable = () => {
     {
       title: "Action",
       key: "action",
-      render: () => (
+      render: (record) => (
         <div className="campaign-performance-table-action-icons">
-          <div className="campaign-performance-table-eye-icon">
+          <div
+            className="campaign-performance-table-eye-icon"
+            onClick={() => navigate(`/patient-detail-page`)} // Navigate with patient ID
+            style={{ cursor: "pointer" }}
+          >
             <FiEye />
           </div>
           <div className="campaign-performance-table-edit-icon">
@@ -96,76 +94,69 @@ const CampaignPerformanceTable = () => {
   const data = [
     {
       key: "1",
-      name: "Campaign A",
-      impressions: "50,000",
-      clicks: "5,000",
-      ctr: "10.0",
-      conversions: "500",
-      conversionRate: "10.0",
-      cpc: "2.00",
+      patientId: "1001",
+      patientName: "Saikiran K",
+      date: "22-11-2024",
+      consultType: "Online",
+      age: "22",
+      gender: "Male",
+      lastVisit: "22-10-2024",
       status: "Active",
     },
     {
       key: "2",
-      name: "Campaign B",
-      impressions: "30,000",
-      clicks: "2,700",
-      ctr: "9.0",
-      conversions: "390",
-      conversionRate: "11.1",
-      cpc: "3.50",
-      status: "Paused",
+      patientId: "390",
+      patientName: "Chandan P",
+      date: "22-11-2024",
+      consultType: "Offline",
+      age: "44",
+      gender: "Male",
+      lastVisit: "09-10-2024",
+      status: "Inactive",
     },
     {
       key: "3",
-      name: "Campaign C",
-      impressions: "20,000",
-      clicks: "1,800",
-      ctr: "9.0",
-      conversions: "250",
-      conversionRate: "8.3",
-      cpc: "3.00",
-      status: "Completed",
+      patientId: "250",
+      patientName: "Harish D",
+      date: "22-11-2024",
+      consultType: "Online",
+      age: "32",
+      gender: "Male",
+      lastVisit: "02-10-2024",
+      status: "Active",
     },
     {
       key: "4",
-      name: "Campaign D",
-      impressions: "15,000",
-      clicks: "1,800",
-      ctr: "9.0",
-      conversions: "100",
-      conversionRate: "8.3",
-      cpc: "4.40",
+      patientId: "100",
+      patientName: "Shravya V",
+      date: "22-11-2024",
+      consultType: "Offline",
+      age: "26",
+      gender: "Female",
+      lastVisit: "09-09-2024",
       status: "Active",
     },
     {
       key: "5",
-      name: "Campaign E",
-      impressions: "15,000",
-      clicks: "1,000",
-      ctr: "10.0",
-      conversions: "50",
-      conversionRate: "5.0",
-      cpc: "3.25",
-      status: "Completed",
+      patientId: "50",
+      patientName: "Mahesh G",
+      date: "22-11-2024",
+      consultType: "Offline",
+      age: "28",
+      gender: "Male",
+      lastVisit: "22-08-2024",
+      status: "Active",
     },
   ];
 
   const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
+    { label: "Last Day", key: "1" },
+    { label: "Last Week", key: "2" },
+    { label: "Last Month", key: "3" },
   ];
+
   const handleMenuClick = ({ key }) => {};
+  
   const menuProps = {
     items,
     onClick: handleMenuClick,
@@ -175,13 +166,12 @@ const CampaignPerformanceTable = () => {
     <div className="container mt-4">
       <div className="campaign-performance-table-head">
         <div className="d-flex justify-content-between align-items-center">
-          <h6>Campaign Performance Table</h6>
-
+          <h6>All Patient Table</h6>
           <div className="d-flex gap-3 align-items-center">
             <div
               className="d-flex align-items-center px-3"
               style={{
-                border: "1px solid #ccc",
+                border: "1px solid var(--border-color)",
                 borderRadius: "8px",
                 height: "33px",
               }}
@@ -196,12 +186,11 @@ const CampaignPerformanceTable = () => {
                 }}
               />
             </div>
-
             <Dropdown menu={menuProps}>
               <Button>
                 <Space>
-                 <VscSettings />
-                   Filter
+                  <VscSettings />
+                  Filter
                 </Space>
               </Button>
             </Dropdown>
@@ -221,4 +210,5 @@ const CampaignPerformanceTable = () => {
   );
 };
 
-export default CampaignPerformanceTable;
+export default PatientAcquisitionTable;
+

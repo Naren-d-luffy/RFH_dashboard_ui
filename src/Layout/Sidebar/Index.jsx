@@ -186,7 +186,7 @@ function SidebarAdmin() {
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
+                    <Link to="/patient-acquisition-page" className="sub-nav-link">
                       Patient Aquisition
                     </Link>
                   </li>
