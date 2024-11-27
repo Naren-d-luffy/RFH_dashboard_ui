@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import UserAquisitionPage from "./Pages/UserDashboards/UserAquisitionPage";
 import CampaignPerformancePage from "./Pages/Marketing/CampaignPerformancePage";
 import SettingsPage from "./Pages/Settings/SettingsPage";
+import UserEngagementPage from "./Pages/UserDashboards/UserEngagementPage";
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -16,6 +17,7 @@ export const AppRouter = () => {
           path="/dashboard/settings-page"
           element={(Component = <SettingsPage />)}
         />
+        <Route path="/user-engagement" element={(Component = <UserEngagementPage />)} />
       </Routes>
     </BrowserRouter>
   );

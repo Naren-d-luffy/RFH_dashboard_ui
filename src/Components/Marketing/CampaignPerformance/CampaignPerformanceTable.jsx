@@ -1,6 +1,7 @@
 import React from "react";
-import { Table, Button, Tag } from "antd";
-import { FiEdit, FiEye, FiTrash2 } from "react-icons/fi";
+import { Table, Dropdown, Button, Space,} from "antd";
+import { FiEdit, FiEye, FiFilter, FiSearch, FiTrash2 } from "react-icons/fi";
+import { VscSettings } from "react-icons/vsc";
 
 const CampaignPerformanceTable = () => {
   const columns = [
@@ -58,16 +59,16 @@ const CampaignPerformanceTable = () => {
             ? "orange"
             : "blue";
         return (
-          <Tag
+          <span
             className="campaign-performance-table-status"
             style={{
-              backgroundColor: color,
-              color: "white",
+              color: color,
               borderRadius: "5px",
+              fontWeight: "bold",
             }}
           >
             {status}
-          </Tag>
+          </span>
         );
       },
       className: "campaign-performance-table-column",
@@ -76,22 +77,16 @@ const CampaignPerformanceTable = () => {
       title: "Action",
       key: "action",
       render: () => (
-        <div className="campaign-performance-table-action-buttons">
-          <Button
-            type="text"
-            icon={<FiEye />}
-            className="campaign-performance-table-icon"
-          />
-          <Button
-            type="text"
-            icon={<FiEdit />}
-            className="campaign-performance-table-icon"
-          />
-          <Button
-            type="text"
-            icon={<FiTrash2 />}
-            className="campaign-performance-table-icon"
-          />
+        <div className="campaign-performance-table-action-icons">
+          <div className="campaign-performance-table-eye-icon">
+            <FiEye />
+          </div>
+          <div className="campaign-performance-table-edit-icon">
+            <FiEdit />
+          </div>
+          <div className="campaign-performance-table-delete-icon">
+            <FiTrash2 />
+          </div>
         </div>
       ),
       className: "campaign-performance-table-column",
@@ -156,30 +151,74 @@ const CampaignPerformanceTable = () => {
     },
   ];
 
+  const items = [
+    {
+      label: "Last Day",
+      key: "1",
+    },
+    {
+      label: "Last week",
+      key: "2",
+    },
+    {
+      label: "Last Month",
+      key: "3",
+    },
+  ];
+  const handleMenuClick = ({ key }) => {};
+  const menuProps = {
+    items,
+    onClick: handleMenuClick,
+  };
+
   return (
     <div className="container mt-4">
-      <div className="d-flex justify-content-between ">
-        <div>
+      <div className="campaign-performance-table-head">
+        <div className="d-flex justify-content-between align-items-center">
           <h6>Campaign Performance Table</h6>
+
+          <div className="d-flex gap-3 align-items-center">
+            <div
+              className="d-flex align-items-center px-3"
+              style={{
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                height: "33px",
+                backgroundColor: "#f9f9f9",
+              }}
+            >
+              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
+              <input
+                type="text"
+                placeholder="Search anything here"
+                style={{
+                  border: "none",
+                  outline: "none",
+                  backgroundColor: "transparent",
+                }}
+              />
+            </div>
+
+            <Dropdown menu={menuProps}>
+              <Button>
+                <Space>
+                 <VscSettings />
+                   Filter
+                </Space>
+              </Button>
+            </Dropdown>
+          </div>
         </div>
-        <div>
-        <input
-          type="text"
-          placeholder="Search anything here"
-          className="campaign-performance-table-search"
-        />
-        <Button className="campaign-performance-table-filter-button">
-          Filter
-        </Button>
+        <div className="mt-3">
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={false}
+            className="campaign-performance-table overflow-y-auto"
+            bordered={false}
+          />
         </div>
       </div>
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={{ pageSize: 5 }}
-        className="campaign-performance-table"
-        bordered={false}
-      />
     </div>
   );
 };

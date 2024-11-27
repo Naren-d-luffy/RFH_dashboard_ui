@@ -102,7 +102,7 @@ function SidebarAdmin() {
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
+                    <Link to="/user-engagement" className="sub-nav-link">
                     User Engagement
                     </Link>
                   </li>
@@ -176,7 +176,7 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
+                    <Link to="/campaign-performance-page" className="sub-nav-link">
                      Campaign Performance
                     </Link>
                   </li>
