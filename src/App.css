@@ -15,7 +15,8 @@ body,
   font-family: 'Poppins' !important;
   color: var(--black-color) !important;
 }
-
-.ant-table-container{
-  overflow-x: scroll;
+@media (max-width: 768px){
+  .ant-table-container{
+    overflow-x: scroll;
+  }
 }

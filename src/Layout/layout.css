@@ -1,13 +1,3 @@
-.application-wrapper {
-    margin-left: 240px;
-    padding: 10px;
-    background: var(--white-color);
-    min-height: 87vh;
-    height: 100%;
-  }
-
-
-
 .navbar-header {
     background: var(--white-color);
     padding: 12px 24px;
