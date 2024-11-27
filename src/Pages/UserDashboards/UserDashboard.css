@@ -1,13 +1,5 @@
-.userAquisition-export-button {
-    color: var(--white-color);
-    background: var(--primary-green);
-    border: none;
-    border-radius: 8px;
-    padding: 12px 22px;
-}
-
 .userAquisition-dropdown {
-    padding: 14px 40px 14px 14px;
+    padding: 8px 40px 7px 14px;
     border-radius: 8px;
 }
 
@@ -29,7 +21,7 @@
 }
 
 .userAquisition-card p,
-.application-dashboard-graph h2 {
+.application-dashboard-graph h2, .userAquisition-model p, span  {
     font-size: 14px;
     color: var(--secondary-text-color);
     font-weight: 500;
@@ -68,6 +60,7 @@
     color: var(--primary-grey-color);
     font-size: 14px;
     font-weight: 500;
+    line-height: 21px;
 }
 
 .application-dashboard-graph-tooltip {
@@ -76,13 +69,15 @@
     border-radius: 8px;
     color: #fff;
 }
-.application-dashboard-graph-arrow{
+
+.application-dashboard-graph-arrow {
     color: #30363D;
-    background: var( --primary-green);
+    background: var(--primary-green);
     border-radius: 15px;
     padding: 2px;
     font-weight: 800;
 }
+
 .traffic-graph-image {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     border-radius: 5px;
@@ -91,42 +86,123 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  .traffic-graph-image img {
+}
+
+.traffic-graph-image img {
     width: 16px;
     height: 16px;
+}
+.export-button {
+    background-color: var(--primary-green);
+    color: var(--white-color);
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 22px;
   }
-  .graph-container {
+
+.graph-container {
     position: relative;
-  }
-  
-  .total-user-display {
+}
+
+.total-user-display {
     position: absolute;
     top: 50%;
-    left: 38%;
+    left: 33%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-weight: bold;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 50%;
+    padding: 25px;
+}
+.total-user-display-first-graph {
+    position: absolute;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     font-weight: bold;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     border-radius: 50%;
     padding: 10px;
-  }
-  .total-users {
+}
+.total-users {
     color: var(--primary-grey-color);
     font-size: 14px;
     font-weight: 600;
-  }
-  .total-users-count {
+}
+
+.total-users-count {
     font-size: 24px;
     font-weight: 600;
+}
+.total-users-count-1{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.recharts-legend-item {
+    margin-bottom: 10px;
+}
+
+.recharts-legend-wrapper {
+    position: absolute;
+    width: auto;
+    height: auto;
+    left: 65%;
+    top: 82px;
+}
+
+.app-status-items p {
+    font-size: 13px;
+    color: var(--secondary-text-color);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.app-status-items h1 {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.total-user-display h3 {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 33px;
+    letter-spacing: -0.02em;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}
+
+.total-user-display p {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+    letter-spacing: -0.02em;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}
+.donut-segment.weekly:hover {
+    stroke-width: 8;
   }
-  .recharts-legend-item{
-      margin-bottom: 10px;
+
+  .donut-segment.daily:hover {
+    stroke-width: 8;
   }
-  .recharts-legend-wrapper{
-      position: absolute;
-      width: auto;
-      height: auto;
-      left: 65%;
-      top: 82px;
+
+  .donut-segment.monthly:hover {
+    stroke-width: 8;
+  }
+  .userAquisition-tooltip-dot{
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+  }
+  .userAquisition-model h3,p{
+    text-align: center;
   }
