@@ -4,6 +4,8 @@ import UserAquisitionPage from "./Pages/UserDashboards/UserAquisitionPage";
 import CampaignPerformancePage from "./Pages/Marketing/CampaignPerformancePage";
 import PatientAcquisitionPage from "./Pages/Marketing/PatientAcquisitionPage";
 import PatientDetailPage from "./Pages/Marketing/PatientDetailPage";
+import SettingsPage from "./Pages/Settings/SettingsPage";
+import UserEngagementPage from "./Pages/UserDashboards/UserEngagementPage";
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -23,6 +25,11 @@ export const AppRouter = () => {
           path="/patient-detail-page"
           element={(Component = <PatientDetailPage />)}
         />
+         <Route
+          path="/dashboard/settings-page"
+          element={(Component = <SettingsPage />)}
+        />
+        <Route path="/user-engagement" element={(Component = <UserEngagementPage />)} />
       </Routes>
     </BrowserRouter>
   );
