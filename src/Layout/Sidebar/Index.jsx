@@ -398,7 +398,7 @@ function SidebarAdmin() {
               </li>
               <li>
                 <Link
-                  to=""
+                  to="/dashboard/settings-page"
                   className={`nav-link ${
                     location.pathname === ""
                       ? "active-nav-links"
