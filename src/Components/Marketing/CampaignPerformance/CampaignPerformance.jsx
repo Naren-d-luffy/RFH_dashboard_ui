@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { HiOutlineLightBulb } from "react-icons/hi";
 import { AiOutlinePieChart } from "react-icons/ai";
 import { PiHandTap } from "react-icons/pi";
 import { AiOutlineSound } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import CreateCampaign from "./CreateCampaign";
 
 const CampaignPerformance = () => {
   const cardsData = [
@@ -49,6 +51,13 @@ const CampaignPerformance = () => {
     },
   ];
 
+
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => setIsModalOpen(true);
+  const handleCancel = () => setIsModalOpen(false);
+
   return (
     <div className="container">
       <div className="d-flex mt-4 justify-content-between campaign-performance-head">
@@ -57,7 +66,7 @@ const CampaignPerformance = () => {
           <p>There is the latest update for the last 7 days. Check now.</p>
         </div>
         <div>
-          <button className="rfh-basic-button">
+          <button className="rfh-basic-button" onClick={showModal}>
             <GoPlus size={20} /> Create Campaign
           </button>
         </div>
@@ -95,6 +104,7 @@ const CampaignPerformance = () => {
           </div>
         ))}
       </div>
+       <CreateCampaign open={isModalOpen} handleCancel={handleCancel} />
     </div>
   );
 };

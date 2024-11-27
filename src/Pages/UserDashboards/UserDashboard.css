@@ -1,3 +1,4 @@
+
 .userAquisition-export-button {
   color: var(--white-color);
   background: var(--primary-green);
@@ -6,9 +7,11 @@
   padding: 12px 22px;
 }
 
+
 .userAquisition-dropdown {
-  padding: 14px 40px 14px 14px;
-  border-radius: 8px;
+    padding: 8px 40px 7px 14px;
+    border-radius: 8px;
+
 }
 
 .userAquisition-card {
@@ -30,12 +33,12 @@
 }
 
 .userAquisition-card p,
-.application-dashboard-graph h2 {
-  font-size: 14px;
-  color: var(--secondary-text-color);
-  font-weight: 500;
-  line-height: 19.6px;
-  letter-spacing: -2%;
+.application-dashboard-graph h2, .userAquisition-model p, span  {
+    font-size: 14px;
+    color: var(--secondary-text-color);
+    font-weight: 500;
+    line-height: 19.6px;
+    letter-spacing: -2%;
 }
 
 .userAquisition-card h2 {
@@ -66,71 +69,155 @@
 }
 
 .lengend-title {
-  color: var(--primary-grey-color);
-  font-size: 14px;
-  font-weight: 500;
+    color: var(--primary-grey-color);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
 }
 
 .application-dashboard-graph-tooltip {
-  background: #30363d;
-  box-shadow: 0px 13.28px 13.28px 0px #00000040;
-  border-radius: 8px;
-  color: #fff;
+    background: #30363D;
+    box-shadow: 0px 13.28px 13.28px 0px #00000040;
+    border-radius: 8px;
+    color: #fff;
 }
+
 .application-dashboard-graph-arrow {
-  color: #30363d;
-  background: var(--primary-green);
-  border-radius: 15px;
-  padding: 2px;
-  font-weight: 800;
+    color: #30363D;
+    background: var(--primary-green);
+    border-radius: 15px;
+    padding: 2px;
+    font-weight: 800;
 }
+
 .traffic-graph-image {
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  border-radius: 5px;
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 5px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 .traffic-graph-image img {
-  width: 16px;
-  height: 16px;
+    width: 16px;
+    height: 16px;
 }
+.export-button {
+    background-color: var(--primary-green);
+    color: var(--white-color);
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 22px;
+  }
+
 .graph-container {
-  position: relative;
+    position: relative;
 }
 
 .total-user-display {
-  position: absolute;
-  top: 50%;
-  left: 38%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  font-weight: bold;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  border-radius: 50%;
-  padding: 10px;
+    position: absolute;
+    top: 50%;
+    left: 33%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-weight: bold;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 50%;
+    padding: 25px;
+}
+.total-user-display-first-graph {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-weight: bold;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 50%;
+    padding: 10px;
 }
 .total-users {
-  color: var(--primary-grey-color);
-  font-size: 14px;
-  font-weight: 600;
+    color: var(--primary-grey-color);
+    font-size: 14px;
+    font-weight: 600;
 }
+
 .total-users-count {
-  font-size: 24px;
-  font-weight: 600;
+    font-size: 24px;
+    font-weight: 600;
 }
+.total-users-count-1{
+    font-size: 20px;
+    font-weight: 600;
+}
+
 .recharts-legend-item {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
+
 .graph-container .recharts-legend-wrapper {
-  position: absolute;
-  width: auto;
-  height: auto;
-  left: 65%;
-  top: 82px;
+    position: absolute;
+    width: auto;
+    height: auto;
+    left: 65%;
+    top: 82px;
 }
+
+.app-status-items p {
+    font-size: 13px;
+    color: var(--secondary-text-color);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.app-status-items h1 {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.total-user-display h3 {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 33px;
+    letter-spacing: -0.02em;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}
+
+.total-user-display p {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+    letter-spacing: -0.02em;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}
+.donut-segment.weekly:hover {
+    stroke-width: 8;
+  }
+
+  .donut-segment.daily:hover {
+    stroke-width: 8;
+  }
+
+  .donut-segment.monthly:hover {
+    stroke-width: 8;
+  }
+  .userAquisition-tooltip-dot{
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+  }
+  .userAquisition-model h3,p{
+    text-align: center;
+  }
 
 /* ==============css by keerthi============ */
 .user-engagement-header h3 {
@@ -288,3 +375,4 @@ margin-bottom: 0;
   height: auto;
   left: 65%;
 }
+

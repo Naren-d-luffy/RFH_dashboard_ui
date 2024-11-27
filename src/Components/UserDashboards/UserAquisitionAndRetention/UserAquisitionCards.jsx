@@ -1,20 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaArrowDown, FaUsers } from 'react-icons/fa6';
 import { PiExport } from 'react-icons/pi';
 import { FaChartLine, FaShoppingCart, FaDollarSign } from 'react-icons/fa6';
 import profile_tick from '../../../Assets/Icons/profile-tick.png'
+import { Button, Modal } from 'antd';
 
 export const UserAquisitionCards = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+    // Handle export functionality here
+    console.log("Export initiated!");
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   const cardData = [
     {
       heading: 'Total new user',
       value: '5.715',
       percentage: (
-      <span>
-        <FaArrowDown style={{ color: 'red', marginRight: '4px' }} />
-        -0.10%
-      </span>
-    ),
+        <span>
+          <FaArrowDown style={{ color: 'red', marginRight: '4px' }} />
+          -0.10%
+        </span>
+      ),
       description: 'Since last week',
       icon: <FaUsers />,
       changeType: 'down',
@@ -60,9 +76,9 @@ export const UserAquisitionCards = () => {
   return (
     <div className="container">
       <div className="d-flex justify-content-between align-items-center">
-        <div>
-          <h3 className="fw-bold">Overview</h3>
-          <p className="userAquisition-card-body-p">
+        <div className='user-engagement-header'>
+          <h3>Overview</h3>
+          <p >
             There is the latest update for the last 7 days. Check now
           </p>
         </div>
@@ -77,7 +93,7 @@ export const UserAquisitionCards = () => {
             <option value="3">Week 4</option>
             <option value="4">Week 5</option>
           </select>
-          <button className="d-flex gap-2 align-items-center userAquisition-export-button">
+          <button className="d-flex gap-2 align-items-center export-button" onClick={showModal}>
             <PiExport />
             Export
           </button>
@@ -124,6 +140,37 @@ export const UserAquisitionCards = () => {
           </div>
         ))}
       </div>
+      <Modal
+        title=""
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <div className='userAquisition-model'>
+          <h3>Export data</h3>
+          <p>"Are you sure you want to export data?"</p>
+          <span>Choose a type of document</span>
+          <div className='row'>
+            <div className='col-lg-12 mt-3'>
+              <select
+                className="form-select userAquisition-dropdown"
+                aria-label="Default select example"
+              >
+                <option selected>PDF</option>
+                <option value="1">Excel</option>
+                <option value="2">PNG</option>
+                <option value="3">Text document</option>
+              </select>
+            </div>
+          </div>
+          <div className='d-flex justify-content-center gap-3 mt-3'>
+          <Button className='py-4'>Cancel</Button>
+            <button className='export-button'>Confirm</button>
+          </div>
+        </div>
+
+      </Modal>
     </div>
   );
 };
