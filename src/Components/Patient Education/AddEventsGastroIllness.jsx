@@ -1,11 +1,10 @@
 import React from "react";
-import { Button, Modal, Form, Input, Row, Col } from "antd";
+import { Button, Modal, Form, Input, Row, Col, DatePicker } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 
-const { Dragger } = Upload;
 
 const modules = {
   toolbar: [
@@ -17,7 +16,7 @@ const modules = {
   ],
 };
 
-const CreateCampaign = ({ open, handleCancel }) => (
+const AddEventsGastroIllness = ({ open, handleCancel }) => (
   <Modal
     open={open}
     title={<span className="create-campaign-modal-title">Create Campaign</span>}
@@ -41,7 +40,7 @@ const CreateCampaign = ({ open, handleCancel }) => (
     ]}
   >
     <Form layout="vertical" className="mt-4">
-      <Form.Item label="Brand logo">
+    <Form.Item label="Brand logo">
         <Upload listType="picture" className="create-campaign-upload">
           <p className="create-campaign-ant-upload-text">
             Drop files here or click to upload
@@ -54,47 +53,46 @@ const CreateCampaign = ({ open, handleCancel }) => (
       </Form.Item>
 
       <Form.Item>
-        <Input className="create-camapign-input" placeholder="RFH Welcome" />
-        <span className="create-campaign-input-span">Campaign Title</span>
+        <Input className="create-camapign-input" defaultValue="Gastritis" />
+        <span className="create-campaign-input-span">Event Title</span>
       </Form.Item>
 
-      <Form.Item label="Campaign Description">
-        <ReactQuill
-          theme="snow"
-          modules={modules}
-          placeholder="Your text goes here"
-        />
-      </Form.Item>
       <Row gutter={24}>
-        <Col span={7}>
+        <Col span={12}>
           <Form.Item>
-            <Button block className="create-camapign-add-button">
-              + Add Button
-            </Button>
+            <Input
+              className="create-camapign-input"
+              defaultValue="Gastroscience Department"
+            />
+            <span className="create-campaign-input-span">Department</span>
           </Form.Item>
         </Col>
 
-        <Col span={7}>
-          <Form.Item>
-            <Input className="create-camapign-input" placeholder="Click Here" />
-            <span className="create-campaign-input-span">Button Name</span>
-          </Form.Item>
-        </Col>
-
-        <Col span={10}>
+        <Col span={12}>
           <Form.Item>
             <Form.Item>
-              <Input
-                className="create-camapign-input"
-                placeholder="https://www.rfhhospitalcampaign.com/"
+              <DatePicker
+                className="add-events-datepicker"
+                placeholder="21/11/2024"
+                style={{ width: "100%" }}
+                format="DD/MM/YYYY"
               />
-              <span className="create-campaign-input-span">Link</span>
+              <span className="create-campaign-input-span">Event Date</span>
             </Form.Item>
           </Form.Item>
         </Col>
       </Row>
+
+      <Form.Item>
+        <ReactQuill
+          theme="snow"
+          modules={modules}
+          placeholder="Write text here"
+        />
+        <span className="create-campaign-input-span">Campaign Description</span>
+      </Form.Item>
     </Form>
   </Modal>
 );
 
-export default CreateCampaign;
+export default AddEventsGastroIllness;
