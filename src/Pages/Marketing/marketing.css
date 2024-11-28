@@ -179,6 +179,9 @@
 
 .create-campaign-modal-title {
   color: var(--primary-green);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-size: 18px;
 }
 
 .create-campaign-save-button {
@@ -208,12 +211,7 @@
   border: 1px dotted var(--background-color);
   padding: 10px;
   border-radius: 12px;
-}
-
-.create-campaign-ant-upload-drag-icon {
-  border: 1px dotted var(--background-color);
-  padding: 8px;
-  border-radius: 12px;
+  cursor: pointer;
 }
 
 .ql-toolbar.ql-snow + .ql-container.ql-snow {
@@ -335,7 +333,7 @@
   color: var(--secondary-text-color);
 }
 
-.patient-detail-personal-information-text{
+.patient-detail-personal-information-text {
   border-left: 1px solid var(--border-color);
 }
 
@@ -353,7 +351,7 @@
   color: var(--black-color);
 }
 
-.patient-detail-address-text{
+.patient-detail-address-text {
   border-left: 1px solid var(--border-color);
 }
 
@@ -377,3 +375,47 @@
   line-height: 22px;
   color: var(--black-color);
 }
+
+/* manju */
+
+.create-campaign-upload {
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  background-color: var(--upload-image-bg);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.create-campaign-cancel-button:hover {
+  color: var(--white-color) !important;
+  background-color: var(--primary-green) !important;
+}
+
+.ant-picker-dropdown .ant-picker-panel-container {
+  border: 1px solid var(--primary-green) !important; 
+}
+.ant-picker-cell-selected .ant-picker-cell-inner {
+  background-color: var(--primary-green) !important;
+  color: var(--white-color) !important;
+  border-radius: 50% !important;
+}
+.ant-picker-cell-inner:hover {
+  background-color: var(--primary-green) !important;
+  border-radius: 50% !important;
+  color: var(--white-color) !important;
+
+}
+.ant-picker-focused {
+  border: 1px solid var(--primary-green) !important;
+}
+
+.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border-color: var(--primary-green) !important;
+}
+.ant-picker-footer.ant-picker-today-btn {
+  display: none !important; 
+}
+/* manju */
