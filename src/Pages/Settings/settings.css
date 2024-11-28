@@ -1,0 +1,224 @@
+.settings-section h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--black-color);
+}
+.settings-section p {
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  font-weight: 500;
+}
+.settings-options {
+  padding: 23px;
+  border-radius: 12px;
+  position: sticky;
+  top: 100px;
+}
+
+.settings-items {
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  padding: 10px;
+  font-weight: 500;
+  padding-left: 20px;
+}
+
+.settings-items:hover,
+.settings-items.active {
+  background-color: var(--bg-gray-color);
+  color: var(--primary-green);
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  padding-left: 20px;
+}
+
+.settings-profile-icon-section {
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+.settings-profile-image {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  background-color: var(--background-color);
+}
+
+.settings-edit-icon-button {
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: var(--primary-green);
+  color: var(--white-color);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 12px;
+}
+
+.settings-edit-icon-button:hover,
+.settings-delete-button:hover {
+  color: var(--primary-green);
+  background: var(--white-color);
+  border: 1px solid var(--primary-green);
+}
+.settings-delete-button {
+  border: 1px solid var(--border-color);
+  background: none;
+  cursor: pointer;
+  color: var(--black-color);
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 12px;
+}
+
+.settings-personal-information {
+  border-left: 1px solid var(--border-color);
+  padding-left: 20px;
+}
+.settings-personal-information h4 {
+  color: var(--gradient-start-color);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.settings-personal-information span {
+  font-size: 12px;
+}
+
+.settings-personal-information h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.settings-personal-information h4 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--black-color);
+}
+.settings-personal-information p {
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  font-weight: 500;
+}
+.settings-personal-information h5 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--black-color);
+}
+.settings-input input {
+  position: relative;
+}
+.settings-input-span {
+  position: absolute;
+  top: -10px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--input-gray-color);
+  left: 4%;
+  z-index: 1;
+  padding: 0 6px;
+  background-color: var(--white-color);
+}
+.ant-input.settings-input,
+.ant-select-outlined.settings-input,
+.ant-picker-outlined.settings-input,
+.ant-input-affix-wrapper.settings-input {
+  height: 40px;
+}
+.line-tag {
+  margin: 0;
+}
+.address-title {
+  color: var(--black-color);
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 15px;
+}
+.settings-theme-image{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-color);
+}
+.settings-theme-image p{
+  padding: 10px;
+  color: var(--secondary-text-color);
+  font-weight: 600;
+  margin-bottom: 0;
+}
+.settings-theme-image p.active {
+  color: var(--black-color);
+}
+.theme-select-option p,
+.settings-toggle{
+  font-size: 14px;
+  color: var(--black-color);
+  font-weight: 600;
+  margin-bottom: 0;
+}
+.theme-select-option h6{
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  font-weight: 400;
+  margin-top: 10px;
+  letter-spacing: 0.2px;
+}
+.check-box-name{
+  color: var(--black-color);
+  font-size: 14px;
+}
+.notification-item {
+  display: flex;
+  align-items: flex-start;
+}
+.notification-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: var(--primary-green);
+  border-color: var(--border-color);
+}
+.notification-checkbox {
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+.notification-content h6 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--black-color);
+}
+
+.notification-content p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--secondary-text-color);
+}
+.settings-delete-account {
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: var(--red-color);
+  color: var(--white-color);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 12px;
+}
+
+.settings-delete-account:hover,
+.settings-learn-button:hover {
+  color: var(--red-color);
+  background: var(--white-color);
+  border: 1px solid var(--red-color);
+}
+.settings-learn-button {
+  border: 1px solid var(--border-color);
+  background: none;
+  cursor: pointer;
+  color: var(--black-color);
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 12px;
+}

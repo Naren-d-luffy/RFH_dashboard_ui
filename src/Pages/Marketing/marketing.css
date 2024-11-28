@@ -1,8 +1,8 @@
 .campaign-performance-card {
-  background-color: white;
+  background-color: var(--white-color);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 5px 10px;
+  padding: 17px 18px;
   border-right: 3px solid var(--primary-green);
 }
 
@@ -18,6 +18,7 @@
 .campaign-performance-head h3 {
   font-size: 22px;
   font-weight: 600;
+  color: var(--black-color);
 }
 
 .campaign-performance-head p {
@@ -62,9 +63,9 @@
 
 .campaign-performance-graph-card {
   padding: 20px;
-  background-color: #fff;
+  background-color: var(--white-color);
   border-radius: 12px;
-  border: 1px solid #eee;
+  border: 1px solid var(--border-color);
 }
 
 .campaign-performance-graph-card h3 {
@@ -86,7 +87,7 @@
 }
 
 .campaign-performance-graph-status-circle.unsubscribe {
-  background-color: #f2efff;
+  background-color: var(--light-grey-color);
 }
 
 .campaign-performance-graph-status-text {
@@ -135,7 +136,7 @@
   font-weight: 600;
   letter-spacing: -2%;
   line-height: 18px;
-  color: #acb5bb;
+  color: var(--table-heading-color);
 }
 
 .campaign-performance-table-action-buttons {
@@ -161,15 +162,15 @@
 }
 
 .campaign-performance-table-eye-icon {
-  background-color: #2b7f75;
+  background-color: var(--primary-green);
 }
 
 .campaign-performance-table-edit-icon {
-  background-color: #54a6ff;
+  background-color: var(--icon-background-color);
 }
 
 .campaign-performance-table-delete-icon {
-  background-color: #e61313;
+  background-color: var(--red-color);
 }
 
 .create-campaign-head {
@@ -200,17 +201,17 @@
   font-weight: 500;
   line-height: 27px;
   text-decoration-skip-ink: none;
-  color: #9da2a7;
+  color: var(--primary-grey-color);
 }
 
 .create-campaign-ant-upload-drag-icon {
-  border: 1px dotted #c6c8cb;
+  border: 1px dotted var(--background-color);
   padding: 10px;
   border-radius: 12px;
 }
 
 .create-campaign-ant-upload-drag-icon {
-  border: 1px dotted #c6c8cb;
+  border: 1px dotted var(--background-color);
   padding: 8px;
   border-radius: 12px;
 }
@@ -244,4 +245,135 @@
   height: Fixed (53px) px;
   padding: 19px 32px;
   border-radius: 8px;
+}
+
+.patient-acquisition-graphs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.patient-acquisition-graphs h2 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.patient-acquisition-graph-overview,
+.patient-acquisition-graph-gender {
+  background: var(--white-color);
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  flex: 1;
+}
+
+.patient-acquisition-graph-overview {
+  flex: 2;
+}
+
+.patient-acquisition-legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.patient-acquisition-custom-tooltip {
+  color: var(--white-color);
+  font-size: 12px;
+  font-weight: 400;
+  border-radius: 4px;
+}
+
+.donut-segment.male:hover {
+  stroke-width: 8;
+}
+
+.donut-segment.female:hover {
+  stroke-width: 8;
+}
+
+.patient-acquisition-fixed-center-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.patient-acquisition-background-circle {
+  background-color: var(--white-color);
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.fixed-center-value h4 {
+  color: var(--black-color);
+  font-size: 24px;
+  margin: 0;
+  font-weight: 500;
+}
+
+.patient-detail-head-text h6 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.patient-detail-head-text p {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 22px;
+  color: var(--secondary-text-color);
+}
+
+.patient-detail-personal-information-text{
+  border-left: 1px solid var(--border-color);
+}
+
+.patient-detail-personal-information-text h6 {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 22px;
+  color: var(--secondary-text-color);
+}
+
+.patient-detail-personal-information-text p {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  color: var(--black-color);
+}
+
+.patient-detail-address-text{
+  border-left: 1px solid var(--border-color);
+}
+
+.patient-detail-address-text p {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  color: var(--black-color);
+}
+
+.patient-detail-address-text h6 {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 22px;
+  color: var(--secondary-text-color);
+}
+
+.patient-detail-address-text h5 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 22px;
+  color: var(--black-color);
 }
