@@ -159,10 +159,11 @@
   align-items: center;
   justify-content: center;
   color: var(--white-color);
+  cursor: pointer;
 }
 
 .campaign-performance-table-eye-icon {
-  background-color: var(--primary-green);
+  background-color: var(--visible-icon-background-color);
 }
 
 .campaign-performance-table-edit-icon {
