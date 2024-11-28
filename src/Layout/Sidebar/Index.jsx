@@ -190,18 +190,41 @@ function SidebarAdmin() {
               </li>
 
               <li>
-                <Link
-                  to=""
-                  className={`nav-link ${location.pathname === ""
-                      ? "active-nav-links"
-                      : ""
-                    }`}
+                <div
+                  className={`nav-link ${
+                    expandedMenu === "education" ? "active-nav-links" : ""
+                  }`}
+                  onClick={() => toggleMenu("education")}
                 >
-                  <SlGraduation className="sidebar-icon" />{" "}
-                  Education
-                </Link>
+                  <span className="d-flex align-items-center justify-content-between">
+                    <span className="d-flex align-items-center">
+                      <SlGraduation className="sidebar-icon" />
+                      <span>Patient Education</span>
+                    </span>
+                    {expandedMenu === "education" ? (
+                      <FiChevronUp className="dropdown-icon" />
+                    ) : (
+                      <FiChevronDown className="dropdown-icon" />
+                    )}
+                  </span>
+                </div>
+                <ul
+                  className={`sub-menu ${
+                    expandedMenu === "education" ? "active" : ""
+                  }`}
+                >
+                  <li className="sub-nav-list">
+                    <Link to="/patient-education-page/education-overview" className="sub-nav-link">
+                      Education Overview
+                    </Link>
+                  </li>
+                  <li className="sub-nav-list">
+                    <Link to="/patient-education-page/education-resources" className="sub-nav-link">
+                      Education Resources
+                    </Link>
+                  </li>
+                </ul>
               </li>
-
               <li>
                 <div
                   className={`nav-link ${expandedMenu === "teleconsultation" ? "active-nav-links" : ""

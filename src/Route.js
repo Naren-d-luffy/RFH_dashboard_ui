@@ -7,6 +7,8 @@ import PatientAcquisitionPage from "./Pages/Marketing/PatientAcquisitionPage";
 import PatientDetailPage from "./Pages/Marketing/PatientDetailPage";
 import SettingsPage from "./Pages/Settings/SettingsPage";
 import UserEngagementPage from "./Pages/UserDashboards/UserEngagementPage";
+import EducationOverviewPage from "./Pages/PatientEducation/EducationOverviewPage";
+import EducationResourcesPage from "./Pages/PatientEducation/EducationResourcesPage";
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -16,8 +18,9 @@ export const AppRouter = () => {
           path="/campaign-performance-page"
           element={(Component = <CampaignPerformancePage />)}
         />
-        <Route path="/admin-usermanagement"
-          element={(Component = <UserManagementPage />)} 
+        <Route
+          path="/admin-usermanagement"
+          element={(Component = <UserManagementPage />)}
         />
 
         <Route
@@ -25,15 +28,26 @@ export const AppRouter = () => {
           element={(Component = <PatientAcquisitionPage />)}
         />
 
-      <Route
+        <Route
           path="/patient-detail-page"
           element={(Component = <PatientDetailPage />)}
         />
-         <Route
+        <Route
           path="/dashboard/settings-page"
           element={(Component = <SettingsPage />)}
         />
-        <Route path="/user-engagement" element={(Component = <UserEngagementPage />)} />
+        <Route
+          path="/user-engagement"
+          element={(Component = <UserEngagementPage />)}
+        />
+        <Route
+          path="/patient-education-page/education-overview"
+          element={(Component = <EducationOverviewPage />)}
+        />
+        <Route
+          path="/patient-education-page/education-resources"
+          element={(Component = <EducationResourcesPage />)}
+        />
       </Routes>
     </BrowserRouter>
   );

@@ -35,9 +35,14 @@
   border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
-  padding: 10px;
+  padding: 8px 12px;
 }
 
+.rfh-basic-button:hover {
+  color: var(--primary-green);
+  border: 1px solid var(--primary-green);
+  background-color: var(--white-color);
+}
 .campaign-performance-card h3 {
   font-size: 24px;
   font-weight: 600;
@@ -179,6 +184,7 @@
 
 .create-campaign-modal-title {
   color: var(--primary-green);
+  font-size: 18px;
 }
 
 .create-campaign-save-button {
@@ -189,6 +195,11 @@
 .create-campaign-cancel-button {
   color: var(--primary-green) !important;
   border-color: var(--primary-green) !important;
+}
+
+.create-campaign-cancel-button:hover {
+  color: var(--white-color) !important;
+  background-color: var(--primary-green) !important;
 }
 
 .create-campaign-save-button:hover {
@@ -286,11 +297,15 @@
   border-radius: 4px;
 }
 
-.donut-segment.male:hover {
+.donut-segment.female:hover {
   stroke-width: 8;
 }
 
-.donut-segment.female:hover {
+.donut-segment {
+  transition: stroke-width 0.3s ease;
+}
+
+.donut-segment.male {
   stroke-width: 8;
 }
 
@@ -335,7 +350,7 @@
   color: var(--secondary-text-color);
 }
 
-.patient-detail-personal-information-text{
+.patient-detail-personal-information-text {
   border-left: 1px solid var(--border-color);
 }
 
@@ -353,7 +368,7 @@
   color: var(--black-color);
 }
 
-.patient-detail-address-text{
+.patient-detail-address-text {
   border-left: 1px solid var(--border-color);
 }
 
