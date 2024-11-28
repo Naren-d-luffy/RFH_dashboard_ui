@@ -74,7 +74,7 @@ const PatientAcquisitionTable = () => {
         <div className="campaign-performance-table-action-icons">
           <div
             className="campaign-performance-table-eye-icon"
-            onClick={() => navigate(`/patient-detail-page`)} // Navigate with patient ID
+            onClick={() => navigate(`/marketing/patientacquisition/patientdetail`)}
             style={{ cursor: "pointer" }}
           >
             <FiEye />

@@ -426,3 +426,7 @@
 
     }
   }
+  .active-sub-link {
+    background-color: var(--white-color) !important;
+    color: var(--primary-green) !important; 
+  }
