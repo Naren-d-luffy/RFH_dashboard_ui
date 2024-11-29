@@ -93,7 +93,7 @@ export const UserAquisitionCards = () => {
             <option value="3">Week 4</option>
             <option value="4">Week 5</option>
           </select>
-          <button className="d-flex gap-2 align-items-center export-button" onClick={showModal}>
+          <button className="d-flex gap-2 align-items-center rfh-basic-button" onClick={showModal}>
             <PiExport />
             Export
           </button>

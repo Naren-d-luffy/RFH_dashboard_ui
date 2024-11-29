@@ -199,7 +199,7 @@ const UserManagementGraph = () => {
                                         className="userAquisition-tooltip-dot"
                                         style={{ backgroundColor: data.datasets[0].backgroundColor[0] }}
                                     ></div>
-                                    {data.datasets[0].data[0]}
+                                    {data.datasets[0].data[0]}%
                                 </div>
                             </div>
                             <div>
@@ -209,7 +209,7 @@ const UserManagementGraph = () => {
                                         className="userAquisition-tooltip-dot"
                                         style={{ backgroundColor: data.datasets[0].backgroundColor[1] }}
                                     ></div>
-                                    {data.datasets[0].data[1]}
+                                    {data.datasets[0].data[1]}%
                                 </div>
                             </div>
                         </div>
