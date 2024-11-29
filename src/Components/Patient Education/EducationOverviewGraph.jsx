@@ -17,7 +17,7 @@ const patientOverviewData = [
   { year: "2024", online: 1.5, offline: 0.75 },
 ];
 
-const PatientAcquisitionGraphs = () => {
+const EducationOverviewGraph = () => {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
@@ -183,4 +183,4 @@ const PatientAcquisitionGraphs = () => {
   );
 };
 
-export default PatientAcquisitionGraphs;
+export default EducationOverviewGraph;
