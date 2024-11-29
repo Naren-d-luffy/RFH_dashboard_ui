@@ -4,6 +4,7 @@ import HeaderAdmin from "../../Layout/Header/Index";
 import SidebarAdmin from "../../Layout/Sidebar/Index";
 import { InAppCampaigncards } from "../../Components/Marketing/InAppCampaign/InAppCampaigncards";
 import { MarketingCategories } from "../../Components/Marketing/InAppCampaign/MarketingCategories";
+import { FeaturedPrograms } from "../../Components/Marketing/InAppCampaign/FeaturedPrograms";
 
 
 
@@ -17,6 +18,7 @@ const InAppCampaignPage = () => {
        <div className="container">
        <InAppCampaigncards/>
        <MarketingCategories/>
+       <FeaturedPrograms/>
        </div>
  
       </div>
