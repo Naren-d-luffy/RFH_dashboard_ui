@@ -10,6 +10,8 @@ import UserEngagementPage from "./Pages/UserDashboards/UserEngagementPage";
 import InAppCampaignPage from "./Pages/Marketing/InAppCampaignPage";
 import EducationOverviewPage from "./Pages/PatientEducation/EducationOverviewPage";
 import EducationResourcesPage from "./Pages/PatientEducation/EducationResourcesPage";
+import FeedbackCreateSurvey from "./Pages/Feedback/FeedbackCreateSurvey";
+import CreateSurveyIndex from "./Pages/Feedback/CreateSurveyIndex";
 
 export const AppRouter = () => {
   return (
@@ -54,6 +56,14 @@ export const AppRouter = () => {
         <Route
           path="/patient-education/resources"
           element={(Component = <EducationResourcesPage />)}
+        />
+        <Route
+          path="/feedback/create-survey"
+          element={(Component = <FeedbackCreateSurvey />)}
+        />
+        <Route
+          path="/feedback/create-survey-page"
+          element={(Component = <CreateSurveyIndex />)}
         />
 
       </Routes>
