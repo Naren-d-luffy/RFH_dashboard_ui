@@ -1,18 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Dropdown, Input, Space } from "antd";
-import { FiSearch } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
-import { VscSettings } from "react-icons/vsc";
-import AddEventsGastroIllness from "./AddEventsGastroIllness";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import img1 from "../../Assets/Images/img1.png"
-import img2 from "../../Assets/Images/img2.png"
-import img3 from "../../Assets/Images/img3.png"
+import Healthtool1 from "../../../Assets/Images/Healthtool1.png"
+import Healthtool2 from "../../../Assets/Images/Healthtool2.png"
+import Healthtool3 from "../../../Assets/Images/Healthtool3.png"
+import AddHealthTools from "./AddHealthTools";
 
-const EducationCategoriesGastroIllness = () => {
+const EducationCategoriesHealthTools = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -29,24 +26,24 @@ const EducationCategoriesGastroIllness = () => {
 
   const eventData = [
     {
-      img: img1,
-      title: "Gastritis",
+      img: Healthtool1,
+      title: "Symptoms Checker",
       date: "Nov 25",
-      description: "Gastritis is an inflammation of the stomach linin",
+      description: "Ongoing research is focusing on the gut microbiome's role in various gastrointestinal diseases",
       department: "Gastroscience Department",
     },
     {
-      img: img2,
-      title: "Hepatitis",
+      img: Healthtool2,
+      title: "Diet guide",
       date: "Nov 25",
-      description: "Hepatitis is a general term for liver inflammation",
+      description: "Ongoing research is focusing on the gut microbiome's role in various gastrointestinal diseases",
       department: "Gastroscience Department",
     },
     {
-      img: img3,
-      title: "Pancreatitis",
+      img: Healthtool3,
+      title: "Lifestyle Tips",
       date: "Nov 25",
-      description: "Pancreatitis is one of the swelling of the pancreas ",
+      description: "Ongoing research is focusing on the gut microbiome's role in various gastrointestinal diseases ",
       department: "Gastroscience Department",
     },
   ];
@@ -90,40 +87,12 @@ const EducationCategoriesGastroIllness = () => {
   return (
     <div className="container mt-4">
         <div className="marketing-categories-section">
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <h4>Education Categories</h4>
-            <div className="d-flex gap-3 align-items-center">
-              <div
-                className="d-flex align-items-center px-3"
-                style={{
-                  border: "1px solid #ccc",
-                  borderRadius: "8px",
-                  height: "33px",
-                }}
-              >
-                <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-                <Input
-                  type="text"
-                  placeholder="Search anything here"
-                  style={{ border: "none", outline: "none" }}
-                />
-              </div>
-              <Dropdown menu={menuProps}>
-                <Button>
-                  <Space>
-                    <VscSettings />
-                    Filter
-                  </Space>
-                </Button>
-              </Dropdown>
-            </div>
-          </div>
 
           <div className="row mt-4">
             <div className="d-flex justify-content-between">
-              <h6>Gastro Illness</h6>
+              <h6>Health Tools</h6>
               <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} /> Add Events
+                <GoPlus size={20} /> Add
               </button>
             </div>
             <div className="mt-3">
@@ -134,10 +103,11 @@ const EducationCategoriesGastroIllness = () => {
           </div>
         </div>
 
-      <AddEventsGastroIllness open={isModalOpen} handleCancel={handleCancel} />
+      <AddHealthTools open={isModalOpen} handleCancel={handleCancel} />
     </div>
   );
 };
 
-export default EducationCategoriesGastroIllness;
+export default EducationCategoriesHealthTools;
+
 

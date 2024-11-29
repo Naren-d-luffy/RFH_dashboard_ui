@@ -662,4 +662,11 @@ text-align: left;
 .ant-picker-footer.ant-picker-today-btn {
   display: none !important; 
 }
+
+.action-icon-button{
+    color: var(--black-color);
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
 /* manju */

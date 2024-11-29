@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Modal, Form, Input, Row, Col, DatePicker } from "antd";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";

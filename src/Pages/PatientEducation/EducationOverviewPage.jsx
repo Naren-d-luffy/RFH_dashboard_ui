@@ -1,10 +1,10 @@
 import React from "react";
-import "./patienteducation.css"
+import "./patienteducation.css";
 import HeaderAdmin from "../../Layout/Header/Index";
 import SidebarAdmin from "../../Layout/Sidebar/Index";
-import EducationOverviewCards from "../../Components/Patient Education/EducationOverviewCards";
-import EducationOverviewGraph from "../../Components/Patient Education/EducationOverviewGraph";
-import EducationOverviewTable from "../../Components/Patient Education/EducationOverviewTable";
+import EducationOverviewCards from "../../Components/PatientEducation/EducationOverview/EducationOverviewCards";
+import EducationOverviewGraph from "../../Components/PatientEducation/EducationOverview/EducationOverviewGraph";
+import EducationOverviewTable from "../../Components/PatientEducation/EducationOverview/EducationOverviewTable";
 
 const EducationOverviewPage = () => {
   return (
@@ -16,6 +16,7 @@ const EducationOverviewPage = () => {
         <EducationOverviewCards />
         <EducationOverviewGraph />
         <EducationOverviewTable />
+
       </div>
     </>
   );

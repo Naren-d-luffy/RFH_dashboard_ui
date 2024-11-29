@@ -3,13 +3,18 @@ import { HiOutlineLightBulb } from "react-icons/hi";
 import { AiOutlinePieChart } from "react-icons/ai";
 import { PiHandTap } from "react-icons/pi";
 import { AiOutlineSound } from "react-icons/ai";
+import { FaArrowUp } from "react-icons/fa6";
 
-const EducationOverviewCards = () => {
+const EducationResourcesCards = () => {
   const cardsData = [
     {
-      title: "Total Visited",
-      value: '20,456',
-      percentage: "10%",
+      title: "Total Campaign",
+      value: '20',
+      percentage: (
+        <>
+           <FaArrowUp style={{ color: "var(--primary-green)", fontSize: "12px" }} /> {" "}2%
+        </>
+      ),
       description: "Since last week",
       icon: <AiOutlineSound />,
       borderColor: "var(--primary-green)",
@@ -17,7 +22,7 @@ const EducationOverviewCards = () => {
       iconBackground: "#dffaf0",
     },
     {
-      title: "Total Old Patient",
+      title: "Total Clicks",
       value: "22,500",
       percentage: "340",
       description: "Users",
@@ -39,8 +44,8 @@ const EducationOverviewCards = () => {
     {
       title: "CTR",
       value: "5%",
-      percentage: "1%",
-      description: "Since last week",
+      percentage: "+340",
+      description: "New",
       icon: <AiOutlinePieChart />,
       borderColor: "var(--sky-blue-color)",
       iconColor: "var(--sky-blue-color)",
@@ -51,7 +56,7 @@ const EducationOverviewCards = () => {
   return (
     <div className="container mt-4">
       <div className="campaign-performance-head">
-        <h3>Patient Education overview</h3>
+        <h3>InApp Campaign overview</h3>
         <p>there is the latest update for the last 7 days. check now</p>
       </div>
 
@@ -91,5 +96,6 @@ const EducationOverviewCards = () => {
   );
 };
 
-export default EducationOverviewCards;
+export default EducationResourcesCards;
+
 
