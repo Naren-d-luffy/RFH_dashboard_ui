@@ -250,12 +250,12 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
+                    <Link to="/patient-education-page/education-overview" className="sub-nav-link">
                       Education Overview
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
+                    <Link to="/patient-education-page/education-resources" className="sub-nav-link">
                       Education Resources
                     </Link>
                   </li>
