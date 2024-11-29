@@ -114,7 +114,7 @@ export const UserEngagementCards = () => {
       </div>
       <div className="row">
         {cardData.map((card, index) => (
-          <div key={index} className="col-lg-3 mt-2">
+          <div key={index} className="col-lg-6 col-xl-3 mt-2 col-md-6" >
             <div className="user-engagement-card">
               <div className="d-flex align-items-center justify-content-between">
                 <div>

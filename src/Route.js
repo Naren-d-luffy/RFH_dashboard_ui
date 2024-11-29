@@ -7,6 +7,7 @@ import PatientAcquisitionPage from "./Pages/Marketing/PatientAcquisitionPage";
 import PatientDetailPage from "./Pages/Marketing/PatientDetailPage";
 import SettingsPage from "./Pages/Settings/SettingsPage";
 import UserEngagementPage from "./Pages/UserDashboards/UserEngagementPage";
+import InAppCampaignPage from "./Pages/Marketing/InAppCampaignPage";
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -34,6 +35,7 @@ export const AppRouter = () => {
           element={(Component = <SettingsPage />)}
         />
         <Route path="/user-engagement" element={(Component = <UserEngagementPage />)} />
+        <Route path="marketing/in-app-campaign" element={(Component = <InAppCampaignPage />)} />
       </Routes>
     </BrowserRouter>
   );
