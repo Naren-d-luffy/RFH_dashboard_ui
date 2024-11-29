@@ -7,6 +7,8 @@ import UserManagementPage from "./Pages/Admin/UserManagementPage";
 import PatientAcquisitionPage from "./Pages/Marketing/PatientAcquisitionPage";
 import PatientDetailPage from "./Pages/Marketing/PatientDetailPage";
 import SettingsPage from "./Pages/Settings/SettingsPage";
+import UserEngagementPage from "./Pages/UserDashboards/UserEngagementPage";
+import InAppCampaignPage from "./Pages/Marketing/InAppCampaignPage";
 import EducationOverviewPage from "./Pages/PatientEducation/EducationOverviewPage";
 import EducationResourcesPage from "./Pages/PatientEducation/EducationResourcesPage";
 
@@ -42,6 +44,10 @@ export const AppRouter = () => {
           path="/dashboard/settings"
           element={(Component = <SettingsPage />)}
         />
+
+        <Route path="/user-engagement" element={(Component = <UserEngagementPage />)} />
+        <Route path="marketing/in-app-campaign" element={(Component = <InAppCampaignPage />)} />
+
         <Route
           path="/patient-education/overview"
           element={(Component = <EducationOverviewPage />)}
@@ -50,6 +56,7 @@ export const AppRouter = () => {
           path="/patient-education/resources"
           element={(Component = <EducationResourcesPage />)}
         />
+
       </Routes>
     </BrowserRouter>
   );

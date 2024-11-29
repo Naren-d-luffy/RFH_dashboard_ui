@@ -209,7 +209,7 @@ function SidebarAdmin() {
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
+                    <Link to="/marketing/in-app-campaign" className="sub-nav-link">
                       InApp Campaign
                     </Link>
                   </li>
