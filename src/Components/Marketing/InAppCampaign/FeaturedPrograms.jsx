@@ -1,31 +1,21 @@
-import React from "react";
-import { FiSearch } from "react-icons/fi";
-import { VscSettings } from "react-icons/vsc";
+import React, { useState } from "react";
 import { GoPlus } from "react-icons/go";
-import { Button, Dropdown, Space } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import medicines from "../../../Assets/Images/medicines.png";
-import fruits from "../../../Assets/Images/fruits.png";
-import appointment from "../../../Assets/Images/appointment.png";
 import videoImage1 from "../../../Assets/Images/recommendVideo1.png";
 import videoImage2 from "../../../Assets/Images/recommendVideo2.jpeg"
 import program1 from "../../../Assets/Images/program1.png"
 import program2 from "../../../Assets/Images/program2.png"
-import { FaPlay } from "react-icons/fa";
-export const FeaturedPrograms = () => {
-  const items = [
-    { label: "Last Day", key: "1" },
-    { label: "Last Week", key: "2" },
-    { label: "Last Month", key: "3" },
-  ];
-  const handleMenuClick = ({ key }) => {};
+import FeaturedProgramModel from "./FeaturedProgramModel";
+import LatestCamps from "./LatestCamps";
 
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+export const FeaturedPrograms = () => {
+  const [modals, setModals] = useState({ program: false, camp: false });
+  const toggleModal = (modalType) =>
+    setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
+
 
   const eventData = [
     {
@@ -171,7 +161,7 @@ export const FeaturedPrograms = () => {
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Featured Programs</h6>
-            <button className="rfh-basic-button">
+            <button className="rfh-basic-button" onClick={() => toggleModal("program")}>
               <GoPlus size={20} /> Add Program
             </button>
           </div>
@@ -180,13 +170,17 @@ export const FeaturedPrograms = () => {
               {eventData.map((event) => renderEventCard(event))}
             </Slider>
           </div>
+          <FeaturedProgramModel
+            open={modals.program}
+            handleCancel={() => toggleModal("program")}
+          />
         </div>
 
         {/* recommended videos */}
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Latest Camps</h6>
-            <button className="rfh-basic-button">
+            <button className="rfh-basic-button" onClick={() => toggleModal("camp")}>
               <GoPlus size={20} /> Add Camp
             </button>
           </div>
@@ -195,6 +189,10 @@ export const FeaturedPrograms = () => {
               {videoData.map((camp) => renderLatestCamps(camp))}
             </Slider>
           </div>
+          <LatestCamps
+            open={modals.camp}
+            handleCancel={() => toggleModal("camp")}
+          />
         </div>
       </div>
     </div>
