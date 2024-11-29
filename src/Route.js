@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UserAquisitionPage from "./Pages/UserDashboards/UserAquisitionPage";
-import UserEngagementPage from "./Pages/UserDashboards/UserEngagementPage";
 import CampaignPerformancePage from "./Pages/Marketing/CampaignPerformancePage";
 import UserManagementPage from "./Pages/Admin/UserManagementPage";
 import PatientAcquisitionPage from "./Pages/Marketing/PatientAcquisitionPage";
@@ -21,23 +20,23 @@ export const AppRouter = () => {
           element={(Component = <UserAquisitionPage />)}
         />
         <Route
-          path="/userdashboards/userengagement"
+          path="/user-dashboards/user-engagement"
           element={(Component = <UserEngagementPage />)}
         />
         <Route
-          path="/admin/usermanagement"
+          path="/admin/user-management"
           element={(Component = <UserManagementPage />)}
         />
         <Route
-          path="/marketing/campaignperformance"
+          path="/marketing/campaign-performance"
           element={(Component = <CampaignPerformancePage />)}
         />
         <Route
-          path="/marketing/patientacquisition"
+          path="/marketing/patient-acquisition"
           element={(Component = <PatientAcquisitionPage />)}
         />
         <Route
-          path="/marketing/patientacquisition/patientdetail"
+          path="/marketing/patient-acquisition/patient-detail"
           element={(Component = <PatientDetailPage />)}
         />
         <Route
