@@ -63,7 +63,7 @@ const PatientDetail = () => {
       <div >
           <button className="rfh-basic-button mt-5"
             onClick={() =>
-              navigate("/patient-acquisition-page")
+              navigate("/marketing/patientacquisition")
             }
           >
             <IoIosArrowBack />

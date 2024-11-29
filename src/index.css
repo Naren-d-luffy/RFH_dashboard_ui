@@ -11,6 +11,7 @@
   --grey-color:#4a4a4a;
   --sky-blue-color: #7EC2FF;
   --icon-background-color: #54a6ff;
+  --visible-icon-background-color: #2B7F75;
   --red-color: #e61313;
   --light-orange-color:#FFD66B;
   --light-grey-color: #f2efff;
@@ -20,6 +21,7 @@
   --tag-green-bg:#E0F0E4;
   --tag-red-bg:#FEECEB;
   --maroon-red:#B12F30;
+  --upload-image-bg:#f5f5f5;
 }
 
 

@@ -13,7 +13,7 @@ body,
 .ant-radio,
 .ant-form-item-label {
   font-family: 'Poppins' !important;
-  color: var(--black-color) !important;
+  /* color: var(--black-color) !important; */
 }
 @media (max-width: 768px){
   .ant-table-container{

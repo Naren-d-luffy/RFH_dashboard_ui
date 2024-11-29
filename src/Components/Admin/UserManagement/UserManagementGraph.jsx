@@ -54,11 +54,15 @@ const UserManagementGraph = () => {
                 display: false,
             },
             tooltip: {
+                displayColors: true, 
                 callbacks: {
                     label: function (tooltipItem) {
-                        return `\u00A0\u00A0\u00A0 ${tooltipItem.raw}`;
+                        return `\u00A0\u00A0${tooltipItem.raw}`;
                     }
-                }
+                },
+                boxHeight: 10, 
+                boxWidth: 10,
+                usePointStyle: true,
             }
         }
     };
@@ -73,6 +77,7 @@ const UserManagementGraph = () => {
         opdPatients: "#00963F",
         ipdPatients: "#191F2F",
     };
+    
     return (
         <div className='container'>
             <div className='row mt-4'>
@@ -98,12 +103,19 @@ const UserManagementGraph = () => {
                         </div>
                         <Divider className="mb-5" />
                         <div className="card-body">
-                            <ResponsiveContainer width="100%" height={300}>
+                            <ResponsiveContainer width="100%" height={217}>
                                 <BarChart data={jobOverviewData} barSize={30}>
                                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                                    <XAxis dataKey="year" />
+                                    <XAxis
+                                        dataKey="year"
+                                        axisLine={{
+                                            strokeWidth: 1, 
+                                            stroke: "#cccccc", 
+                                        }}
+                                    />
                                     <YAxis
                                         tickFormatter={(value) => `${value}k`}
+                                        axisLine={false}
                                     />
                                     <Tooltip
                                         contentStyle={{
@@ -113,6 +125,7 @@ const UserManagementGraph = () => {
                                             color: "var(--white-color)",
                                             border: "none",
                                         }}
+                                        className="userManagementGraph-tooltip"
                                         formatter={(value, name, props) => (
                                             <div
                                                 style={{
@@ -165,8 +178,8 @@ const UserManagementGraph = () => {
                                 </Button>
                             </Dropdown>
                         </div>
-                        <div style={{ position: 'relative' }}>
-                            <Doughnut data={data} options={options} height={350} width="100%" />
+                        <div className="d-flex justify-content-center align-items-start userMnagement-doughnut-div">
+                            <Doughnut data={data} options={options} height={260} width="100%" />
                             <div className="userManagement-halfGraph-text" style={{
                                 position: 'absolute',
                                 top: '85%',
@@ -175,10 +188,10 @@ const UserManagementGraph = () => {
                                 textAlign: 'center'
                             }}>
                                 <h6 style={{ margin: 10 }}>Last Updated</h6>
-                                <p style={{ margin: 0, textAlign:"center" }}>24, Feb 2024</p>
+                                <p style={{ margin: 0, textAlign: "center" }}>24, Feb 2024</p>
                             </div>
                         </div>
-                        <div className="d-flex gap-4 justify-content-center">
+                        <div className="d-flex gap-5 justify-content-center">
                             <div>
                                 <p>Doctors</p>
                                 <div className="d-flex gap-2 align-items-center">
