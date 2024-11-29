@@ -42,11 +42,11 @@ function SidebarAdmin() {
   useEffect(() => {
     const pathToMenuMap = {
       "/": "userDashboards",
-      "/userdashboards/userengagement": "userDashboards",
-      "/admin/usermanagement": "admin",
-      "/marketing/campaignperformance": "marketing",
-      "/marketing/patientacquisition": "marketing",
-      "/marketing/patientacquisition/patientdetail": "marketing",
+      "/user-dashboards/user-engagement": "userDashboards",
+      "/admin/user-management": "admin",
+      "/marketing/campaign-performance": "marketing",
+      "/marketing/patient-acquisition": "marketing",
+      "/marketing/patient-acquisition/patient-detail": "marketing",
       "/dashboard/settings": "",
       "/patient-education/overview": "education",
       "/patient-education/resources": "education",
@@ -121,9 +121,9 @@ function SidebarAdmin() {
                   </li>
                   <li className="sub-nav-list">
                     <Link
-                      to="/userdashboards/userengagement"
+                      to="/user-dashboards/user-engagement"
                       className={`sub-nav-link ${
-                        location.pathname === "/userdashboards/userengagement"
+                        location.pathname === "/user-dashboards/user-engagement"
                           ? "active-sub-link"
                           : ""
                       }`}
@@ -159,9 +159,9 @@ function SidebarAdmin() {
                 >
                   <li className="sub-nav-list">
                     <Link
-                      to="/admin/usermanagement"
+                      to="/admin/user-management"
                       className={`sub-nav-link ${
-                        location.pathname === "/admin/usermanagement"
+                        location.pathname === "/admin/user-management"
                           ? "active-sub-link"
                           : ""
                       }`}
@@ -198,9 +198,9 @@ function SidebarAdmin() {
                 >
                   <li className="sub-nav-list">
                     <Link
-                      to="/marketing/campaignperformance"
+                      to="/marketing/campaign-performance"
                       className={`sub-nav-link ${
-                        location.pathname === "/marketing/campaignperformance"
+                        location.pathname === "/marketing/campaign-performance"
                           ? "active-sub-link"
                           : ""
                       }`}
@@ -209,15 +209,15 @@ function SidebarAdmin() {
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
+                    <Link to="/marketing/in-app-campaign" className="sub-nav-link">
                       InApp Campaign
                     </Link>
                   </li>
                   <li className="sub-nav-list">
                     <Link
-                      to="/marketing/patientacquisition"
+                      to="/marketing/patient-acquisition"
                       className={`sub-nav-link ${
-                        location.pathname === "/marketing/patientacquisition"
+                        location.pathname === "/marketing/patient-acquisition"
                           ? "active-sub-link"
                           : ""
                       }`}
