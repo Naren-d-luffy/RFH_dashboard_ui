@@ -41,13 +41,15 @@ function SidebarAdmin() {
 
   useEffect(() => {
     const pathToMenuMap = {
-      "/userdashboards/useracquisition": "userDashboards",
+      "/": "userDashboards",
       "/userdashboards/userengagement": "userDashboards",
       "/admin/usermanagement": "admin",
       "/marketing/campaignperformance": "marketing",
       "/marketing/patientacquisition": "marketing",
       "/marketing/patientacquisition/patientdetail": "marketing",
-      "/dashboard/settings-page": "",
+      "/dashboard/settings": "",
+      "/patient-education/overview": "education",
+      "/patient-education/resources": "education",
     };
 
     const currentPath = location.pathname;
@@ -107,9 +109,9 @@ function SidebarAdmin() {
                 >
                   <li className="sub-nav-list">
                     <Link
-                      to="/userdashboards/useracquisition"
+                      to="/"
                       className={`sub-nav-link ${
-                        location.pathname === "/userdashboards/useracquisition"
+                        location.pathname === "/"
                           ? "active-sub-link"
                           : ""
                       }`}
@@ -250,12 +252,20 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/patient-education-page/education-overview" className="sub-nav-link">
+                    <Link to="/patient-education/overview" className={`sub-nav-link ${
+                        location.pathname === "/patient-education/overview"
+                          ? "active-sub-link"
+                          : ""
+                      }`}>
                       Education Overview
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/patient-education-page/education-resources" className="sub-nav-link">
+                    <Link to="/patient-education/resources"  className={`sub-nav-link ${
+                        location.pathname === "/patient-education/resources"
+                          ? "active-sub-link"
+                          : ""
+                      }`}>
                       Education Resources
                     </Link>
                   </li>
@@ -446,9 +456,9 @@ function SidebarAdmin() {
 
               <li>
                 <Link
-                  to="/dashboard/settings-page"
+                  to="/dashboard/settings"
                   className={`nav-link ${
-                    location.pathname === "/dashboard/settings-page"
+                    location.pathname === "/dashboard/settings"
                       ? "active-nav-links"
                       : ""
                   }`}
