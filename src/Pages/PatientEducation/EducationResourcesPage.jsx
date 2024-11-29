@@ -2,9 +2,9 @@ import React from "react";
 import "./patienteducation.css"
 import HeaderAdmin from "../../Layout/Header/Index";
 import SidebarAdmin from "../../Layout/Sidebar/Index";
-import EducationResourcesCards from "../../Components/Patient Education/EducationResourcesCards";
-import EducationCategoriesGastroIllness from "../../Components/Patient Education/EducationCategoriesGastroIllness";
-import EducationCategoriesTreatmentsInfo from "../../Components/Patient Education/EducationCategoriesTreatmentsInfo";
+import EducationResourcesCards from "../../Components/PatientEducation/EducationResources/EducationResourcesCards";
+import EducationCategoriesGastroIllness from "../../Components/PatientEducation/EducationResources/EducationCategoriesGastroIllness";
+import EducationCategoriesTreatmentsInfo from "../../Components/PatientEducation/EducationResources/EducationCategoriesTreatmentsInfo";
 
 const EducationResourcesPage = () => {
   return (

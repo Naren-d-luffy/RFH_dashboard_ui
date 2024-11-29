@@ -80,9 +80,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import AddTreatmentsInfo from "./AddTreatmentsInfo";
-import Frame1 from "../../Assets/Images/Frame1.png";
-import Frame2 from "../../Assets/Images/Frame2.png";
-import Frame3 from "../../Assets/Images/Frame3.png";
+import Frame1 from "../../../Assets/Images/Frame1.png";
+import Frame2 from "../../../Assets/Images/Frame2.png";
+import Frame3 from "../../../Assets/Images/Frame3.png";
 
 const EducationCategoriesTreatmentsInfo = () => {
   const items = [
