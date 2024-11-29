@@ -17,10 +17,7 @@ export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={(Component = <UserAquisitionPage />)}
-        />
+        <Route path="/" element={(Component = <UserAquisitionPage />)} />
         <Route
           path="/user-dashboards/user-engagement"
           element={(Component = <UserEngagementPage />)}
@@ -46,8 +43,14 @@ export const AppRouter = () => {
           element={(Component = <SettingsPage />)}
         />
 
-        <Route path="/user-engagement" element={(Component = <UserEngagementPage />)} />
-        <Route path="marketing/in-app-campaign" element={(Component = <InAppCampaignPage />)} />
+        <Route
+          path="/user-engagement"
+          element={(Component = <UserEngagementPage />)}
+        />
+        <Route
+          path="marketing/in-app-campaign"
+          element={(Component = <InAppCampaignPage />)}
+        />
 
         <Route
           path="/patient-education/overview"
@@ -65,7 +68,6 @@ export const AppRouter = () => {
           path="/feedback/create-survey-page"
           element={(Component = <CreateSurveyIndex />)}
         />
-
       </Routes>
     </BrowserRouter>
   );

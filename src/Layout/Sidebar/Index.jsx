@@ -46,12 +46,14 @@ function SidebarAdmin() {
       "/admin/user-management": "admin",
       "/marketing/campaign-performance": "marketing",
       "/marketing/patient-acquisition": "marketing",
+      "/marketing/in-app-campaign": "marketing",
       "/marketing/patient-acquisition/patient-detail": "marketing",
       "/dashboard/settings": "",
       "/patient-education/overview": "education",
       "/patient-education/resources": "education",
       "/feedback/create-survey":"feedback",
       "/feedback/create-survey-page":"feedback",
+      "/education-resources/reading-materials": "education",
     };
 
     const currentPath = location.pathname;
@@ -211,7 +213,11 @@ function SidebarAdmin() {
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/marketing/in-app-campaign" className="sub-nav-link">
+                    <Link to="/marketing/in-app-campaign" className={`sub-nav-link ${
+                        location.pathname === "/marketing/in-app-campaign"
+                          ? "active-sub-link"
+                          : ""
+                      }`}>
                       InApp Campaign
                     </Link>
                   </li>

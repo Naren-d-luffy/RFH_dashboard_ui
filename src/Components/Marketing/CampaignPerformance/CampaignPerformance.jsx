@@ -58,7 +58,6 @@ const CampaignPerformance = () => {
   ];
 
 
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => setIsModalOpen(true);

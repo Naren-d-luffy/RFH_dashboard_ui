@@ -3,13 +3,18 @@ import { HiOutlineLightBulb } from "react-icons/hi";
 import { AiOutlinePieChart } from "react-icons/ai";
 import { PiHandTap } from "react-icons/pi";
 import { AiOutlineSound } from "react-icons/ai";
+import { FaArrowUp } from "react-icons/fa6";
 
 const PatientAcquisitionCards = () => {
   const cardsData = [
     {
       title: "Total Campaign",
       value: 20,
-      percentage: "2%",
+      percentage: (
+        <>
+           <FaArrowUp style={{ color: "var(--primary-green)", fontSize: "12px" }} /> {" "}2%
+        </>
+      ),
       description: "Since last week",
       icon: <AiOutlineSound />,
       borderColor: "var(--primary-green)",
