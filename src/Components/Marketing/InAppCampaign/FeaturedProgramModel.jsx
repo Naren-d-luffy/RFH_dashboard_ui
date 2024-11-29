@@ -16,7 +16,7 @@ const modules = {
   ],
 };
 
-const FeaturedPrograms = ({ open, handleCancel }) => (
+const FeaturedProgramModel = ({ open, handleCancel }) => (
   <Modal
     open={open}
     title={<span className="create-campaign-modal-title">Featured programs</span>}
@@ -94,4 +94,4 @@ const FeaturedPrograms = ({ open, handleCancel }) => (
   </Modal>
 );
 
-export default FeaturedPrograms;
+export default FeaturedProgramModel;

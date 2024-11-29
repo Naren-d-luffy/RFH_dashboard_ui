@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { GoPlus } from "react-icons/go";
@@ -10,9 +10,17 @@ import medicines from "../../../Assets/Images/medicines.png";
 import fruits from "../../../Assets/Images/fruits.png";
 import appointment from "../../../Assets/Images/appointment.png";
 import videoImage1 from "../../../Assets/Images/recommendVideo1.png";
-import videoImage2 from "../../../Assets/Images/recommendVideo2.jpeg"
+import videoImage2 from "../../../Assets/Images/recommendVideo2.jpeg";
 import { FaPlay } from "react-icons/fa";
+import UpcomingEvents from "./UpcomingEvents";
+import RecommendedVideo from "./RecommendedVideo";
+import { BsThreeDotsVertical } from "react-icons/bs";
 export const MarketingCategories = () => {
+  const [modals, setModals] = useState({ event: false, video: false });
+
+  const toggleModal = (modalType) =>
+    setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
+
   const items = [
     { label: "Last Day", key: "1" },
     { label: "Last Week", key: "2" },
@@ -56,7 +64,7 @@ export const MarketingCategories = () => {
       authorName: "Ravi Kumar",
       view: "10K",
       time: "1 hour",
-      background:videoImage1
+      background: videoImage1,
     },
     {
       key: 2,
@@ -64,7 +72,7 @@ export const MarketingCategories = () => {
       authorName: "Ravi Kumar",
       view: "10K",
       time: "1 hour",
-      background:videoImage2
+      background: videoImage2,
     },
     {
       key: 3,
@@ -72,13 +80,16 @@ export const MarketingCategories = () => {
       authorName: "Ravi Kumar",
       view: "10K",
       time: "1 hour",
-      background:videoImage1
+      background: videoImage1,
     },
   ];
 
   const renderEventCard = (event) => (
     <div className="col-lg-4">
       <div className="upcoming-event-card p-3" key={event.title}>
+        <div className="action-icon-button">
+        <BsThreeDotsVertical/>
+        </div>
         <div className="d-flex justify-content-center align-items-center mb-3">
           <img src={event.img} alt={event.title} />
         </div>
@@ -91,38 +102,40 @@ export const MarketingCategories = () => {
           <ul>
             <li>{event.department}</li>
           </ul>
-          <button className="edit-event-button">Edit</button>
         </div>
       </div>
     </div>
   );
   const renderRecommendVideo = (video) => (
     <div className="col-lg-4">
-  <div className="recommend-video-card p-3"  style={{
-        backgroundImage: `url(${video.background})`}}>
-            <video
-        className="video-preview"
-        src={video.video}
-        muted
-        loop
-        playsInline
-        preload="metadata"
-      ></video>
-       <div className="play-button-overlay">
-        <FaPlay style={{color:"var(--white-color)"}} />
-      </div>
-    <div>
-      <div className="d-flex justify-content-between mb-2 w-100">
-        <div style={{ position: "absolute", bottom: "0px" }}>
-          <h4>{video.authorName}</h4>
-          <p>{`${video.view} views  | ${video.time} ago`}</p>
+      <div
+        className="recommend-video-card p-3"
+        style={{
+          backgroundImage: `url(${video.background})`,
+        }}
+      >
+        <video
+          className="video-preview"
+          src={video.video}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        ></video>
+        <div className="play-button-overlay">
+          <FaPlay style={{ color: "var(--white-color)" }} />
+        </div>
+        <div>
+          <div className="d-flex justify-content-between mb-2 w-100">
+            <div style={{ position: "absolute", bottom: "0px" }}>
+              <h4>{video.authorName}</h4>
+              <p>{`${video.view} views  | ${video.time} ago`}</p>
+            </div>
+          </div>
+          <button className="edit-video-button">Edit</button>
         </div>
       </div>
-      <button className="edit-video-button">Edit</button>
     </div>
-  </div>
-</div>
-
   );
   const CustomPrevArrow = (props) => {
     const { className, style, onClick } = props;
@@ -209,7 +222,10 @@ export const MarketingCategories = () => {
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Upcoming Events</h6>
-            <button className="rfh-basic-button">
+            <button
+              className="rfh-basic-button"
+              onClick={() => toggleModal("event")}
+            >
               <GoPlus size={20} /> Add Events
             </button>
           </div>
@@ -218,13 +234,20 @@ export const MarketingCategories = () => {
               {eventData.map((event) => renderEventCard(event))}
             </Slider>
           </div>
+          <UpcomingEvents
+            open={modals.event}
+            handleCancel={() => toggleModal("event")}
+          />
         </div>
 
         {/* recommended videos */}
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Recommended Videos</h6>
-            <button className="rfh-basic-button">
+            <button
+              className="rfh-basic-button"
+              onClick={() => toggleModal("video")}
+            >
               <GoPlus size={20} /> Add Video
             </button>
           </div>
@@ -233,6 +256,10 @@ export const MarketingCategories = () => {
               {videoData.map((video) => renderRecommendVideo(video))}
             </Slider>
           </div>
+          <RecommendedVideo
+            open={modals.video}
+            handleCancel={() => toggleModal("video")}
+          />
         </div>
       </div>
     </div>
