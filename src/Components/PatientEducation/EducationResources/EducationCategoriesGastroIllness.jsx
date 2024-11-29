@@ -8,9 +8,9 @@ import AddEventsGastroIllness from "./AddEventsGastroIllness";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import img1 from "../../Assets/Images/img1.png"
-import img2 from "../../Assets/Images/img2.png"
-import img3 from "../../Assets/Images/img3.png"
+import img1 from "../../../Assets/Images/img1.png"
+import img2 from "../../../Assets/Images/img2.png"
+import img3 from "../../../Assets/Images/img3.png"
 
 const EducationCategoriesGastroIllness = () => {
   const navigate = useNavigate();
