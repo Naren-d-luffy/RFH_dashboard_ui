@@ -51,6 +51,8 @@ function SidebarAdmin() {
       "/dashboard/settings": "",
       "/patient-education/overview": "education",
       "/patient-education/resources": "education",
+      "/feedback/create-survey":"feedback",
+      "/feedback/create-survey-page":"feedback",
       "/education-resources/reading-materials": "education",
     };
 
@@ -335,17 +337,24 @@ function SidebarAdmin() {
                     )}
                   </span>
                 </div>
-                {/* <ul
+                <ul
                   className={`sub-menu ${
-                    expandedMenu === "database" ? "active" : ""
+                    expandedMenu === "feedback" ? "active" : ""
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/admin/total-jobs" className="sub-nav-link">
-                      Total Jobs
+                    <Link
+                      to="/feedback/create-survey"
+                      className={`sub-nav-link ${
+                        location.pathname === "/feedback/create-survey"
+                          ? "active-sub-link"
+                          : ""
+                      }`}
+                    >
+                      Create Survey
                     </Link>
                   </li>
-                  <li className="sub-nav-list">
+                  {/* <li className="sub-nav-list">
                     <Link to="/admin/total-applicants" className="sub-nav-link">
                       Total Applicants
                     </Link>
@@ -354,8 +363,8 @@ function SidebarAdmin() {
                     <Link to="/admin/total-clients" className="sub-nav-link">
                       Total Clients
                     </Link>
-                  </li>
-                </ul> */}
+                  </li> */}
+                </ul>
               </li>
               <li>
                 <div
