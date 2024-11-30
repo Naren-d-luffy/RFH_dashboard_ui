@@ -12,10 +12,10 @@ import { IoEllipsisVerticalSharp } from "react-icons/io5";
 const EducationCategoriesReadingMaterials = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showMenu, setShowMenu] = useState(null);  
 
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
-
 
   const imageData = [
     {
@@ -38,11 +38,8 @@ const EducationCategoriesReadingMaterials = () => {
     },
   ];
 
-  const [activeQuestion, setActiveQuestion] = useState(null);
-  const [showMenu, setShowMenu] = useState(null);
-
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
+  const toggleMenu = (id) => {
+    setShowMenu(showMenu === id ? null : id);  
   };
 
   const renderImageCard = (image) => (
@@ -53,25 +50,43 @@ const EducationCategoriesReadingMaterials = () => {
           backgroundImage: `url(${image.image})`,
         }}
       >
-        <div className="d-flex justify-content-between">
+        <div
+          className="education-categories-faq-menu"
+          onClick={(e) => {
+            e.stopPropagation(); 
+            toggleMenu(image.id);
+          }}
+          style={{
+            cursor: "pointer",
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            zIndex: 10,
+          }}
+        >
+          <IoEllipsisVerticalSharp size={20} />
+          {showMenu === image.id && (
+            <div className="education-categories-menu-options" style={{ position: "absolute", top: "25px", right: "0", backgroundColor: "#fff", border: "1px solid #ccc", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", borderRadius: "4px", zIndex: 100, padding: "5px" }}>
+              <button
+                onClick={() => console.log(`Edit ${image.title}`)}  
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => console.log(`Delete ${image.title}`)} 
+              >
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div>
           <div className="d-flex justify-content-between mb-2 w-100">
-            <div style={{ position: "absolute", bottom: "0px" }}>
+            <div style={{ position: "absolute", bottom: "0px", color: "#fff" }}>
               <h4>{image.title}</h4>
               <p>{image.time}</p>
             </div>
-          </div>
-          <div
-            className="education-categories-faq-menu"
-            onClick={toggleMenu}
-            style={{ cursor: "pointer" }}
-          >
-            <IoEllipsisVerticalSharp size={20} />
-            {showMenu && (
-              <div className="education-categories-menu-options">
-                <button>Edit</button>
-                <button>Delete</button>
-              </div>
-            )}
           </div>
         </div>
       </div>
