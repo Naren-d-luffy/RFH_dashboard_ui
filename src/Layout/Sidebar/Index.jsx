@@ -59,6 +59,9 @@ function SidebarAdmin() {
       "/feedback/patient-surveys":"feedback",
       "/feedback/view-feedback":"feedback",
       "/feedback/negative-feedback":"feedback",
+      "/teleconsultation/appointment-status": "teleconsultation",
+      "/teleconsultation/appointment-feedback": "teleconsultation",
+      "/teleconsultation/virtual-management": "teleconsultation",
     };
 
     const currentPath = location.pathname;
@@ -305,22 +308,40 @@ function SidebarAdmin() {
                     )}
                   </span>
                 </div>
-                {/* <ul
+                <ul
                   className={`sub-menu ${
-                    expandedMenu === "clients" ? "active" : ""
+                    expandedMenu === "teleconsultation" ? "active" : ""
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/admin/add-new-client" className="sub-nav-link">
-                      Add New Client
+
+                    <Link to="/teleconsultation/virtual-management" className={`sub-nav-link ${
+                        location.pathname === "/teleconsultation/virtual-management"
+                          ? "active-sub-link"
+                          : ""
+                      }`}>
+                      Virtual Management
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/admin/top-clients" className="sub-nav-link">
-                      Top Client
+                    <Link to="/teleconsultation/appointment-status"  className={`sub-nav-link ${
+                        location.pathname === "/teleconsultation/appointment-status"
+                          ? "active-sub-link"
+                          : ""
+                      }`}>
+                      Appointment Status
                     </Link>
                   </li>
-                </ul> */}
+                  <li className="sub-nav-list">
+                    <Link to="/"  className={`sub-nav-link ${
+                        location.pathname === "/"
+                          ? "active-sub-link"
+                          : ""
+                      }`}>
+                      Technical Support
+                    </Link>
+                  </li>
+                </ul>
               </li>
 
               <li>

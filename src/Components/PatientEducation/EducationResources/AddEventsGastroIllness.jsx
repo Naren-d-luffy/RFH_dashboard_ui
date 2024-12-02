@@ -5,7 +5,6 @@ import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 
-
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -40,7 +39,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => (
     ]}
   >
     <Form layout="vertical" className="mt-4">
-    <Form.Item label="Brand logo">
+      <Form.Item label="Brand logo">
         <Upload listType="picture" className="create-campaign-upload">
           <p className="create-campaign-ant-upload-text">
             Drop files here or click to upload

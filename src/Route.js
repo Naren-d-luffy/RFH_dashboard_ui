@@ -17,6 +17,11 @@ import SurveyPopulatedData from "./Pages/Feedback/SurveyPopulatedData";
 import PatientSurveys from "./Pages/Feedback/PatientSurveys";
 import ViewFeedbackIndex from "./Pages/Feedback/ViewFeedbackIndex";
 import UserNegativeFeedbackPage from "./Pages/Feedback/UserNegativeFeedbackPage";
+import AppointmentStatusPage from "./Pages/Teleconsultation/AppointmentStatus";
+import AppointmentFeedbackPage from "./Pages/Teleconsultation/AppoinmentFeedback";
+import VirtualManagementPage from "./Pages/Teleconsultation/VirtualManagement";
+import DoctorDetailPage from "./Pages/Teleconsultation/DoctorDetailPage";
+import ViewDoctorDetailPage from "./Pages/Teleconsultation/ViewDoctorDetailPage";
 
 export const AppRouter = () => {
   return (
@@ -92,6 +97,28 @@ export const AppRouter = () => {
         <Route
           path="/feedback/negative-feedback"
           element={(Component = <UserNegativeFeedbackPage />)}
+                  />
+        <Route
+
+          path="/teleconsultation/appointment-status"
+          element={(Component = <AppointmentStatusPage />)}
+        />
+        <Route
+          path="/teleconsultation/appointment-feedback"
+          element={(Component = <AppointmentFeedbackPage />)}
+        />
+   <Route
+
+          path="/teleconsultation/virtual-management"
+          element={(Component = <VirtualManagementPage />)}
+        />
+        <Route
+          path="/teleconsultation/doctor-detail"
+          element={(Component = <DoctorDetailPage />)}
+        />
+        <Route
+          path="/teleconsultation/view-doctor-detail"
+          element={(Component = <ViewDoctorDetailPage />)}
         />
       </Routes>
     </BrowserRouter>
