@@ -12,6 +12,11 @@ import EducationOverviewPage from "./Pages/PatientEducation/EducationOverviewPag
 import EducationResourcesPage from "./Pages/PatientEducation/EducationResourcesPage";
 import FeedbackCreateSurvey from "./Pages/Feedback/FeedbackCreateSurvey";
 import CreateSurveyIndex from "./Pages/Feedback/CreateSurveyIndex";
+import SingleSurvey from "./Pages/Feedback/SingleSurvey";
+import SurveyPopulatedData from "./Pages/Feedback/SurveyPopulatedData";
+import PatientSurveys from "./Pages/Feedback/PatientSurveys";
+import ViewFeedbackIndex from "./Pages/Feedback/ViewFeedbackIndex";
+import UserNegativeFeedbackPage from "./Pages/Feedback/UserNegativeFeedbackPage";
 import AppointmentStatusPage from "./Pages/Teleconsultation/AppointmentStatus";
 import AppointmentFeedbackPage from "./Pages/Teleconsultation/AppoinmentFeedback";
 import VirtualManagementPage from "./Pages/Teleconsultation/VirtualManagement";
@@ -74,6 +79,27 @@ export const AppRouter = () => {
           element={(Component = <CreateSurveyIndex />)}
         />
         <Route
+          path="/feedback/create-survey/single-survey-details"
+          element={(Component = <SingleSurvey />)}
+        />
+        <Route
+          path="/feedback/create-survey/populated-survey-data"
+          element={(Component = <SurveyPopulatedData />)}
+        />
+        <Route
+          path="/feedback/patient-surveys"
+          element={(Component = <PatientSurveys />)}
+        />
+        <Route
+          path="/feedback/view-feedback"
+          element={(Component = <ViewFeedbackIndex />)}
+        />
+        <Route
+          path="/feedback/negative-feedback"
+          element={(Component = <UserNegativeFeedbackPage />)}
+                  />
+        <Route
+
           path="/teleconsultation/appointment-status"
           element={(Component = <AppointmentStatusPage />)}
         />

@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
-import { PiSmileySadFill } from 'react-icons/pi';
+import { FaArrowDown, FaUsers } from 'react-icons/fa6';
+import { PiExport, PiSmileySadFill } from 'react-icons/pi';
+import { FaChartLine, FaShoppingCart, FaDollarSign } from 'react-icons/fa6';
 import total_survey_icon from '../../../Assets/Icons/total_survey_icon.png'
+import { Button, Modal } from 'antd';
 import { GoPlus } from 'react-icons/go';
 import { BsFillEmojiSmileFill } from 'react-icons/bs';
+import CreateSurveyPage from './CreateSurveyPage';
 import { useNavigate } from 'react-router-dom';
 
-export const FeedbackCreateSurveyCard = () => {
-    const [isModalVisible, setIsModalVisible] = useState(false);
+const SingleSurveyCards = () => {
     const navigate = useNavigate()
-
-    const handleClick = () => {
-        navigate("/feedback/create-survey-page")
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
 
     const cardData = [
         {
@@ -52,18 +47,11 @@ export const FeedbackCreateSurveyCard = () => {
             boxShadowColor: '#7EC2FF',
         },
     ];
-
     return (
         <div className="">
             <div className="d-flex justify-content-between align-items-center">
                 <div className='user-engagement-header'>
                     <h3>Survey List</h3>
-                </div>
-                <div className="d-flex align-items-center gap-3">
-                    <button className="d-flex gap-2 align-items-center rfh-basic-button" onClick={handleClick}>
-                        <GoPlus />
-                        Create Surveys
-                    </button>
                 </div>
             </div>
             <div className="row mt-1">
@@ -96,9 +84,6 @@ export const FeedbackCreateSurveyCard = () => {
                                     className={`userAquisition-card-body-span ${card.changeType === 'up' ? 'text-success' : 'text-danger'
                                         }`}
                                 >
-                                    {/* <FaArrowDown
-                    className={card.changeType === 'up' ? 'rotate-180' : ''}
-                  /> */}
                                     {<> {card.percentage} </>}
                                 </span>{' '}
                                 {card.description}
@@ -107,10 +92,9 @@ export const FeedbackCreateSurveyCard = () => {
                     </div>
                 ))}
             </div>
-            {/* <CreateSurveyPage
-                visible={isModalVisible}
-                onClose={handleCancel}
-            /> */}
+            
         </div>
-    );
-};
+    )
+}
+
+export default SingleSurveyCards
