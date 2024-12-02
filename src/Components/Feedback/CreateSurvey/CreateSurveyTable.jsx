@@ -1,34 +1,31 @@
 import React, { useState } from "react";
-import { Table, Dropdown, Button, Space, } from "antd";
+import { Table, Dropdown, Button, Space, Input, } from "antd";
 import { FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-
 import { BiSortAlt2 } from "react-icons/bi";
 import { LuFilter } from "react-icons/lu";
 import { FeedbackCreateSurveyCard } from "./FeedbackCreateSurveyCard";
 import { FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png"
 import CreateSurveyPage from "./CreateSurveyPage";
+import { useNavigate } from "react-router-dom";
 
 
 const CreateSurveyTable = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isViewModalVisible, setIsViewModalVisible] = useState(false);
+    const navigate = useNavigate()
 
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-    const showViewModal = () => {
-        setIsViewModalVisible(true);
+    const showModal = () => {
+        setIsModalVisible(true);
     };
 
-    const handleViewModalClose = () => {
-        setIsViewModalVisible(false);
+    const handleCancel = () => {
+        setIsModalVisible(false);
     };
+    const handleClick = () => {
+        navigate("/feedback/create-survey/single-survey-details")
+    }
 
     const columns = [
         {
@@ -88,7 +85,7 @@ const CreateSurveyTable = () => {
             key: "action",
             render: () => (
                 <div className="campaign-performance-table-action-icons">
-                    <div className="campaign-performance-table-eye-icon" onClick={showViewModal}>
+                    <div className="campaign-performance-table-eye-icon" onClick={handleClick}>
                         <FiEye />
                     </div>
                     <div className="campaign-performance-table-delete-icon" >
@@ -164,7 +161,7 @@ const CreateSurveyTable = () => {
     };
 
     return (
-        <div className="container mt-4">
+        <div className="container mt-1">
             {data.length > 0 ? (
                 <>
                     <FeedbackCreateSurveyCard />
@@ -176,13 +173,13 @@ const CreateSurveyTable = () => {
                                 <div
                                     className="d-flex align-items-center px-3"
                                     style={{
-                                        border: "1px solid #ccc",
+                                        border: "1px solid var(--border-color)",
                                         borderRadius: "8px",
                                         height: "33px",
                                     }}
                                 >
                                     <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-                                    <input
+                                    <Input
                                         type="text"
                                         placeholder="Search anything here"
                                         style={{
@@ -203,7 +200,7 @@ const CreateSurveyTable = () => {
                                 <Dropdown menu={menuProps}>
                                     <Button>
                                         <Space>
-                                            Filter By
+                                            Filter 
                                             <LuFilter />
                                         </Space>
                                     </Button>

@@ -1,4 +1,4 @@
-import { Button, Checkbox, Divider, Form, Input, Modal, Popover } from 'antd'
+import { Button, Checkbox, Divider, Form, Input, Modal, Popover, Rate, Upload } from 'antd'
 import React, { useState } from 'react'
 import { FaTimes } from 'react-icons/fa';
 import { FaPlus, FaRegCircleCheck, FaRegStar } from 'react-icons/fa6'
@@ -7,7 +7,7 @@ import { LuWrapText } from 'react-icons/lu';
 import { MdFormatListBulleted, MdOutlineShortText } from 'react-icons/md';
 import { TbCalendarMonth, TbClockHour5 } from 'react-icons/tb';
 import { VscCloudUpload } from 'react-icons/vsc';
-import { CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 
 
 
@@ -19,14 +19,14 @@ const CreateSurveyPage = ({ onClose, visible }) => {
     const [questions, setQuestions] = useState([]);
     const content = (
         <div>
-            <div className='createSurvey-form-icon-div'><MdFormatListBulleted onClick={() => addQuestion("paragraph")}/>      </div>
-            <div className='createSurvey-form-icon-div'><FaRegCircleCheck onClick={() => addQuestion("checkbox")}/>        </div>
-            <div className='createSurvey-form-icon-div'><VscCloudUpload  onClick={() => addQuestion("upload")}/>      </div>
-            <div className='createSurvey-form-icon-div'><FaRegStar  onClick={() => addQuestion("rating")}/>      </div>
-            <div className='createSurvey-form-icon-div'><MdOutlineShortText onClick={() => addQuestion("shortAnswer")}/>      </div>
-            <div className='createSurvey-form-icon-div'><IoIosArrowDropdown onClick={() => addQuestion("dropdown")}/>        </div>
+            <div className='createSurvey-form-icon-div'><MdFormatListBulleted onClick={() => addQuestion("paragraph")} />      </div>
+            <div className='createSurvey-form-icon-div'><FaRegCircleCheck onClick={() => addQuestion("checkbox")} />        </div>
+            <div className='createSurvey-form-icon-div'><VscCloudUpload onClick={() => addQuestion("upload")} />      </div>
+            <div className='createSurvey-form-icon-div'><FaRegStar onClick={() => addQuestion("rating")} />      </div>
+            <div className='createSurvey-form-icon-div'><MdOutlineShortText onClick={() => addQuestion("shortAnswer")} />      </div>
+            <div className='createSurvey-form-icon-div'><IoIosArrowDropdown onClick={() => addQuestion("dropdown")} />        </div>
             <div className='createSurvey-form-icon-div'><LuWrapText />      </div>
-            <div className='createSurvey-form-icon-div'><IoIosKeypad onClick={() => addQuestion("multipleChoice")}/>
+            <div className='createSurvey-form-icon-div'><IoIosKeypad onClick={() => addQuestion("multipleChoice")} />
             </div>
         </div>
     );
@@ -103,11 +103,20 @@ const CreateSurveyPage = ({ onClose, visible }) => {
             case "paragraph":
                 return <Input.TextArea placeholder="User's long answer..." className="create-survey-inputs" />;
             case "checkbox":
-                return <Input placeholder="Checkbox option..." className="create-survey-inputs" />;
+                return (
+                    <div className="d-flex align-items-center">
+                        <Checkbox style={{ marginRight: "8px" }} />
+                        <Input placeholder="Checkbox option..." className="create-survey-inputs" />
+                    </div>
+                );
             case "upload":
-                return <Input placeholder="File upload option..." disabled />;
+                return (
+                    <Upload>
+                        <Button icon={<PlusOutlined />}>Upload</Button>
+                    </Upload>
+                );
             case "rating":
-                return <Input placeholder="Rating option..." disabled />;
+                return <Rate allowHalf />;
             default:
                 return <Input placeholder="Type here..." className="create-survey-inputs" />;
         }
@@ -117,85 +126,91 @@ const CreateSurveyPage = ({ onClose, visible }) => {
             <div className='user-engagement-header'>
                 <h3>Create Survey </h3>
             </div>
-            <div className='row createSurvey-page-div '>
-                <div className='col-lg-12 createSurvey-banner-div'>
-                    <h2>Welcome</h2>
-                    <p>We'd like to ask you for some additional information</p>
-                </div>
-            </div>
-            <Form layout='vertical'>
-                <div className='row createSurvey-page-div mt-3'>
-                    <div className="col-lg-6">
-                        <Form.Item
-                            label="Name"
-                            name="address"
-                            className="mb-0"
-                        >
-                            <Input
-                                placeholder="Type here"
-                                className="createSurvey-page-div-input"
-                            />
-                        </Form.Item>
-                        <Divider className='mt-0' />
-                    </div>
-                    <div className="col-lg-6">
-                        <Form.Item
-                            label="Date of birth"
-                            name="address"
-                            className="mb-0"
-                        >
-                            <Input
-                                placeholder="Type here"
-                                className="createSurvey-page-div-input"
-                            />
-                        </Form.Item>
-                        <Divider className='mt-0' />
+            <div className='createSurvey-page-div'>
+                <div className='row  '>
+                    <div className='col-lg-12 createSurvey-banner-div'>
+                        <h2>Welcome</h2>
+                        <p>We'd like to ask you for some additional information</p>
                     </div>
                 </div>
-
-                {questions?.map((question, index) => (
-                    <div key={question.id} className="row mb-3 align-items-center">
-                        <div className="col-lg-12">
-                            <Form.Item label={`Question ${index + 1}`}>
+                <Form layout='vertical'>
+                    <div className='row createSurvey-page-name-div mt-3'>
+                        <div className="col-lg-6">
+                            <Form.Item
+                                label="Name"
+                                name="address"
+                                className="mb-0"
+                            >
                                 <Input
-                                    placeholder="Type your question here..."
-                                    value={question.label}
-                                    onChange={(e) => handleQuestionChange(question.id, e.target.value)}
-                                    className="create-survey-inputs"
+                                    placeholder="Type here"
+                                    className="createSurvey-page-div-input"
                                 />
                             </Form.Item>
+                            <Divider className='mt-0' />
                         </div>
-                        <div className="col-lg-11">
-                            {renderQuestionInput(question)}
-                        </div>
-                        <div className="col-lg-1 text-right">
-                            <Button
-                                type="text"
-                                icon={<CloseOutlined />}
-                                onClick={() => removeQuestion(question.id)}
-                            />
+                        <div className="col-lg-6">
+                            <Form.Item
+                                label="Date of birth"
+                                name="address"
+                                className="mb-0"
+                            >
+                                <Input
+                                    placeholder="Type here"
+                                    className="createSurvey-page-div-input"
+                                />
+                            </Form.Item>
+                            <Divider className='mt-0' />
                         </div>
                     </div>
-                ))}
-                <div className='d-flex justify-content-end mt-3'>
-                    <Popover
-                        content={content}
-                        title=""
-                        trigger="click"
-                        overlayClassName="create-survey-popover"
-                        visible={isPopoverOpen}
-                        onVisibleChange={handlePopoverVisibleChange}>
-                        <button className="createSurvey-addForms-button">
-                            {isPopoverOpen ? (
-                                <FaTimes style={{ fontSize: "25px" }} />
-                            ) : (
-                                <FaPlus style={{ fontSize: "25px" }} />
-                            )}
-                        </button>
-                    </Popover>
-                </div>
 
-            </Form>
+                    {questions?.map((question, index) => (
+                        <div key={question.id} className="row mb-3 align-items-center">
+                            <div className="col-lg-12">
+                                <Form.Item label={`Question ${index + 1}`}>
+                                    <Input
+                                        placeholder="Type your question here..."
+                                        value={question.label}
+                                        onChange={(e) => handleQuestionChange(question.id, e.target.value)}
+                                        className="create-survey-inputs"
+                                    />
+                                </Form.Item>
+                            </div>
+                            <div className="col-lg-11">
+                                {renderQuestionInput(question)}
+                            </div>
+                            <div className="col-lg-1 text-right">
+                                <button className='CreateSurvey-form-close-button' onClick={() => removeQuestion(question.id)}>
+                                    <CloseOutlined />
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                    <div className='d-flex justify-content-end mt-3'>
+                        <Popover
+                            content={content}
+                            title=""
+                            trigger="click"
+                            overlayClassName="create-survey-popover"
+                            visible={isPopoverOpen}
+                            onVisibleChange={handlePopoverVisibleChange}>
+                            <button className="createSurvey-addForms-button">
+                                {isPopoverOpen ? (
+                                    <FaTimes style={{ fontSize: "25px" }} />
+                                ) : (
+                                    <FaPlus style={{ fontSize: "25px" }} />
+                                )}
+                            </button>
+                        </Popover>
+                    </div>
+                    <div className='d-flex justify-content-end mt-4'>
+                        <button className='export-button'>
+                            Send
+                        </button>
+                    </div>
+
+                </Form>
+            </div>
+
         </div>
     )
 }
