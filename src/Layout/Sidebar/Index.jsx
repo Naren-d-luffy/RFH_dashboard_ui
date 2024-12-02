@@ -54,6 +54,7 @@ function SidebarAdmin() {
       "/feedback/create-survey":"feedback",
       "/feedback/create-survey-page":"feedback",
       "/education-resources/reading-materials": "education",
+      "/teleconsultation/appointment-status": "teleconsultation",
     };
 
     const currentPath = location.pathname;
@@ -300,22 +301,39 @@ function SidebarAdmin() {
                     )}
                   </span>
                 </div>
-                {/* <ul
+                <ul
                   className={`sub-menu ${
-                    expandedMenu === "clients" ? "active" : ""
+                    expandedMenu === "teleconsultation" ? "active" : ""
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/admin/add-new-client" className="sub-nav-link">
-                      Add New Client
+                    <Link to="/teleconsultation/appointment-status" className={`sub-nav-link ${
+                        location.pathname === "/teleconsultation/appointment-status"
+                          ? "active-sub-link"
+                          : ""
+                      }`}>
+                      Virtual Management
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/admin/top-clients" className="sub-nav-link">
-                      Top Client
+                    <Link to="/"  className={`sub-nav-link ${
+                        location.pathname === "/"
+                          ? "active-sub-link"
+                          : ""
+                      }`}>
+                      Appointment Status
                     </Link>
                   </li>
-                </ul> */}
+                  <li className="sub-nav-list">
+                    <Link to="/"  className={`sub-nav-link ${
+                        location.pathname === "/"
+                          ? "active-sub-link"
+                          : ""
+                      }`}>
+                      Technical Support
+                    </Link>
+                  </li>
+                </ul>
               </li>
 
               <li>
