@@ -14,6 +14,9 @@ import FeedbackCreateSurvey from "./Pages/Feedback/FeedbackCreateSurvey";
 import CreateSurveyIndex from "./Pages/Feedback/CreateSurveyIndex";
 import AppointmentStatusPage from "./Pages/Teleconsultation/AppointmentStatus";
 import AppointmentFeedbackPage from "./Pages/Teleconsultation/AppoinmentFeedback";
+import VirtualManagementPage from "./Pages/Teleconsultation/VirtualManagement";
+import DoctorDetailPage from "./Pages/Teleconsultation/DoctorDetailPage";
+import ViewDoctorDetailPage from "./Pages/Teleconsultation/ViewDoctorDetailPage";
 
 export const AppRouter = () => {
   return (
@@ -78,7 +81,19 @@ export const AppRouter = () => {
           path="/teleconsultation/appointment-feedback"
           element={(Component = <AppointmentFeedbackPage />)}
         />
+   <Route
 
+          path="/teleconsultation/virtual-management"
+          element={(Component = <VirtualManagementPage />)}
+        />
+        <Route
+          path="/teleconsultation/doctor-detail"
+          element={(Component = <DoctorDetailPage />)}
+        />
+        <Route
+          path="/teleconsultation/view-doctor-detail"
+          element={(Component = <ViewDoctorDetailPage />)}
+        />
       </Routes>
     </BrowserRouter>
   );

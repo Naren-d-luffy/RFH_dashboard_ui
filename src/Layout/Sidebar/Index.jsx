@@ -56,6 +56,7 @@ function SidebarAdmin() {
       "/education-resources/reading-materials": "education",
       "/teleconsultation/appointment-status": "teleconsultation",
       "/teleconsultation/appointment-feedback": "teleconsultation",
+      "/teleconsultation/virtual-management": "teleconsultation",
     };
 
     const currentPath = location.pathname;
@@ -308,8 +309,9 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/" className={`sub-nav-link ${
-                        location.pathname === "/"
+
+                    <Link to="/teleconsultation/virtual-management" className={`sub-nav-link ${
+                        location.pathname === "/teleconsultation/virtual-management"
                           ? "active-sub-link"
                           : ""
                       }`}>

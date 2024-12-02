@@ -2,40 +2,45 @@ import React from "react";
 import { Table, Dropdown, Button, Space, Input } from "antd";
 import { FiSearch, FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import { GoPlus } from "react-icons/go";
+import image from "../../../Assets/Images/image.png";
 
-const PatientAcquisitionTable = () => {
-  const navigate = useNavigate(); 
+const VirtualManagementTable = () => {
+  const navigate = useNavigate();
 
   const columns = [
     {
-      title: "Patient ID",
-      dataIndex: "patientId",
-      key: "patientId",
+      title: "Doctor ID",
+      dataIndex: "doctorId",
+      key: "doctorId",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Patient Name",
-      dataIndex: "patientName",
-      key: "patientName",
+      title: "Doctor Name",
+      dataIndex: "doctorName",
+      key: "doctorName",
+      render: (text, record) => (
+        <div className="d-flex align-items-center gap-2">
+          <img
+            src={image}
+            alt="Doctor"
+            style={{
+              width: "30px",
+              height: "30px",
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
+          />
+          <span>{text}</span>
+        </div>
+      ),
       className: "campaign-performance-table-column",
     },
     {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
-      className: "campaign-performance-table-column",
-    },
-    {
-      title: "Consult type",
-      dataIndex: "consultType",
-      key: "consultType",
-      className: "campaign-performance-table-column",
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
+      title: "Specialization",
+      dataIndex: "specialization",
+      key: "specialization",
       className: "campaign-performance-table-column",
     },
     {
@@ -45,9 +50,15 @@ const PatientAcquisitionTable = () => {
       className: "campaign-performance-table-column",
     },
     {
-      title: "Last Visit",
-      dataIndex: "lastVisit",
-      key: "lastVisit",
+      title: "Appointment Completed",
+      dataIndex: "appointments",
+      key: "appointments",
+      className: "campaign-performance-table-column",
+    },
+    {
+      title: "Ratings",
+      dataIndex: "ratings",
+      key: "ratings",
       className: "campaign-performance-table-column",
     },
     {
@@ -56,25 +67,18 @@ const PatientAcquisitionTable = () => {
       key: "status",
       render: (status) => {
         const color = status === "Active" ? "green" : "red";
-        return (
-          <span
-            className="campaign-performance-table-status"
-            style={{ color, fontWeight: "bold" }}
-          >
-            {status}
-          </span>
-        );
+        return <span style={{ color, fontWeight: "bold" }}>{status}</span>;
       },
       className: "campaign-performance-table-column",
     },
     {
       title: "Action",
       key: "action",
-      render: (record) => (
+      render: () => (
         <div className="campaign-performance-table-action-icons">
           <div
             className="campaign-performance-table-eye-icon"
-            onClick={() => navigate(`/marketing/patient-acquisition/patient-detail`)}
+            onClick={() => navigate(`/teleconsultation/view-doctor-detail`)}
             style={{ cursor: "pointer" }}
           >
             <FiEye />
@@ -94,57 +98,52 @@ const PatientAcquisitionTable = () => {
   const data = [
     {
       key: "1",
-      patientId: "1001",
-      patientName: "Saikiran K",
-      date: "22-11-2024",
-      consultType: "Online",
-      age: "22",
+      doctorId: "1001",
+      doctorName: "Saikiran K",
+      specialization: "Cardiology",
       gender: "Male",
-      lastVisit: "22-10-2024",
+      appointments: "300",
+      ratings: "4.6/5",
       status: "Active",
     },
     {
       key: "2",
-      patientId: "390",
-      patientName: "Chandan P",
-      date: "22-11-2024",
-      consultType: "Offline",
-      age: "44",
+      doctorId: "390",
+      doctorName: "Chandan P",
+      specialization: "General Medicine",
       gender: "Male",
-      lastVisit: "09-10-2024",
+      appointments: "200",
+      ratings: "4.8/5",
       status: "Inactive",
     },
     {
       key: "3",
-      patientId: "250",
-      patientName: "Harish D",
-      date: "22-11-2024",
-      consultType: "Online",
-      age: "32",
+      doctorId: "250",
+      doctorName: "Shravya V",
+      specialization: "Gastric",
       gender: "Male",
-      lastVisit: "02-10-2024",
+      appointments: "178",
+      ratings: "4.3/5",
       status: "Active",
     },
     {
       key: "4",
-      patientId: "100",
-      patientName: "Shravya V",
-      date: "22-11-2024",
-      consultType: "Offline",
-      age: "26",
+      doctorId: "100",
+      doctorName: "Harish D",
+      specialization: "Gastric",
       gender: "Female",
-      lastVisit: "09-09-2024",
+      appointments: "342",
+      ratings: "4.4/5",
       status: "Active",
     },
     {
       key: "5",
-      patientId: "50",
-      patientName: "Mahesh G",
-      date: "22-11-2024",
-      consultType: "Offline",
-      age: "28",
+      doctorId: "50",
+      doctorName: "Mahesh G",
+      specialization: "Gastric",
       gender: "Male",
-      lastVisit: "22-08-2024",
+      appointments: "123",
+      ratings: "4.8/5",
       status: "Active",
     },
   ];
@@ -156,17 +155,17 @@ const PatientAcquisitionTable = () => {
   ];
 
   const handleMenuClick = ({ key }) => {};
-  
+
   const menuProps = {
     items,
     onClick: handleMenuClick,
   };
 
   return (
-    <div className="container mt-4">
+    <div className=" mt-4">
       <div className="campaign-performance-table-head">
         <div className="d-flex justify-content-between align-items-center">
-          <h6>All Patient Table</h6>
+          <h6>Doctor List</h6>
           <div className="d-flex gap-3 align-items-center">
             <div
               className="d-flex align-items-center px-3"
@@ -194,6 +193,17 @@ const PatientAcquisitionTable = () => {
                 </Space>
               </Button>
             </Dropdown>
+
+            <div>
+              <button
+                className="rfh-basic-button"
+                onClick={() =>
+                  navigate(`/teleconsultation/doctor-detail`)
+                }
+              >
+                <GoPlus size={20} /> Add Doctor
+              </button>
+            </div>
           </div>
         </div>
         <div className="mt-3">
@@ -210,5 +220,4 @@ const PatientAcquisitionTable = () => {
   );
 };
 
-export default PatientAcquisitionTable;
-
+export default VirtualManagementTable;
