@@ -1,24 +1,21 @@
-import React, { useState } from "react";
-import { GoPlus } from "react-icons/go";
-import { HiOutlineLightBulb } from "react-icons/hi";
+import React from "react";
 import { AiOutlinePieChart } from "react-icons/ai";
-import { PiHandTap } from "react-icons/pi";
 import { AiOutlineSound } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
-import CreateCampaign from "./CreateCampaign";
 import { FaArrowUp } from "react-icons/fa";
-import clickicon from "../../../Assets/Icons/click-icon.png"
-import handIcon from "../../../Assets/Icons/handIcon.png"
+import clickicon from "../../../Assets/Icons/click-icon.png";
+import handIcon from "../../../Assets/Icons/handIcon.png";
 
-
-const CampaignPerformance = () => {
+const VirtualManagementCards = () => {
   const cardsData = [
     {
-      title: "Total Campaign",
-      value: 20,
+      title: "Total Appointment",
+      value: "2,898",
       percentage: (
         <>
-           <FaArrowUp style={{ color: "var(--primary-green)", fontSize: "12px" }} /> {" "}2%
+          <FaArrowUp
+            style={{ color: "var(--primary-green)", fontSize: "12px" }}
+          />{" "}
+          2%
         </>
       ),
       description: "Since last week",
@@ -28,8 +25,8 @@ const CampaignPerformance = () => {
       iconBackground: "#dffaf0",
     },
     {
-      title: "Total Reach",
-      value: "22,500",
+      title: "Completed Appointment",
+      value: "2,789",
       percentage: "340",
       description: "Users",
       icon: <img src={clickicon} alt="Click Icon" style={{ width: "20px" }} />,
@@ -38,8 +35,8 @@ const CampaignPerformance = () => {
       iconBackground: "#e8f6ff",
     },
     {
-      title: "Engagement Rate",
-      value: "15%",
+      title: "Canceled Appointment",
+      value: "109",
       percentage: "+165",
       description: "New",
       icon: <img src={handIcon} alt="Click Icon" style={{ width: "15px" }} />,
@@ -48,8 +45,8 @@ const CampaignPerformance = () => {
       iconBackground: "#FFF4DB",
     },
     {
-      title: "Conversion Rate",
-      value: "5%",
+      title: "Conversion rate",
+      value: "50%",
       percentage: "+340",
       description: "New",
       icon: <AiOutlinePieChart />,
@@ -59,23 +56,12 @@ const CampaignPerformance = () => {
     },
   ];
 
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const showModal = () => setIsModalOpen(true);
-  const handleCancel = () => setIsModalOpen(false);
-
   return (
-    <div className="container">
+    <div className="">
       <div className="d-flex mt-4 justify-content-between campaign-performance-head">
         <div>
-          <h3>Marketing Overview</h3>
-          <p>There is the latest update for the last 7 days. Check now.</p>
-        </div>
-        <div>
-          <button className="rfh-basic-button" onClick={showModal}>
-            <GoPlus size={20} /> Create Campaign
-          </button>
+          <h3>Virtual Appointment Management</h3>
+          <p>there is the latest update for the last 7 days. check now</p>
         </div>
       </div>
 
@@ -111,9 +97,8 @@ const CampaignPerformance = () => {
           </div>
         ))}
       </div>
-       <CreateCampaign open={isModalOpen} handleCancel={handleCancel} />
     </div>
   );
 };
 
-export default CampaignPerformance;
+export default VirtualManagementCards;
