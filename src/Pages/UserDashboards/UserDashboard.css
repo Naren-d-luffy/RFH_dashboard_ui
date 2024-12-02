@@ -43,7 +43,7 @@
   letter-spacing: -2%;
 }
 
-.userAquisition-card h2 {
+.userAquisition-card h2, .campaign-performance-table-head h2{
   font-size: 24px;
   color: var(--black-color);
   font-weight: 600;
