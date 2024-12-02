@@ -13,6 +13,7 @@ import EducationResourcesPage from "./Pages/PatientEducation/EducationResourcesP
 import FeedbackCreateSurvey from "./Pages/Feedback/FeedbackCreateSurvey";
 import CreateSurveyIndex from "./Pages/Feedback/CreateSurveyIndex";
 import AppointmentStatusPage from "./Pages/Teleconsultation/AppointmentStatus";
+import AppointmentFeedbackPage from "./Pages/Teleconsultation/AppoinmentFeedback";
 
 export const AppRouter = () => {
   return (
@@ -69,10 +70,15 @@ export const AppRouter = () => {
           path="/feedback/create-survey-page"
           element={(Component = <CreateSurveyIndex />)}
         />
-          <Route
+        <Route
           path="/teleconsultation/appointment-status"
           element={(Component = <AppointmentStatusPage />)}
         />
+        <Route
+          path="/teleconsultation/appointment-feedback"
+          element={(Component = <AppointmentFeedbackPage />)}
+        />
+
       </Routes>
     </BrowserRouter>
   );

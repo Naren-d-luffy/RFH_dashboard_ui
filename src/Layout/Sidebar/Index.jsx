@@ -55,6 +55,7 @@ function SidebarAdmin() {
       "/feedback/create-survey-page":"feedback",
       "/education-resources/reading-materials": "education",
       "/teleconsultation/appointment-status": "teleconsultation",
+      "/teleconsultation/appointment-feedback": "teleconsultation",
     };
 
     const currentPath = location.pathname;
@@ -307,8 +308,8 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/teleconsultation/appointment-status" className={`sub-nav-link ${
-                        location.pathname === "/teleconsultation/appointment-status"
+                    <Link to="/" className={`sub-nav-link ${
+                        location.pathname === "/"
                           ? "active-sub-link"
                           : ""
                       }`}>
@@ -316,8 +317,8 @@ function SidebarAdmin() {
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/"  className={`sub-nav-link ${
-                        location.pathname === "/"
+                    <Link to="/teleconsultation/appointment-status"  className={`sub-nav-link ${
+                        location.pathname === "/teleconsultation/appointment-status"
                           ? "active-sub-link"
                           : ""
                       }`}>
