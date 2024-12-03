@@ -51,18 +51,18 @@ function SidebarAdmin() {
       "/dashboard/settings": "",
       "/patient-education/overview": "education",
       "/patient-education/resources": "education",
-      "/feedback/create-survey":"feedback",
-      "/feedback/create-survey-page":"feedback",
+      "/feedback/create-survey": "feedback",
+      "/feedback/create-survey-page": "feedback",
       "/education-resources/reading-materials": "education",
-      "/feedback/create-survey/single-survey-details":"feedback",
-      "/feedback/create-survey/populated-survey-data":"feedback",
-      "/feedback/patient-surveys":"feedback",
-      "/feedback/view-feedback":"feedback",
-      "/feedback/negative-feedback":"feedback",
+      "/feedback/create-survey/single-survey-details": "feedback",
+      "/feedback/create-survey/populated-survey-data": "feedback",
+      "/feedback/patient-surveys": "feedback",
+      "/feedback/view-feedback": "feedback",
+      "/feedback/negative-feedback": "feedback",
       "/teleconsultation/appointment-status": "teleconsultation",
-      "/operational/appointment-reports":"operational",
-      "/operational/service-utilization":"operational",
-      "/operational/financial-performance":"operational",
+      "/operational/appointment-reports": "operational",
+      "/operational/service-utilization": "operational",
+      "/operational/financial-performance": "operational",
       "/teleconsultation/appointment-feedback": "teleconsultation",
       "/teleconsultation/virtual-management": "teleconsultation",
     };
@@ -90,7 +90,7 @@ function SidebarAdmin() {
               src={logo}
               alt="RFH"
               className="sidebar-logo"
-              onClick={()=>navigate("/")}
+              onClick={() => navigate("/")}
             />
 
             <div className="d-lg-none" onClick={closeSidebar}>
@@ -127,9 +127,7 @@ function SidebarAdmin() {
                     <Link
                       to="/"
                       className={`sub-nav-link ${
-                        location.pathname === "/"
-                          ? "active-sub-link"
-                          : ""
+                        location.pathname === "/" ? "active-sub-link" : ""
                       }`}
                     >
                       User Acquisition & Retention
@@ -187,7 +185,6 @@ function SidebarAdmin() {
                   </li>
                 </ul>
               </li>
-
               <li>
                 <div
                   className={`nav-link ${
@@ -225,11 +222,14 @@ function SidebarAdmin() {
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/marketing/in-app-campaign" className={`sub-nav-link ${
+                    <Link
+                      to="/marketing/in-app-campaign"
+                      className={`sub-nav-link ${
                         location.pathname === "/marketing/in-app-campaign"
                           ? "active-sub-link"
                           : ""
-                      }`}>
+                      }`}
+                    >
                       InApp Campaign
                     </Link>
                   </li>
@@ -272,20 +272,26 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/patient-education/overview" className={`sub-nav-link ${
+                    <Link
+                      to="/patient-education/overview"
+                      className={`sub-nav-link ${
                         location.pathname === "/patient-education/overview"
                           ? "active-sub-link"
                           : ""
-                      }`}>
+                      }`}
+                    >
                       Education Overview
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/patient-education/resources"  className={`sub-nav-link ${
+                    <Link
+                      to="/patient-education/resources"
+                      className={`sub-nav-link ${
                         location.pathname === "/patient-education/resources"
                           ? "active-sub-link"
                           : ""
-                      }`}>
+                      }`}
+                    >
                       Education Resources
                     </Link>
                   </li>
@@ -318,36 +324,43 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-
-                    <Link to="/teleconsultation/virtual-management" className={`sub-nav-link ${
-                        location.pathname === "/teleconsultation/virtual-management"
+                    <Link
+                      to="/teleconsultation/virtual-management"
+                      className={`sub-nav-link ${
+                        location.pathname ===
+                        "/teleconsultation/virtual-management"
                           ? "active-sub-link"
                           : ""
-                      }`}>
+                      }`}
+                    >
                       Virtual Management
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/teleconsultation/appointment-status"  className={`sub-nav-link ${
-                        location.pathname === "/teleconsultation/appointment-status"
+                    <Link
+                      to="/teleconsultation/appointment-status"
+                      className={`sub-nav-link ${
+                        location.pathname ===
+                        "/teleconsultation/appointment-status"
                           ? "active-sub-link"
                           : ""
-                      }`}>
+                      }`}
+                    >
                       Appointment Status
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/"  className={`sub-nav-link ${
-                        location.pathname === "/"
-                          ? "active-sub-link"
-                          : ""
-                      }`}>
+                    <Link
+                      to="/"
+                      className={`sub-nav-link ${
+                        location.pathname === "/" ? "active-sub-link" : ""
+                      }`}
+                    >
                       Technical Support
                     </Link>
                   </li>
                 </ul>
               </li>
-
               <li>
                 <div
                   className={`nav-link ${
@@ -433,17 +446,38 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/operational/appointment-reports" className="sub-nav-link">
+                    <Link
+                      to="/operational/appointment-reports"
+                      className={`sub-nav-link ${
+                        location.pathname === "/operational/appointment-reports"
+                          ? "active-sub-link"
+                          : ""
+                      }`}
+                    >
                       Appointment Reports
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/operational/service-utilization" className="sub-nav-link">
+                    <Link
+                      to="/operational/service-utilization"
+                      className={`sub-nav-link ${
+                        location.pathname === "/operational/service-utilization"
+                          ? "active-sub-link"
+                          : ""
+                      }`}
+                    >
                       Service Utilization
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/operational/financial-performance" className="sub-nav-link">
+                    <Link
+                      to="/operational/financial-performance"
+                      className={`sub-nav-link ${
+                        location.pathname === "/operational/financial-performance"
+                          ? "active-sub-link"
+                          : ""
+                      }`}
+                    >
                       Financial Performance
                     </Link>
                   </li>
@@ -510,7 +544,6 @@ function SidebarAdmin() {
                   <Bell size={14} className="sidebar-icon" /> Notification
                 </Link>
               </li>
-
               <li>
                 <Link
                   to="/dashboard/settings"
@@ -526,7 +559,6 @@ function SidebarAdmin() {
                   </span>
                 </Link>
               </li>
-
               <li>
                 <Link
                   to=""
