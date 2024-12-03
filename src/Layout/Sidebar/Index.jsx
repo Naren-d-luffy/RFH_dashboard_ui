@@ -90,6 +90,7 @@ function SidebarAdmin() {
               src={logo}
               alt="RFH"
               className="sidebar-logo"
+              onClick={()=>navigate("/")}
             />
 
             <div className="d-lg-none" onClick={closeSidebar}>
