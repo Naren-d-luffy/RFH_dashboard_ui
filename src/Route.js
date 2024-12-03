@@ -18,11 +18,13 @@ import PatientSurveys from "./Pages/Feedback/PatientSurveys";
 import ViewFeedbackIndex from "./Pages/Feedback/ViewFeedbackIndex";
 import UserNegativeFeedbackPage from "./Pages/Feedback/UserNegativeFeedbackPage";
 import AppointmentStatusPage from "./Pages/Teleconsultation/AppointmentStatus";
+import AppointmentReports from "./Pages/Operational/AppointmentReports";
 import AppointmentFeedbackPage from "./Pages/Teleconsultation/AppoinmentFeedback";
 import VirtualManagementPage from "./Pages/Teleconsultation/VirtualManagement";
 import DoctorDetailPage from "./Pages/Teleconsultation/DoctorDetailPage";
 import ViewDoctorDetailPage from "./Pages/Teleconsultation/ViewDoctorDetailPage";
 import NotificationIndex from "./Pages/Notification/NotificationIndex";
+import HeaderNotificationPage from "./Pages/HeaderNotification/HeaderNotification";
 
 export const AppRouter = () => {
   return (
@@ -98,17 +100,24 @@ export const AppRouter = () => {
         <Route
           path="/feedback/negative-feedback"
           element={(Component = <UserNegativeFeedbackPage />)}
-                  />
+        />
         <Route
 
           path="/teleconsultation/appointment-status"
           element={(Component = <AppointmentStatusPage />)}
         />
+
+        {/* operational Routes */}
+        <Route
+          path="/operational/appointment-reports"
+          element={(Component = <AppointmentReports />)}
+        />
+
         <Route
           path="/teleconsultation/appointment-feedback"
           element={(Component = <AppointmentFeedbackPage />)}
         />
-   <Route
+        <Route
 
           path="/teleconsultation/virtual-management"
           element={(Component = <VirtualManagementPage />)}
@@ -124,6 +133,13 @@ export const AppRouter = () => {
         <Route
           path="/sidebar/notification"
           element={(Component = <NotificationIndex />)}
+                  />
+
+                  <Route
+
+          path="/header/notification"
+          element={(Component = <HeaderNotificationPage />)}
+
         />
       </Routes>
     </BrowserRouter>
