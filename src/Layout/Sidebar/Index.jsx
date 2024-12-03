@@ -55,6 +55,9 @@ function SidebarAdmin() {
       "/feedback/create-survey-page":"feedback",
       "/education-resources/reading-materials": "education",
       "/teleconsultation/appointment-status": "teleconsultation",
+      "/operational/appointment-reports":"operational",
+      "/operational/service-utilization":"operational",
+      "/operational/financial-performance":"operational",
     };
 
     const currentPath = location.pathname;
@@ -409,18 +412,18 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                      User Acquisition & Retention
+                    <Link to="/operational/appointment-reports" className="sub-nav-link">
+                      Appointment Reports
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                      User Engagement
+                    <Link to="/operational/service-utilization" className="sub-nav-link">
+                      Service Utilization
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                      User Feedback
+                    <Link to="/operational/financial-performance" className="sub-nav-link">
+                      Financial Performance
                     </Link>
                   </li>
                 </ul>
