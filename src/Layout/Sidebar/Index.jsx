@@ -62,6 +62,7 @@ function SidebarAdmin() {
       "/teleconsultation/appointment-status": "teleconsultation",
       "/teleconsultation/appointment-feedback": "teleconsultation",
       "/teleconsultation/virtual-management": "teleconsultation",
+      "/sidebar/notification":"",
     };
 
     const currentPath = location.pathname;
@@ -498,9 +499,9 @@ function SidebarAdmin() {
               </li>
               <li>
                 <Link
-                  to=""
+                  to="/sidebar/notification"
                   className={`nav-link ${
-                    location.pathname === "" ? "active-nav-links" : ""
+                    location.pathname === "/sidebar/notification" ? "active-nav-links" : ""
                   }`}
                 >
                   <Bell size={14} className="sidebar-icon" /> Notification
