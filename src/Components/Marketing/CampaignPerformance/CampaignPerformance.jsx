@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import { GoPlus } from "react-icons/go";
-import { HiOutlineLightBulb } from "react-icons/hi";
-import { AiOutlinePieChart } from "react-icons/ai";
-import { PiHandTap } from "react-icons/pi";
-import { AiOutlineSound } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { AiFillPieChart } from "react-icons/ai";
 import CreateCampaign from "./CreateCampaign";
 import { FaArrowUp } from "react-icons/fa";
 import clickicon from "../../../Assets/Icons/click-icon.png"
 import handIcon from "../../../Assets/Icons/handIcon.png"
+import Notification from "../../../Assets/Icons/Notification.png"
 
 
 const CampaignPerformance = () => {
@@ -22,7 +19,7 @@ const CampaignPerformance = () => {
         </>
       ),
       description: "Since last week",
-      icon: <AiOutlineSound />,
+      icon: <img src={Notification} alt="Click Icon" style={{ width: "20px" }} />,
       borderColor: "var(--primary-green)",
       iconColor: "var(--primary-green)",
       iconBackground: "#dffaf0",
@@ -52,7 +49,7 @@ const CampaignPerformance = () => {
       value: "5%",
       percentage: "+340",
       description: "New",
-      icon: <AiOutlinePieChart />,
+      icon: <AiFillPieChart />,
       borderColor: "var(--sky-blue-color)",
       iconColor: "var(--sky-blue-color)",
       iconBackground: "#e8f6ff",

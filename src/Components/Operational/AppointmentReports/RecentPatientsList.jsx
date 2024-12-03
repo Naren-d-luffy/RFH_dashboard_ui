@@ -1,83 +1,85 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, Dropdown, Button, Space, Input, Avatar } from "antd";
-import { FiEdit, FiEye, FiFilter, FiSearch, FiTrash2 } from "react-icons/fi";
+import { FiEye, FiSearch } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
-import defaultUser from "../../../Assets/Images/DefaultUser.png"
+import defaultUser from "../../../Assets/Images/DefaultUser.png";
 import { IoCloudDownloadOutline } from "react-icons/io5";
+import { PatientReport } from "./PatientReport";
 export const RecentPatientsList = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const columns = [
     {
-        title: "Patient ID",
-        dataIndex: "patientId",
-        key: "patientId",
-      },
-      {
-        title: "Patient Name",
-        dataIndex: "patientName",
-        key: "patientName",
-        render: (name, record) => (
-          <div className="d-flex align-items-center">
-            <Avatar src={defaultUser} size={24}/> &nbsp; &nbsp;
-            <span>{name}</span>
-          </div>
-        ),
-      },
-      {
-        title: "Gender",
-        dataIndex: "gender",
-        key: "gender",
-      },
-      {
-        title: "Date",
-        dataIndex: "date",
-        key: "date",
-      },
-      {
-        title: "Phone No",
-        dataIndex: "phoneNo",
-        key: "phoneNo",
-      },
-      {
-        title: "Consult Type",
-        dataIndex: "consultType",
-        key: "consultType",
-      },
-      {
-        title: "Status",
-        dataIndex: "status",
-        key: "status",
-        render: (status) => {
-          const color =
-            status === "Close"
-              ? "#E61313"
-              :"var(--primary-green)";
-          return (
-            <span
-              style={{
-                color: color,
-              }}
-            >
-              {status}
-            </span>
-          );
-        },
-      },
+      title: "Patient ID",
+      dataIndex: "patientId",
+      key: "patientId",
+    },
     {
-        title: "Action",
-        key: "action",
-        render: () => (
-          <div className="campaign-performance-table-action-icons">
-            <div className="campaign-performance-table-eye-icon">
-              <FiEye />
-            </div>
-            <div className="campaign-performance-table-edit-icon">
-            <IoCloudDownloadOutline />
-            </div>
-            
-          </div>
-        ),
-        className: "campaign-performance-table-column",
+      title: "Patient Name",
+      dataIndex: "patientName",
+      key: "patientName",
+      render: (name, record) => (
+        <div className="d-flex align-items-center">
+          <Avatar src={defaultUser} size={24} /> &nbsp; &nbsp;
+          <span>{name}</span>
+        </div>
+      ),
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+    },
+    {
+      title: "Phone No",
+      dataIndex: "phoneNo",
+      key: "phoneNo",
+    },
+    {
+      title: "Consult Type",
+      dataIndex: "consultType",
+      key: "consultType",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status) => {
+        const color = status === "Close" ? "#E61313" : "var(--primary-green)";
+        return (
+          <span
+            style={{
+              color: color,
+            }}
+          >
+            {status}
+          </span>
+        );
       },
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: () => (
+        <div className="campaign-performance-table-action-icons">
+          <div
+            className="campaign-performance-table-eye-icon"
+            onClick={() => setIsModalVisible(true)}
+          >
+            <FiEye />
+          </div>
+          <div className="campaign-performance-table-edit-icon">
+            <IoCloudDownloadOutline />
+          </div>
+        </div>
+      ),
+      className: "campaign-performance-table-column",
+    },
   ];
 
   const data = [
@@ -137,7 +139,6 @@ export const RecentPatientsList = () => {
       status: "Close",
     },
   ];
-
 
   const items = [
     {
@@ -206,6 +207,10 @@ export const RecentPatientsList = () => {
           />
         </div>
       </div>
+      <PatientReport
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+      />
     </div>
   );
 };

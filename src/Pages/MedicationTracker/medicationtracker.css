@@ -1,0 +1,31 @@
+.medication-tracker-second-table-button {
+  color: var(--primary-green);
+  border: 1px solid var(--primary-green);
+  border-radius: 8px;
+  background: none;
+}
+
+.medication-tracker-second-table-button:hover {
+  color: var(--white-color);
+  background-color: var(--primary-green);
+}
+
+.patient-detail-main-section {
+  background-color: var(--light-gray-bg-color);
+  padding: 23px 32px;
+  border-radius: 12px;
+}
+
+.doctor-detail-page-head h6 {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 37.93px;
+  letter-spacing: -0.03em;
+}
+
+.patient-detail-top-text h3 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 22px;
+  color: var(--black-color);
+}

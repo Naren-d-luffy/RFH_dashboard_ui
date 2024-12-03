@@ -1,53 +1,48 @@
 import React from "react";
-import { HiOutlineLightBulb } from "react-icons/hi";
-import { AiFillPieChart, AiOutlinePieChart } from "react-icons/ai";
-import { FaArrowUp } from "react-icons/fa6";
-import Notification from "../../../Assets/Icons/Notification.png"
-import handIcon from "../../../Assets/Icons/handIcon.png"
-import clickicon from  "../../../Assets/Icons/click-icon.png"
+import patient from "../../Assets/Icons/patient.png"
+import { BsCapsulePill } from "react-icons/bs";
+import Remainders from "../../Assets/Icons/Remainders.png"
+import medicationalerts from "../../Assets/Icons/medicationalerts.png"
 
-const PatientAcquisitionCards = () => {
+
+const MedicationTrackerCards = () => {
   const cardsData = [
     {
-      title: "Total Campaign",
-      value: 20,
-      percentage: (
-        <>
-           <FaArrowUp style={{ color: "var(--primary-green)", fontSize: "12px" }} /> {" "}2%
-        </>
-      ),
-      description: "Since last week",
-      icon: <img src={Notification} alt="Click Icon" style={{ width: "20px" }} />,
+      title: "Total patients",
+      value: "3,485",
+      percentage: +254,
+      description: "In This Month",
+      icon: <img src={patient} alt="Profile Tick" style={{ width: '18px', height: '18px' }} />,
       borderColor: "var(--primary-green)",
       iconColor: "var(--primary-green)",
       iconBackground: "#dffaf0",
     },
     {
-      title: "Total Reach",
-      value: "22,500",
-      percentage: "340",
-      description: "Users",
-      icon: <img src={clickicon} alt="Click Icon" style={{ width: "20px" }} />,
+      title: "Patients On Medications",
+      value: "2,789",
+      percentage: "+265",
+      description: "In This Month",
+      icon: <BsCapsulePill />,
       borderColor: "var(--sky-blue-color)",
       iconColor: "var(--sky-blue-color)",
       iconBackground: "#e8f6ff",
     },
     {
-      title: "Total impression",
-      value: "15%",
-      percentage: "+165",
-      description: "New",
-      icon: <img src={handIcon} alt="Click Icon" style={{ width: "15px" }} />,
+      title: "Missed Medications Alerts",
+      value: "88",
+      percentage: "+5",
+      description: "In This Month",
+      icon: <img src={medicationalerts} alt="Click Icon" style={{ width: "15px" }} />,
       borderColor: "var(--light-orange-color)",
       iconColor: "#FFD66B",
       iconBackground: "#FFF4DB",
     },
     {
-      title: "CTR",
-      value: "5%",
-      percentage: "1%",
-      description: "Since last week",
-      icon: <AiFillPieChart />,
+      title: "Upcoming Refill Reminders",
+      value: "349",
+      percentage: "+240",
+      description: "In This Month",
+      icon: <img src={Remainders} alt="Profile Tick" style={{ width: '18px', height: '18px' }} />,
       borderColor: "var(--sky-blue-color)",
       iconColor: "var(--sky-blue-color)",
       iconBackground: "#e8f6ff",
@@ -55,10 +50,12 @@ const PatientAcquisitionCards = () => {
   ];
 
   return (
-    <div className="container mt-4">
-      <div className="campaign-performance-head">
-        <h3>Patient Acquisition overview</h3>
-        <p>there is the latest update for the last 7 days. check now</p>
+    <div className="">
+      <div className="d-flex mt-4 justify-content-between campaign-performance-head">
+        <div>
+          <h3>Medication Tracker</h3>
+          <p>there is the latest update for the last 7 days. check now</p>
+        </div>
       </div>
 
       <div className="row campaign-performance-container">
@@ -97,4 +94,6 @@ const PatientAcquisitionCards = () => {
   );
 };
 
-export default PatientAcquisitionCards;
+export default  MedicationTrackerCards;
+
+
