@@ -6,11 +6,15 @@ import { GoPlus } from "react-icons/go";
 import UserManagementAddPatientsModal from "./UserManagementAddPatientsModal";
 import UserManagementViewPatientsModal from "./UserManagementViewPatientsModal";
 import UserManagementEditPatientsModal from "./UserManagementEditPatientsModal";
+import {showDeleteMessage} from '../../../globalConstant'
 
 const UserManagementTable = () => {
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+
+  const handleDelete=()=>{
+    showDeleteMessage({ message: "Kiran BK" });  }
 
   const showModal = () => {
     setIsCreateModalVisible(true);
@@ -117,7 +121,7 @@ const UserManagementTable = () => {
             <FiEdit />
           </div>
           <div className="campaign-performance-table-delete-icon" >
-            <FiTrash2 />
+            <FiTrash2 onClick={handleDelete}/>
           </div>
         </div>
       ),
