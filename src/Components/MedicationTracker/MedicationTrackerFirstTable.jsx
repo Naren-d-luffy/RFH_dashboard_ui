@@ -1,9 +1,13 @@
 import React from "react";
-import { Table, Dropdown, Button, Space, Input } from "antd";
-import { FiSearch } from "react-icons/fi";
+import { Table, Button, Space, Input, Dropdown } from "antd";
+import { FiSearch, FiEdit, FiTrash2, FiEye } from "react-icons/fi";
+import { GoPlus } from "react-icons/go";
+import image from "../../Assets/Images/image.png";
+import { useNavigate } from "react-router-dom";
 import { VscSettings } from "react-icons/vsc";
 
-const PatientDetailsTable = () => {
+const MedicationTrackerFirstTable = () => {
+  const navigate = useNavigate();
   const columns = [
     {
       title: "Patient ID",
@@ -15,6 +19,21 @@ const PatientDetailsTable = () => {
       title: "Patient Name",
       dataIndex: "patientName",
       key: "patientName",
+      render: (text) => (
+        <div className="d-flex align-items-center gap-2">
+          <img
+            src={image}
+            alt="Patient"
+            style={{
+              width: "30px",
+              height: "30px",
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
+          />
+          <span>{text}</span>
+        </div>
+      ),
       className: "campaign-performance-table-column",
     },
     {
@@ -24,44 +43,46 @@ const PatientDetailsTable = () => {
       className: "campaign-performance-table-column",
     },
     {
-      title: "Consult type",
-      dataIndex: "consultType",
-      key: "consultType",
+      title: "Medication",
+      dataIndex: "medication",
+      key: "medication",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
+      title: "Dose",
+      dataIndex: "dose",
+      key: "dose",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Gender",
-      dataIndex: "gender",
-      key: "gender",
+      title: "Frequency",
+      dataIndex: "frequency",
+      key: "frequency",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Last Visit",
-      dataIndex: "lastVisit",
-      key: "lastVisit",
+      title: "Next Dose",
+      dataIndex: "nextDose",
+      key: "nextDose",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status) => {
-        const color = status === "Active" ? "green" : "red";
-        return (
-          <span
-            className="campaign-performance-table-status"
-            style={{ color, fontWeight: "bold" }}
+      title: "Action",
+      key: "action",
+      render: () => (
+        <div className="campaign-performance-table-action-icons">
+          <div
+            className="campaign-performance-table-eye-icon"
+            onClick={() => navigate(`/medication-tracker/patient-detail`)}
+            style={{ cursor: "pointer" }}
           >
-            {status}
-          </span>
-        );
-      },
+            <FiEye />
+          </div>
+          <div className="campaign-performance-table-edit-icon">
+            <FiEdit />
+          </div>
+        </div>
+      ),
       className: "campaign-performance-table-column",
     },
   ];
@@ -72,73 +93,61 @@ const PatientDetailsTable = () => {
       patientId: "1001",
       patientName: "Saikiran K",
       date: "22-11-2024",
-      consultType: "Online",
-      age: "22",
-      gender: "Male",
-      lastVisit: "22-10-2024",
-      status: "Active",
+      medication: "Metformin",
+      dose: "500mg",
+      frequency: "2x daily",
+      nextDose: "08:00 PM",
     },
     {
       key: "2",
       patientId: "390",
       patientName: "Chandan P",
       date: "22-11-2024",
-      consultType: "Offline",
-      age: "44",
-      gender: "Male",
-      lastVisit: "09-10-2024",
-      status: "Active",
+      medication: "Ibuprofen",
+      dose: "200mg",
+      frequency: "2x daily",
+      nextDose: "07:30 PM",
     },
     {
       key: "3",
       patientId: "250",
-      patientName: "Harish D",
+      patientName: "Shravya V",
       date: "22-11-2024",
-      consultType: "Online",
-      age: "32",
-      gender: "Male",
-      lastVisit: "02-10-2024",
-      status: "Active",
+      medication: "Amoxicillin",
+      dose: "200mg",
+      frequency: "2x daily",
+      nextDose: "Tomorrow 8 AM",
     },
     {
       key: "4",
       patientId: "100",
-      patientName: "Shravya V",
+      patientName: "Nandini G",
       date: "22-11-2024",
-      consultType: "Offline",
-      age: "26",
-      gender: "Female",
-      lastVisit: "09-09-2024",
-      status: "Active",
+      medication: "Ibuprofen",
+      dose: "200mg",
+      frequency: "2x daily",
+      nextDose: "07:30 PM",
     },
     {
       key: "5",
       patientId: "50",
       patientName: "Mahesh G",
       date: "22-11-2024",
-      consultType: "Offline",
-      age: "28",
-      gender: "Male",
-      lastVisit: "22-08-2024",
-      status: "Active",
+      medication: "Metformin",
+      dose: "200mg",
+      frequency: "2x daily",
+      nextDose: "07:30 PM",
     },
   ];
 
   const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last Week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
+    { label: "Last Day", key: "1" },
+    { label: "Last Week", key: "2" },
+    { label: "Last Month", key: "3" },
   ];
+
   const handleMenuClick = ({ key }) => {};
+
   const menuProps = {
     items,
     onClick: handleMenuClick,
@@ -148,8 +157,7 @@ const PatientDetailsTable = () => {
     <div className="mt-4">
       <div className="campaign-performance-table-head">
         <div className="d-flex justify-content-between align-items-center">
-          <h6>All Patient Table</h6>
-
+          <h6>Recent Patient's</h6>
           <div className="d-flex gap-3 align-items-center">
             <div
               className="d-flex align-items-center px-3"
@@ -177,7 +185,15 @@ const PatientDetailsTable = () => {
                 </Space>
               </Button>
             </Dropdown>
-
+            <div>
+              <button
+                className="rfh-basic-button"
+                onClick={() => navigate(`/medication-tracker/add-patient-detail`)}
+                style={{ cursor: "pointer" }}
+              >
+                <GoPlus size={20} /> Add Medication
+              </button>
+            </div>
           </div>
         </div>
         <div className="mt-3">
@@ -194,4 +210,4 @@ const PatientDetailsTable = () => {
   );
 };
 
-export default PatientDetailsTable;
+export default MedicationTrackerFirstTable;

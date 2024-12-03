@@ -1,9 +1,9 @@
 import React from "react";
-import { AiOutlinePieChart } from "react-icons/ai";
-import { AiOutlineSound } from "react-icons/ai";
+import { AiFillPieChart, AiOutlinePieChart } from "react-icons/ai";
 import { FaArrowUp } from "react-icons/fa";
 import clickicon from "../../../Assets/Icons/click-icon.png";
 import handIcon from "../../../Assets/Icons/handIcon.png";
+import Notification from "../../../Assets/Icons/Notification.png";
 
 const VirtualManagementCards = () => {
   const cardsData = [
@@ -19,7 +19,9 @@ const VirtualManagementCards = () => {
         </>
       ),
       description: "Since last week",
-      icon: <AiOutlineSound />,
+      icon: (
+        <img src={Notification} alt="Click Icon" style={{ width: "20px" }} />
+      ),
       borderColor: "var(--primary-green)",
       iconColor: "var(--primary-green)",
       iconBackground: "#dffaf0",
@@ -49,7 +51,7 @@ const VirtualManagementCards = () => {
       value: "50%",
       percentage: "+340",
       description: "New",
-      icon: <AiOutlinePieChart />,
+      icon: <AiFillPieChart />,
       borderColor: "var(--sky-blue-color)",
       iconColor: "var(--sky-blue-color)",
       iconBackground: "#e8f6ff",

@@ -60,11 +60,10 @@ const EducationCategoriesGastroIllness = () => {
   const renderEventCard = (event, index) => (
     <div className="col-lg-4" key={index}>
       <div className="upcoming-event-card p-3" style={{ position: "relative" }}>
-        {/* Ellipsis Icon */}
         <div
           className="education-categories-faq-menu"
           onClick={(e) => {
-            e.stopPropagation(); // Prevent click from propagating
+            e.stopPropagation(); 
             toggleMenu(index);
           }}
           style={{
