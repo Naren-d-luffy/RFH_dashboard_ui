@@ -18,6 +18,7 @@ import PatientSurveys from "./Pages/Feedback/PatientSurveys";
 import ViewFeedbackIndex from "./Pages/Feedback/ViewFeedbackIndex";
 import UserNegativeFeedbackPage from "./Pages/Feedback/UserNegativeFeedbackPage";
 import AppointmentStatusPage from "./Pages/Teleconsultation/AppointmentStatus";
+import AppointmentReports from "./Pages/Operational/AppointmentReports";
 import AppointmentFeedbackPage from "./Pages/Teleconsultation/AppoinmentFeedback";
 import VirtualManagementPage from "./Pages/Teleconsultation/VirtualManagement";
 import DoctorDetailPage from "./Pages/Teleconsultation/DoctorDetailPage";
@@ -103,6 +104,13 @@ export const AppRouter = () => {
           path="/teleconsultation/appointment-status"
           element={(Component = <AppointmentStatusPage />)}
         />
+
+        {/* operational Routes */}
+        <Route
+          path="/operational/appointment-reports"
+          element={(Component = <AppointmentReports />)}
+        />
+
         <Route
           path="/teleconsultation/appointment-feedback"
           element={(Component = <AppointmentFeedbackPage />)}
