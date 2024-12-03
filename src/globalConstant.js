@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import deleteIcon from "./Assets/Icons/doctor.png"
+import deleteIcon from "./Assets/Icons/delete-warning-icon.png"
 import success from "./Assets/Icons/success.png"
 
 import { Modal } from "antd";
@@ -35,30 +35,60 @@ export const showErrorMessage = (message) => {
 	});
 };
 export const showDeleteMessage = ({
-	title = "Are you sure you want to delete this item?",
+	message,
+	title = "Are you sure you want to Delete",
 	content = "This action cannot be undone.",
-	onDelete
+	onDelete,
 }) => {
 	Modal.confirm({
 		title: (
-			<div style={{ display: 'flex', alignItems: 'center', flexDirection: "column", gap: '10px' }}>
+			<div
+				style={{
+					display: "flex",
+					alignItems: "center",
+					flexDirection: "column",
+					gap: "10px",
+				}}
+			>
 				<img src={deleteIcon} style={{ width: "100px", height: "100px" }} />
-				{title}
+				<div className="delete-message">
+					{title} {message && <div>{message}?</div>}
+				</div>
 			</div>
 		),
-		content: <div style={{ color: '#666', marginTop: '10px' }}>{content}</div>,
-		okText: "Delete",
-		okType: "danger",
-		cancelText: "Cancel",
+		content: (
+			<div style={{ textAlign: "center", marginTop: "20px" }}>
+				{/* {content} */}
+				<div className="global-footer-div">
+					<button
+						className="global-cancel-button"
+						onClick={() => {
+							console.log("Delete action canceled");
+							Modal.destroyAll();
+						}}
+					>
+						Cancel
+					</button>
+					<button
+						className="global-delete-button"
+						onClick={() => {
+							if (onDelete && typeof onDelete === "function") {
+								onDelete(); 
+							}
+							showSuccessMessage("Deleted successfully"); 
+							Modal.destroyAll(); 
+						}}
+					>
+						Delete
+					</button>
+				</div>
+			</div>
+		),
 		centered: true,
 		icon: null,
-		onOk: () => {
-			if (onDelete && typeof onDelete === "function") {
-				onDelete();
-			}
-		},
-		onCancel: () => {
-			console.log("Delete action canceled");
-		},
+		className: "custom-modal",
+		okButtonProps: { style: { display: "none" } },
+		cancelButtonProps: { style: { display: "none" } },
 	});
 };
+
