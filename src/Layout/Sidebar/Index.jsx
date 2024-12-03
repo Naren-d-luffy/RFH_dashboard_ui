@@ -61,9 +61,9 @@ function SidebarAdmin() {
       "/feedback/view-feedback": "feedback",
       "/feedback/negative-feedback": "feedback",
       "/teleconsultation/appointment-status": "teleconsultation",
-      "/operational/appointment-reports":"operational",
-      "/operational/service-utilization":"operational",
-      "/operational/financial-performance":"operational",
+      "/operational/appointment-reports": "operational",
+      "/operational/service-utilization": "operational",
+      "/operational/financial-performance": "operational",
       "/teleconsultation/appointment-feedback": "teleconsultation",
       "/teleconsultation/virtual-management": "teleconsultation",
 
@@ -96,7 +96,7 @@ function SidebarAdmin() {
               src={logo}
               alt="RFH"
               className="sidebar-logo"
-              onClick={()=>navigate("/")}
+              onClick={() => navigate("/")}
             />
 
             <div className="d-lg-none" onClick={closeSidebar}>
@@ -191,7 +191,6 @@ function SidebarAdmin() {
                   </li>
                 </ul>
               </li>
-
               <li>
                 <div
                   className={`nav-link ${
@@ -368,7 +367,6 @@ function SidebarAdmin() {
                   </li>
                 </ul>
               </li>
-
               <li>
                 <div
                   className={`nav-link ${
@@ -454,17 +452,38 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/operational/appointment-reports" className="sub-nav-link">
+                    <Link
+                      to="/operational/appointment-reports"
+                      className={`sub-nav-link ${
+                        location.pathname === "/operational/appointment-reports"
+                          ? "active-sub-link"
+                          : ""
+                      }`}
+                    >
                       Appointment Reports
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/operational/service-utilization" className="sub-nav-link">
+                    <Link
+                      to="/operational/service-utilization"
+                      className={`sub-nav-link ${
+                        location.pathname === "/operational/service-utilization"
+                          ? "active-sub-link"
+                          : ""
+                      }`}
+                    >
                       Service Utilization
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/operational/financial-performance" className="sub-nav-link">
+                    <Link
+                      to="/operational/financial-performance"
+                      className={`sub-nav-link ${
+                        location.pathname === "/operational/financial-performance"
+                          ? "active-sub-link"
+                          : ""
+                      }`}
+                    >
                       Financial Performance
                     </Link>
                   </li>
@@ -546,7 +565,6 @@ function SidebarAdmin() {
                   <Bell size={14} className="sidebar-icon" /> Notification
                 </Link>
               </li>
-
               <li>
                 <Link
                   to="/dashboard/settings"
@@ -562,7 +580,6 @@ function SidebarAdmin() {
                   </span>
                 </Link>
               </li>
-
               <li>
                 <Link
                   to=""
