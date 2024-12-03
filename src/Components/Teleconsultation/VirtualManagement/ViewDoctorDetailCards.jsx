@@ -1,62 +1,62 @@
 import React from "react";
-import { FaCheckCircle, FaPeopleCarry, FaVideo } from "react-icons/fa";
-import { PiCalendarPlusFill } from "react-icons/pi";
+import { HiOutlineLightBulb } from "react-icons/hi";
+import { AiOutlineSound } from "react-icons/ai";
+import { FaArrowUp } from "react-icons/fa6";
+import { FaCirclePlus } from "react-icons/fa6";
+import { FaUserPlus } from "react-icons/fa";
+import patient from '../../../Assets/Icons/patient.png'
 
-const AppointmentCards = () => {
+const ViewDoctorDetailCards = () => {
   const cardsData = [
     {
-      title: "Total Appointments",
-      value: "2,898",
-      percentage: "+165",
-      description: "In This Month",
-      icon: <PiCalendarPlusFill />,
+      title: "Total Patient",
+      value: 20,
+      percentage: (
+        <>
+           <FaArrowUp style={{ color: "var(--primary-green)", fontSize: "12px" }} /> {" "}5%
+        </>
+      ),
+      description: "Since last week",
+      icon: <img src={patient} alt="Profile Tick" style={{ width: '18px', height: '18px' }} />,
       borderColor: "var(--primary-green)",
       iconColor: "var(--primary-green)",
       iconBackground: "#dffaf0",
     },
     {
-      title: "Completed Appointments",
-      value: "2,789",
-      percentage: "+265",
-      description: "In This Month",
-      icon: <FaCheckCircle />,
+      title: "Total Reach",
+      value: "22,500",
+      percentage: (
+        <>
+           <FaArrowUp style={{ color: "var(--primary-green)", fontSize: "12px" }} /> {" "}2%
+        </>
+      ),
+      description: "Since last week",
+      icon: <FaUserPlus />,
       borderColor: "var(--sky-blue-color)",
       iconColor: "var(--sky-blue-color)",
       iconBackground: "#e8f6ff",
     },
     {
-      title: "Virtual Appointment",
-      value: "109",
-      percentage: "+169",
-      description: "In This Month",
-      icon: <FaVideo />,
+      title: "Follow-Up Patient",
+      value: "15%",
+      percentage: "+165",
+      percentage: (
+        <>
+           <FaArrowUp style={{ color: "var(--primary-green)", fontSize: "12px" }} /> {" "}2%
+        </>
+      ),
+      description: "Since last week",
+      icon: <FaCirclePlus/>,
       borderColor: "var(--light-orange-color)",
       iconColor: "#FFD66B",
       iconBackground: "#FFF4DB",
     },
-    {
-      title: "Direct Appointment",
-      value: "50%",
-      percentage: "+240",
-      description: "In This Month",
-      icon: <FaPeopleCarry />,
-      borderColor: "var(--sky-blue-color)",
-      iconColor: "var(--sky-blue-color)",
-      iconBackground: "#e8f6ff",
-    },
   ];
 
   return (
-    <div className="">
-      <div className="d-flex mt-4 justify-content-between campaign-performance-head">
-        <div>
-          <h3>Appointment Status</h3>
-          <p>There is the latest update for the last 7 days check now</p>
-        </div>
-      </div>
       <div className="row campaign-performance-container">
         {cardsData.map((card, index) => (
-          <div className="col-lg-3 col-md-6 col-sm-12 mt-2" key={index}>
+          <div className="col-lg-4 col-md-4 col-sm-12 mt-2" key={index}>
             <div
               className="campaign-performance-card"
               style={{ borderRightColor: card.borderColor }}
@@ -86,8 +86,8 @@ const AppointmentCards = () => {
           </div>
         ))}
       </div>
-    </div>
   );
 };
 
-export default AppointmentCards;
+export default ViewDoctorDetailCards;
+

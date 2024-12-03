@@ -2,7 +2,7 @@
   background-color: var(--white-color);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 17px 18px;
+  padding: 18px 10px;
   border-right: 3px solid var(--primary-green);
 }
 
@@ -171,7 +171,12 @@
 .campaign-performance-table-eye-icon {
   background-color: var(--visible-icon-background-color);
 }
-
+.campaign-performance-table-eye-icon:hover{
+  color: var(--visible-icon-background-color);
+  border: 1px solid var(--visible-icon-background-color);
+  background-color: var(--white-color);
+  font-weight: 600;
+}
 .campaign-performance-table-edit-icon {
   background-color: var(--icon-background-color);
 }

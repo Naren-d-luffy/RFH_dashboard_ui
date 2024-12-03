@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Dropdown, Button, Space, } from "antd";
+import { Table, Dropdown, Button, Space, Input, } from "antd";
 import { FiEdit, FiEye, FiFilter, FiSearch, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { GoPlus } from "react-icons/go";
@@ -213,13 +213,13 @@ const UserManagementTable = () => {
             <div
               className="d-flex align-items-center px-3"
               style={{
-                border: "1px solid #ccc",
+                border: "1px solid var(--border-color)",
                 borderRadius: "8px",
                 height: "33px",
               }}
             >
               <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <input
+              <Input
                 type="text"
                 placeholder="Search anything here"
                 style={{

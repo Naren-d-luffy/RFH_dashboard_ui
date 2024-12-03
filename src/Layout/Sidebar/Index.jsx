@@ -54,10 +54,17 @@ function SidebarAdmin() {
       "/feedback/create-survey":"feedback",
       "/feedback/create-survey-page":"feedback",
       "/education-resources/reading-materials": "education",
+      "/feedback/create-survey/single-survey-details":"feedback",
+      "/feedback/create-survey/populated-survey-data":"feedback",
+      "/feedback/patient-surveys":"feedback",
+      "/feedback/view-feedback":"feedback",
+      "/feedback/negative-feedback":"feedback",
       "/teleconsultation/appointment-status": "teleconsultation",
       "/operational/appointment-reports":"operational",
       "/operational/service-utilization":"operational",
       "/operational/financial-performance":"operational",
+      "/teleconsultation/appointment-feedback": "teleconsultation",
+      "/teleconsultation/virtual-management": "teleconsultation",
     };
 
     const currentPath = location.pathname;
@@ -310,8 +317,9 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/teleconsultation/appointment-status" className={`sub-nav-link ${
-                        location.pathname === "/teleconsultation/appointment-status"
+
+                    <Link to="/teleconsultation/virtual-management" className={`sub-nav-link ${
+                        location.pathname === "/teleconsultation/virtual-management"
                           ? "active-sub-link"
                           : ""
                       }`}>
@@ -319,8 +327,8 @@ function SidebarAdmin() {
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/"  className={`sub-nav-link ${
-                        location.pathname === "/"
+                    <Link to="/teleconsultation/appointment-status"  className={`sub-nav-link ${
+                        location.pathname === "/teleconsultation/appointment-status"
                           ? "active-sub-link"
                           : ""
                       }`}>
@@ -373,6 +381,18 @@ function SidebarAdmin() {
                       }`}
                     >
                       Create Survey
+                    </Link>
+                  </li>
+                  <li className="sub-nav-list">
+                    <Link
+                      to="/feedback/patient-surveys"
+                      className={`sub-nav-link ${
+                        location.pathname === "/feedback/patient-surveys"
+                          ? "active-sub-link"
+                          : ""
+                      }`}
+                    >
+                      Patient Survey
                     </Link>
                   </li>
                   {/* <li className="sub-nav-list">
