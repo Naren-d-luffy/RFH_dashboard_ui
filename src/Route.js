@@ -23,6 +23,7 @@ import AppointmentFeedbackPage from "./Pages/Teleconsultation/AppoinmentFeedback
 import VirtualManagementPage from "./Pages/Teleconsultation/VirtualManagement";
 import DoctorDetailPage from "./Pages/Teleconsultation/DoctorDetailPage";
 import ViewDoctorDetailPage from "./Pages/Teleconsultation/ViewDoctorDetailPage";
+import NotificationIndex from "./Pages/Notification/NotificationIndex";
 import HeaderNotificationPage from "./Pages/HeaderNotification/HeaderNotification";
 
 export const AppRouter = () => {
@@ -130,8 +131,15 @@ export const AppRouter = () => {
           element={(Component = <ViewDoctorDetailPage />)}
         />
         <Route
+          path="/sidebar/notification"
+          element={(Component = <NotificationIndex />)}
+                  />
+
+                  <Route
+
           path="/header/notification"
           element={(Component = <HeaderNotificationPage />)}
+
         />
       </Routes>
     </BrowserRouter>
