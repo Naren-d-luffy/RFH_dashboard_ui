@@ -23,7 +23,15 @@ import AppointmentFeedbackPage from "./Pages/Teleconsultation/AppoinmentFeedback
 import VirtualManagementPage from "./Pages/Teleconsultation/VirtualManagement";
 import DoctorDetailPage from "./Pages/Teleconsultation/DoctorDetailPage";
 import ViewDoctorDetailPage from "./Pages/Teleconsultation/ViewDoctorDetailPage";
+
+import MedicationTrackerPage from "./Pages/MedicationTracker/MedicationTrackerPage";
+import MedicationTrackerPatientDetailPage from "./Pages/MedicationTracker/MedicationTrackerPatientDetailPage";
+import AddPatientDetail from "./Components/MedicationTracker/AddPatientDetail";
+import AddPatientDetailPage from "./Pages/MedicationTracker/AddPatientDetailPage";
+
+import NotificationIndex from "./Pages/Notification/NotificationIndex";
 import HeaderNotificationPage from "./Pages/HeaderNotification/HeaderNotification";
+
 
 export const AppRouter = () => {
   return (
@@ -101,7 +109,6 @@ export const AppRouter = () => {
           element={(Component = <UserNegativeFeedbackPage />)}
         />
         <Route
-
           path="/teleconsultation/appointment-status"
           element={(Component = <AppointmentStatusPage />)}
         />
@@ -117,7 +124,6 @@ export const AppRouter = () => {
           element={(Component = <AppointmentFeedbackPage />)}
         />
         <Route
-
           path="/teleconsultation/virtual-management"
           element={(Component = <VirtualManagementPage />)}
         />
@@ -130,8 +136,28 @@ export const AppRouter = () => {
           element={(Component = <ViewDoctorDetailPage />)}
         />
         <Route
+          path="/medication-tracker"
+          element={(Component = <MedicationTrackerPage />)}
+        />
+        <Route
+          path="/medication-tracker/patient-detail"
+          element={(Component = <MedicationTrackerPatientDetailPage />)}
+        />
+        <Route
+          path="/medication-tracker/add-patient-detail"
+          element={(Component = <AddPatientDetailPage />)}
+                            />
+        <Route
+
+          path="/sidebar/notification"
+          element={(Component = <NotificationIndex />)}
+                  />
+
+                  <Route
+
           path="/header/notification"
           element={(Component = <HeaderNotificationPage />)}
+
         />
       </Routes>
     </BrowserRouter>

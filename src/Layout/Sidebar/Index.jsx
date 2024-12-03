@@ -10,6 +10,7 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { GoShieldCheck } from "react-icons/go";
 import { TbCirclePercentage } from "react-icons/tb";
 import { SlGraduation } from "react-icons/sl";
+import { BiCapsule } from "react-icons/bi";
 import {
   Bell,
   Handshake,
@@ -65,6 +66,11 @@ function SidebarAdmin() {
       "/operational/financial-performance": "operational",
       "/teleconsultation/appointment-feedback": "teleconsultation",
       "/teleconsultation/virtual-management": "teleconsultation",
+
+      "/medication-tracker": "medicationtracker",
+
+      "/sidebar/notification":"",
+
     };
 
     const currentPath = location.pathname;
@@ -524,6 +530,21 @@ function SidebarAdmin() {
                   </li>
                 </ul>
               </li>
+
+              <li>
+                <Link
+                  to="/medication-tracker"
+                  className={`nav-link ${
+                    location.pathname === "/medication-tracker"
+                      ? "active-nav-links"
+                      : ""
+                  }`}
+                >
+                  <BiCapsule size={14} className="sidebar-icon" /> Medication
+                  Tracker
+                </Link>
+              </li>
+
               <li>
                 <Link
                   to=""
@@ -536,9 +557,9 @@ function SidebarAdmin() {
               </li>
               <li>
                 <Link
-                  to=""
+                  to="/sidebar/notification"
                   className={`nav-link ${
-                    location.pathname === "" ? "active-nav-links" : ""
+                    location.pathname === "/sidebar/notification" ? "active-nav-links" : ""
                   }`}
                 >
                   <Bell size={14} className="sidebar-icon" /> Notification

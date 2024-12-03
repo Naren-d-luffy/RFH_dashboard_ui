@@ -10,6 +10,9 @@ const PatientDetail = () => {
   return (
     <>
       <div className="container mt-3">
+        <div className="patient-detail-top-text mb-3">
+          <h3>Patient Detail</h3>
+        </div>
         <div className="row ">
           <div className="d-flex gap-3 align-items-center col-lg-4">
             <Avatar size={64} src={image} />
@@ -58,13 +61,12 @@ const PatientDetail = () => {
         </div>
 
         <div>
-        <PatientDetailsTable />
-      </div>
-      <div >
-          <button className="rfh-basic-button mt-5"
-            onClick={() =>
-              navigate("/marketing/patient-acquisition")
-            }
+          <PatientDetailsTable />
+        </div>
+        <div>
+          <button
+            className="rfh-basic-button mt-5"
+            onClick={() => navigate("/marketing/patient-acquisition")}
           >
             <IoIosArrowBack />
             Back

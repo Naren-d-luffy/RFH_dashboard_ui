@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { AiOutlinePieChart } from "react-icons/ai";
-import { AiOutlineSound } from "react-icons/ai";
+import { AiFillPieChart } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import clickicon from "../../../Assets/Icons/click-icon.png"
 import handIcon from "../../../Assets/Icons/handIcon.png"
 import { FaArrowUp } from "react-icons/fa";
+import Notification from "../../../Assets/Icons/Notification.png"
+
+
 export const InAppCampaigncards = () => {
     const cardsData = [
         {
@@ -16,7 +18,7 @@ export const InAppCampaigncards = () => {
             </>
           ),
           description: "Since last week",
-          icon: <AiOutlineSound />,
+          icon: <img src={Notification} alt="Click Icon" style={{ width: "20px" }} />,
           borderColor: "var(--primary-green)",
           iconColor: "var(--primary-green)",
           iconBackground: "#dffaf0",
@@ -46,7 +48,7 @@ export const InAppCampaigncards = () => {
           value: "5%",
           percentage: "+340",
           description: "New",
-          icon: <AiOutlinePieChart />,
+          icon: <AiFillPieChart />,
           borderColor: "var(--sky-blue-color)",
           iconColor: "var(--sky-blue-color)",
           iconBackground: "#e8f6ff",
