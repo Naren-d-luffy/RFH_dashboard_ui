@@ -1,7 +1,11 @@
 import { Button, DatePicker, Form, Input, Modal } from 'antd'
 import React from 'react'
+import { showSuccessMessage } from '../../../globalConstant';
 
 const UserManagementAddPatientsModal = ({ visible, onClose }) => {
+    const HandleClick = () => {
+        showSuccessMessage("Patient Added Successfully");
+      };
     return (
         <div>
             <Modal
@@ -19,7 +23,7 @@ const UserManagementAddPatientsModal = ({ visible, onClose }) => {
                     </Button>,
                     <Button
                         key="save"
-                        onClick={onClose}
+                        onClick={HandleClick}
                         className="create-campaign-save-button"
                     >
                         Save
