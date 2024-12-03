@@ -6,12 +6,12 @@
   color: var(--black-color);
 }
 
-.ant-picker-outlined {
+.add-events-datepicker.ant-picker-outlined {
   padding: 8px 6px;
 }
 
 .ant-select-selector {
-  padding: 19px 11px !important;
+  padding: 19px 11px !important ;
 }
 
 .recommend-image-card {
