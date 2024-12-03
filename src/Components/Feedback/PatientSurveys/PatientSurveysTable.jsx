@@ -32,11 +32,11 @@ const PatientSurveysTable = () => {
         };
 
         if (feedback.toLowerCase() === "good") {
-          style.background = "#ECFDF3";
-          style.color = "#027A48";
+          style.background = "#F2F4F7";
+          style.color = "var(--black-color)";
         } else if (feedback.toLowerCase() === "average") {
           style.background = "#F2F4F7";
-          style.color = "black";
+          style.color = "var(--black-color)";
         }
 
         return <span style={style}>{feedback}</span>;

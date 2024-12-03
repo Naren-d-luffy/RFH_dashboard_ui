@@ -18,14 +18,20 @@ import PatientSurveys from "./Pages/Feedback/PatientSurveys";
 import ViewFeedbackIndex from "./Pages/Feedback/ViewFeedbackIndex";
 import UserNegativeFeedbackPage from "./Pages/Feedback/UserNegativeFeedbackPage";
 import AppointmentStatusPage from "./Pages/Teleconsultation/AppointmentStatus";
+import AppointmentReports from "./Pages/Operational/AppointmentReports";
 import AppointmentFeedbackPage from "./Pages/Teleconsultation/AppoinmentFeedback";
 import VirtualManagementPage from "./Pages/Teleconsultation/VirtualManagement";
 import DoctorDetailPage from "./Pages/Teleconsultation/DoctorDetailPage";
 import ViewDoctorDetailPage from "./Pages/Teleconsultation/ViewDoctorDetailPage";
+
 import MedicationTrackerPage from "./Pages/MedicationTracker/MedicationTrackerPage";
 import MedicationTrackerPatientDetailPage from "./Pages/MedicationTracker/MedicationTrackerPatientDetailPage";
 import AddPatientDetail from "./Components/MedicationTracker/AddPatientDetail";
 import AddPatientDetailPage from "./Pages/MedicationTracker/AddPatientDetailPage";
+
+import NotificationIndex from "./Pages/Notification/NotificationIndex";
+import HeaderNotificationPage from "./Pages/HeaderNotification/HeaderNotification";
+
 
 export const AppRouter = () => {
   return (
@@ -106,6 +112,13 @@ export const AppRouter = () => {
           path="/teleconsultation/appointment-status"
           element={(Component = <AppointmentStatusPage />)}
         />
+
+        {/* operational Routes */}
+        <Route
+          path="/operational/appointment-reports"
+          element={(Component = <AppointmentReports />)}
+        />
+
         <Route
           path="/teleconsultation/appointment-feedback"
           element={(Component = <AppointmentFeedbackPage />)}
@@ -133,6 +146,18 @@ export const AppRouter = () => {
         <Route
           path="/medication-tracker/add-patient-detail"
           element={(Component = <AddPatientDetailPage />)}
+                            />
+        <Route
+
+          path="/sidebar/notification"
+          element={(Component = <NotificationIndex />)}
+                  />
+
+                  <Route
+
+          path="/header/notification"
+          element={(Component = <HeaderNotificationPage />)}
+
         />
       </Routes>
     </BrowserRouter>

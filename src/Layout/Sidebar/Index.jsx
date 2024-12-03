@@ -61,9 +61,16 @@ function SidebarAdmin() {
       "/feedback/view-feedback": "feedback",
       "/feedback/negative-feedback": "feedback",
       "/teleconsultation/appointment-status": "teleconsultation",
+      "/operational/appointment-reports":"operational",
+      "/operational/service-utilization":"operational",
+      "/operational/financial-performance":"operational",
       "/teleconsultation/appointment-feedback": "teleconsultation",
       "/teleconsultation/virtual-management": "teleconsultation",
+
       "/medication-tracker": "medicationtracker",
+
+      "/sidebar/notification":"",
+
     };
 
     const currentPath = location.pathname;
@@ -89,6 +96,7 @@ function SidebarAdmin() {
               src={logo}
               alt="RFH"
               className="sidebar-logo"
+              onClick={()=>navigate("/")}
             />
 
             <div className="d-lg-none" onClick={closeSidebar}>
@@ -446,18 +454,18 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                      User Acquisition & Retention
+                    <Link to="/operational/appointment-reports" className="sub-nav-link">
+                      Appointment Reports
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                      User Engagement
+                    <Link to="/operational/service-utilization" className="sub-nav-link">
+                      Service Utilization
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                      User Feedback
+                    <Link to="/operational/financial-performance" className="sub-nav-link">
+                      Financial Performance
                     </Link>
                   </li>
                 </ul>
@@ -530,9 +538,9 @@ function SidebarAdmin() {
               </li>
               <li>
                 <Link
-                  to=""
+                  to="/sidebar/notification"
                   className={`nav-link ${
-                    location.pathname === "" ? "active-nav-links" : ""
+                    location.pathname === "/sidebar/notification" ? "active-nav-links" : ""
                   }`}
                 >
                   <Bell size={14} className="sidebar-icon" /> Notification
