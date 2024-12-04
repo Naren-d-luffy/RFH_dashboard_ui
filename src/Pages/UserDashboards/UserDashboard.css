@@ -16,6 +16,7 @@
   padding: 17px 19px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
     rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    background-color: var(--card-background-color);
 }
 
 .userAquisition-icon-div {
@@ -238,7 +239,7 @@
   color: var(--secondary-text-color);
 }
 .user-engagement-card {
-  background-color: var(--white-color);
+  background-color: var(--card-background-color);
   border-radius: 12px;
   padding: 14px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
@@ -314,7 +315,7 @@
 .individual-most-user-card {
   border: 1px solid var(--border-color);
   padding: 12px;
-  background-color: var(--white-color);
+  background-color: var(--card-background-color);
   border-radius: 8px;
 }
 .individual-most-user-card h6 {

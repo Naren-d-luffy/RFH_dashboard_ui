@@ -1,9 +1,11 @@
 :root {
   --primary-green: #00963f;
+  --page-background-color: #fff;
   --dark-green: #36693e;
   --secondary-text-color: #6c7278;
+  --card-background-color:#fff;
   --black-color: #000;
-  --white-color: #fff;
+  --white-color: #fffdfd;
   --primary-grey-color: #9d9d9d;
   --light-red: #e15c7a;
   --background-color: #c6c8cb;
@@ -44,3 +46,12 @@
   --swal-color: #1A1C1E;
   --table-border: #133E58;
 }
+
+.dark-mode{
+  --page-background-color: #2d2d2d;
+  --card-background-color:#353535;
+  --black-color:#f9f9f9;
+  --secondary-text-color:#dce4e8;
+  --white-color:#222;
+}
+
