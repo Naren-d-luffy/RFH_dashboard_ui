@@ -55,6 +55,7 @@ export const FinancialPerformanceGraph = () => {
               data={paymentData}
               barSize={12} 
               barGap={17} 
+              barCategoryGap={20}
               margin={{ top: 20, right: 30, left: 0, bottom: 10 }}
             >
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
