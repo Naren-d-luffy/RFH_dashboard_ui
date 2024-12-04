@@ -1,6 +1,8 @@
 import { Button, Form, Input, Modal } from 'antd'
 import React from 'react'
 import ReactQuill from 'react-quill'
+import {showSuccessMessage} from "../../../globalConstant"
+
 
 const modules = {
     toolbar: [
@@ -11,7 +13,9 @@ const modules = {
       ["clean"],
     ],
   };
-
+  const handleClick=()=>{
+    showSuccessMessage("Sent Successfully", "Successfully sent to all");
+  }
 const NegativeFeedbackReplyAllModal = ({ open, handleCancel }) => {
     return (
         <Modal
@@ -29,7 +33,7 @@ const NegativeFeedbackReplyAllModal = ({ open, handleCancel }) => {
                 </Button>,
                 <Button
                     key="save"
-                    onClick={handleCancel}
+                    onClick={handleClick}
                     className="create-campaign-save-button"
                 >
                     Send
