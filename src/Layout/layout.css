@@ -342,7 +342,7 @@
 .main-wrapper {
     padding: 16px;
     margin-left: 280px;
-    background: var(--white-color);
+    background: var(--page-background-color);
     min-height: 80vh;
     height: 100%;
 }
