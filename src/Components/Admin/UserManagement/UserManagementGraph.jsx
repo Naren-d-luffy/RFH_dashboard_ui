@@ -85,7 +85,7 @@ const UserManagementGraph = () => {
                     <div className="userManaggement-card flex-column flex-sm-row gap-4 align-items-center">
                         <div className="d-flex align-items-center justify-content-between">
                             <div className="">
-                                <h2 className="card-title text-start mb-3">Number of Shares</h2>
+                                <h2 className="card-title text-start mb-3">Patient Type</h2>
                             </div>
 
                             <div

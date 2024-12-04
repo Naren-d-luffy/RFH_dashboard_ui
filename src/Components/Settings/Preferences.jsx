@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Select } from "antd";
 import lightmode from "../../Assets/Images/lightmode.png";
 import darkmode from "../../Assets/Images/darkmode.png";
@@ -10,7 +10,22 @@ export const Preferences = () => {
   const [form] = Form.useForm();
 
   const [activeTheme, setActiveTheme] = useState("light");
-
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  useEffect(() => {
+    const savedDarkMode = localStorage.getItem("darkMode");
+    if (savedDarkMode === "true") {
+      setIsDarkMode(true);
+    }
+  }, []);
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark-mode");
+      localStorage.setItem("darkMode", "true");
+    } else {
+      document.documentElement.classList.remove("dark-mode");
+      localStorage.setItem("darkMode", "false");
+    }
+  }, [isDarkMode]);
   return (
     <div className="settings-personal-information">
       <div className="container">
@@ -20,30 +35,41 @@ export const Preferences = () => {
         <Form layout="vertical" form={form}>
           <h5>Select Theme</h5>
           <div className="row mt-4">
-            <div className="col-md-4">
+            <div className="col-md-6">
               <div className="settings-theme-image">
-                <img src={lightmode} alt="" />
+                <img src={lightmode} alt="" onClick={() => {
+                  setActiveTheme("light");
+                  setIsDarkMode(false);
+                }}/>
                 <p className={activeTheme === "light" ? "active" : ""}>
                   Light Mode (Active)
                 </p>
               </div>
             </div>
-            <div className=" col-md-4">
-              <div className="settings-theme-image">
-                <img src={darkmode} alt="" />
+            <div className="col-md-6">
+              <div
+                className="settings-theme-image"
+                
+                style={{ cursor: "pointer" }}
+              >
+                <img src={darkmode} alt="Dark Mode" onClick={() => {
+                  setActiveTheme("dark");
+                  setIsDarkMode(true);
+                }} />
                 <p className={activeTheme === "dark" ? "active" : ""}>
                   Dark Mode
                 </p>
               </div>
             </div>
-            <div className=" col-md-4">
+
+            {/* <div className=" col-md-4">
               <div className="settings-theme-image">
                 <img src={customcolor} alt="" />
                 <p className={activeTheme === "custom" ? "active" : ""}>
                   Custom Colour
                 </p>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="row mt-4">
