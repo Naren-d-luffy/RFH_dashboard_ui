@@ -23,6 +23,8 @@ import AppointmentFeedbackPage from "./Pages/Teleconsultation/AppoinmentFeedback
 import VirtualManagementPage from "./Pages/Teleconsultation/VirtualManagement";
 import DoctorDetailPage from "./Pages/Teleconsultation/DoctorDetailPage";
 import ViewDoctorDetailPage from "./Pages/Teleconsultation/ViewDoctorDetailPage";
+import ChatPage from "./Pages/Teleconsultation/ChatPage";
+import ChattingPage from "./Pages/Chat/chatPage";
 
 import MedicationTrackerPage from "./Pages/MedicationTracker/MedicationTrackerPage";
 import MedicationTrackerPatientDetailPage from "./Pages/MedicationTracker/MedicationTrackerPatientDetailPage";
@@ -136,6 +138,14 @@ export const AppRouter = () => {
           path="/teleconsultation/view-doctor-detail"
           element={(Component = <ViewDoctorDetailPage />)}
         />
+         <Route
+          path="/teleconsultation/technical-support"
+          element={(Component = <ChatPage />)}
+        />
+        <Route
+          path="/chat"
+          element={(Component = <ChattingPage />)}
+         />
         <Route
           path="/medication-tracker"
           element={(Component = <MedicationTrackerPage />)}

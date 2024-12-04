@@ -66,9 +66,8 @@ function SidebarAdmin() {
       "/operational/financial-performance": "operational",
       "/teleconsultation/appointment-feedback": "teleconsultation",
       "/teleconsultation/virtual-management": "teleconsultation",
-
+      "/teleconsultation/technical-support":"teleconsultation"
       "/medication-tracker": "medicationtracker",
-
       "/sidebar/notification":"",
 
     };
@@ -356,12 +355,12 @@ function SidebarAdmin() {
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link
-                      to="/"
-                      className={`sub-nav-link ${
-                        location.pathname === "/" ? "active-sub-link" : ""
-                      }`}
-                    >
+                    <Link to="/teleconsultation/technical-support"  className={`sub-nav-link ${
+                        location.pathname === "/teleconsultation/technical-support"
+                          ? "active-sub-link"
+                          : ""
+                      }`}>
+
                       Technical Support
                     </Link>
                   </li>
