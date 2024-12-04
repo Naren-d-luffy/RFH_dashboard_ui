@@ -31,7 +31,8 @@ import AddPatientDetailPage from "./Pages/MedicationTracker/AddPatientDetailPage
 
 import NotificationIndex from "./Pages/Notification/NotificationIndex";
 import HeaderNotificationPage from "./Pages/HeaderNotification/HeaderNotification";
-
+import ServiceUtilizationPage from "./Pages/Operational/ServiceUtilizationPage";
+import FinancialPerformancePage from "./Pages/Operational/FinancialPerformancePage";
 
 export const AppRouter = () => {
   return (
@@ -146,18 +147,23 @@ export const AppRouter = () => {
         <Route
           path="/medication-tracker/add-patient-detail"
           element={(Component = <AddPatientDetailPage />)}
-                            />
+        />
         <Route
-
           path="/sidebar/notification"
           element={(Component = <NotificationIndex />)}
-                  />
+        />
 
-                  <Route
-
+        <Route
           path="/header/notification"
           element={(Component = <HeaderNotificationPage />)}
-
+        />
+        <Route
+          path="/operational/service-utilization"
+          element={(Component = <ServiceUtilizationPage />)}
+        />
+        <Route
+          path="/operational/financial-performance"
+          element={(Component = <FinancialPerformancePage />)}
         />
       </Routes>
     </BrowserRouter>
