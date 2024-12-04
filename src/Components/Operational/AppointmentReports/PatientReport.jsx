@@ -2,8 +2,21 @@ import React, { useRef } from "react";
 import { Modal } from "antd";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+} from "chart.js";
 import logo from "../../../Assets/Images/logo.png";
-import {showSuccessMessage} from "../../../globalConstant"
+import { showSuccessMessage } from "../../../globalConstant";
+
+// Register Chart.js components
+ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip);
 
 export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
   const reportRef = useRef(null);
@@ -31,13 +44,79 @@ export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
 
       pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
       pdf.save("HbA1c_Report.pdf");
-      
-       
-      
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
     showSuccessMessage("Completed", "You have successfully downloaded Saikiran file");
+  };
+
+  const graphData = {
+    labels: ["04-Jun-22", "20-Oct-22", "16-Jan-24", "07-Jul-23"],
+    datasets: [
+      {
+        label: "Value (%)",
+        data: [60.9, 60.5, 61.6, 60.7],
+        borderColor: "#87CEEB",
+        backgroundColor: "#87CEEB",
+        tension: 0.4,
+        pointRadius: 4,
+        pointBackgroundColor: "#87CEEB",
+        pointHoverRadius: 5,
+      },
+    ],
+  };
+
+  const graphOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false, 
+      },
+      tooltip: {
+        enabled: true, 
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Visit Date",
+          font: {
+            size: 14,
+          },
+        },
+        ticks: {
+          font: {
+            size: 12,
+          },
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Value (%)",
+          font: {
+            size: 14,
+          },
+        },
+        ticks: {
+          stepSize: 20, 
+          font: {
+            size: 12,
+          },
+        },
+        min: 0,
+        max: 80, 
+      },
+    },
+    layout: {
+      padding: {
+        top: 10,
+        bottom: 10,
+        left: 10,
+        right: 10,
+      },
+    },
   };
 
   return (
@@ -91,7 +170,6 @@ export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
             </tbody>
           </table>
         </div>
-
         <div className="clinical-info mt-4">
           <h3>Clinical Information / Interpretation</h3>
           <p>
@@ -105,6 +183,13 @@ export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
             determinations.
           </p>
         </div>
+        <div className="report-graph" style={{ marginTop: "30px", textAlign: "center" }}>
+          <h3 style={{ fontSize: "14px", marginBottom: "10px" }}>
+            Glycosylated Haemoglobin | HbA1c | (Test - 1)
+          </h3>
+          <Line data={graphData} options={graphOptions} />
+        </div>
+
         <div className="report-footer" style={{ padding: "20px 0" }}>
           <hr />
           <div
@@ -145,7 +230,9 @@ export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
         </div>
       </div>
       <div className="modal-actions d-flex justify-content-end">
-        <button onClick={handleDownloadPDF} className="rfh-basic-button">Download</button>
+        <button onClick={handleDownloadPDF} className="rfh-basic-button">
+          Download
+        </button>
       </div>
     </Modal>
   );
