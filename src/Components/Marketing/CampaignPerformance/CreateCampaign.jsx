@@ -4,7 +4,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
-import { GoPlus } from "react-icons/go";
+import {showSuccessMessage} from "../../../globalConstant" 
 
 const { Dragger } = Upload;
 
@@ -17,8 +17,12 @@ const modules = {
     ["clean"],
   ],
 };
+const handleSuccessDelete=()=>{
+  showSuccessMessage("Successfully Created Campaign", "");
+}
 
 const CreateCampaign = ({ open, handleCancel }) => (
+  
   <Modal
     open={open}
     title={<span className="create-campaign-modal-title">Create Campaign</span>}
@@ -34,7 +38,7 @@ const CreateCampaign = ({ open, handleCancel }) => (
       </Button>,
       <Button
         key="save"
-        onClick={handleCancel}
+        onClick={handleSuccessDelete}
         className="create-campaign-save-button"
       >
         Save
@@ -42,8 +46,8 @@ const CreateCampaign = ({ open, handleCancel }) => (
     ]}
   >
     <Form layout="vertical" className="mt-4">
-      <Form.Item label="Brand Logo">
-        <Dragger>
+      <Form.Item label="Brand logo">
+        <Upload listType="picture" className="create-campaign-upload">
           <p className="create-campaign-ant-upload-text">
             Drop files here or click to upload
           </p>
@@ -51,11 +55,11 @@ const CreateCampaign = ({ open, handleCancel }) => (
             <IoCloudUploadOutline />{" "}
             <span style={{ color: "#727880" }}>Upload Image</span>
           </span>
-        </Dragger>
+        </Upload>
       </Form.Item>
 
       <Form.Item>
-        <Input className="create-camapign-input" placeholder="RFH Welcome"  />
+        <Input className="create-camapign-input" placeholder="RFH Welcome" />
         <span className="create-campaign-input-span">Campaign Title</span>
       </Form.Item>
 
@@ -85,7 +89,10 @@ const CreateCampaign = ({ open, handleCancel }) => (
         <Col span={10}>
           <Form.Item>
             <Form.Item>
-              <Input className="create-camapign-input" placeholder="https://www.rfhhospitalcampaign.com/" />
+              <Input
+                className="create-camapign-input"
+                placeholder="https://www.rfhhospitalcampaign.com/"
+              />
               <span className="create-campaign-input-span">Link</span>
             </Form.Item>
           </Form.Item>

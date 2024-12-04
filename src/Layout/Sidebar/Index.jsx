@@ -2,25 +2,145 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../layout.css";
 import logo from "../../Assets/Images/logo.png";
-import {FiChevronDown, FiChevronUp,} from "react-icons/fi";
-// import Swal from "sweetalert2";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
-import { IoTelescopeOutline } from "react-icons/io5";
 import { MdOutlineDashboard } from "react-icons/md";
 import { GoShieldCheck } from "react-icons/go";
 import { TbCirclePercentage } from "react-icons/tb";
+import {
+  Bell,
+  Handshake,
+  LogOut,
+  MemoryStick,
+  MessageCircleCode,
+  MessageSquareMore,
+  Settings,
+} from "lucide-react";
 import { SlGraduation } from "react-icons/sl";
-import { Bell, Handshake, LogOut, MemoryStick, MessageCircleCode, MessageSquareMore, Settings } from "lucide-react";
+import { IoTelescopeOutline } from "react-icons/io5";
+import { BiCapsule } from "react-icons/bi";
+
+// Menu configuration object
+const menuConfig = [
+  {
+    id: "userDashboards",
+    label: "User Dashboards",
+    icon: <MdOutlineDashboard className="sidebar-icon" />,
+    subMenu: [
+      { label: "User Acquisition & Retention", to: "/" },
+      { label: "User Engagement", to: "/user-dashboards/user-engagement" },
+    ],
+  },
+  {
+    id: "admin",
+    label: "Admin",
+    icon: <GoShieldCheck className="sidebar-icon" />,
+    subMenu: [{ label: "User Management", to: "/admin/user-management" }],
+  },
+  {
+    id: "marketing",
+    label: "Marketing",
+    icon: <TbCirclePercentage className="sidebar-icon" />,
+    subMenu: [
+      { label: "Campaign Performance", to: "/marketing/campaign-performance" },
+      { label: "InApp Campaign", to: "/marketing/in-app-campaign" },
+      { label: "Patient Acquisition", to: "/marketing/patient-acquisition" },
+    ],
+  },
+  {
+    id: "education",
+    label: "Patient Education",
+    icon: <SlGraduation className="sidebar-icon" />,
+    subMenu: [
+      { label: "Education Overview", to: "/patient-education/overview" },
+      { label: "Education Resources", to: "/patient-education/resources" },
+    ],
+  },
+  {
+    id: "teleconsultation",
+    label: "Teleconsultation",
+    icon: <IoTelescopeOutline className="sidebar-icon" />,
+    subMenu: [
+      {
+        label: "Virtual Management",
+        to: "/teleconsultation/virtual-management",
+      },
+      {
+        label: "Appointment Status",
+        to: "/teleconsultation/appointment-status",
+      },
+      { label: "Technical Support", to: "/" },
+    ],
+  },
+  {
+    id: "feedback",
+    label: "Feedback",
+    icon: <MessageCircleCode className="sidebar-icon" size={14}/>,
+    subMenu: [
+      { label: "Create Survey", to: "/feedback/create-survey" },
+      { label: "Patient Survey", to: "/feedback/patient-surveys" },
+    ],
+  },
+  {
+    id: "operational",
+    label: "Operational",
+    icon: <Handshake className="sidebar-icon" size={14} />,
+    subMenu: [
+      { label: "Appointment Reports", to: "/operational/appointment-reports" },
+      { label: "Service Utilization", to: "/operational/service-utilization" },
+      {
+        label: "Financial Performance",
+        to: "/operational/financial-performance",
+      },
+    ],
+  },
+  {
+    id: "technical",
+    label: "Technical",
+    icon: <MemoryStick className="sidebar-icon" size={14}/>,
+    subMenu: [
+      { label: "User Acquisition & Retention", to: "/" },
+      { label: "User Engagement", to: "/" },
+      { label: "User Feedback", to: "/" },
+    ],
+  },
+  {
+    id: "medication",
+    label: "Medication Tracker",
+    icon: <BiCapsule className="sidebar-icon" />,
+    to: "/medication-tracker",
+  },
+  {
+    id: "chat",
+    label: "Chat",
+    icon: <MessageSquareMore className="sidebar-icon" size={14}/>,
+    to: "/chat",
+  },
+  {
+    label: "Notification",
+    icon: <Bell className="sidebar-icon" size={14}/>,
+    to: "/sidebar/notification",
+  },
+  {
+    label: "Settings",
+    icon: <Settings className="sidebar-icon" size={14}/>,
+    to: "/dashboard/settings",
+  },
+  {
+    id: "logout",
+    label: "LogOut",
+    icon: <LogOut size={14} className="sidebar-icon" />,
+    to: "/logout",
+  },
+];
 
 function SidebarAdmin() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState(null);
-  
 
   const toggleSidebar = () => {
-    console.log("Toggle Sidebar Clicked");
     setIsSidebarOpen(!isSidebarOpen);
   };
 
@@ -31,10 +151,37 @@ function SidebarAdmin() {
   const toggleMenu = (menu) => {
     setExpandedMenu(expandedMenu === menu ? null : menu);
   };
-  
+
   useEffect(() => {
     const pathToMenuMap = {
-     
+      "/": "userDashboards",
+      "/user-dashboards/user-engagement": "userDashboards",
+      "/admin/user-management": "admin",
+      "/marketing/campaign-performance": "marketing",
+      "/marketing/patient-acquisition": "marketing",
+      "/marketing/in-app-campaign": "marketing",
+      "/marketing/patient-acquisition/patient-detail": "marketing",
+      "/dashboard/settings": "",
+      "/patient-education/overview": "education",
+      "/patient-education/resources": "education",
+      "/feedback/create-survey": "feedback",
+      "/feedback/create-survey-page": "feedback",
+      "/education-resources/reading-materials": "education",
+      "/feedback/create-survey/single-survey-details": "feedback",
+      "/feedback/create-survey/populated-survey-data": "feedback",
+      "/feedback/patient-surveys": "feedback",
+      "/feedback/view-feedback": "feedback",
+      "/feedback/negative-feedback": "feedback",
+      "/teleconsultation/appointment-status": "teleconsultation",
+      "/operational/appointment-reports": "operational",
+      "/operational/service-utilization": "operational",
+      "/operational/financial-performance": "operational",
+      "/teleconsultation/appointment-feedback": "teleconsultation",
+      "/teleconsultation/virtual-management": "teleconsultation",
+      "/teleconsultation/view-doctor-detail": "teleconsultation",
+      "/medication-tracker": "medicationtracker",
+      "/sidebar/notification": "",
+      "/logout": "logout",
     };
 
     const currentPath = location.pathname;
@@ -44,390 +191,83 @@ function SidebarAdmin() {
   }, [location.pathname]);
 
   return (
-    <>
-      {/* <div className="toggle-btn" onClick={toggleSidebar}>
-        <FiMenu size={26} />
-      </div> */}
-      <div
-  className={`sidebar ${isSidebarOpen ? "open" : ""} `}
->
-  <aside
-    className={`sidebar-content ${isSidebarOpen ? "open" : ""} `}
-  >
-    {isSidebarOpen && (
-      <div className="overlay overlay-open" onClick={closeSidebar}></div>
-    )}
-
-    <div className="sidebar-header d-flex justify-content-center align-items-center">
-        <img
-          style={{ cursor: "pointer" }}
-          src={logo}
-          alt="RFH"
-          className="sidebar-logo"
-        />
-      
-      <div className="d-lg-none" onClick={closeSidebar}>
-        <IoMdClose size={26} />
-      </div>
+    <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
+      <aside className={`sidebar-content ${isSidebarOpen ? "open" : ""}`}>
+        <div className="sidebar-header d-flex justify-content-center align-items-center">
+          <img
+            src={logo}
+            alt="Logo"
+            className="sidebar-logo"
+            onClick={() => navigate("/")}
+          />
+          <div className="d-lg-none" onClick={closeSidebar}>
+            <IoMdClose size={26} />
+          </div>
+        </div>
+        <nav className="sidebar-nav">
+          <ul>
+            {menuConfig.map((menuItem) => (
+              <li key={menuItem.id}>
+                {menuItem.subMenu ? (
+                  <>
+                    <div
+                      className={`nav-link ${
+                        expandedMenu === menuItem.id ? "active-nav-links" : ""
+                      }`}
+                      onClick={() => toggleMenu(menuItem.id)}
+                    >
+                      <span className="d-flex align-items-center justify-content-between">
+                        <span className="d-flex align-items-center">
+                          {menuItem.icon}
+                          <span>{menuItem.label}</span>
+                        </span>
+                        {expandedMenu === menuItem.id ? (
+                          <FiChevronUp className="dropdown-icon" />
+                        ) : (
+                          <FiChevronDown className="dropdown-icon" />
+                        )}
+                      </span>
+                    </div>
+                    <ul
+                      className={`sub-menu ${
+                        expandedMenu === menuItem.id ? "active" : ""
+                      }`}
+                    >
+                      {menuItem.subMenu.map((subItem, subIndex) => (
+                        <li key={subIndex} className="sub-nav-list">
+                          <Link
+                            to={subItem.to}
+                            className={`sub-nav-link ${
+                              location.pathname === subItem.to
+                                ? "active-sub-link"
+                                : ""
+                            }`}
+                          >
+                            {subItem.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : (
+                  <Link
+                    to={menuItem.to}
+                    className={`nav-link ${
+                      location.pathname === menuItem.to
+                        ? "active-nav-links"
+                        : ""
+                    }`}
+                  >
+                    {menuItem.icon}
+                    {menuItem.label}
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
     </div>
-          <nav className="sidebar-nav">
-            <ul>
-            <li>
-                <div
-                  className={`nav-link ${
-                    expandedMenu === "userDashboards" ? "active-nav-links" : ""
-                  }`}
-                  onClick={() => toggleMenu("userDashboards")}
-                >
-                  <span className="d-flex align-items-center justify-content-between">
-                    <span className="d-flex align-items-center">
-                      <MdOutlineDashboard className="sidebar-icon" />
-                      <span> User Dashboards</span>
-                    </span>
-                    {expandedMenu === "userDashboards" ? (
-                      <FiChevronUp className="dropdown-icon" />
-                    ) : (
-                      <FiChevronDown className="dropdown-icon" />
-                    )}
-                  </span>
-                </div>
-                <ul
-                  className={`sub-menu ${
-                    expandedMenu === "userDashboards" ? "active" : ""
-                  }`}
-                >
-                  <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                    User Acquisition & Retention
-                    </Link>
-                  </li>
-                  <li className="sub-nav-list">
-                    <Link to="/user-engagement" className="sub-nav-link">
-                    User Engagement
-                    </Link>
-                  </li>
-                  <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                    User Feedback
-                    </Link>
-                  </li>
-                  
-                </ul>
-              </li>
-              <li>
-                <div
-                  className={`nav-link ${
-                    expandedMenu === "admin" ? "active-nav-links" : ""
-                  }`}
-                  onClick={() => toggleMenu("admin")}
-                >
-                  <span className="d-flex align-items-center justify-content-between">
-                    <span className="d-flex align-items-center">
-                      <GoShieldCheck  className="sidebar-icon" />
-                      <span> Admin</span>
-                    </span>
-                    {expandedMenu === "admin" ? (
-                      <FiChevronUp className="dropdown-icon" />
-                    ) : (
-                      <FiChevronDown className="dropdown-icon" />
-                    )}
-                  </span>
-                </div>
-                {/* <ul
-                  className={`sub-menu ${
-                    expandedMenu === "recruiters" ? "active" : ""
-                  }`}
-                >
-                  <li className="sub-nav-list">
-                    <Link to="/admin/add-recruiter" className="sub-nav-link">
-                      Add Recruiter
-                    </Link>
-                  </li>
-                  <li className="sub-nav-list">
-                    <Link to="/admin/all-recruiters" className="sub-nav-link">
-                      All Recruiter
-                    </Link>
-                  </li>
-                </ul> */}
-              </li>
-
-              <li>
-                <div
-                  className={`nav-link ${
-                    expandedMenu === "marketing" ? "active-nav-links" : ""
-                  }`}
-                  onClick={() => toggleMenu("marketing")}
-                >
-                  <span className="d-flex align-items-center justify-content-between">
-                    <span className="d-flex align-items-center">
-                      <TbCirclePercentage  className="sidebar-icon" />
-                      <span> Marketing</span>
-                    </span>
-                    {expandedMenu === "marketing" ? (
-                      <FiChevronUp className="dropdown-icon" />
-                    ) : (
-                      <FiChevronDown className="dropdown-icon" />
-                    )}
-                  </span>
-                </div>
-                <ul
-                  className={`sub-menu ${
-                    expandedMenu === "marketing" ? "active" : ""
-                  }`}
-                >
-                  <li className="sub-nav-list">
-                    <Link to="/campaign-performance-page" className="sub-nav-link">
-                     Campaign Performance
-                    </Link>
-                  </li>
-                  <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                     InApp Campaign
-                    </Link>
-                  </li>
-                  <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                      Patient Aquisition
-                    </Link>
-                  </li>
-                  
-                </ul>
-              </li>
-
-              <li>
-                <Link
-                  to=""
-                  className={`nav-link ${
-                    location.pathname === ""
-                      ? "active-nav-links"
-                      : ""
-                  }`}
-                >
-                  <SlGraduation  className="sidebar-icon" />{" "}
-                  Education
-                </Link>
-              </li>
-
-              <li>
-                <div
-                  className={`nav-link ${
-                    expandedMenu === "teleconsultation" ? "active-nav-links" : ""
-                  }`}
-                  onClick={() => toggleMenu("teleconsultation")}
-                >
-                  <span className="d-flex align-items-center justify-content-between">
-                    <span className="d-flex align-items-center">
-                      <IoTelescopeOutline  className="sidebar-icon" />
-                      <span>Teleconsultation</span>
-                    </span>
-                    {expandedMenu === "teleconsultation" ? (
-                      <FiChevronUp className="dropdown-icon" />
-                    ) : (
-                      <FiChevronDown className="dropdown-icon" />
-                    )}
-                  </span>
-                </div>
-                {/* <ul
-                  className={`sub-menu ${
-                    expandedMenu === "clients" ? "active" : ""
-                  }`}
-                >
-                  <li className="sub-nav-list">
-                    <Link to="/admin/add-new-client" className="sub-nav-link">
-                      Add New Client
-                    </Link>
-                  </li>
-                  <li className="sub-nav-list">
-                    <Link to="/admin/top-clients" className="sub-nav-link">
-                      Top Client
-                    </Link>
-                  </li>
-                </ul> */}
-              </li>
-
-              <li>
-                <div
-                  className={`nav-link ${
-                    expandedMenu === "feedback" ? "active-nav-links" : ""
-                  }`}
-                  onClick={() => toggleMenu("feedback")}
-                >
-                  <span className="d-flex align-items-center justify-content-between">
-                    <span className="d-flex align-items-center">
-                      <MessageCircleCode className="sidebar-icon" size={14} />
-                      <span> Feedback</span>
-                    </span>
-                    {expandedMenu === "feedback" ? (
-                      <FiChevronUp className="dropdown-icon" />
-                    ) : (
-                      <FiChevronDown className="dropdown-icon" />
-                    )}
-                  </span>
-                </div>
-                {/* <ul
-                  className={`sub-menu ${
-                    expandedMenu === "database" ? "active" : ""
-                  }`}
-                >
-                  <li className="sub-nav-list">
-                    <Link to="/admin/total-jobs" className="sub-nav-link">
-                      Total Jobs
-                    </Link>
-                  </li>
-                  <li className="sub-nav-list">
-                    <Link to="/admin/total-applicants" className="sub-nav-link">
-                      Total Applicants
-                    </Link>
-                  </li>
-                  <li className="sub-nav-list">
-                    <Link to="/admin/total-clients" className="sub-nav-link">
-                      Total Clients
-                    </Link>
-                  </li>
-                </ul> */}
-              </li>
-              <li>
-                <div
-                  className={`nav-link ${
-                    expandedMenu === "operational" ? "active-nav-links" : ""
-                  }`}
-                  onClick={() => toggleMenu("operational")}
-                >
-                  <span className="d-flex align-items-center justify-content-between">
-                    <span className="d-flex align-items-center">
-                      <Handshake className="sidebar-icon" size={14}/>
-                      <span> Operational</span>
-                    </span>
-                    {expandedMenu === "operational" ? (
-                      <FiChevronUp className="dropdown-icon" />
-                    ) : (
-                      <FiChevronDown className="dropdown-icon" />
-                    )}
-                  </span>
-                </div>
-                <ul
-                  className={`sub-menu ${
-                    expandedMenu === "operational" ? "active" : ""
-                  }`}
-                >
-                  <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                    User Acquisition & Retention
-                    </Link>
-                  </li>
-                  <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                    User Engagement
-                    </Link>
-                  </li>
-                  <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                    User Feedback
-                    </Link>
-                  </li>
-                  
-                </ul>
-              </li>
-              <li>
-                <div
-                  className={`nav-link ${
-                    expandedMenu === "technical" ? "active-nav-links" : ""
-                  }`}
-                  onClick={() => toggleMenu("technical")}
-                >
-                  <span className="d-flex align-items-center justify-content-between">
-                    <span className="d-flex align-items-center">
-                      <MemoryStick className="sidebar-icon" size={14}/>
-                      <span> Technical</span>
-                    </span>
-                    {expandedMenu === "technical" ? (
-                      <FiChevronUp className="dropdown-icon" />
-                    ) : (
-                      <FiChevronDown className="dropdown-icon" />
-                    )}
-                  </span>
-                </div>
-                <ul
-                  className={`sub-menu ${
-                    expandedMenu === "technical" ? "active" : ""
-                  }`}
-                >
-                  <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                    User Acquisition & Retention
-                    </Link>
-                  </li>
-                  <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                    User Engagement
-                    </Link>
-                  </li>
-                  <li className="sub-nav-list">
-                    <Link to="/" className="sub-nav-link">
-                    User Feedback
-                    </Link>
-                  </li>
-                  
-                </ul>
-              </li>
-              <li>
-                <Link
-                  to=""
-                  className={`nav-link ${
-                    location.pathname === ""
-                      ? "active-nav-links"
-                      : ""
-                  }`}
-                >
-                  <MessageSquareMore size={14} className="sidebar-icon" />{" "}
-                  Chat
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to=""
-                  className={`nav-link ${
-                    location.pathname === ""
-                      ? "active-nav-links"
-                      : ""
-                  }`}
-                >
-                  <Bell size={14} className="sidebar-icon" />{" "}
-                  Notification
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to=""
-                  className={`nav-link ${
-                    location.pathname === ""
-                      ? "active-nav-links"
-                      : ""
-                  }`}
-                >
-                  <Settings size={14}  className="sidebar-icon" />{" "}
-                  Settings
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to=""
-                  className={`nav-link ${
-                    location.pathname === ""
-                      ? "active-nav-links"
-                      : ""
-                  }`}
-                >
-                  <LogOut size={14}  className="sidebar-icon" />{" "}
-                  LogOut
-                </Link>
-              </li>
-
-            </ul>
-          </nav>
-        </aside>
-      </div>
-    </>
   );
 }
 

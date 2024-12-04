@@ -1,20 +1,25 @@
 import React, { useState } from "react";
 import { GoPlus } from "react-icons/go";
-import { HiOutlineLightBulb } from "react-icons/hi";
-import { AiOutlinePieChart } from "react-icons/ai";
-import { PiHandTap } from "react-icons/pi";
-import { AiOutlineSound } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { AiFillPieChart } from "react-icons/ai";
 import CreateCampaign from "./CreateCampaign";
+import { FaArrowUp } from "react-icons/fa";
+import clickicon from "../../../Assets/Icons/click-icon.png"
+import handIcon from "../../../Assets/Icons/handIcon.png"
+import Notification from "../../../Assets/Icons/Notification.png"
+
 
 const CampaignPerformance = () => {
   const cardsData = [
     {
       title: "Total Campaign",
       value: 20,
-      percentage: "2%",
+      percentage: (
+        <>
+           <FaArrowUp style={{ color: "var(--primary-green)", fontSize: "12px" }} /> {" "}2%
+        </>
+      ),
       description: "Since last week",
-      icon: <AiOutlineSound />,
+      icon: <img src={Notification} alt="Click Icon" style={{ width: "20px" }} />,
       borderColor: "var(--primary-green)",
       iconColor: "var(--primary-green)",
       iconBackground: "#dffaf0",
@@ -24,7 +29,7 @@ const CampaignPerformance = () => {
       value: "22,500",
       percentage: "340",
       description: "Users",
-      icon: <HiOutlineLightBulb />,
+      icon: <img src={clickicon} alt="Click Icon" style={{ width: "20px" }} />,
       borderColor: "var(--sky-blue-color)",
       iconColor: "var(--sky-blue-color)",
       iconBackground: "#e8f6ff",
@@ -34,7 +39,7 @@ const CampaignPerformance = () => {
       value: "15%",
       percentage: "+165",
       description: "New",
-      icon: <PiHandTap />,
+      icon: <img src={handIcon} alt="Click Icon" style={{ width: "15px" }} />,
       borderColor: "var(--light-orange-color)",
       iconColor: "#FFD66B",
       iconBackground: "#FFF4DB",
@@ -42,9 +47,9 @@ const CampaignPerformance = () => {
     {
       title: "Conversion Rate",
       value: "5%",
-      percentage: "1%",
-      description: "Since last week",
-      icon: <AiOutlinePieChart />,
+      percentage: "+340",
+      description: "New",
+      icon: <AiFillPieChart />,
       borderColor: "var(--sky-blue-color)",
       iconColor: "var(--sky-blue-color)",
       iconBackground: "#e8f6ff",
@@ -52,7 +57,6 @@ const CampaignPerformance = () => {
   ];
 
 
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => setIsModalOpen(true);

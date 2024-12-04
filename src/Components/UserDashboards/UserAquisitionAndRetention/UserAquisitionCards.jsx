@@ -4,9 +4,14 @@ import { PiExport } from 'react-icons/pi';
 import { FaChartLine, FaShoppingCart, FaDollarSign } from 'react-icons/fa6';
 import profile_tick from '../../../Assets/Icons/profile-tick.png'
 import { Button, Modal } from 'antd';
+import {showSuccessMessage} from "../../../globalConstant"
 
 export const UserAquisitionCards = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const handleSuccessDelete=()=>{
+    showSuccessMessage("Export Successfully", "Please check your document, and open your document file");
+    setIsModalVisible(false);
+  }
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -26,7 +31,7 @@ export const UserAquisitionCards = () => {
       heading: 'Total new user',
       value: '5.715',
       percentage: (
-        <span>
+        <span style={{ color: 'red' }}>
           <FaArrowDown style={{ color: 'red', marginRight: '4px' }} />
           -0.10%
         </span>
@@ -93,7 +98,7 @@ export const UserAquisitionCards = () => {
             <option value="3">Week 4</option>
             <option value="4">Week 5</option>
           </select>
-          <button className="d-flex gap-2 align-items-center export-button" onClick={showModal}>
+          <button className="d-flex gap-2 align-items-center rfh-basic-button" onClick={showModal}>
             <PiExport />
             Export
           </button>
@@ -165,8 +170,8 @@ export const UserAquisitionCards = () => {
             </div>
           </div>
           <div className='d-flex justify-content-center gap-3 mt-3'>
-          <Button className='py-4'>Cancel</Button>
-            <button className='export-button'>Confirm</button>
+            <Button className='py-4' onClick={handleCancel}>Cancel</Button>
+            <button className='export-button' onClick={handleSuccessDelete}>Confirm</button>
           </div>
         </div>
 

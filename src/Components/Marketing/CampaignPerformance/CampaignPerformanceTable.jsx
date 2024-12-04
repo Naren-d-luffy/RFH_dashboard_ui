@@ -1,9 +1,13 @@
 import React from "react";
-import { Table, Dropdown, Button, Space,} from "antd";
-import { FiEdit, FiEye, FiFilter, FiSearch, FiTrash2 } from "react-icons/fi";
+import { Table, Dropdown, Button, Space, Input,} from "antd";
+import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
+import {showDeleteMessage} from "../../../globalConstant"
 
 const CampaignPerformanceTable = () => {
+  const handleDelete = (name) => {
+    showDeleteMessage({ message: `${name}` });
+  };
   const columns = [
     {
       title: "Campaign Name",
@@ -76,7 +80,7 @@ const CampaignPerformanceTable = () => {
     {
       title: "Action",
       key: "action",
-      render: () => (
+      render: (_, record) => (
         <div className="campaign-performance-table-action-icons">
           <div className="campaign-performance-table-eye-icon">
             <FiEye />
@@ -85,12 +89,12 @@ const CampaignPerformanceTable = () => {
             <FiEdit />
           </div>
           <div className="campaign-performance-table-delete-icon">
-            <FiTrash2 />
+            <FiTrash2 onClick={() => handleDelete(record.name)} />
           </div>
         </div>
       ),
       className: "campaign-performance-table-column",
-    },
+    }
   ];
 
   const data = [
@@ -184,17 +188,15 @@ const CampaignPerformanceTable = () => {
                 border: "1px solid #ccc",
                 borderRadius: "8px",
                 height: "33px",
-                backgroundColor: "#f9f9f9",
               }}
             >
               <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <input
+              <Input
                 type="text"
                 placeholder="Search anything here"
                 style={{
                   border: "none",
                   outline: "none",
-                  backgroundColor: "transparent",
                 }}
               />
             </div>

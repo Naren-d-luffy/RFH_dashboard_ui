@@ -45,7 +45,7 @@ export const UserEngagementChart = () => {
   const totalValue = data.reduce((acc, item) => acc + item.value, 0);
   return (
     <div className="row mt-4">
-      <div className="col-lg-8">
+      <div className="col-lg-8 mb-4">
         <div className="most-user-engagement-card">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h5 className="mb-0">Most User Engagement</h5>
@@ -116,7 +116,7 @@ export const UserEngagementChart = () => {
           </div>
         </div>
       </div>
-      <div className="col-lg-4">
+      <div className="col-lg-4 mb-4">
         <div className="d-flex flex-column gap-4 top-used-screens">
           <div className="d-flex justify-content-between align-items-center w-100">
             <div className="d-flex gap-2 align-items-center">

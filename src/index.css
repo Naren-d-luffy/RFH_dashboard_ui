@@ -1,19 +1,57 @@
 :root {
-  --primary-green:#00963F;
-  --secondary-text-color: #6C7278;
-  --black-color:#000;
-  --white-color:#fff;
-  --primary-grey-color: #9D9D9D;
-  --light-red: #E15C7A;
-  --background-color:#C6C8CB;
-  --border-color:#DCE4E8;
-  --grey-color:#4a4a4a;
-  --sky-blue-color: #7EC2FF;
-  --light-orange-color:#FFD66B;
-  --tag-green-bg:#E0F0E4;
-  --tag-red-bg:#FEECEB;
-  --maroon-red:#B12F30;
+  --primary-green: #00963f;
+  --page-background-color: #fff;
+  --dark-green: #36693e;
+  --secondary-text-color: #6c7278;
+  --card-background-color:#fff;
+  --black-color: #000;
+  --white-color: #fffdfd;
+  --primary-grey-color: #9d9d9d;
+  --light-red: #e15c7a;
+  --background-color: #c6c8cb;
+  --border-color: #dce4e8;
+  --grey-color: #4a4a4a;
+  --sky-blue-color: #7ec2ff;
+  --icon-background-color: #54a6ff;
+  --visible-icon-background-color: #2b7f75;
+  --red-color: #e61313;
+  --light-orange-color: #ffd66b;
+  --light-grey-color: #f2efff;
+  --table-heading-color: #acb5bb;
+  --bg-gray-color: #f1f6ee;
+  --input-gray-color: #acb5bb;
+  --tag-green-bg: #e0f0e4;
+  --tag-red-bg: #feeceb;
+  --maroon-red: #b12f30;
+  --upload-image-bg: #f5f5f5;
+  --button-bg-hover: #f1f1f1;
+  --appointment-button-bg: #f0feeb;
+  --bg-gray-title: #abafb1;
+  --dark-blue: #251736;
+  --bg-input-field: #f9f9f9;
+  --bg-green: #c0e2ce;
+  --gray-text-color: #474747;
+  --faq-ans-color:#757575;
+  --button-text-color : #8D9092;
+  --heading-text-color: #7A7A7A;
+  --bg-light-red-color: #FBE5E5;
+  --bg-green-color: #D8F9E6;
+  --light-graph-green: #48BB78;
+  --button-bg-color :#F8F8FF;
+  --yellow-color: #FFC107;
+  --card-bg-color: #F3F5FF;
+  --message-bg:#DAFFE9;
+  --light-gray-bg-color: #F4F4F4;
+  --cement-color: #505050;
+  --swal-color: #1A1C1E;
+  --table-border: #133E58;
 }
 
-
+.dark-mode{
+  --page-background-color: #2d2d2d;
+  --card-background-color:#353535;
+  --black-color:#f9f9f9;
+  --secondary-text-color:#dce4e8;
+  --white-color:#222;
+}
 

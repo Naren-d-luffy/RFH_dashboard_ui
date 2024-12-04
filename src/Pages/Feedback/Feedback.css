@@ -1,0 +1,313 @@
+.no-data-container img {
+    width: 500px;
+    height: auto;
+}
+
+.no-data-container {
+    justify-content: center;
+    display: flex;
+    margin: auto;
+}
+
+.no-data-container-text h4 {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.no-data-container-text p {
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.createSurvey-banner-div {
+    background-image: url('../../Assets/Images/createSurveyPage_banner.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 16px;
+    padding: 30px 20px 30px 58px;
+}
+.createSurvey-banner-div h2{
+    color: var(--white-color);
+    font-size: 37px
+}
+.createSurvey-banner-div p{
+    color: var(--background-color);
+    font-size: 17px;
+}
+
+.createSurvey-page-div {
+    border: 1px solid #e6e4e4;
+    padding: 40px;
+    border-radius: 9px;
+}
+.createSurvey-page-name-div {
+    border: 1px solid #e6e4e4;
+    padding: 17px;
+    border-radius: 9px;
+}
+.createSurvey-page-div
+.createSurvey-page-div-input{
+    border: none;
+    padding: 0px;
+}
+.createSurvey-page-div-input:focus{
+    border: none !important;
+    padding: 0px;
+    outline: none !important;
+    box-shadow: none !important;
+}
+.createSurvey-addForms-button{
+    background: var(--primary-green);
+    width: 59px;
+    height: 59px;
+    border-radius: 28px;
+    color: var(--white-color);
+    border: none;
+}
+.create-survey-popover {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.create-survey-popover .ant-popover-inner {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.create-survey-popover .ant-popover-arrow {
+    display: none; 
+}
+.createSurvey-form-icon-div{
+    background: var(--black-color);
+    color: var(--primary-green);
+    width: 44px;
+    height: 44px;
+    border-radius: 38px;
+    margin-bottom: 18px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.create-survey-inputs.ant-input {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    padding: 8px 0;
+    color: var(--text-secondary-color);
+    background-color: var(--white-color);
+  }
+  .create-survey-inputs.ant-input-outlined:focus {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-color: #d9d9d9;
+    box-shadow: none;
+    outline: 0;
+  }
+  .CreateSurvey-form-close-button{
+    color: var(--white-color);
+    background: var(--black-color);
+    border-radius: 50%;
+    font-size: 11px;
+    border: none;
+  }
+  .populated-survey-label {
+    font-size: 18px;
+    font-weight: 500; 
+}
+
+.populated-survey-values input,
+.populated-survey-values textarea,
+.populated-survey-values .ant-rate {
+    font-size: 14px !important;
+}
+.populated-survey-values {
+    font-size: 14px;
+    line-height: 1.5;
+}
+.campaign-performance-table-head{
+    font-size: 20px;
+    color: var(--black-color);
+    font-weight: 500;
+}
+.negative-feedback-p{
+    color: var( --faq-ans-color);
+    font-size: 16px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+.patient-surveyGraph h3{
+    font-size: 20px;
+    color: var( --faq-ans-color);
+    line-height: 20px;
+    font-weight: 500;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.monthly-feedback-div div{
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary-green); 
+}
+.monthly-feedback-div p{
+    font-size: 12px;
+    color: var(--black-color);
+    margin-bottom: 0px;
+}
+/* ViewFeedbackage */
+.rating-distribution-container {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+  }
+  
+  .feedback-rating-row {
+    display: flex;
+    align-items: center;
+  }
+  
+  .feedback-rating-star {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 50px;
+  }
+  
+  .feedback-star-icon {
+    color: var(--text-secondary-color);
+    font-size: 12px;
+  }  
+
+
+
+.feedback-rating-count {
+    margin-left: 5px;
+    font-size: 12px;
+    color: var(--text-secondary-color);
+    text-align: right;
+  }
+  .user-feedback-reviews {
+    border-right: 1px solid var(--fields, #47474785);
+    padding: 0 20px;
+  }
+  .view-feedback-section h2 {
+    font-size: 24px;
+    color: var(--black-color);
+    font-weight: 700;
+  }
+  .view-feedback-section h4 {
+    font-size: 18px;
+    color: var(--black-color);
+    font-weight: 600;
+  }
+  .view-feedback-section p {
+    font-size: 14px;
+    color: var(--secondary-text-color);
+  }
+  .view-feedback-tag {
+    background-color: #e0fbe5;
+    border: none;
+    color: var(--black-color);
+  }
+  .view-feedback-content h4 {
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+  .view-feedback-content p {
+    font-size: 12px;
+    margin-bottom: 0;
+    color: var(--text-secondary-color);
+  }
+  .view-feedback-content ul {
+    padding-left: 0;
+  }
+  .view-feedback-content ul li {
+    font-size: 12px;
+    color: var(--text-secondary-color);
+  }
+  .view-feedback-content h3 {
+    color: var(--text-secondary-color);
+    font-size: 14px;
+  }
+  .view-reviews-header-div{
+    background: linear-gradient(91.9deg, #B0F5CD 0.22%, #E6F9EE 100%);
+    border-radius: 12px;
+    padding: 30px 10px;
+  }
+  .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: var(--primary-green);
+    text-shadow: 0 0 0.25px currentcolor;
+}
+.ant-tabs .ant-tabs-ink-bar {
+    background-color: var(--primary-green);
+}
+.ant-tabs .ant-tabs-tab:hover .ant-tabs-tab-btn {
+    color: var(--primary-green);
+}
+
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: var(--primary-green);
+    font-size: 17px;
+    text-shadow: 0 0 0.25px currentcolor;
+}
+
+.ant-tabs .ant-tabs-ink-bar {
+    background-color: var(--primary-green);
+}
+
+.all-user-negative-feedback-card {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+  }
+  .all-user-negative-feedback-card .card-body {
+    padding: 20px;
+    padding-bottom: 0px;
+  }
+  .all-user-negative-feedback-card h6 {
+    color: var(--black-color);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .all-user-negative-feedback-card p {
+    /* color: var(--black-color); */
+    font-size: 12px;
+    font-weight: 500;
+  } 
+  .all-user-negative-feedback-card h5 {
+    color: var(--black-color);
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .all-users-negtaivefeedback-dot{
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--primary-grey-color);
+  }
+  .negativeFeedack-send-div{
+    background: var(--bg-gray-color);
+    margin-bottom: 0px;
+    margin-left: -20px;
+    margin-right: -20px;
+    padding: 12px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  .all-users-feedback-telegram {
+    color: var(--primary-green);
+    padding: 8px;
+    border-radius: 50%;
+    background: #b3e4c7;
+  } 
+  .reply-feedback-text{
+    color: var(--primary-grey-color);
+  }
