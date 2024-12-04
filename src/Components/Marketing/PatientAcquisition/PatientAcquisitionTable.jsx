@@ -2,10 +2,15 @@ import React from "react";
 import { Table, Dropdown, Button, Space, Input } from "antd";
 import { FiSearch, FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import { showDeleteMessage } from "../../../globalConstant"
 
 const PatientAcquisitionTable = () => {
-  const navigate = useNavigate(); 
+
+  const handleDelete = (name) => {
+    showDeleteMessage({ message: name });
+  };
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -70,7 +75,7 @@ const PatientAcquisitionTable = () => {
     {
       title: "Action",
       key: "action",
-      render: (record) => (
+      render: (_, record) => (
         <div className="campaign-performance-table-action-icons">
           <div
             className="campaign-performance-table-eye-icon"
@@ -83,7 +88,10 @@ const PatientAcquisitionTable = () => {
             <FiEdit />
           </div>
           <div className="campaign-performance-table-delete-icon">
-            <FiTrash2 />
+            <FiTrash2
+              onClick={() => handleDelete(record.patientName)} 
+              style={{ cursor: "pointer" }}
+            />
           </div>
         </div>
       ),
@@ -155,8 +163,8 @@ const PatientAcquisitionTable = () => {
     { label: "Last Month", key: "3" },
   ];
 
-  const handleMenuClick = ({ key }) => {};
-  
+  const handleMenuClick = ({ key }) => { };
+
   const menuProps = {
     items,
     onClick: handleMenuClick,

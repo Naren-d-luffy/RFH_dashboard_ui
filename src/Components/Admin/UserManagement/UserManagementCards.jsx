@@ -5,9 +5,10 @@ import patient from '../../../Assets/Icons/patient.png'
 import doctor from '../../../Assets/Icons/doctor.png'
 import opd_patient from '../../../Assets/Icons/opd_patient.png'
 import ipd_patient from '../../../Assets/Icons/ipd_patient.png'
-import { Button, Modal } from 'antd';
+import { Button, Dropdown, Modal, Space } from 'antd';
 import { CgDanger } from 'react-icons/cg';
-import {showSuccessMessage} from "../../../globalConstant"
+import { showSuccessMessage } from "../../../globalConstant"
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 
 const UserManagementCards = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -24,10 +25,10 @@ const UserManagementCards = () => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-    const handleSuccessDelete=()=>{
+    const handleSuccessDelete = () => {
         showSuccessMessage("Export Successfully", "Please check your document, and open your document file");
         setIsModalVisible(false);
-      }
+    }
     const cardData = [
         {
             heading: 'Total Patients',
@@ -101,6 +102,25 @@ const UserManagementCards = () => {
             boxShadowColor: '#7EC2FF',
         },
     ];
+    const items = [
+        {
+          label: "Week",
+          key: "1",
+        },
+        {
+          label: "Month",
+          key: "2",
+        },
+        {
+          label: "Year",
+          key: "3",
+        },
+      ];
+      const handleMenuClick = ({ key }) => {};
+      const menuProps = {
+        items,
+        onClick: handleMenuClick,
+      };
     return (
         <div className="container">
             <div className="d-flex justify-content-between align-items-center">
@@ -111,16 +131,14 @@ const UserManagementCards = () => {
                     </p>
                 </div>
                 <div className="d-flex align-items-center gap-3">
-                    <select
-                        className="form-select userAquisition-dropdown"
-                        aria-label="Default select example"
-                    >
-                        <option selected>Week 1</option>
-                        <option value="1">Week 2</option>
-                        <option value="2">Week 3</option>
-                        <option value="3">Week 4</option>
-                        <option value="4">Week 5</option>
-                    </select>
+                    <Dropdown menu={menuProps}>
+                        <Button>
+                            <Space>
+                                Last Day
+                                <MdOutlineKeyboardArrowDown />
+                            </Space>
+                        </Button>
+                    </Dropdown>
                     <button className="d-flex gap-2 align-items-center rfh-basic-button" onClick={showModal}>
                         <PiExport />
                         Export
