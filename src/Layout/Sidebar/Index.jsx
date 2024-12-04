@@ -65,6 +65,7 @@ function SidebarAdmin() {
       "/operational/financial-performance":"operational",
       "/teleconsultation/appointment-feedback": "teleconsultation",
       "/teleconsultation/virtual-management": "teleconsultation",
+      "/teleconsultation/technical-support":"teleconsultation"
     };
 
     const currentPath = location.pathname;
@@ -336,8 +337,8 @@ function SidebarAdmin() {
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/"  className={`sub-nav-link ${
-                        location.pathname === "/"
+                    <Link to="/teleconsultation/technical-support"  className={`sub-nav-link ${
+                        location.pathname === "/teleconsultation/technical-support"
                           ? "active-sub-link"
                           : ""
                       }`}>

@@ -23,6 +23,8 @@ import AppointmentFeedbackPage from "./Pages/Teleconsultation/AppoinmentFeedback
 import VirtualManagementPage from "./Pages/Teleconsultation/VirtualManagement";
 import DoctorDetailPage from "./Pages/Teleconsultation/DoctorDetailPage";
 import ViewDoctorDetailPage from "./Pages/Teleconsultation/ViewDoctorDetailPage";
+import ChatPage from "./Pages/Teleconsultation/ChatPage";
+import ChattingPage from "./Pages/Chat/chatPage";
 
 export const AppRouter = () => {
   return (
@@ -127,6 +129,14 @@ export const AppRouter = () => {
         <Route
           path="/teleconsultation/view-doctor-detail"
           element={(Component = <ViewDoctorDetailPage />)}
+        />
+         <Route
+          path="/teleconsultation/technical-support"
+          element={(Component = <ChatPage />)}
+        />
+        <Route
+          path="/chat"
+          element={(Component = <ChattingPage />)}
         />
       </Routes>
     </BrowserRouter>
