@@ -4,6 +4,8 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import {showSuccessMessage} from "../../../globalConstant"
+
 
 const { Option } = Select;
 
@@ -16,6 +18,9 @@ const modules = {
     ["clean"],
   ],
 };
+const handleClick=()=>{
+  showSuccessMessage("Successfully Created", "");
+}
 
 const AddHealthTools = ({ open, handleCancel }) => (
   <Modal
@@ -33,7 +38,7 @@ const AddHealthTools = ({ open, handleCancel }) => (
       </Button>,
       <Button
         key="save"
-        onClick={handleCancel}
+        onClick={handleClick}
         className="create-campaign-save-button"
       >
         Save

@@ -3,6 +3,7 @@ import { Modal } from "antd";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import logo from "../../../Assets/Images/logo.png";
+import {showSuccessMessage} from "../../../globalConstant"
 
 export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
   const reportRef = useRef(null);
@@ -30,9 +31,13 @@ export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
 
       pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
       pdf.save("HbA1c_Report.pdf");
+      
+       
+      
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
+    showSuccessMessage("Completed", "You have successfully downloaded Saikiran file");
   };
 
   return (
