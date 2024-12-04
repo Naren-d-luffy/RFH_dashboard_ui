@@ -6,6 +6,8 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { useNavigate } from "react-router-dom";
+import { showSuccessMessage } from "../../../globalConstant"
+
 
 const DoctorDetail = () => {
   const navigate = useNavigate();
@@ -18,6 +20,9 @@ const DoctorDetail = () => {
       ["clean"],
     ],
   };
+  const handleClick = () => {
+    showSuccessMessage("Doctor Details Added Successfully", "");
+  }
   return (
     <div className="container">
       <div className="mt-4 campaign-performance-head">
@@ -239,7 +244,7 @@ const DoctorDetail = () => {
         >
           Cancel
         </Button>
-        <Button key="save" className="create-campaign-save-button">
+        <Button key="save" className="create-campaign-save-button" onClick={handleClick}>
           Save
         </Button>
       </div>

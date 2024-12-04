@@ -8,7 +8,7 @@ import { FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png"
 import CreateSurveyPage from "./CreateSurveyPage";
 import { useNavigate } from "react-router-dom";
-
+import {showDeleteMessage} from "../../../globalConstant"
 
 const CreateSurveyTable = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -26,6 +26,9 @@ const CreateSurveyTable = () => {
     const handleClick = () => {
         navigate("/feedback/create-survey/single-survey-details")
     }
+    const handleDelete = (name) => {
+        showDeleteMessage({ message: `${name}` });
+      };
 
     const columns = [
         {
@@ -83,12 +86,12 @@ const CreateSurveyTable = () => {
         {
             title: "Action",
             key: "action",
-            render: () => (
+            render: (_, record) => (
                 <div className="campaign-performance-table-action-icons">
                     <div className="campaign-performance-table-eye-icon" onClick={handleClick}>
                         <FiEye />
                     </div>
-                    <div className="campaign-performance-table-delete-icon" >
+                    <div className="campaign-performance-table-delete-icon" onClick={() => handleDelete(record.surveyName)}>
                         <FiTrash2 />
                     </div>
                 </div>

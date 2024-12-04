@@ -4,6 +4,8 @@ import DefaultUser from "../../Assets/Images/DefaultUser.png";
 import "react-international-phone/style.css";
 import { FiEyeOff } from "react-icons/fi";
 import { FaRegEye } from "react-icons/fa6";
+import {showLogoutMessage} from "../../globalConstant"
+
 
 export const Account = () => {
   const [form] = Form.useForm();
@@ -24,6 +26,9 @@ export const Account = () => {
     }
   };
 
+  const handleDelete = () => {
+    showLogoutMessage({ message: "" });
+  };
   const handleEditClick = () => {
     fileInputRef.current.click();
   };
@@ -153,7 +158,7 @@ export const Account = () => {
             </div>
             <div className="col-lg-6 mt-4">
               <div className="d-flex gap-2">
-                <button className="settings-delete-account" type="button">
+                <button className="settings-delete-account" type="button" onClick={handleDelete}>
                   Delete Account
                 </button>
                 <button className="settings-learn-button" type="submit">

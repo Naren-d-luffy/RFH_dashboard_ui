@@ -6,15 +6,16 @@ import { GoPlus } from "react-icons/go";
 import UserManagementAddPatientsModal from "./UserManagementAddPatientsModal";
 import UserManagementViewPatientsModal from "./UserManagementViewPatientsModal";
 import UserManagementEditPatientsModal from "./UserManagementEditPatientsModal";
-import {showDeleteMessage} from '../../../globalConstant'
+import { showDeleteMessage } from '../../../globalConstant'
 
 const UserManagementTable = () => {
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
-  const handleDelete=()=>{
-    showDeleteMessage({ message: "Kiran BK" });  }
+  const handleDelete = (name) => {
+    showDeleteMessage({ message: `this patient ${name}'s details` });
+  };
 
   const showModal = () => {
     setIsCreateModalVisible(true);
@@ -37,7 +38,7 @@ const UserManagementTable = () => {
   const handleEditModalClose = () => {
     setIsEditModalVisible(false);
   };
- 
+
   const columns = [
     {
       title: "Patient Id",
@@ -112,7 +113,7 @@ const UserManagementTable = () => {
     {
       title: "Action",
       key: "action",
-      render: () => (
+      render: (_, record) => (
         <div className="campaign-performance-table-action-icons">
           <div className="campaign-performance-table-eye-icon" onClick={showViewModal}>
             <FiEye />
@@ -120,8 +121,8 @@ const UserManagementTable = () => {
           <div className="campaign-performance-table-edit-icon" onClick={showEditModal}>
             <FiEdit />
           </div>
-          <div className="campaign-performance-table-delete-icon" >
-            <FiTrash2 onClick={handleDelete}/>
+          <div className="campaign-performance-table-delete-icon">
+            <FiTrash2 onClick={() => handleDelete(record.name)} />
           </div>
         </div>
       ),

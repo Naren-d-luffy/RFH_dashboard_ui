@@ -4,6 +4,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import {showSuccessMessage} from "../../../globalConstant"
 
 const modules = {
   toolbar: [
@@ -14,6 +15,10 @@ const modules = {
     ["clean"],
   ],
 };
+
+const handleClick=()=>{
+  showSuccessMessage("Successfully Created", "");
+}
 
 const UpcomingEvents = ({ open, handleCancel }) => (
   <Modal
@@ -31,7 +36,7 @@ const UpcomingEvents = ({ open, handleCancel }) => (
       </Button>,
       <Button
         key="save"
-        onClick={handleCancel}
+        onClick={handleClick}
         className="create-campaign-save-button"
       >
         Save

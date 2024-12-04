@@ -1,6 +1,8 @@
 import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, TimePicker, Radio  } from 'antd'
 import React, { useState } from 'react'
 import ReactQuill from 'react-quill'
+import {showSuccessMessage} from "../../globalConstant"
+
 
 const modules = {
     toolbar: [
@@ -11,7 +13,9 @@ const modules = {
         ["clean"],
     ],
 };
-
+const handleClick=()=>{
+    showSuccessMessage("Successfully Sent", "");
+  }
 const CreateSidebarNotificationModal = ({ open, handleCancel }) => {
     const [selectedValue, setSelectedValue] = useState("none");
 
@@ -35,7 +39,7 @@ const CreateSidebarNotificationModal = ({ open, handleCancel }) => {
                 </Button>,
                 <Button
                     key="save"
-                    onClick={handleCancel}
+                    onClick={handleClick}
                     className="create-campaign-save-button"
                 >
                     Save

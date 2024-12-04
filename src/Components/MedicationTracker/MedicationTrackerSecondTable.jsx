@@ -4,9 +4,14 @@ import { FiSearch } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import image from "../../Assets/Images/image.png";
 import { VscSettings } from "react-icons/vsc";
+import {showSuccessMessage} from "../../globalConstant"
+
 
 const MedicationTrackerSecondTable = () => {
   const navigate = useNavigate();
+  const handleClick=()=>{
+    showSuccessMessage("Successfully Sent Reminder", "");
+  }
   const columns = [
     {
       title: "Patient ID",
@@ -74,7 +79,7 @@ const MedicationTrackerSecondTable = () => {
       title: "Reminder",
       key: "reminder",
       render: () => (
-        <button className="medication-tracker-second-table-button">Remind</button>
+        <button className="medication-tracker-second-table-button" onClick={handleClick}>Remind</button>
       ),
       className: "campaign-performance-table-column",
     },
