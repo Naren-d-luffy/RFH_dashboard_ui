@@ -54,3 +54,19 @@
     margin-top: -25px;
     margin-bottom: -20px;
 }
+/* .rfh-basic-button {
+    background-color: var(--primary-green);
+    color: var(--white-color);
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 12px;
+  }
+  
+  .rfh-basic-button:hover {
+    color: var(--primary-green);
+    border: 1px solid var(--primary-green);
+    background-color: var(--white-color);
+  }
+   */

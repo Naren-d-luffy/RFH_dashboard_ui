@@ -1,7 +1,5 @@
 import React from "react";
-import "./patienteducation.css"
-import HeaderAdmin from "../../Layout/Header/Index";
-import SidebarAdmin from "../../Layout/Sidebar/Index";
+import "./patienteducation.css";
 import EducationResourcesCards from "../../Components/PatientEducation/EducationResources/EducationResourcesCards";
 import EducationCategoriesGastroIllness from "../../Components/PatientEducation/EducationResources/EducationCategoriesGastroIllness";
 import EducationCategoriesTreatmentsInfo from "../../Components/PatientEducation/EducationResources/EducationCategoriesTreatmentsInfo";
@@ -12,20 +10,14 @@ import EducationCategoriesQuestions from "../../Components/PatientEducation/Educ
 const EducationResourcesPage = () => {
   return (
     <>
-      <HeaderAdmin />
-      <SidebarAdmin />
-
-      <div className="main-wrapper">
-         <EducationResourcesCards />
-         <EducationCategoriesGastroIllness />
-         <EducationCategoriesTreatmentsInfo />
-         <EducationCategoriesHealthTools />
-         <EducationCategoriesReadingMaterials />
-         <EducationCategoriesQuestions />
-      </div>
+      <EducationResourcesCards />
+      <EducationCategoriesGastroIllness />
+      <EducationCategoriesTreatmentsInfo />
+      <EducationCategoriesHealthTools />
+      <EducationCategoriesReadingMaterials />
+      <EducationCategoriesQuestions />
     </>
   );
 };
 
 export default EducationResourcesPage;
-
