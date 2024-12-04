@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import { Table, Dropdown, Button, Space, Input } from "antd";
 import { FiSearch } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 
@@ -160,7 +160,7 @@ const PatientDetailsTable = () => {
               }}
             >
               <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <input
+              <Input
                 type="text"
                 placeholder="Search anything here"
                 style={{
@@ -169,7 +169,6 @@ const PatientDetailsTable = () => {
                 }}
               />
             </div>
-
             <Dropdown menu={menuProps}>
               <Button>
                 <Space>
@@ -178,6 +177,7 @@ const PatientDetailsTable = () => {
                 </Space>
               </Button>
             </Dropdown>
+
           </div>
         </div>
         <div className="mt-3">

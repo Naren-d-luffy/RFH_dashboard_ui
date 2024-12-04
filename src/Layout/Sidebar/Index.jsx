@@ -10,6 +10,7 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { GoShieldCheck } from "react-icons/go";
 import { TbCirclePercentage } from "react-icons/tb";
 import { SlGraduation } from "react-icons/sl";
+import { BiCapsule } from "react-icons/bi";
 import {
   Bell,
   Handshake,
@@ -51,21 +52,24 @@ function SidebarAdmin() {
       "/dashboard/settings": "",
       "/patient-education/overview": "education",
       "/patient-education/resources": "education",
-      "/feedback/create-survey":"feedback",
-      "/feedback/create-survey-page":"feedback",
+      "/feedback/create-survey": "feedback",
+      "/feedback/create-survey-page": "feedback",
       "/education-resources/reading-materials": "education",
-      "/feedback/create-survey/single-survey-details":"feedback",
-      "/feedback/create-survey/populated-survey-data":"feedback",
-      "/feedback/patient-surveys":"feedback",
-      "/feedback/view-feedback":"feedback",
-      "/feedback/negative-feedback":"feedback",
+      "/feedback/create-survey/single-survey-details": "feedback",
+      "/feedback/create-survey/populated-survey-data": "feedback",
+      "/feedback/patient-surveys": "feedback",
+      "/feedback/view-feedback": "feedback",
+      "/feedback/negative-feedback": "feedback",
       "/teleconsultation/appointment-status": "teleconsultation",
-      "/operational/appointment-reports":"operational",
-      "/operational/service-utilization":"operational",
-      "/operational/financial-performance":"operational",
+      "/operational/appointment-reports": "operational",
+      "/operational/service-utilization": "operational",
+      "/operational/financial-performance": "operational",
       "/teleconsultation/appointment-feedback": "teleconsultation",
       "/teleconsultation/virtual-management": "teleconsultation",
       "/teleconsultation/technical-support":"teleconsultation"
+      "/medication-tracker": "medicationtracker",
+      "/sidebar/notification":"",
+
     };
 
     const currentPath = location.pathname;
@@ -91,6 +95,7 @@ function SidebarAdmin() {
               src={logo}
               alt="RFH"
               className="sidebar-logo"
+              onClick={() => navigate("/")}
             />
 
             <div className="d-lg-none" onClick={closeSidebar}>
@@ -127,9 +132,7 @@ function SidebarAdmin() {
                     <Link
                       to="/"
                       className={`sub-nav-link ${
-                        location.pathname === "/"
-                          ? "active-sub-link"
-                          : ""
+                        location.pathname === "/" ? "active-sub-link" : ""
                       }`}
                     >
                       User Acquisition & Retention
@@ -187,7 +190,6 @@ function SidebarAdmin() {
                   </li>
                 </ul>
               </li>
-
               <li>
                 <div
                   className={`nav-link ${
@@ -225,11 +227,14 @@ function SidebarAdmin() {
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/marketing/in-app-campaign" className={`sub-nav-link ${
+                    <Link
+                      to="/marketing/in-app-campaign"
+                      className={`sub-nav-link ${
                         location.pathname === "/marketing/in-app-campaign"
                           ? "active-sub-link"
                           : ""
-                      }`}>
+                      }`}
+                    >
                       InApp Campaign
                     </Link>
                   </li>
@@ -272,20 +277,26 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/patient-education/overview" className={`sub-nav-link ${
+                    <Link
+                      to="/patient-education/overview"
+                      className={`sub-nav-link ${
                         location.pathname === "/patient-education/overview"
                           ? "active-sub-link"
                           : ""
-                      }`}>
+                      }`}
+                    >
                       Education Overview
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/patient-education/resources"  className={`sub-nav-link ${
+                    <Link
+                      to="/patient-education/resources"
+                      className={`sub-nav-link ${
                         location.pathname === "/patient-education/resources"
                           ? "active-sub-link"
                           : ""
-                      }`}>
+                      }`}
+                    >
                       Education Resources
                     </Link>
                   </li>
@@ -318,21 +329,28 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-
-                    <Link to="/teleconsultation/virtual-management" className={`sub-nav-link ${
-                        location.pathname === "/teleconsultation/virtual-management"
+                    <Link
+                      to="/teleconsultation/virtual-management"
+                      className={`sub-nav-link ${
+                        location.pathname ===
+                        "/teleconsultation/virtual-management"
                           ? "active-sub-link"
                           : ""
-                      }`}>
+                      }`}
+                    >
                       Virtual Management
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/teleconsultation/appointment-status"  className={`sub-nav-link ${
-                        location.pathname === "/teleconsultation/appointment-status"
+                    <Link
+                      to="/teleconsultation/appointment-status"
+                      className={`sub-nav-link ${
+                        location.pathname ===
+                        "/teleconsultation/appointment-status"
                           ? "active-sub-link"
                           : ""
-                      }`}>
+                      }`}
+                    >
                       Appointment Status
                     </Link>
                   </li>
@@ -342,12 +360,12 @@ function SidebarAdmin() {
                           ? "active-sub-link"
                           : ""
                       }`}>
+
                       Technical Support
                     </Link>
                   </li>
                 </ul>
               </li>
-
               <li>
                 <div
                   className={`nav-link ${
@@ -433,17 +451,38 @@ function SidebarAdmin() {
                   }`}
                 >
                   <li className="sub-nav-list">
-                    <Link to="/operational/appointment-reports" className="sub-nav-link">
+                    <Link
+                      to="/operational/appointment-reports"
+                      className={`sub-nav-link ${
+                        location.pathname === "/operational/appointment-reports"
+                          ? "active-sub-link"
+                          : ""
+                      }`}
+                    >
                       Appointment Reports
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/operational/service-utilization" className="sub-nav-link">
+                    <Link
+                      to="/operational/service-utilization"
+                      className={`sub-nav-link ${
+                        location.pathname === "/operational/service-utilization"
+                          ? "active-sub-link"
+                          : ""
+                      }`}
+                    >
                       Service Utilization
                     </Link>
                   </li>
                   <li className="sub-nav-list">
-                    <Link to="/operational/financial-performance" className="sub-nav-link">
+                    <Link
+                      to="/operational/financial-performance"
+                      className={`sub-nav-link ${
+                        location.pathname === "/operational/financial-performance"
+                          ? "active-sub-link"
+                          : ""
+                      }`}
+                    >
                       Financial Performance
                     </Link>
                   </li>
@@ -490,6 +529,21 @@ function SidebarAdmin() {
                   </li>
                 </ul>
               </li>
+
+              <li>
+                <Link
+                  to="/medication-tracker"
+                  className={`nav-link ${
+                    location.pathname === "/medication-tracker"
+                      ? "active-nav-links"
+                      : ""
+                  }`}
+                >
+                  <BiCapsule size={14} className="sidebar-icon" /> Medication
+                  Tracker
+                </Link>
+              </li>
+
               <li>
                 <Link
                   to=""
@@ -502,15 +556,14 @@ function SidebarAdmin() {
               </li>
               <li>
                 <Link
-                  to=""
+                  to="/sidebar/notification"
                   className={`nav-link ${
-                    location.pathname === "" ? "active-nav-links" : ""
+                    location.pathname === "/sidebar/notification" ? "active-nav-links" : ""
                   }`}
                 >
                   <Bell size={14} className="sidebar-icon" /> Notification
                 </Link>
               </li>
-
               <li>
                 <Link
                   to="/dashboard/settings"
@@ -526,7 +579,6 @@ function SidebarAdmin() {
                   </span>
                 </Link>
               </li>
-
               <li>
                 <Link
                   to=""

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "../layout.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import DefaultUser from "../../Assets/Images/DefaultUser.png"
+import DefaultUser from "../../Assets/Images/DefaultUser.png";
 import { GoBell } from "react-icons/go";
 import { FiSearch } from "react-icons/fi";
 
@@ -12,7 +12,6 @@ const HeaderAdmin = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-
   useEffect(() => {
     const savedDarkMode = localStorage.getItem("darkMode");
     if (savedDarkMode === "true") {
@@ -21,7 +20,7 @@ const HeaderAdmin = () => {
   }, []);
 
   const handleNotificationClick = () => {
-    navigate('/');
+    navigate("/header/notification");
   };
   useEffect(() => {
     if (isDarkMode) {
@@ -32,7 +31,6 @@ const HeaderAdmin = () => {
       localStorage.setItem("darkMode", "false");
     }
   }, [isDarkMode]);
-
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -47,11 +45,14 @@ const HeaderAdmin = () => {
       <nav className="navbar-header">
         <div className="search-container">
           <FiSearch className="search-icon" />
-          <input type="text" placeholder="Search anything here.." className="search-input-header" />
+          <input
+            type="text"
+            placeholder="Search anything here.."
+            className="search-input-header"
+          />
         </div>
         <div className="d-flex w-100 justify-content-end">
           <div className="d-flex align-items-center gap-2">
-            
             <button
               type="button"
               aria-controls="navbar-notification"
@@ -59,12 +60,14 @@ const HeaderAdmin = () => {
               className="notification-button"
               onClick={handleNotificationClick}
             >
-              <GoBell  className="notification-icon" />
+              <GoBell className="notification-icon" />
               <span className="notification-badge">4</span>
             </button>
 
-        
-            <div className="d-flex align-items-center gap-2" style={{borderLeft:"1px solid var(--border-color)"}}>
+            <div
+              className="d-flex align-items-center gap-2"
+              style={{ borderLeft: "1px solid var(--border-color)" }}
+            >
               <button
                 className="user-image"
                 type="button"
@@ -72,10 +75,7 @@ const HeaderAdmin = () => {
                 onClick={toggleDropdown}
                 aria-expanded={isDropdownOpen}
               >
-                <img
-                  className="profile--icon"
-                  src={DefaultUser}
-                />
+                <img className="profile--icon" src={DefaultUser} />
               </button>
               <div className="user-info">
                 <span
@@ -96,8 +96,16 @@ const HeaderAdmin = () => {
                   role="menu"
                   aria-labelledby="user-menu"
                 >
-                  <div className="dropdown-menu-items" style={{ cursor: "pointer" }}>
-                    <Link to="/" className="dropdown-item" role="menuitem" tabIndex="0">
+                  <div
+                    className="dropdown-menu-items"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <Link
+                      to="/"
+                      className="dropdown-item"
+                      role="menuitem"
+                      tabIndex="0"
+                    >
                       Edit Profile
                     </Link>
                     <div className="dropdown-item" role="menuitem" tabIndex="0">

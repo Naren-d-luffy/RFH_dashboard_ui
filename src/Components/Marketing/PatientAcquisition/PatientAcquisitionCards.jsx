@@ -1,9 +1,10 @@
 import React from "react";
 import { HiOutlineLightBulb } from "react-icons/hi";
-import { AiOutlinePieChart } from "react-icons/ai";
-import { PiHandTap } from "react-icons/pi";
-import { AiOutlineSound } from "react-icons/ai";
+import { AiFillPieChart, AiOutlinePieChart } from "react-icons/ai";
 import { FaArrowUp } from "react-icons/fa6";
+import Notification from "../../../Assets/Icons/Notification.png"
+import handIcon from "../../../Assets/Icons/handIcon.png"
+import clickicon from  "../../../Assets/Icons/click-icon.png"
 
 const PatientAcquisitionCards = () => {
   const cardsData = [
@@ -16,7 +17,7 @@ const PatientAcquisitionCards = () => {
         </>
       ),
       description: "Since last week",
-      icon: <AiOutlineSound />,
+      icon: <img src={Notification} alt="Click Icon" style={{ width: "20px" }} />,
       borderColor: "var(--primary-green)",
       iconColor: "var(--primary-green)",
       iconBackground: "#dffaf0",
@@ -26,7 +27,7 @@ const PatientAcquisitionCards = () => {
       value: "22,500",
       percentage: "340",
       description: "Users",
-      icon: <HiOutlineLightBulb />,
+      icon: <img src={clickicon} alt="Click Icon" style={{ width: "20px" }} />,
       borderColor: "var(--sky-blue-color)",
       iconColor: "var(--sky-blue-color)",
       iconBackground: "#e8f6ff",
@@ -36,7 +37,7 @@ const PatientAcquisitionCards = () => {
       value: "15%",
       percentage: "+165",
       description: "New",
-      icon: <PiHandTap />,
+      icon: <img src={handIcon} alt="Click Icon" style={{ width: "15px" }} />,
       borderColor: "var(--light-orange-color)",
       iconColor: "#FFD66B",
       iconBackground: "#FFF4DB",
@@ -46,7 +47,7 @@ const PatientAcquisitionCards = () => {
       value: "5%",
       percentage: "1%",
       description: "Since last week",
-      icon: <AiOutlinePieChart />,
+      icon: <AiFillPieChart />,
       borderColor: "var(--sky-blue-color)",
       iconColor: "var(--sky-blue-color)",
       iconBackground: "#e8f6ff",

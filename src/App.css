@@ -20,3 +20,48 @@ body,
     overflow-x: scroll;
   }
 }
+.custom-swal-popup {
+  border-radius: 15px !important; 
+}
+.custom-swal-button {
+  padding: 13px 24px !important;  
+  font-size: 16px !important;    
+  border-radius: 12px !important; 
+}
+.custom-swal-image {
+  margin-bottom: 0 !important; 
+  margin-top: 10px !important;
+}
+.delete-message{
+  font-size: 24px;
+  color: var(--swal-color) !important;
+  text-align: center;
+}
+.global-delete-button {
+  background-color: var(--red-color); 
+  color: var(--white-color);
+  padding: 13px 24px !important;
+  border-radius: 10px !important;
+  border: none !important;
+  font-weight: 500 !important;
+}
+
+.global-delete-button:hover {
+  background-color: #d32029; 
+}
+.global-footer-div{
+  display: flex !important;
+  justify-content: center !important;
+  gap: 20px !important; 
+}
+.global-cancel-button{
+  color: var(--swal-color) !important;
+  border: 1px solid #DCE4E8 !important;
+  padding: 13px 24px !important;
+  border-radius: 10px !important;
+  background:none;
+  font-weight: 500 !important;
+}
+.global-cancel-button:hover{
+  background: var( --button-bg-color );
+}

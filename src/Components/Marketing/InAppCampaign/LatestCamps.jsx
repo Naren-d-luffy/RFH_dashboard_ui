@@ -4,7 +4,11 @@ import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { EnvironmentOutlined } from "@ant-design/icons";
+import {showSuccessMessage} from "../../../globalConstant"
 
+const handleClick=()=>{
+  showSuccessMessage("Successfully Created", "");
+}
 const LatestCamps = ({ open, handleCancel }) => (
   <Modal
     open={open}
@@ -21,7 +25,7 @@ const LatestCamps = ({ open, handleCancel }) => (
       </Button>,
       <Button
         key="save"
-        onClick={handleCancel}
+        onClick={handleClick}
         className="create-campaign-save-button"
       >
         Save

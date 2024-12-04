@@ -26,6 +26,16 @@ import ViewDoctorDetailPage from "./Pages/Teleconsultation/ViewDoctorDetailPage"
 import ChatPage from "./Pages/Teleconsultation/ChatPage";
 import ChattingPage from "./Pages/Chat/chatPage";
 
+import MedicationTrackerPage from "./Pages/MedicationTracker/MedicationTrackerPage";
+import MedicationTrackerPatientDetailPage from "./Pages/MedicationTracker/MedicationTrackerPatientDetailPage";
+import AddPatientDetail from "./Components/MedicationTracker/AddPatientDetail";
+import AddPatientDetailPage from "./Pages/MedicationTracker/AddPatientDetailPage";
+
+import NotificationIndex from "./Pages/Notification/NotificationIndex";
+import HeaderNotificationPage from "./Pages/HeaderNotification/HeaderNotification";
+import ServiceUtilizationPage from "./Pages/Operational/ServiceUtilizationPage";
+import FinancialPerformancePage from "./Pages/Operational/FinancialPerformancePage";
+
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -100,9 +110,8 @@ export const AppRouter = () => {
         <Route
           path="/feedback/negative-feedback"
           element={(Component = <UserNegativeFeedbackPage />)}
-                  />
+        />
         <Route
-
           path="/teleconsultation/appointment-status"
           element={(Component = <AppointmentStatusPage />)}
         />
@@ -117,8 +126,7 @@ export const AppRouter = () => {
           path="/teleconsultation/appointment-feedback"
           element={(Component = <AppointmentFeedbackPage />)}
         />
-   <Route
-
+        <Route
           path="/teleconsultation/virtual-management"
           element={(Component = <VirtualManagementPage />)}
         />
@@ -137,6 +145,35 @@ export const AppRouter = () => {
         <Route
           path="/chat"
           element={(Component = <ChattingPage />)}
+         />
+        <Route
+          path="/medication-tracker"
+          element={(Component = <MedicationTrackerPage />)}
+        />
+        <Route
+          path="/medication-tracker/patient-detail"
+          element={(Component = <MedicationTrackerPatientDetailPage />)}
+        />
+        <Route
+          path="/medication-tracker/add-patient-detail"
+          element={(Component = <AddPatientDetailPage />)}
+        />
+        <Route
+          path="/sidebar/notification"
+          element={(Component = <NotificationIndex />)}
+        />
+
+        <Route
+          path="/header/notification"
+          element={(Component = <HeaderNotificationPage />)}
+        />
+        <Route
+          path="/operational/service-utilization"
+          element={(Component = <ServiceUtilizationPage />)}
+        />
+        <Route
+          path="/operational/financial-performance"
+          element={(Component = <FinancialPerformancePage />)}
         />
       </Routes>
     </BrowserRouter>

@@ -4,6 +4,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import {showSuccessMessage} from "../../../globalConstant"
 
 
 const modules = {
@@ -15,6 +16,9 @@ const modules = {
     ["clean"],
   ],
 };
+const handleClick=()=>{
+  showSuccessMessage("Successfully Created", "");
+}
 
 const AddReadingMaterials = ({ open, handleCancel }) => (
   <Modal
@@ -32,7 +36,7 @@ const AddReadingMaterials = ({ open, handleCancel }) => (
       </Button>,
       <Button
         key="save"
-        onClick={handleCancel}
+        onClick={handleClick}
         className="create-campaign-save-button"
       >
         Save

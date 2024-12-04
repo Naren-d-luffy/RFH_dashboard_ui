@@ -3,6 +3,8 @@ import { Button, Modal } from "antd";
 import { IoEllipsisVerticalSharp } from "react-icons/io5";
 import { HiOutlinePlus, HiMinus } from "react-icons/hi";
 import { GoPlus } from "react-icons/go";
+import {showSuccessMessage} from "../../../globalConstant"
+
 
 const faqData = [
   {
@@ -36,7 +38,9 @@ const faqData = [
       "Fusce vitae ligula sit amet libero tempus venenatis in ac libero. Morbi nec eros nisl.",
   },
 ];
-
+const handleClick=()=>{
+  showSuccessMessage("Successfully Created", "");
+}
 const AddAskedQuestions = ({ open, handleCancel }) => {
   const [activeQuestion, setActiveQuestion] = useState(null); // Tracks which FAQ is active
   const [showMenu, setShowMenu] = useState(false); // Toggles the menu
@@ -78,7 +82,7 @@ const AddAskedQuestions = ({ open, handleCancel }) => {
         </Button>,
         <Button
           key="save"
-          onClick={handleCancel}
+          onClick={handleClick}
           className="create-campaign-save-button"
         >
           Save
