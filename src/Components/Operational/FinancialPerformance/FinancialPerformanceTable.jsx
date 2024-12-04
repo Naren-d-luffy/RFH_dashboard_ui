@@ -1,22 +1,15 @@
 import React from "react";
-import { Table, Button, Input, Dropdown, Space } from "antd";
+import { Table, Input, Button, Dropdown, Space } from "antd";
 import { FiSearch } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
-import image from "../../Assets/Images/image.png";
+import image from "../../../Assets/Images/image.png";
 import { VscSettings } from "react-icons/vsc";
-import {showSuccessMessage} from "../../globalConstant"
 
-
-const MedicationTrackerSecondTable = () => {
-  const navigate = useNavigate();
-  const handleClick=()=>{
-    showSuccessMessage("Successfully Sent Reminder", "");
-  }
+const FinancialPerformanceTable = () => {
   const columns = [
     {
-      title: "Patient ID",
-      dataIndex: "patientId",
-      key: "patientId",
+      title: "Payment ID",
+      dataIndex: "paymentId",
+      key: "paymenttId",
       className: "campaign-performance-table-column",
     },
     {
@@ -35,52 +28,53 @@ const MedicationTrackerSecondTable = () => {
               objectFit: "cover",
             }}
           />
-          <span>{record.patientName}</span>
+          <span>{text}</span>
         </div>
       ),
       className: "campaign-performance-table-column",
     },
     {
-      title: "Medication",
-      dataIndex: "medication",
-      key: "medication",
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Dose",
-      dataIndex: "dose",
-      key: "dose",
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Frequency",
-      dataIndex: "frequency",
-      key: "frequency",
+      title: "Method",
+      dataIndex: "method",
+      key: "method",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Refill Date",
-      dataIndex: "refillDate",
-      key: "refillDate",
+      title: "Consult Type",
+      dataIndex: "consultType",
+      key: "consultType",
       className: "campaign-performance-table-column",
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (status) => (
-        <span style={{ color: status === "Yes" ? "green" : "red" }}>
-          {status}
-        </span>
-      ),
-      className: "campaign-performance-table-column",
-    },
-    {
-      title: "Reminder",
-      key: "reminder",
-      render: () => (
-        <button className="medication-tracker-second-table-button" onClick={handleClick}>Remind</button>
-      ),
+      render: (status) => {
+        const color = status === "Completed" ? "green" : "red";
+        return (
+          <span
+            className="campaign-performance-table-status"
+            style={{
+              color: color,
+              fontWeight: "bold",
+            }}
+          >
+            {status}
+          </span>
+        );
+      },
       className: "campaign-performance-table-column",
     },
   ];
@@ -88,79 +82,66 @@ const MedicationTrackerSecondTable = () => {
   const data = [
     {
       key: "1",
-      patientId: "1001",
+      paymentId: "Pay-1001",
       patientName: "Saikiran K",
-      medication: "Metformin",
-      dose: "500mg",
-      frequency: "2x daily",
-      refillDate: "18-Nov-2024",
-      status: "Yes",
+      amount: "₹23,000",
+      date: "22-11-2024",
+      method: "Credit",
+      consultType: "Virtual",
+      status: "Completed",
     },
     {
       key: "2",
-      patientId: "390",
+      paymentId: "Pay-1002",
       patientName: "Chandan P",
-      medication: "Ibuprofen",
-      dose: "200mg",
-      frequency: "2x daily",
-      refillDate: "20-Nov-2024",
-      status: "No",
+      amount: "₹15,000",
+      date: "22-11-2024",
+      method: "Debit",
+      consultType: "Direct",
+      status: "Failed",
     },
     {
       key: "3",
-      patientId: "250",
+      paymentId: "Pay-1003",
       patientName: "Shravya V",
-      medication: "Amoxicillin",
-      dose: "200mg",
-      frequency: "2x daily",
-      refillDate: "18-Nov-2024",
-      status: "Yes",
+      amount: "₹5,000",
+      date: "22-11-2024",
+      method: "UPI",
+      consultType: "Virtual",
+      status: "Completed",
     },
     {
       key: "4",
-      patientId: "100",
+      paymentId: "Pay-1004",
       patientName: "Nandini G",
-      medication: "Ibuprofen",
-      dose: "200mg",
-      frequency: "2x daily",
-      refillDate: "19-Nov-2024",
-      status: "Yes",
+      amount: "₹3,000",
+      date: "22-11-2024",
+      method: "UPI",
+      consultType: "Virtual",
+      status: "Completed",
     },
     {
       key: "5",
-      patientId: "50",
+      paymentId: "Pay-1005",
       patientName: "Mahesh G",
-      medication: "Metformin",
-      dose: "200mg",
-      frequency: "2x daily",
-      refillDate: "18-Nov-2024",
-      status: "Yes",
+      amount: "₹3,000",
+      date: "22-11-2024",
+      method: "UPI",
+      consultType: "Direct",
+      status: "Failed",
     },
   ];
 
-  const items = [
-    { label: "Last Day", key: "1" },
-    { label: "Last Week", key: "2" },
-    { label: "Last Month", key: "3" },
-  ];
-
-  const handleMenuClick = ({ key }) => {};
-
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
-
   return (
-    <div className="mt-4">
+    <div className="mt-3">
       <div className="campaign-performance-table-head">
         <div className="d-flex justify-content-between align-items-center">
-          <h6>Refill Reminders</h6>
+          <h6>Payment Details</h6>
           <div className="d-flex gap-3 align-items-center">
             <div
               className="d-flex align-items-center px-3"
               style={{
-                border: "1px solid var(--border-color)",
+                border: "1px solid #ccc",
                 borderRadius: "8px",
                 height: "33px",
               }}
@@ -175,7 +156,8 @@ const MedicationTrackerSecondTable = () => {
                 }}
               />
             </div>
-            <Dropdown menu={menuProps}>
+
+            <Dropdown menu={{ items: [{ label: "Filter", key: "1" }] }}>
               <Button>
                 <Space>
                   <VscSettings />
@@ -199,4 +181,4 @@ const MedicationTrackerSecondTable = () => {
   );
 };
 
-export default MedicationTrackerSecondTable;
+export default FinancialPerformanceTable;

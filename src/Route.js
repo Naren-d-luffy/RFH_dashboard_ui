@@ -28,6 +28,10 @@ import MedicationTrackerPatientDetailPage from "./Pages/MedicationTracker/Medica
 import AddPatientDetailPage from "./Pages/MedicationTracker/AddPatientDetailPage";
 import NotificationIndex from "./Pages/Notification/NotificationIndex";
 import HeaderNotificationPage from "./Pages/HeaderNotification/HeaderNotification";
+import ServiceUtilizationPage from "./Pages/Operational/ServiceUtilizationPage";
+import FinancialPerformancePage from "./Pages/Operational/FinancialPerformancePage";
+import ChatPage from "./Pages/Teleconsultation/ChatPage";
+import ChattingPage from "./Pages/Chat/chatPage";
 
 import Layout from "./Pages";
 
@@ -154,6 +158,22 @@ export const AppRouter = () => {
             path="/header/notification"
             element={<HeaderNotificationPage />}
           />
+          <Route
+          path="/operational/service-utilization"
+          element={<ServiceUtilizationPage />}
+        />
+        <Route
+          path="/operational/financial-performance"
+          element={<FinancialPerformancePage />}
+        />
+            <Route
+          path="/teleconsultation/technical-support"
+          element={<ChatPage />}
+        />
+        <Route
+          path="/chat"
+          element={<ChattingPage />}
+        />
         </Route>
       </Routes>
     </BrowserRouter>

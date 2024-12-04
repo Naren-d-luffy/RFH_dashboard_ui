@@ -7,6 +7,7 @@ import opd_patient from '../../../Assets/Icons/opd_patient.png'
 import ipd_patient from '../../../Assets/Icons/ipd_patient.png'
 import { Button, Modal } from 'antd';
 import { CgDanger } from 'react-icons/cg';
+import {showSuccessMessage} from "../../../globalConstant"
 
 const UserManagementCards = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -23,7 +24,10 @@ const UserManagementCards = () => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-
+    const handleSuccessDelete=()=>{
+        showSuccessMessage("Export Successfully", "Please check your document, and open your document file");
+        setIsModalVisible(false);
+      }
     const cardData = [
         {
             heading: 'Total Patients',
@@ -189,8 +193,8 @@ const UserManagementCards = () => {
                         </div>
                     </div>
                     <div className='d-flex justify-content-center gap-3 mt-3'>
-                        <Button className='py-4'>Cancel</Button>
-                        <button className='export-button'>Confirm</button>
+                        <Button className='py-4' onClick={handleCancel}>Cancel</Button>
+                        <button className='export-button' onClick={handleSuccessDelete}>Confirm</button>
                     </div>
                 </div>
 

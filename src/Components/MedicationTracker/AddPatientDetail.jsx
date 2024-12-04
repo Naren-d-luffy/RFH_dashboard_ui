@@ -5,6 +5,8 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { useNavigate } from "react-router-dom";
+import {showSuccessMessage} from "../../globalConstant"
+
 
 const AddPatientDetail = () => {
   const navigate = useNavigate();
@@ -17,6 +19,9 @@ const AddPatientDetail = () => {
       ["clean"],
     ],
   };
+  const handleClick=()=>{
+    showSuccessMessage("Successfully Added Medication", "");
+  }
 
   return (
     <div className="">
@@ -290,7 +295,7 @@ const AddPatientDetail = () => {
         >
           Cancel
         </Button>
-        <Button key="save" className="create-campaign-save-button">
+        <Button key="save" className="create-campaign-save-button" onClick={handleClick}>
           Save
         </Button>
       </div>
