@@ -16,19 +16,19 @@ const EducationCategoriesQuestions = () => {
   const faqData = [
     {
       id: 1,
-      question: "Where can I watch?",
+      question: "1. Where can I watch?",
       answer:
         "Nibh quisque suscipit fermentum netus nulla cras porttitor euismod nulla. Orci, dictumst nec aliquet id ullamcorper venenatis. Fermentum sulla craspor titlore ismod nulla.",
     },
     {
       id: 2,
-      question: "How do I access this feature?",
+      question: "2. How do I access this feature?",
       answer:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce efficitur turpis id dui pharetra tincidunt.",
     },
     {
       id: 3,
-      question: "What are the system requirements?",
+      question: "3. What are the system requirements?",
       answer:
         "Fusce vitae ligula sit amet libero tempus venenatis in ac libero. Morbi nec eros nisl.",
     },
@@ -76,9 +76,9 @@ const EducationCategoriesQuestions = () => {
                 style={{ cursor: "pointer" }}
               >
                 {activeQuestion === faq.id ? (
-                  <HiMinus size={20} />
+                  <HiMinus size={20} color="var(--primary-green)"/>
                 ) : (
-                  <HiOutlinePlus size={20} />
+                  <HiOutlinePlus size={20} color="var(--primary-green)"/>
                 )}
               </div>
             </div>

@@ -56,7 +56,7 @@ const PatientSurveysCards = () => {
         <div className="">
             <div className="d-flex justify-content-between align-items-center">
                 <div className='user-engagement-header'>
-                    <h3>Patient Feddback</h3>
+                    <h3>Patient Feedback</h3>
                     <p >
                         Number of users installed the app by source
                     </p>

@@ -1,61 +1,61 @@
 import React, { useState } from "react";
-import { Button, Modal } from "antd";
-import { IoEllipsisVerticalSharp } from "react-icons/io5";
+import { Button, Form, Input, Modal } from "antd";
 import { HiOutlinePlus, HiMinus } from "react-icons/hi";
 import { GoPlus } from "react-icons/go";
-import {showSuccessMessage} from "../../../globalConstant"
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { showSuccessMessage } from "../../../globalConstant";
 
-
-const faqData = [
-  {
-    id: 1,
-    question: "Where can I watch?",
-    answer:
-      "Nibh quisque suscipit fermentum netus nulla cras porttitor euismod nulla. Orci, dictumst nec aliquet id ullamcorper venenatis. Fermentum sulla craspor titlore ismod nulla.",
-  },
-  {
-    id: 2,
-    question: "How do I access this feature?",
-    answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce efficitur turpis id dui pharetra tincidunt.",
-  },
-  {
-    id: 3,
-    question: "What are the system requirements?",
-    answer:
-      "Fusce vitae ligula sit amet libero tempus venenatis in ac libero. Morbi nec eros nisl.",
-  },
-  {
-    id: 4,
-    question: "How do I access this feature?",
-    answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce efficitur turpis id dui pharetra tincidunt.",
-  },
-  {
-    id: 5,
-    question: "What are the system requirements?",
-    answer:
-      "Fusce vitae ligula sit amet libero tempus venenatis in ac libero. Morbi nec eros nisl.",
-  },
-];
-const handleClick=()=>{
-  showSuccessMessage("Successfully Created", "");
-}
 const AddAskedQuestions = ({ open, handleCancel }) => {
+  const [faqData, setFaqData] = useState([
+    {
+      id: 1,
+      question: "1.Where can I watch?",
+      answer:
+        "Nibh quisque suscipit fermentum netus nulla cras porttitor euismod nulla. Orci, dictumst nec aliquet id ullamcorper venenatis. Fermentum sulla craspor titlore ismod nulla.",
+    },
+    {
+      id: 2,
+      question: "2.How do I access this feature?",
+      answer:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce efficitur turpis id dui pharetra tincidunt.",
+    },
+    {
+      id: 3,
+      question: "3.What are the system requirements?",
+      answer:
+        "Fusce vitae ligula sit amet libero tempus venenatis in ac libero. Morbi nec eros nisl.",
+    },
+    {
+      id: 4,
+      question: "4.How do I access this feature?",
+      answer:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce efficitur turpis id dui pharetra tincidunt.",
+    },
+  ]);
   const [activeQuestion, setActiveQuestion] = useState(null);
-  const [showMenu, setShowMenu] = useState(false); 
-  const [, setIsModalOpen] = useState(false);
+  const [newQuestion, setNewQuestion] = useState("");
+  const [newAnswer, setNewAnswer] = useState("");
 
   const toggleAnswer = (id) => {
     setActiveQuestion(activeQuestion === id ? null : id);
   };
 
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
+  const deleteFaq = (id) => {
+    const updatedFaqData = faqData.filter((faq) => faq.id !== id);
+    setFaqData(updatedFaqData);
   };
 
-  const showModal = () => {
-    setIsModalOpen(true);
+  const addFaq = () => {
+    if (newQuestion && newAnswer) {
+      const newFaq = {
+        id: faqData.length + 1,
+        question: newQuestion,
+        answer: newAnswer,
+      };
+      setFaqData([...faqData, newFaq]);
+      setNewQuestion("");
+      setNewAnswer("");
+    }
   };
 
   return (
@@ -78,7 +78,7 @@ const AddAskedQuestions = ({ open, handleCancel }) => {
         </Button>,
         <Button
           key="save"
-          onClick={handleClick}
+          onClick={() => showSuccessMessage("Successfully Created", "")}
           className="create-campaign-save-button"
         >
           Save
@@ -87,37 +87,30 @@ const AddAskedQuestions = ({ open, handleCancel }) => {
     >
       <div className="container mt-3">
         <div className="education-categories-faq-container">
-          <div className="d-flex justify-content-between align-items-center">
-            <h3>Frequently Asked Questions</h3>
-            <div
-              className="education-categories-faq-menu"
-              onClick={toggleMenu}
-              style={{ cursor: "pointer" }}
-            >
-              <IoEllipsisVerticalSharp size={20} />
-              {showMenu && (
-                <div className="education-categories-menu-options">
-                  <button>Edit</button>
-                  <button>Delete</button>
-                </div>
-              )}
-            </div>
-          </div>
+          <h3>Frequently Asked Questions</h3>
 
           {faqData.map((faq) => (
             <div key={faq.id} className="education-categories-faq-item">
               <div className="education-categories-faq-question d-flex justify-content-between mt-4 align-items-center">
                 <span>{faq.question}</span>
-                <div
-                  className="education-categories-faq-toggle"
-                  onClick={() => toggleAnswer(faq.id)}
-                  style={{ cursor: "pointer" }}
-                >
-                  {activeQuestion === faq.id ? (
-                    <HiMinus size={20} />
-                  ) : (
-                    <HiOutlinePlus size={20} />
-                  )}
+                <div className="d-flex align-items-center gap-2">
+                  <div
+                    className="education-categories-faq-toggle"
+                    onClick={() => toggleAnswer(faq.id)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {activeQuestion === faq.id ? (
+                      <HiMinus size={20} color="var(--primary-green)" />
+                    ) : (
+                      <HiOutlinePlus size={20} color="var(--primary-green)" />
+                    )}
+                  </div>
+                  <RiDeleteBin6Line
+                    size={20}
+                    style={{ cursor: "pointer", color: "var(--red-color)" }}
+                    onClick={() => deleteFaq(faq.id)}
+                    color="var(--primary-green)"
+                  />
                 </div>
               </div>
 
@@ -129,13 +122,33 @@ const AddAskedQuestions = ({ open, handleCancel }) => {
             </div>
           ))}
 
+          <div className="mt-4">
+            <Form.Item>
+              <Input
+                className="create-camapign-input"
+                placeholder="Enter your question"
+                value={newQuestion}
+                onChange={(e) => setNewQuestion(e.target.value)}
+              />
+              <span className="create-campaign-input-span">Question</span>
+            </Form.Item>
+
+            <Form.Item>
+              <Input
+                className="create-camapign-input"
+                placeholder="Enter the answer"
+                value={newAnswer}
+                onChange={(e) => setNewAnswer(e.target.value)}
+              />
+              <span className="create-campaign-input-span">Answer</span>
+            </Form.Item>
+          </div>
+
           <div className="mt-3">
-            <button className="rfh-basic-button" onClick={showModal}>
+            <button className="rfh-basic-button" onClick={addFaq}>
               <GoPlus size={20} /> Add
             </button>
           </div>
-
-    
         </div>
       </div>
     </Modal>
