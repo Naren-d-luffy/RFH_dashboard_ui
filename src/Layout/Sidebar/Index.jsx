@@ -140,9 +140,6 @@ function SidebarAdmin() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState(null);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
 
   const closeSidebar = () => {
     setIsSidebarOpen(false);

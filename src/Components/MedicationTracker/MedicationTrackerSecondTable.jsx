@@ -1,14 +1,12 @@
 import React from "react";
 import { Table, Button, Input, Dropdown, Space } from "antd";
 import { FiSearch } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
 import image from "../../Assets/Images/image.png";
 import { VscSettings } from "react-icons/vsc";
 import {showSuccessMessage} from "../../globalConstant"
 
 
 const MedicationTrackerSecondTable = () => {
-  const navigate = useNavigate();
   const handleClick=()=>{
     showSuccessMessage("Successfully Sent Reminder", "");
   }

@@ -1,8 +1,5 @@
 import React from "react";
-import { FaRegUser } from "react-icons/fa";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import { IoEllipsisVerticalSharp } from "react-icons/io5";
-import { LuUsers } from "react-icons/lu";
 
 const SidebarActiveNotification = () => {
     const notifications = [

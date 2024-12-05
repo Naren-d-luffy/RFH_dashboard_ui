@@ -10,15 +10,6 @@ import {showSuccessMessage} from "../../globalConstant"
 
 const AddPatientDetail = () => {
   const navigate = useNavigate();
-  const modules = {
-    toolbar: [
-      [{ header: "1" }, { header: "2" }, { font: [] }],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["bold", "italic"],
-      ["link", "image"],
-      ["clean"],
-    ],
-  };
   const handleClick=()=>{
     showSuccessMessage("Successfully Added Medication", "");
   }

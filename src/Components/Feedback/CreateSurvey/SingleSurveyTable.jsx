@@ -1,34 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import { Table, Dropdown, Button, Space, Avatar, Input } from "antd";
 import { FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { LuFilter } from "react-icons/lu";
-import { FeedbackCreateSurveyCard } from "./FeedbackCreateSurveyCard";
-import { FaAngleLeft, FaPlus } from "react-icons/fa6";
-import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png";
-import CreateSurveyPage from "./CreateSurveyPage";
+import { FaAngleLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import avatar_image from "../../../Assets/Images/DefaultUser.png";
-import {showDeleteMessage} from "../../../globalConstant"
+import { showDeleteMessage } from "../../../globalConstant";
 
 const SingleSurveyTable = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const navigate = useNavigate();
 
-  const showModal = () => {
-    setIsModalVisible(true);
+  const handleClick = () => {
+    navigate("/feedback/create-survey/populated-survey-data");
   };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
-    const handleClick = () => {
-        navigate("/feedback/create-survey/populated-survey-data")
-    }
-    const handleDelete = (name) => {
-        showDeleteMessage({ message: `${name}` });
-      };
+  const handleDelete = (name) => {
+    showDeleteMessage({ message: `${name}` });
+  };
 
   const columns = [
     {
@@ -38,52 +26,57 @@ const SingleSurveyTable = () => {
       className: "campaign-performance-table-column",
     },
 
-
-        {
-            title: "Name",
-            dataIndex: "name",
-            key: "name",
-            className: "campaign-performance-table-column",
-            render: (text) => (
-                <div style={{ display: "flex", alignItems: "center" }}>
-                    <Avatar
-                        src={avatar_image}
-                        size="small"
-                        alt="Avatar"
-                        style={{ marginRight: "8px", width: "38px", height: "auto" }}
-                    />
-                    {text}
-                </div>
-            ),
-        },
-        {
-            title: "Date",
-            dataIndex: "date",
-            key: "date",
-            className: "campaign-performance-table-column",
-        },
-        {
-            title: "Email ID",
-            dataIndex: "email",
-            key: "email",
-            className: "campaign-performance-table-column",
-        },
-        {
-            title: "Action",
-            key: "action",
-            render: (_, record) => (
-                <div className="campaign-performance-table-action-icons">
-                    <div className="campaign-performance-table-eye-icon" onClick={handleClick}>
-                        <FiEye />
-                    </div>
-                    <div className="campaign-performance-table-delete-icon" onClick={() => handleDelete(record.name)}>
-                        <FiTrash2 />
-                    </div>
-                </div>
-            ),
-            className: "campaign-performance-table-column",
-        },
-    ];
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      className: "campaign-performance-table-column",
+      render: (text) => (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Avatar
+            src={avatar_image}
+            size="small"
+            alt="Avatar"
+            style={{ marginRight: "8px", width: "38px", height: "auto" }}
+          />
+          {text}
+        </div>
+      ),
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      className: "campaign-performance-table-column",
+    },
+    {
+      title: "Email ID",
+      dataIndex: "email",
+      key: "email",
+      className: "campaign-performance-table-column",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <div className="campaign-performance-table-action-icons">
+          <div
+            className="campaign-performance-table-eye-icon"
+            onClick={handleClick}
+          >
+            <FiEye />
+          </div>
+          <div
+            className="campaign-performance-table-delete-icon"
+            onClick={() => handleDelete(record.name)}
+          >
+            <FiTrash2 />
+          </div>
+        </div>
+      ),
+      className: "campaign-performance-table-column",
+    },
+  ];
 
   const data = [
     {

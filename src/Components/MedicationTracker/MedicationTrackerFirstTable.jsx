@@ -1,6 +1,6 @@
 import React from "react";
 import { Table, Button, Space, Input, Dropdown } from "antd";
-import { FiSearch, FiEdit, FiTrash2, FiEye } from "react-icons/fi";
+import { FiSearch, FiEdit, FiEye } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
 import image from "../../Assets/Images/image.png";
 import { useNavigate } from "react-router-dom";

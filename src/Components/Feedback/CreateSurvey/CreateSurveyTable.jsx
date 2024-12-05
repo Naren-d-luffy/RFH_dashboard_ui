@@ -12,14 +12,11 @@ import {showDeleteMessage} from "../../../globalConstant"
 
 const CreateSurveyTable = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isViewModalVisible, setIsViewModalVisible] = useState(false);
     const navigate = useNavigate()
-
 
     const showModal = () => {
         setIsModalVisible(true);
     };
-
     const handleCancel = () => {
         setIsModalVisible(false);
     };

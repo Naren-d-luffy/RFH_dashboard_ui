@@ -1,5 +1,5 @@
 
-import { Avatar, Dropdown } from "antd";
+import { Avatar } from "antd";
 import React, {useState} from "react";
 import { TbReportMedical } from "react-icons/tb";
 import patient from "../../../Assets/Images/DefaultUser.png";

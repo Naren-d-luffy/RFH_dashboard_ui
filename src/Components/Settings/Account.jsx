@@ -11,7 +11,7 @@ export const Account = () => {
   const [form] = Form.useForm();
   const fileInputRef = useRef(null);
   const [previewImage, setPreviewImage] = useState("");
-  const [profileImage, setProfileImage] = useState(null);
+  const [, setProfileImage] = useState(null);
 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const handleFileChange = (e) => {
