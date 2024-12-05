@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { IoEllipsisVerticalSharp } from "react-icons/io5";
 import Frame1 from "../../../Assets/Images/Frame1.png";
@@ -11,7 +10,6 @@ import "slick-carousel/slick/slick-theme.css";
 import AddTreatmentsInfo from "./AddTreatmentsInfo";
 
 const EducationCategoriesTreatmentsInfo = () => {
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(null); 
 

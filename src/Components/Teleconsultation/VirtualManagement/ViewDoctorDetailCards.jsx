@@ -1,6 +1,4 @@
 import React from "react";
-import { HiOutlineLightBulb } from "react-icons/hi";
-import { AiOutlineSound } from "react-icons/ai";
 import { FaArrowUp } from "react-icons/fa6";
 import { FaCirclePlus } from "react-icons/fa6";
 import { FaUserPlus } from "react-icons/fa";
@@ -39,7 +37,6 @@ const ViewDoctorDetailCards = () => {
     {
       title: "Follow-Up Patient",
       value: "15%",
-      percentage: "+165",
       percentage: (
         <>
            <FaArrowUp style={{ color: "var(--primary-green)", fontSize: "12px" }} /> {" "}2%

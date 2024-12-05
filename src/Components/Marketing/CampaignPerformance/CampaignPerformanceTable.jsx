@@ -88,8 +88,8 @@ const CampaignPerformanceTable = () => {
           <div className="campaign-performance-table-edit-icon">
             <FiEdit />
           </div>
-          <div className="campaign-performance-table-delete-icon">
-            <FiTrash2 onClick={() => handleDelete(record.name)} />
+          <div className="campaign-performance-table-delete-icon" onClick={() => handleDelete(record.name)}>
+            <FiTrash2  />
           </div>
         </div>
       ),

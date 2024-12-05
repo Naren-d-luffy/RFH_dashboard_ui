@@ -8,7 +8,7 @@ export const General = () => {
   const [form] = Form.useForm();
   const fileInputRef = useRef(null);
   const [previewImage, setPreviewImage] = useState("");
-  const [profileImage, setProfileImage] = useState(null);
+  const [, setProfileImage] = useState(null);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];

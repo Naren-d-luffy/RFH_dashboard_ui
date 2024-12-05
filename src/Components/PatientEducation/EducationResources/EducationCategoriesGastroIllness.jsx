@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button, Dropdown, Input, Space } from "antd";
 import { FiSearch } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
@@ -14,9 +13,8 @@ import img2 from "../../../Assets/Images/img2.png";
 import img3 from "../../../Assets/Images/img3.png";
 
 const EducationCategoriesGastroIllness = () => {
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showMenu, setShowMenu] = useState(null); // Tracks which menu is open
+  const [showMenu, setShowMenu] = useState(null); 
 
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);

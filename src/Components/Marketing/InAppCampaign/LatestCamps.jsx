@@ -4,11 +4,11 @@ import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { EnvironmentOutlined } from "@ant-design/icons";
-import {showSuccessMessage} from "../../../globalConstant"
+import { showSuccessMessage } from "../../../globalConstant";
 
-const handleClick=()=>{
+const handleClick = () => {
   showSuccessMessage("Successfully Created", "");
-}
+};
 const LatestCamps = ({ open, handleCancel }) => (
   <Modal
     open={open}
@@ -107,8 +107,10 @@ const LatestCamps = ({ open, handleCancel }) => (
           allowfullscreen=""
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
+          title="Google Maps view of Sir H. N. Reliance Foundation Hospital and Research Centre"
         ></iframe>
       </div>
+
       <div className="row">
         <div className="col-md-6 mt-2">
           <Form.Item>

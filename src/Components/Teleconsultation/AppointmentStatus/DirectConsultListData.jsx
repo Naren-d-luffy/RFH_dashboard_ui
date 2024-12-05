@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Table, Avatar, Menu } from "antd";
+import { Table, Avatar } from "antd";
 import patientImage from "../../../Assets/Images/DefaultUser.png";
 import doctorImage from "../../../Assets/Images/image.png";
 import { useNavigate } from "react-router-dom";

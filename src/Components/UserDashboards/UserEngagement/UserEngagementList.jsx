@@ -1,6 +1,6 @@
 import React from "react";
 import { Table, Dropdown, Button, Space, Input } from "antd";
-import { FiFilter, FiSearch } from "react-icons/fi";
+import { FiSearch } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 
 export const UserEngagementList = () => {

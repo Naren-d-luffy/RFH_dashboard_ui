@@ -311,3 +311,27 @@
   .reply-feedback-text{
     color: var(--primary-grey-color);
   }
+  .create-survey-save-button{
+    padding: 13px 24px;
+    color: var(--white-color);
+    border: none;
+    background: var(--primary-green);
+    border-radius: 8px;
+  }
+  .create-survey-cancel-button{
+    padding: 13px 24px;
+    color: var(--primary-green);
+    border: 1px solid var(--primary-green);
+    background: var(--white-color);
+    border-radius: 8px;
+  }
+  .create-survey-save-button:hover{
+    color: var(--primary-green);
+    border: 1px solid var(--primary-green);
+    background: var(--white-color);
+  }
+  .create-survey-cancel-button:hover{
+    color: var(--white-color);
+    border: none;
+    background: var(--primary-green);
+  }

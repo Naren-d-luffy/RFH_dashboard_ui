@@ -2,8 +2,6 @@ import React, { useRef, useState } from "react";
 import { Avatar } from "antd";
 import { PiStarFill } from "react-icons/pi";
 import image from "../../../Assets/Images/image.png";
-import { useNavigate } from "react-router-dom";
-import { IoIosArrowBack } from "react-icons/io";
 
 const reviews = [
   {
@@ -37,8 +35,6 @@ const reviews = [
 ];
 
 const ViewDoctorDetailReview = () => {
- 
-    const navigate = useNavigate();
 
   const scrollRef = useRef(null);
   const [activeCard, setActiveCard] = useState(0);

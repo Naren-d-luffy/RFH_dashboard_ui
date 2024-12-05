@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaArrowDown, FaArrowUp, FaUserDoctor, FaUsers } from 'react-icons/fa6';
+import { FaArrowUp } from 'react-icons/fa6';
 import { PiExport } from 'react-icons/pi';
 import patient from '../../../Assets/Icons/patient.png'
 import doctor from '../../../Assets/Icons/doctor.png'

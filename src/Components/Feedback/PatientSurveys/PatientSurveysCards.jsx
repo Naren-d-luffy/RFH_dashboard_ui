@@ -3,10 +3,8 @@ import { PiSmileySadFill } from 'react-icons/pi';
 import total_survey_icon from '../../../Assets/Icons/total_survey_icon.png'
 import total_feedback_icon from '../../../Assets/Icons/total_feedback_icon.png'
 import { BsFillEmojiSmileFill } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom';
 
 const PatientSurveysCards = () => {
-    const navigate = useNavigate()
 
     const cardData = [
         {
@@ -58,7 +56,7 @@ const PatientSurveysCards = () => {
         <div className="">
             <div className="d-flex justify-content-between align-items-center">
                 <div className='user-engagement-header'>
-                    <h3>Patient Feddback</h3>
+                    <h3>Patient Feedback</h3>
                     <p >
                         Number of users installed the app by source
                     </p>

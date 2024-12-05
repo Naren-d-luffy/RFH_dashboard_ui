@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Table, Dropdown, Button, Space, Input, } from "antd";
-import { FiEdit, FiEye, FiFilter, FiSearch, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { GoPlus } from "react-icons/go";
 import UserManagementAddPatientsModal from "./UserManagementAddPatientsModal";
@@ -121,8 +121,8 @@ const UserManagementTable = () => {
           <div className="campaign-performance-table-edit-icon" onClick={showEditModal}>
             <FiEdit />
           </div>
-          <div className="campaign-performance-table-delete-icon">
-            <FiTrash2 onClick={() => handleDelete(record.name)} />
+          <div className="campaign-performance-table-delete-icon" onClick={() => handleDelete(record.name)}>
+            <FiTrash2  />
           </div>
         </div>
       ),

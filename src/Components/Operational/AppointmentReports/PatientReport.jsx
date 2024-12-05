@@ -38,7 +38,6 @@ export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
       const pdfWidth = 210;
-      const pdfHeight = 297;
       const imgWidth = pdfWidth - 20;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
@@ -219,7 +218,6 @@ export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
                   fontSize: "10px",
                   fontWeight: "bold",
                   maxWidth: "200px",
-                  margin: "0 auto",
                 }}
               >
                 Prarthana Samaj, Raja Ram Mohan Roy Rd, Girgaon, Mumbai,
