@@ -121,8 +121,8 @@ const UserManagementTable = () => {
           <div className="campaign-performance-table-edit-icon" onClick={showEditModal}>
             <FiEdit />
           </div>
-          <div className="campaign-performance-table-delete-icon">
-            <FiTrash2 onClick={() => handleDelete(record.name)} />
+          <div className="campaign-performance-table-delete-icon" onClick={() => handleDelete(record.name)}>
+            <FiTrash2  />
           </div>
         </div>
       ),

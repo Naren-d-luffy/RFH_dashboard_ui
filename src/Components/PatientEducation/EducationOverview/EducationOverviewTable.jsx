@@ -88,8 +88,8 @@ const EducationOverviewTable = () => {
           <div className="campaign-performance-table-edit-icon">
             <FiEdit />
           </div>
-          <div className="campaign-performance-table-delete-icon">
-            <FiTrash2 onClick={handleDelete}/>
+          <div className="campaign-performance-table-delete-icon" onClick={handleDelete}>
+            <FiTrash2 />
           </div>
         </div>
       ),
