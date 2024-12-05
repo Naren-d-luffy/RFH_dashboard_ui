@@ -1,5 +1,4 @@
 import React from "react";
-import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 

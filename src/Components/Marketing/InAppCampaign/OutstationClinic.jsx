@@ -1,17 +1,18 @@
-
 import { Button, Modal, Form, Input, DatePicker, TimePicker } from "antd";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { EnvironmentOutlined } from "@ant-design/icons";
-import {showSuccessMessage} from "../../../globalConstant"
-const handleClick=()=>{
+import { showSuccessMessage } from "../../../globalConstant";
+const handleClick = () => {
   showSuccessMessage("Successfully Created", "");
-}
+};
 const OutstationClinic = ({ open, handleCancel }) => (
   <Modal
     open={open}
-    title={<span className="create-campaign-modal-title">Outstation Clinic</span>}
+    title={
+      <span className="create-campaign-modal-title">Outstation Clinic</span>
+    }
     onCancel={handleCancel}
     width={680}
     footer={[
@@ -106,8 +107,10 @@ const OutstationClinic = ({ open, handleCancel }) => (
           allowfullscreen=""
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
+          title="Map showing Sir H. N. Reliance Foundation Hospital"
         ></iframe>
       </div>
+
       <div className="row">
         <div className="col-md-6 mt-2">
           <Form.Item>

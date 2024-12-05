@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Avatar, Pagination } from "antd";
-import { LiaTelegram } from "react-icons/lia";
 import profile4 from "../../../Assets/Images/DefaultUser.png";
 import { useNavigate } from "react-router-dom";
-import { IoIosArrowBack } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
 
@@ -80,10 +78,6 @@ const SolvedUserNegativeFeedback = () => {
         setCurrentPage(page);
     };
 
-    const currentFeedback = feedbackData.slice(
-        (currentPage - 1) * pageSize,
-        currentPage * pageSize
-    );
 
     const totalEntries = feedbackData.length;
     const startIndex = (currentPage - 1) * pageSize + 1;

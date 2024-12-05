@@ -1,16 +1,9 @@
-import React, { useState } from 'react';
-import { FaArrowDown, FaUsers } from 'react-icons/fa6';
-import { PiExport, PiSmileySadFill } from 'react-icons/pi';
-import { FaChartLine, FaShoppingCart, FaDollarSign } from 'react-icons/fa6';
+import React from 'react';
+import { PiSmileySadFill } from 'react-icons/pi';
 import total_survey_icon from '../../../Assets/Icons/total_survey_icon.png'
-import { Button, Modal } from 'antd';
-import { GoPlus } from 'react-icons/go';
 import { BsFillEmojiSmileFill } from 'react-icons/bs';
-import CreateSurveyPage from './CreateSurveyPage';
-import { useNavigate } from 'react-router-dom';
 
 const SingleSurveyCards = () => {
-    const navigate = useNavigate()
 
     const cardData = [
         {

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FaArrowDown, FaUsers } from 'react-icons/fa6';
 import { PiExport } from 'react-icons/pi';
-import { FaChartLine, FaShoppingCart, FaDollarSign } from 'react-icons/fa6';
 import profile_tick from '../../../Assets/Icons/profile-tick.png'
 import { Button, Modal } from 'antd';
 import {showSuccessMessage} from "../../../globalConstant"
@@ -18,7 +17,6 @@ export const UserAquisitionCards = () => {
 
   const handleOk = () => {
     setIsModalVisible(false);
-    // Handle export functionality here
     console.log("Export initiated!");
   };
 

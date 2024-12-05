@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
     BarChart,
     Bar,
@@ -7,9 +7,8 @@ import {
     ResponsiveContainer,
     CartesianGrid,
     Tooltip,
-    Legend,
 } from "recharts";
-import { Button, Divider, Dropdown, Space } from "antd";
+import { Button, Divider, Dropdown } from "antd";
 import { PiDotsThreeOutlineLight } from "react-icons/pi";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip as ChartTooltip, Legend as ChartLegend } from 'chart.js';

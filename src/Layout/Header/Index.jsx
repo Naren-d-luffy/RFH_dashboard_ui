@@ -36,9 +36,6 @@ const HeaderAdmin = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
-  const handleToggleChange = () => {
-    setIsDarkMode((prevMode) => !prevMode);
-  };
 
   return (
     <div style={{ position: "sticky", top: "0", zIndex: "999" }}>
@@ -75,7 +72,7 @@ const HeaderAdmin = () => {
                 onClick={toggleDropdown}
                 aria-expanded={isDropdownOpen}
               >
-                <img className="profile--icon" src={DefaultUser} />
+                <img className="profile--icon" src={DefaultUser} alt=""/>
               </button>
               <div className="user-info">
                 <span
