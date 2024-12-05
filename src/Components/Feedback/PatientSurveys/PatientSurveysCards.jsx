@@ -3,10 +3,8 @@ import { PiSmileySadFill } from 'react-icons/pi';
 import total_survey_icon from '../../../Assets/Icons/total_survey_icon.png'
 import total_feedback_icon from '../../../Assets/Icons/total_feedback_icon.png'
 import { BsFillEmojiSmileFill } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom';
 
 const PatientSurveysCards = () => {
-    const navigate = useNavigate()
 
     const cardData = [
         {

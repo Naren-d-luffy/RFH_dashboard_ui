@@ -42,9 +42,9 @@ const handleClick=()=>{
   showSuccessMessage("Successfully Created", "");
 }
 const AddAskedQuestions = ({ open, handleCancel }) => {
-  const [activeQuestion, setActiveQuestion] = useState(null); // Tracks which FAQ is active
-  const [showMenu, setShowMenu] = useState(false); // Toggles the menu
-  const [isModalOpen, setIsModalOpen] = useState(false); // Controls the "Add" modal
+  const [activeQuestion, setActiveQuestion] = useState(null);
+  const [showMenu, setShowMenu] = useState(false); 
+  const [, setIsModalOpen] = useState(false);
 
   const toggleAnswer = (id) => {
     setActiveQuestion(activeQuestion === id ? null : id);
@@ -56,10 +56,6 @@ const AddAskedQuestions = ({ open, handleCancel }) => {
 
   const showModal = () => {
     setIsModalOpen(true);
-  };
-
-  const handleModalCancel = () => {
-    setIsModalOpen(false);
   };
 
   return (

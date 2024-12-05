@@ -1,6 +1,5 @@
 import React from "react";
-import { HiOutlineLightBulb } from "react-icons/hi";
-import { AiFillPieChart, AiOutlinePieChart } from "react-icons/ai";
+import { AiFillPieChart } from "react-icons/ai";
 import { FaArrowUp } from "react-icons/fa6";
 import Notification from "../../../Assets/Icons/Notification.png"
 import handIcon from "../../../Assets/Icons/handIcon.png"

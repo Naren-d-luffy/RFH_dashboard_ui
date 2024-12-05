@@ -1,17 +1,14 @@
-import { Button, Checkbox, Divider, Form, Input, Modal, Popover, Rate, Upload } from 'antd'
+import { Button, Checkbox, Divider, Form, Input, Popover, Rate, Upload } from 'antd'
 import React, { useState } from 'react'
 import { FaTimes } from 'react-icons/fa';
 import { FaPlus, FaRegCircleCheck, FaRegStar } from 'react-icons/fa6'
 import { IoIosArrowDropdown, IoIosKeypad } from 'react-icons/io';
 import { LuWrapText } from 'react-icons/lu';
 import { MdFormatListBulleted, MdOutlineShortText } from 'react-icons/md';
-import { TbCalendarMonth, TbClockHour5 } from 'react-icons/tb';
 import { VscCloudUpload } from 'react-icons/vsc';
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 
-
-
-const CreateSurveyPage = ({ onClose, visible }) => {
+const CreateSurveyPage = () => {
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const handlePopoverVisibleChange = (visible) => {
         setIsPopoverOpen(visible);

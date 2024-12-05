@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Modal, Form, Input, DatePicker, Col } from "antd";
+import { Button, Modal, Form, Input, DatePicker } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";

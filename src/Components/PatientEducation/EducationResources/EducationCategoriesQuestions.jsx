@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { IoEllipsisVerticalSharp } from "react-icons/io5";
 import { HiOutlinePlus, HiMinus } from "react-icons/hi";
 import { GoPlus } from "react-icons/go";
@@ -9,7 +8,6 @@ const EducationCategoriesQuestions = () => {
   const [activeQuestion, setActiveQuestion] = useState(null);
   const [showMenu, setShowMenu] = useState(null);
 
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => setIsModalOpen(true);

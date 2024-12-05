@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, Input, Button, Dropdown, Space } from "antd";
 import { FiSearch } from "react-icons/fi";
-import image from "../../../Assets/Images/image.png"; // Adjust path if needed
+import image from "../../../Assets/Images/image.png"; 
 import { VscSettings } from "react-icons/vsc";
 
 const ServiceUtilizationTable = () => {

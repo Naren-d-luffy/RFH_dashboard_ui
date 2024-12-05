@@ -1,9 +1,6 @@
-import React, { useState } from "react";
-import { AiOutlinePieChart } from "react-icons/ai";
-import { AiOutlineSound } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import icon2 from "../../../Assets/Icons/DirectAppointment.png"
-import { FaArrowUp, FaVideo } from "react-icons/fa";
+import { FaVideo } from "react-icons/fa";
 import icon1 from "../../../Assets/Icons/appointmentReports.png"
 import { FaCircleCheck } from "react-icons/fa6";
 export const AppointmentReportCards = () => {
@@ -50,7 +47,6 @@ export const AppointmentReportCards = () => {
           iconBackground: "#e8f6ff",
         },
       ];
-      const navigate = useNavigate();
       return (
         <div className="">
           <div className="campaign-performance-head">

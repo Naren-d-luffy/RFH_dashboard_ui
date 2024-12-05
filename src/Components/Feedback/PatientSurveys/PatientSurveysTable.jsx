@@ -1,9 +1,6 @@
 import React from "react";
-import { Table, Dropdown, Button, Space, Avatar, Input, } from "antd";
+import { Table, Dropdown, Button, Space, Input, } from "antd";
 import { FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
-import { LuFilter } from "react-icons/lu";
-import avatar_image from "../../../Assets/Images/DefaultUser.png"
 import { useNavigate } from "react-router-dom";
 import { VscSettings } from "react-icons/vsc";
 const PatientSurveysTable = () => {
