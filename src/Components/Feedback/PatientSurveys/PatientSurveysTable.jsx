@@ -6,11 +6,15 @@ import { LuFilter } from "react-icons/lu";
 import avatar_image from "../../../Assets/Images/DefaultUser.png"
 import { useNavigate } from "react-router-dom";
 import { VscSettings } from "react-icons/vsc";
+import {showDeleteMessage} from "../../../globalConstant"
 const PatientSurveysTable = () => {
   const navigate=useNavigate()
   const handleClick=()=>{
     navigate("/feedback/view-feedback")
   }
+  const handleDelete = (name) => {
+    showDeleteMessage({ message: name });
+  };
   const columns = [
     {
       title: "Patient Name",
@@ -74,12 +78,12 @@ const PatientSurveysTable = () => {
     {
       title: "Action",
       key: "action",
-      render: () => (
+      render: (_, record) => (
         <div className="campaign-performance-table-action-icons">
-          <div className="campaign-performance-table-eye-icon" >
-            <FiEye onClick={handleClick}/>
+          <div className="campaign-performance-table-eye-icon" onClick={handleClick}>
+            <FiEye />
           </div>
-          <div className="campaign-performance-table-delete-icon" >
+          <div className="campaign-performance-table-delete-icon" onClick={() => handleDelete(record.patientname)} >
             <FiTrash2 />
           </div>
         </div>

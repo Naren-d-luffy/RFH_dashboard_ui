@@ -87,9 +87,8 @@ const PatientAcquisitionTable = () => {
           <div className="campaign-performance-table-edit-icon">
             <FiEdit />
           </div>
-          <div className="campaign-performance-table-delete-icon">
+          <div className="campaign-performance-table-delete-icon"  onClick={() => handleDelete(record.patientName)}>
             <FiTrash2
-              onClick={() => handleDelete(record.patientName)} 
               style={{ cursor: "pointer" }}
             />
           </div>

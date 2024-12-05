@@ -5,9 +5,13 @@ import { VscSettings } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import image from "../../../Assets/Images/image.png";
+import { showDeleteMessage } from "../../../globalConstant"
 
 const VirtualManagementTable = () => {
   const navigate = useNavigate();
+  const handleDelete = (name) => {
+    showDeleteMessage({ message: name });
+  };
 
   const columns = [
     {
@@ -74,7 +78,7 @@ const VirtualManagementTable = () => {
     {
       title: "Action",
       key: "action",
-      render: () => (
+      render: (_, record) => (
         <div className="campaign-performance-table-action-icons">
           <div
             className="campaign-performance-table-eye-icon"
@@ -86,7 +90,7 @@ const VirtualManagementTable = () => {
           <div className="campaign-performance-table-edit-icon">
             <FiEdit />
           </div>
-          <div className="campaign-performance-table-delete-icon">
+          <div className="campaign-performance-table-delete-icon"  onClick={() => handleDelete(record.doctorName)}>
             <FiTrash2 />
           </div>
         </div>
@@ -154,7 +158,7 @@ const VirtualManagementTable = () => {
     { label: "Last Month", key: "3" },
   ];
 
-  const handleMenuClick = ({ key }) => {};
+  const handleMenuClick = ({ key }) => { };
 
   const menuProps = {
     items,
