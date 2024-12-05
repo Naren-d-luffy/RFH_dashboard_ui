@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { IoMicOutline } from "react-icons/io5";
-import { LuSendHorizonal } from "react-icons/lu";
 import image1 from "../../../Assets/Images/DefaultUser.png";
 import image2 from "../../../Assets/Images/ladydoctor.png";
 import image3 from "../../../Assets/Images/image.png";
@@ -8,8 +7,6 @@ import { Avatar } from "antd";
 import { TbPinned } from "react-icons/tb";
 import chatIcon from "../../../Assets/Icons/chat-header.png";
 import addFile from "../../../Assets/Icons/addFile.png";
-import Lottie from "react-lottie-player";
-import animationData from "../../../Assets/Jsons/chat boat2.json";
 import { FaRegSmile } from "react-icons/fa";
 import { IoMdSend } from "react-icons/io";
 const MessageChat = () => {
@@ -134,7 +131,6 @@ const MessageChat = () => {
       avatar: image3,
     },
   ];
-  const [isHovered, setIsHovered] = useState(false);
   return (
     <div>
       <div className="row technical-support-heading">

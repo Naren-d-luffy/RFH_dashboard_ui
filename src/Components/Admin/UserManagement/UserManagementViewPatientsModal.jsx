@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Input, Modal } from 'antd'
+import { DatePicker, Form, Input, Modal } from 'antd'
 import React, { useState } from 'react'
 import { FaAngleLeft } from 'react-icons/fa6';
 
@@ -9,12 +9,11 @@ const UserManagementViewPatientsModal = ({ visible, onClose }) => {
         consultDr: "Dr. Sunil",
         type: "OPD",
         drSpecialty: "Cardiology",
-        lastVisit: null, // Use a valid moment object for date if required
+        lastVisit: null, 
         diagnosis: "Diabetes",
         status: "Active",
     };
 
-    // Initialize state with dummy data
     const [formData, setFormData] = useState(dummyData);
     const handleChange = (field, value) => {
         setFormData({ ...formData, [field]: value });

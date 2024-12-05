@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Table, Dropdown, Button, Space, Input, } from "antd";
-import { FiEdit, FiEye, FiFilter, FiSearch, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { GoPlus } from "react-icons/go";
 import UserManagementAddPatientsModal from "./UserManagementAddPatientsModal";

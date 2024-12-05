@@ -16,7 +16,11 @@ import { RiHospitalFill } from "react-icons/ri";
 import OutstationClinic from "./OutstationClinic";
 
 export const FeaturedPrograms = () => {
-  const [modals, setModals] = useState({ program: false, camp: false, clinic:false });
+  const [modals, setModals] = useState({
+    program: false,
+    camp: false,
+    clinic: false,
+  });
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
@@ -52,22 +56,22 @@ export const FeaturedPrograms = () => {
       key: 1,
       campName: "Blood Test Camp",
       Description: "RFH Organised a camp at RK ground",
-      lat: "28.6139", // Example Latitude for Delhi
-      lng: "77.2090", // Example Longitude for Delhi
+      lat: "28.6139",
+      lng: "77.2090",
     },
     {
       key: 2,
       campName: "Health Checkup Camp",
       Description: "Camp at City Center",
-      lat: "19.0760", // Example Latitude for Mumbai
-      lng: "72.8777", // Example Longitude for Mumbai
+      lat: "19.0760",
+      lng: "72.8777",
     },
     {
       key: 3,
       campName: "Blood Test Camp",
       Description: "RFH Organised a camp at RK ground",
-      lat: "28.6139", // Example Latitude for Delhi
-      lng: "77.2090", // Example Longitude for Delhi
+      lat: "28.6139",
+      lng: "77.2090",
     },
   ];
 
@@ -117,13 +121,11 @@ export const FeaturedPrograms = () => {
   const renderLatestCamps = (camp) => (
     <div className="col-lg-4">
       <div className="recommend-video-card">
-        {/* Google Maps iframe as background */}
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3773.423259243416!2d72.81684837418092!3d18.956905855702594!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7ce11a208b68b%3A0x231538ea71de5051!2sRaja%20Ram%20Mohan%20Roy%20Rd%2C%20Girgaon%2C%20Mumbai%2C%20Maharashtra%20400004%2C%20India!5e0!3m2!1sen!2sjp!4v1733119289892!5m2!1sen!2sjp"
           allowFullScreen
+          title="Map showing Raja Ram Mohan Roy Road in Girgaon, Mumbai"
         ></iframe>
-
-        {/* Overlay Content */}
         <div className="recommend-video-card-content">
           <h4>{camp.campName}</h4>
           <p>{camp.Description}</p>
@@ -140,11 +142,13 @@ export const FeaturedPrograms = () => {
         </div>
         <div className="clinic-content p-3">
           <div className="d-flex align-items-center justify-content-between">
-          <h4 className="clinic-title">{clinic.title}</h4>
-          <div className="clinic-category mt-2">
-            <h6 className="badge"><RiHospitalFill style={{width:"16px", height:"16px"}}/>
-            {clinic.category}</h6>
-          </div>
+            <h4 className="clinic-title">{clinic.title}</h4>
+            <div className="clinic-category mt-2">
+              <h6 className="badge">
+                <RiHospitalFill style={{ width: "16px", height: "16px" }} />
+                {clinic.category}
+              </h6>
+            </div>
           </div>
           <div className="clinic-rating d-flex align-items-center my-2 gap-2">
             <h6 className="reviews">{clinic.rating}</h6>
@@ -152,21 +156,20 @@ export const FeaturedPrograms = () => {
               allowHalf
               disabled
               defaultValue={clinic.rating}
-              style={{ fontSize: "16px" ,paddingLeft:"0",color:"#FEB052"}}
+              style={{ fontSize: "16px", paddingLeft: "0", color: "#FEB052" }}
             />
             <h6 className="reviews">({clinic.reviews} Reviews)</h6>
           </div>
           <p className="clinic-description">{clinic.description}</p>
           <div className="clinic-details d-flex gap-2 align-items-center mt-2">
             <h6 className="location">
-            <FiMapPin /> {clinic.location}
+              <FiMapPin /> {clinic.location}
             </h6>
             <div className="clinic-vertical-line"></div>
             <h6 className="distance">
-            <GiPathDistance /> {clinic.distance}
+              <GiPathDistance /> {clinic.distance}
             </h6>
           </div>
-          
         </div>
       </div>
     </div>

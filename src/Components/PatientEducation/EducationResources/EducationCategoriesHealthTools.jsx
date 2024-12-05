@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -11,7 +10,6 @@ import AddHealthTools from "./AddHealthTools";
 import { IoEllipsisVerticalSharp } from "react-icons/io5";
 
 const EducationCategoriesHealthTools = () => {
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(null);
 

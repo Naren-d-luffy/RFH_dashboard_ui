@@ -6,7 +6,6 @@ import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import {showSuccessMessage} from "../../../globalConstant" 
 
-const { Dragger } = Upload;
 
 const modules = {
   toolbar: [
