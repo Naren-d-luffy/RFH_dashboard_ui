@@ -1,21 +1,12 @@
 
 import React from "react";
-import { Button, Modal, Form, Input, DatePicker, Col } from "antd";
-import ReactQuill from "react-quill";
+import { Button, Modal, Form, Input } from "antd";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import {showSuccessMessage} from "../../../globalConstant"
 
-const modules = {
-  toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["bold", "italic"],
-    ["link", "image"],
-    ["clean"],
-  ],
-};
+
 const handleClick=()=>{
   showSuccessMessage("Successfully Created", "");
 }

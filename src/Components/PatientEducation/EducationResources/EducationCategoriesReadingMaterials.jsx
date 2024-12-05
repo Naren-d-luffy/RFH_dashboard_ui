@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import Acidity from "../../../Assets/Images/Acidity.png";
 import Jaundice from "../../../Assets/Images/Jaundice.png";
@@ -10,7 +9,6 @@ import AddReadingMaterials from "./AddReadingMaterials";
 import { IoEllipsisVerticalSharp } from "react-icons/io5";
 
 const EducationCategoriesReadingMaterials = () => {
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(null);  
 

@@ -56,7 +56,7 @@ export const showDeleteMessage = ({
 					gap: "10px",
 				}}
 			>
-				<img src={deleteIcon} style={{ width: "100px", height: "100px" }} />
+				<img src={deleteIcon} alt="" style={{ width: "100px", height: "100px" }} />
 				<div className="delete-message">
 					{title} {message && <div>{message}?</div>}
 				</div>
@@ -113,7 +113,7 @@ export const showLogoutMessage = ({
 					gap: "10px",
 				}}
 			>
-				<img src={deleteIcon} style={{ width: "100px", height: "100px" }} />
+				<img src={deleteIcon} alt="" style={{ width: "100px", height: "100px" }} />
 				<div className="delete-message">
 					{title} {message && <div>{message}?</div>}
 				</div>

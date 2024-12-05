@@ -1,5 +1,5 @@
 import React from "react";
-import { AiFillPieChart, AiOutlinePieChart } from "react-icons/ai";
+import { AiFillPieChart } from "react-icons/ai";
 import { FaArrowUp } from "react-icons/fa";
 import clickicon from "../../../Assets/Icons/click-icon.png";
 import handIcon from "../../../Assets/Icons/handIcon.png";

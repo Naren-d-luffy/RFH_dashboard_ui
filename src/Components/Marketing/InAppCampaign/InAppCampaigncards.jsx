@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { AiFillPieChart } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
 import clickicon from "../../../Assets/Icons/click-icon.png"
 import handIcon from "../../../Assets/Icons/handIcon.png"
 import { FaArrowUp } from "react-icons/fa";
@@ -54,7 +53,6 @@ export const InAppCampaigncards = () => {
           iconBackground: "#e8f6ff",
         },
       ];
-      const navigate = useNavigate();
       return (
         <div className="row">
           <div className="campaign-performance-head">

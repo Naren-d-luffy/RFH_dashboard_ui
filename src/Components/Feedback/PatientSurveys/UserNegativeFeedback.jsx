@@ -1,37 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button, Dropdown, Input, Menu } from "antd";
-import { IoIosArrowForward } from "react-icons/io";
+import { Button, Dropdown, Input } from "antd";
 import { FiSearch } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import IndexUserNegativeFeedback from "./IndexUserNegativeFeedback";
 import NegativeFeedbackReplyAllModal from "./NegativeFeedbackReplyAllModal";
-// import IndexUserNegativeFeedback from "./IndexUserNegativeFeedback";
-// import ReplyAllUserNegativeFeedback from "./ReplyAllUserNegativeFeedback";
-
 export const UserNegativeFeedback = () => {
-    const filterMenu = (
-        <Menu>
-            <Menu.Item key="certifications" className="filter-menu-item">
-                ABC <IoIosArrowForward className="right-arrow" />
-            </Menu.Item>
-            <Menu.Item key="employment-type" className="filter-menu-item">
-                EFG <IoIosArrowForward className="right-arrow" />
-            </Menu.Item>
-        </Menu>
-    );
-    const sortMenu = (
-        <Menu>
-            <Menu.Item key="datePosted" className="filter-menu-item">
-                ABC <IoIosArrowForward className="right-arrow" />
-            </Menu.Item>
-            <Menu.Item key="jobType" className="filter-menu-item">
-                EFG <IoIosArrowForward className="right-arrow" />
-            </Menu.Item>
-        </Menu>
-    );
 
-    const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const showModal = () => setIsModalOpen(true);
