@@ -235,10 +235,10 @@ const UserManagementTable = () => {
   return (
     <div className="container mt-4">
       <div className="campaign-performance-table-head">
-        <div className="d-flex justify-content-between align-items-center">
-          <h6>Patients List</h6>
 
-          <div className="d-flex gap-3 align-items-center">
+      <div className="d-flex justify-content-between flex-lg-row flex-xl-row flex-column align-items-center">
+          <h6>Patients List</h6>
+          <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-column align-items-center">
             <div
               className="d-flex align-items-center px-3"
               style={{
@@ -258,6 +258,18 @@ const UserManagementTable = () => {
               />
             </div>
 
+            <div className="d-flex gap-3 align-items-center">
+            <Dropdown menu={menuProps}>
+              <Button>
+                <Space>
+                  <VscSettings />
+                  Filter
+                </Space>
+              </Button>
+            </Dropdown>
+            <button className="rfh-basic-button" onClick={showModal}>
+
+
             <Dropdown
               overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
               trigger={['click']}
@@ -272,10 +284,13 @@ const UserManagementTable = () => {
             </Dropdown>
 
             <button className="rfh-basic-button" onClick={showModal} >
+
               <GoPlus size={20} /> Add Patients
             </button>
+            </div>
           </div>
         </div>
+
         <div className="mt-3">
           <Table
             columns={columns}

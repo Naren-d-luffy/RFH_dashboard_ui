@@ -1,17 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Table, Dropdown, Button, Space, Avatar, Input } from "antd";
 import { FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
+import { LuFilter } from "react-icons/lu";
 import { FaAngleLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import avatar_image from "../../../Assets/Images/DefaultUser.png";
 import { showDeleteMessage } from "../../../globalConstant";
-import { filterDropdown } from "../../../globalConstant"
-import { VscSettings } from "react-icons/vsc";
 
 const SingleSurveyTable = () => {
-  const [selectedValues, setSelectedValues] = useState([]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -133,57 +130,18 @@ const SingleSurveyTable = () => {
       key: "3",
     },
   ];
-  const handleMenuClick = ({ key }) => { };
+  const handleMenuClick = ({ key }) => {};
   const menuProps = {
     items,
     onClick: handleMenuClick,
   };
-  const handleCheckboxChange = (value, checked) => {
-    if (checked) {
-      setSelectedValues((prev) => [...prev, value]);
-    } else {
-      setSelectedValues((prev) => prev.filter((item) => item !== value));
-    }
-  };
-
-  const handleApply = () => {
-    console.log('Applied Filters:', selectedValues);
-    setIsDropdownOpen(false);
-  };
-  const handleReset = () => {
-    setSelectedValues([]);
-  };
-  const options = [
-    {
-      label: 'Type',
-      options: [
-        { label: 'All', value: 'all' },
-        { label: 'OPD', value: 'opd' },
-        { label: 'IPD', value: 'ipd' },
-      ],
-    },
-    {
-      label: 'Last Visit',
-      options: [
-        { label: 'Last 7 days', value: 'last7days' },
-        { label: 'Last 30 days', value: 'last30days' },
-      ],
-    },
-    {
-      label: 'All Users',
-      options: [
-        { label: 'Active Users', value: 'activeusers' },
-        { label: 'Inactive Users', value: 'inactiveusers' },
-      ],
-    },
-  ];
 
   return (
     <div className=" mt-4">
       <div className="campaign-performance-table-head mt-4">
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between flex-lg-row flex-xl-row flex-column align-items-center">
           <h6>Surveys</h6>
-          <div className="d-flex gap-3 align-items-center">
+          <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-column align-items-center">
             <div
               className="d-flex align-items-center px-3"
               style={{
@@ -202,26 +160,24 @@ const SingleSurveyTable = () => {
                 }}
               />
             </div>
-            <Dropdown menu={menuProps} overlayClassName="dropdown-hover-color">
-              <Button>
-                <Space>
-                  Sort By
-                  <BiSortAlt2 />
-                </Space>
-              </Button>
-            </Dropdown>
-            <Dropdown
-              overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
-              trigger={['click']}
-              open={isDropdownOpen}
-              onOpenChange={setIsDropdownOpen}
-              placement="bottomLeft"
-            >
-              <Button style={{ width: 160 }}>
-                <VscSettings />
-                Filters
-              </Button>
-            </Dropdown>
+            <div className="d-flex gap-3 align-items-center">
+              <Dropdown menu={menuProps}>
+                <Button>
+                  <Space>
+                    Sort By
+                    <BiSortAlt2 />
+                  </Space>
+                </Button>
+              </Dropdown>
+              <Dropdown menu={menuProps}>
+                <Button>
+                  <Space>
+                    <LuFilter />
+                    Filter
+                  </Space>
+                </Button>
+              </Dropdown>
+            </div>
           </div>
         </div>
         <div className="mt-3">
