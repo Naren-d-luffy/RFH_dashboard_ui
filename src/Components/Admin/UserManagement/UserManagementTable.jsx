@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { Table, Dropdown, Button, Space, Input, } from "antd";
+import { Table, Dropdown, Button, Space, Input } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { GoPlus } from "react-icons/go";
 import UserManagementAddPatientsModal from "./UserManagementAddPatientsModal";
 import UserManagementViewPatientsModal from "./UserManagementViewPatientsModal";
 import UserManagementEditPatientsModal from "./UserManagementEditPatientsModal";
-import { showDeleteMessage } from '../../../globalConstant'
+import { showDeleteMessage } from "../../../globalConstant";
+
 
 const UserManagementTable = () => {
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
@@ -91,10 +92,10 @@ const UserManagementTable = () => {
           status === "Active"
             ? "#0CBC53"
             : status === "Paused"
-              ? "orange"
-              : status === "Inactive"
-                ? "#FB5757"
-                : "blue";
+            ? "orange"
+            : status === "Inactive"
+            ? "#FB5757"
+            : "blue";
         return (
           <span
             className="campaign-performance-table-status"
@@ -115,14 +116,23 @@ const UserManagementTable = () => {
       key: "action",
       render: (_, record) => (
         <div className="campaign-performance-table-action-icons">
-          <div className="campaign-performance-table-eye-icon" onClick={showViewModal}>
+          <div
+            className="campaign-performance-table-eye-icon"
+            onClick={showViewModal}
+          >
             <FiEye />
           </div>
-          <div className="campaign-performance-table-edit-icon" onClick={showEditModal}>
+          <div
+            className="campaign-performance-table-edit-icon"
+            onClick={showEditModal}
+          >
             <FiEdit />
           </div>
-          <div className="campaign-performance-table-delete-icon" onClick={() => handleDelete(record.name)}>
-            <FiTrash2  />
+          <div
+            className="campaign-performance-table-delete-icon"
+            onClick={() => handleDelete(record.name)}
+          >
+            <FiTrash2 />
           </div>
         </div>
       ),
@@ -202,7 +212,7 @@ const UserManagementTable = () => {
       key: "3",
     },
   ];
-  const handleMenuClick = ({ key }) => { };
+  const handleMenuClick = ({ key }) => {};
   const menuProps = {
     items,
     onClick: handleMenuClick,
@@ -211,10 +221,9 @@ const UserManagementTable = () => {
   return (
     <div className="container mt-4">
       <div className="campaign-performance-table-head">
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between flex-lg-row flex-xl-row flex-column align-items-center">
           <h6>Patients List</h6>
-
-          <div className="d-flex gap-3 align-items-center">
+          <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-column align-items-center">
             <div
               className="d-flex align-items-center px-3"
               style={{
@@ -233,18 +242,19 @@ const UserManagementTable = () => {
                 }}
               />
             </div>
-
-            <Dropdown menu={menuProps}>
-              <Button>
-                <Space>
-                  <VscSettings />
-                  Filter
-                </Space>
-              </Button>
-            </Dropdown>
-            <button className="rfh-basic-button" onClick={showModal} >
-              <GoPlus size={20} /> Add Patients
-            </button>
+            <div className="d-flex gap-3 align-items-center">
+              <Dropdown menu={menuProps}>
+                <Button>
+                  <Space>
+                    <VscSettings />
+                    Filter
+                  </Space>
+                </Button>
+              </Dropdown>
+              <button className="rfh-basic-button" onClick={showModal}>
+                <GoPlus size={20} /> Add Patients
+              </button>
+            </div>
           </div>
         </div>
         <div className="mt-3">

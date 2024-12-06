@@ -113,7 +113,7 @@ const VirtualConsult = () => {
                 <div className="appointment-card-header d-flex justify-content-between align-items-center">
                   <div className="d-flex gap-3 appointment-title align-items-center">
                     <div className="appointment-title-icon">
-                      <TbReportMedical size={22} />
+                      <TbReportMedical size={22} style={{color:"var(--black-color)"}} />
                     </div>
                     <h5>{appointment.id}</h5>
                   </div>
