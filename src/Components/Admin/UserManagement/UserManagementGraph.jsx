@@ -186,7 +186,7 @@ const UserManagementGraph = () => {
                                 transform: 'translate(-50%, -50%)',
                                 textAlign: 'center'
                             }}>
-                                <h6 style={{ margin: 10 }}>Last Updated</h6>
+                                <h6 style={{ margin: 10 ,color:"var(--black-color)"}} >Last Updated</h6>
                                 <p style={{ margin: 0, textAlign: "center" }}>24, Feb 2024</p>
                             </div>
                         </div>

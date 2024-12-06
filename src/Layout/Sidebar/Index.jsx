@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../layout.css";
-import logo from "../../Assets/Images/logo.png";
+import lightlogo from "../../Assets/Images/logo.png";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineDashboard } from "react-icons/md";
 import { GoShieldCheck } from "react-icons/go";
 import { TbCirclePercentage } from "react-icons/tb";
+import darkLogo from "../../Assets/Images/darkLogo.png"
 import {
   Bell,
   Handshake,
@@ -139,7 +140,14 @@ function SidebarAdmin() {
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
+  useEffect(() => {
+    const savedDarkMode = localStorage.getItem("darkMode") === "true";
+    setIsDarkMode(savedDarkMode);
+  }, []);
+
+  const logo = isDarkMode ? darkLogo : lightlogo;
 
   const closeSidebar = () => {
     setIsSidebarOpen(false);
@@ -148,7 +156,7 @@ function SidebarAdmin() {
   const toggleMenu = (menu) => {
     setExpandedMenu(expandedMenu === menu ? null : menu);
   };
-
+ 
   useEffect(() => {
     const pathToMenuMap = {
       "/": "userDashboards",
@@ -191,7 +199,7 @@ function SidebarAdmin() {
     <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
       <aside className={`sidebar-content ${isSidebarOpen ? "open" : ""}`}>
         <div className="sidebar-header d-flex justify-content-center align-items-center">
-          <img
+        <img
             src={logo}
             alt="Logo"
             className="sidebar-logo"

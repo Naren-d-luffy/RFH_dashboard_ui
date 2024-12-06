@@ -152,10 +152,13 @@
 .total-users-count {
   font-size: 24px;
   font-weight: 600;
+  color: var(--black-color);
 }
 .total-users-count-1 {
   font-size: 20px;
   font-weight: 600;
+  color: var(--black-color);
+
 }
 
 .recharts-legend-item {
@@ -181,6 +184,7 @@
 .app-status-items h1 {
   font-size: 28px;
   font-weight: 700;
+  color: var(--black-color);
 }
 
 .total-user-display h3 {
@@ -295,6 +299,8 @@
   font-weight: 500;
   line-height: 58px;
   letter-spacing: -2px;
+  color: var(--black-color);
+
 }
 .most-user-success-tag {
   background: var(--tag-green-bg);
