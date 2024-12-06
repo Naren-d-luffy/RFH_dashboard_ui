@@ -769,6 +769,7 @@
   position: absolute;
   width: 100%;
   bottom: 0px;
+  background-color: var(--white-color);
 }
 
 .message-input-container input {

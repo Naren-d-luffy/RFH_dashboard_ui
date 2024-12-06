@@ -169,7 +169,7 @@ const PatientDetailsTable = () => {
   return (
     <div className="mt-4">
       <div className="campaign-performance-table-head">
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex flex-lg-row flex-xl-row flex-column justify-content-between align-items-center">
           <h6>All Patient Table</h6>
 
           <div className="d-flex gap-3 align-items-center">
