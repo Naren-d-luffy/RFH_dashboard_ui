@@ -21,7 +21,6 @@ export const UserEngagementCards = () => {
         { value: 400 },
         { value: 100 },
         { value: 300 },
-
       ],
       graphColor: "#2D5BFF",
     },
@@ -45,7 +44,6 @@ export const UserEngagementCards = () => {
         { value: 400 },
         { value: 200 },
         { value: 500 },
-
       ],
       graphColor: "#04CE00",
     },
@@ -68,7 +66,6 @@ export const UserEngagementCards = () => {
         { value: 300 },
         { value: 400 },
         { value: 100 },
-        
       ],
       graphColor: "#ED0A0A",
     },
@@ -113,7 +110,7 @@ export const UserEngagementCards = () => {
       </div>
       <div className="row">
         {cardData.map((card, index) => (
-          <div key={index} className="col-lg-6 col-xl-3 mt-2 col-md-6" >
+          <div key={index} className="col-lg-6 col-xl-3 mt-2 col-md-6">
             <div className="user-engagement-card">
               <div className="d-flex align-items-center justify-content-between">
                 <div>
@@ -125,11 +122,11 @@ export const UserEngagementCards = () => {
                   <ResponsiveContainer width="100%" height={60}>
                     <LineChart data={card.graphData}>
                       <Line
-                        type="linear" 
+                        type="linear"
                         dataKey="value"
                         stroke={card.graphColor}
                         strokeWidth={2}
-                        dot={false} 
+                        dot={false}
                       />
                     </LineChart>
                   </ResponsiveContainer>

@@ -56,12 +56,12 @@ const CampaignPerformanceGraph = () => {
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis
               dataKey="name"
-              tick={{ fontSize: 12, fontWeight: 500, color: "#666" }}
+              tick={{ fontSize: 12, fontWeight: 500}}
             />
             <YAxis
               domain={[20, 100]}
               allowDataOverflow={true}
-              tick={{ fontSize: 12, fontWeight: 500, color: "#666" }}
+              tick={{ fontSize: 12, fontWeight: 500 }}
             />
 
             <Tooltip />
