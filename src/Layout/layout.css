@@ -463,3 +463,13 @@
     color: var(--black-color);
   }
 }
+
+.menu-close-button-response {
+  display: block;
+}
+
+@media (min-width: 769px) {
+  .menu-close-button-response{
+    display: none;
+  }
+}
