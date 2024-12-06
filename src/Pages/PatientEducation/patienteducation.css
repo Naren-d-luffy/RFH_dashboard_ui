@@ -49,7 +49,7 @@
 }
 
 .recommend-image-card p {
-  color: var(--white-color);
+  color: var(--black-color);
   font-size: 11px;
   position: relative;
   z-index: 2;

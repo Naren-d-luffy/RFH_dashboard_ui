@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { IoMicOutline } from "react-icons/io5";
+import { IoMdArrowBack } from "react-icons/io";
 import image1 from "../../../Assets/Images/DefaultUser.png";
 import image2 from "../../../Assets/Images/ladydoctor.png";
 import image3 from "../../../Assets/Images/image.png";
@@ -9,6 +10,7 @@ import chatIcon from "../../../Assets/Icons/chat-header.png";
 import addFile from "../../../Assets/Icons/addFile.png";
 import { FaRegSmile } from "react-icons/fa";
 import { IoMdSend } from "react-icons/io";
+
 const MessageChat = () => {
   const allChats = [
     {
@@ -51,22 +53,6 @@ const MessageChat = () => {
       unread: 4,
       group: false,
     },
-    {
-        name: "Project Beta",
-        message: "New updates available",
-        time: "1:00 PM",
-        avatar: image2,
-        unread: 0,
-        group: true,
-      },
-      {
-        name: "Rishabh Kumrawat",
-        message: "Wow, that’s great...",
-        time: "3:00 PM",
-        avatar: image1,
-        unread: 4,
-        group: false,
-      },
   ];
 
   const pinnedChats = [
@@ -87,6 +73,7 @@ const MessageChat = () => {
       group: false,
     },
   ];
+
   const [selectedChat, setSelectedChat] = useState(null);
   const [isChatVisible, setIsChatVisible] = useState(false);
 
@@ -131,6 +118,7 @@ const MessageChat = () => {
       avatar: image3,
     },
   ];
+
   return (
     <div>
       <div className="row technical-support-heading">
@@ -138,11 +126,12 @@ const MessageChat = () => {
         <p>Number of users installed the app by source</p>
       </div>
       <div
-        className={`row  team-chat-container ${
+        className={`row team-chat-container ${
           isChatVisible ? "chat-visible" : "sidebar-visible"
         }`}
       >
-        <div className="col-lg-4">
+        {/* Chat Sidebar */}
+        <div className={`col-lg-4 ${isChatVisible ? "d-none d-lg-block" : ""}`}>
           <div className="chat-sidebar">
             <div className="recent-chats">
               <div className="d-flex gap-2 align-items-center">
@@ -203,16 +192,36 @@ const MessageChat = () => {
             </div>
           </div>
         </div>
-        <div className="col-lg-8">
+
+        {/* Chat Section */}
+        <div className={`col-lg-8 ${isChatVisible ? "" : "d-none d-lg-block"}`}>
           <div className="main-chat">
             {selectedChat ? (
               <>
                 <div className="chat-messages">
                   <div className="chat-header">
+                    {/* Back Button for Mobile */}
+                    <button
+                      className="btn btn-light back-btn d-lg-none"
+                      onClick={() => setIsChatVisible(false)}
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        left: "10px",
+                        zIndex: "10",
+                        backgroundColor: "transparent",
+                        border: "none",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <IoMdArrowBack size={24} />
+                    </button>
                     <div className="chat-header-icon">
                       <img src={chatIcon} alt="" />
                       <h4>
-                        What do you want to <br /> Know About RFH?
+                        {selectedChat.name}
+                        <br />
+                        <small>{selectedChat.group ? "Group" : "User"}</small>
                       </h4>
                     </div>
                   </div>
@@ -243,22 +252,22 @@ const MessageChat = () => {
                 </div>
               </>
             ) : (
-                <div>
-                     <div className="chat-header">
-                    <div className="chat-header-icon">
-                      <img src={chatIcon} alt="" />
-                      <h4>
-                        What do you want to <br /> Know About RFH?
-                      </h4>
-                    </div>
+              <div>
+                <div className="chat-header">
+                  <div className="chat-header-icon">
+                    <img src={chatIcon} alt="" />
+                    <h4>
+                      What do you want to <br /> Know About RFH?
+                    </h4>
                   </div>
-                  <p className="no-chat-selected">Select a chat to view messages</p>
                 </div>
+                <p className="no-chat-selected">Select a chat to view messages</p>
+              </div>
             )}
             <div className="message-input-container">
               <div className="message-input-box">
                 <button className="emoji-btn">
-                  <FaRegSmile size={24}/>
+                  <FaRegSmile size={24} />
                 </button>
                 <input
                   type="text"
@@ -266,7 +275,7 @@ const MessageChat = () => {
                   className="message-input"
                 />
                 <button className="message-send-btn">
-                  <IoMdSend size={24}/>
+                  <IoMdSend size={24} />
                 </button>
               </div>
 
@@ -293,3 +302,4 @@ const MessageChat = () => {
 };
 
 export default MessageChat;
+

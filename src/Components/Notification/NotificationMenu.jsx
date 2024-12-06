@@ -17,7 +17,7 @@ const NotificationMenu = () => {
     const handleCancel = () => setIsModalOpen(false);
     return (
         <div className='container'>
-            <div className="d-flex justify-content-between align-items-center">
+            <div className="d-flex flex-column flex-sm-column flex-md-column flex-lg-row justify-content-between align-items-start align-items-lg-center">
                 <div className='user-engagement-header'>
                     <h3>Notification</h3>
                     <p >
@@ -33,7 +33,7 @@ const NotificationMenu = () => {
             </div>
             <div className='mt-3'>
                 <Row gutter={24}>
-                    <Col span={8}>
+                    <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                         <Select
                             className="create-camapign-input-select"
                             placeholder="All"

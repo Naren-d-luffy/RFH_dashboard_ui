@@ -257,7 +257,7 @@ const PopulatedSurveyData = () => {
                     </div>
                     <div className="d-flex justify-content-start mt-5">
                         <button
-                            className="d-flex gap-2 align-items-center export-button"
+                            className="d-flex gap-2 align-items-center rfh-basic-button"
                             onClick={handleClick}
                         >
                             <FaAngleLeft />

@@ -1,12 +1,16 @@
-import React from "react";
-import { Table, Dropdown, Button, Space, Input, } from "antd";
+import React, { useState } from "react";
+import { Table, Dropdown, Button, Input, } from "antd";
 import { FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { VscSettings } from "react-icons/vsc";
-import {showDeleteMessage} from "../../../globalConstant"
+import { showDeleteMessage } from "../../../globalConstant"
+import { filterDropdown } from "../../../globalConstant"
+
 const PatientSurveysTable = () => {
-  const navigate=useNavigate()
-  const handleClick=()=>{
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate = useNavigate()
+  const handleClick = () => {
     navigate("/feedback/view-feedback")
   }
   const handleDelete = (name) => {
@@ -136,25 +140,45 @@ const PatientSurveysTable = () => {
     },
   ];
 
-  const items = [
+  const handleCheckboxChange = (value, checked) => {
+    if (checked) {
+      setSelectedValues((prev) => [...prev, value]);
+    } else {
+      setSelectedValues((prev) => prev.filter((item) => item !== value));
+    }
+  };
+
+  const handleApply = () => {
+    console.log('Applied Filters:', selectedValues);
+    setIsDropdownOpen(false);
+  };
+  const handleReset = () => {
+    setSelectedValues([]);
+  };
+  const options = [
     {
-      label: "Last Day",
-      key: "1",
+      label: 'Type',
+      options: [
+        { label: 'All', value: 'all' },
+        { label: 'OPD', value: 'opd' },
+        { label: 'IPD', value: 'ipd' },
+      ],
     },
     {
-      label: "Last week",
-      key: "2",
+      label: 'Last Visit',
+      options: [
+        { label: 'Last 7 days', value: 'last7days' },
+        { label: 'Last 30 days', value: 'last30days' },
+      ],
     },
     {
-      label: "Last Month",
-      key: "3",
+      label: 'All Users',
+      options: [
+        { label: 'Active Users', value: 'activeusers' },
+        { label: 'Inactive Users', value: 'inactiveusers' },
+      ],
     },
   ];
-  const handleMenuClick = ({ key }) => { };
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
   return (
     <div className=" mt-4">
       <div className="campaign-performance-table-head mt-4">
@@ -179,22 +203,18 @@ const PatientSurveysTable = () => {
                 }}
               />
             </div>
-            <Dropdown menu={menuProps}>
-              <Button>
-                <Space>
-                 <VscSettings />
-                   Filter
-                </Space>
+            <Dropdown
+              overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
+              trigger={['click']}
+              open={isDropdownOpen}
+              onOpenChange={setIsDropdownOpen}
+              placement="bottomLeft"
+            >
+              <Button style={{ width: 160 }}>
+                <VscSettings />
+                Filters
               </Button>
             </Dropdown>
-            {/* <Dropdown menu={menuProps}>
-              <Button>
-                <Space>
-                  Filter By
-                  <LuFilter />
-                </Space>
-              </Button>
-            </Dropdown> */}
           </div>
         </div>
         <div className="mt-3">

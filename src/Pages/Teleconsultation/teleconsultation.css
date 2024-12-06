@@ -37,6 +37,7 @@
 .table-data-list {
   font-size: 26px;
   font-weight: 600;
+  color: var(--black-color);
 }
 .table-data-list:hover,
 .table-card-list:hover {
@@ -55,6 +56,7 @@
   box-shadow: 0px 2px 6px 0px #0d0a2c14;
   padding: 20px 9px;
   border-radius: 5px;
+  background-color: var(--card-background-color);
 }
 .appointment-title-icon {
   border-radius: 50%;
@@ -68,6 +70,7 @@
 .appointment-title h5 {
   font-size: 14px;
   font-weight: 600;
+  color: var(--black-color);
 }
 .appointment-card-header button {
   font-size: 14px;
@@ -87,12 +90,15 @@
   color: var(--black-color);
   font-weight: 600;
 }
-.ant-table-wrapper .ant-table-thead > tr > th {
-  background: none;
-}
+
 .ant-tabs > .ant-tabs-nav {
   margin-bottom: 0;
 }
+
+.ant-tabs .ant-tabs-tab {
+  color: var(--black-color);
+}
+
 .appoinment-table-data {
   border: 1px solid var(--border-color);
   border-radius: 5px;
@@ -306,7 +312,6 @@
   background-position: center;
   border-radius: 5px;
   height: 128px;
-  /* width: 323px; */
 }
 .view-doctor-profile-image {
   top: 80px;
@@ -319,7 +324,7 @@
 /* manju */
 
 .virtual-management-graph-head h3 {
-  color: var(--heading-text-color);
+  color: var(--black-color);
   font-size: 14px;
   font-weight: 500;
   line-height: 21px;
@@ -333,6 +338,7 @@
   border: 1px solid var(--button-text-color);
   padding: 0px 20px;
   background: none;
+  color: var(--black-color);
 }
 
 .virtual-management-graph-btn-text {
@@ -382,7 +388,7 @@
 
 .custom-donut-center-circle p {
   font-size: 12px;
-  color: var(--grey-color);
+  color: var(--black-color);
 }
 
 .custom-donut-legend-item {
@@ -600,7 +606,7 @@
   font-size: 14px;
   margin: 0;
   font-weight: 600;
-  color: var(--text-color);
+  color: var(--black-color);
   letter-spacing: -0.1px;
 }
 
@@ -726,6 +732,7 @@
   align-items: center;
   justify-content: center;
   min-height: 30vh;
+  color: var(--black-color);
 }
 
 .message.received {
@@ -855,6 +862,7 @@
   font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.1px;
+  color: var(--white-color);
 }
 
 .message.self {
@@ -939,7 +947,7 @@
   align-items: center;
   border: 1px solid var(--border-color);
   border-radius: 25px;
-  padding: 5px 10px;
+  /* padding: 5px 10px; */
   width: 100%;
   background-color: var(--white-color);
 }

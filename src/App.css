@@ -11,7 +11,8 @@ body,
 .ant-select,
 .ant-checkbox,
 .ant-radio,
-.ant-form-item-label {
+.ant-form-item-label,
+.ant-tabs {
   font-family: 'Poppins' !important;
   /* color: var(--black-color) !important; */
 }
@@ -64,4 +65,40 @@ body,
 }
 .global-cancel-button:hover{
   background: var( --button-bg-color );
+}
+/* Dropdown */
+.dropdown-hover-color .ant-dropdown-menu-item:hover,
+.dropdown-hover-color .ant-dropdown-menu-item-selected {
+  background-color: var(--primary-green) !important;
+  color: white; /* Optional: Adjust text color for better contrast */
+}
+
+.dropdown-hover-color .ant-btn:hover,
+.dropdown-hover-color .ant-btn:focus {
+  background-color: var(--primary-green) !important;
+  color: white; /* Optional: Adjust button text color */
+}
+
+.ant-table-wrapper .ant-table-tbody .ant-table-row >.ant-table-cell-row-hover{
+  background: var(--table-head-bg-color);
+}
+
+.ant-table-tbody > tr > td {
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -2%;
+  line-height: 18px;
+  background-color: var(--table-data-bg-color);
+  color: var(--black-color);
+}
+
+.ant-table-thead > tr > th {
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -2%;
+  line-height: 18px;
+  color: var(--table-heading-color);
+  background-color: var(--table-head-bg-color) !important;
 }

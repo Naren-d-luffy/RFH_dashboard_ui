@@ -35,7 +35,8 @@
 .userAquisition-model p,
 .userAquisition-model span,
 .userManaggement-card h2,
-.userManaggement-card p {
+.userManaggement-card p,
+.crateSurvey-copy-link-p {
   font-size: 12px;
   text-align: left;
   color: var(--secondary-text-color);

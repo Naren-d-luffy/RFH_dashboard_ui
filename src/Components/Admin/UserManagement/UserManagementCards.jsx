@@ -9,6 +9,7 @@ import { Button, Dropdown, Modal, Space } from 'antd';
 import { CgDanger } from 'react-icons/cg';
 import { showSuccessMessage } from "../../../globalConstant"
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import { IoIosArrowDown } from 'react-icons/io';
 
 const UserManagementCards = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -18,7 +19,6 @@ const UserManagementCards = () => {
 
     const handleOk = () => {
         setIsModalVisible(false);
-        // Handle export functionality here
         console.log("Export initiated!");
     };
 
@@ -104,23 +104,23 @@ const UserManagementCards = () => {
     ];
     const items = [
         {
-          label: "Week",
-          key: "1",
+            label: "Week",
+            key: "1",
         },
         {
-          label: "Month",
-          key: "2",
+            label: "Month",
+            key: "2",
         },
         {
-          label: "Year",
-          key: "3",
+            label: "Year",
+            key: "3",
         },
-      ];
-      const handleMenuClick = ({ key }) => {};
-      const menuProps = {
+    ];
+    const handleMenuClick = ({ key }) => { };
+    const menuProps = {
         items,
         onClick: handleMenuClick,
-      };
+    };
     return (
         <div className="container">
             <div className="d-flex justify-content-between align-items-center">
@@ -131,11 +131,11 @@ const UserManagementCards = () => {
                     </p>
                 </div>
                 <div className="d-flex align-items-center gap-3">
-                    <Dropdown menu={menuProps}>
+                    <Dropdown menu={menuProps} overlayClassName="dropdown-hover-color">
                         <Button>
                             <Space>
-                                Last Day
-                                <MdOutlineKeyboardArrowDown />
+                                Select
+                                <IoIosArrowDown />
                             </Space>
                         </Button>
                     </Dropdown>
