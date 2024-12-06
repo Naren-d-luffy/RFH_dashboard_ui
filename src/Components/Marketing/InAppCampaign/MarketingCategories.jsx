@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { GoPlus } from "react-icons/go";
-import { Button, Dropdown, Space } from "antd";
+import { Button, Dropdown, Menu, Space } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -15,6 +15,9 @@ import { FaPlay } from "react-icons/fa";
 import UpcomingEvents from "./UpcomingEvents";
 import RecommendedVideo from "./RecommendedVideo";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { BiEdit } from "react-icons/bi";
+import { RiDeleteBin7Line } from "react-icons/ri";
+import Input from "antd/es/input/Input";
 export const MarketingCategories = () => {
   const [modals, setModals] = useState({ event: false, video: false });
 
@@ -83,13 +86,45 @@ export const MarketingCategories = () => {
       background: videoImage1,
     },
   ];
-
+  const filterMenu = (
+    <Menu>
+      <Menu.Item key="edit" className="filter-menu-item">
+        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        Edit
+      </Menu.Item>
+      <Menu.Item key="delete" className="filter-menu-item">
+        <RiDeleteBin7Line
+          style={{ color: "var(--red-color)", marginRight: "4px" }}
+        />
+        Delete
+      </Menu.Item>
+    </Menu>
+  );
+  const sortMenu = (
+    <Menu>
+      <Menu.Item key="edit" className="filter-menu-item">
+        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        Edit
+      </Menu.Item>
+      <Menu.Item key="delete" className="filter-menu-item">
+        <RiDeleteBin7Line
+          style={{ color: "var(--red-color)", marginRight: "4px" }}
+        />
+        Delete
+      </Menu.Item>
+    </Menu>
+  );
   const renderEventCard = (event) => (
     <div className="col-lg-4">
       <div className="upcoming-event-card p-3" key={event.title}>
-        <div className="action-icon-button">
-        <BsThreeDotsVertical/>
+        <div className="action-icon-container">
+          <Dropdown overlay={filterMenu} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical />
+            </button>
+          </Dropdown>
         </div>
+
         <div className="d-flex justify-content-center align-items-center mb-3">
           <img src={event.img} alt={event.title} />
         </div>
@@ -108,11 +143,19 @@ export const MarketingCategories = () => {
   );
   const renderRecommendVideo = (video) => (
     <div className="col-lg-4">
+      <div className="action-icon-container">
+        <Dropdown overlay={sortMenu} trigger={["click"]}>
+          <button className="action-icon-button">
+            <BsThreeDotsVertical />
+          </button>
+        </Dropdown>
+      </div>
       <div
         className="recommend-video-card p-3"
         style={{
           backgroundImage: `url(${video.background})`,
         }}
+        onClick={(e) => e.stopPropagation()}
       >
         <video
           className="video-preview"
@@ -122,6 +165,7 @@ export const MarketingCategories = () => {
           playsInline
           preload="metadata"
         ></video>
+
         <div className="play-button-overlay">
           <FaPlay style={{ color: "var(--white-color)" }} />
         </div>
@@ -132,7 +176,6 @@ export const MarketingCategories = () => {
               <p>{`${video.view} views  | ${video.time} ago`}</p>
             </div>
           </div>
-          <button className="edit-video-button">Edit</button>
         </div>
       </div>
     </div>
@@ -186,7 +229,7 @@ export const MarketingCategories = () => {
   return (
     <div className="row mt-4">
       <div className="marketing-categories-section">
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex flex-lg-row flex-xl-row flex-column justify-content-between align-items-center">
           <h4>Marketing Categories</h4>
           <div className="d-flex gap-3 align-items-center">
             <div
@@ -198,7 +241,7 @@ export const MarketingCategories = () => {
               }}
             >
               <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <input
+              <Input
                 type="text"
                 placeholder="Search anything here"
                 style={{
@@ -207,6 +250,7 @@ export const MarketingCategories = () => {
                 }}
               />
             </div>
+
             <Dropdown menu={menuProps}>
               <Button>
                 <Space>
