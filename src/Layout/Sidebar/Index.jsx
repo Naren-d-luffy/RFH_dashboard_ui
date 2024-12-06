@@ -69,7 +69,7 @@ const menuConfig = [
         label: "Appointment Status",
         to: "/teleconsultation/appointment-status",
       },
-      { label: "Technical Support", to: "/" },
+      { label: "Technical Support", to: "/teleconsultation/technical-support" },
     ],
   },
   {
@@ -170,6 +170,8 @@ function SidebarAdmin() {
       "/feedback/view-feedback": "feedback",
       "/feedback/negative-feedback": "feedback",
       "/teleconsultation/appointment-status": "teleconsultation",
+      "/teleconsultation/doctor-detail": "teleconsultation",
+      "/teleconsultation/technical-support": "teleconsultation",
       "/operational/appointment-reports": "operational",
       "/operational/service-utilization": "operational",
       "/operational/financial-performance": "operational",

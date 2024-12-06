@@ -5,7 +5,7 @@ import { VscSettings } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import image from "../../../Assets/Images/image.png";
-import { showDeleteMessage } from "../../../globalConstant"
+import { showDeleteMessage } from "../../../globalConstant";
 
 const VirtualManagementTable = () => {
   const navigate = useNavigate();
@@ -90,7 +90,10 @@ const VirtualManagementTable = () => {
           <div className="campaign-performance-table-edit-icon">
             <FiEdit />
           </div>
-          <div className="campaign-performance-table-delete-icon"  onClick={() => handleDelete(record.doctorName)}>
+          <div
+            className="campaign-performance-table-delete-icon"
+            onClick={() => handleDelete(record.doctorName)}
+          >
             <FiTrash2 />
           </div>
         </div>
@@ -158,7 +161,7 @@ const VirtualManagementTable = () => {
     { label: "Last Month", key: "3" },
   ];
 
-  const handleMenuClick = ({ key }) => { };
+  const handleMenuClick = ({ key }) => {};
 
   const menuProps = {
     items,
@@ -168,9 +171,9 @@ const VirtualManagementTable = () => {
   return (
     <div className=" mt-4">
       <div className="campaign-performance-table-head">
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between flex-lg-row flex-xl-row flex-column align-items-center">
           <h6>Doctor List</h6>
-          <div className="d-flex gap-3 align-items-center">
+          <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-column align-items-center">
             <div
               className="d-flex align-items-center px-3"
               style={{
@@ -189,21 +192,18 @@ const VirtualManagementTable = () => {
                 }}
               />
             </div>
-            <Dropdown menu={menuProps}>
-              <Button>
-                <Space>
-                  <VscSettings />
-                  Filter
-                </Space>
-              </Button>
-            </Dropdown>
-
-            <div>
+            <div className="d-flex gap-3 align-items-center">
+              <Dropdown menu={menuProps}>
+                <Button>
+                  <Space>
+                    <VscSettings />
+                    Filter
+                  </Space>
+                </Button>
+              </Dropdown>
               <button
                 className="rfh-basic-button"
-                onClick={() =>
-                  navigate(`/teleconsultation/doctor-detail`)
-                }
+                onClick={() => navigate(`/teleconsultation/doctor-detail`)}
               >
                 <GoPlus size={20} /> Add Doctor
               </button>

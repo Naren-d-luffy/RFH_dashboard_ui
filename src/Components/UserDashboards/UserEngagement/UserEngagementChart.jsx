@@ -84,7 +84,7 @@ export const UserEngagementChart = () => {
           {/* Individual Data Sections */}
           <div className="row mt-4">
             {data.map((item, index) => (
-              <div key={index} className="col-md-6 mb-2">
+              <div key={index} className="col-lg-6 col-md-6 mb-2">
                 <div className="individual-most-user-card">
                   <div className="d-flex gap-2 align-items-center mb-2">
                     <div
