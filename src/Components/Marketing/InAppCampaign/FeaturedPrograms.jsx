@@ -9,12 +9,14 @@ import clinic1 from "../../../Assets/Images/clinic1.png";
 import clinic2 from "../../../Assets/Images/clinic2.png";
 import FeaturedProgramModel from "./FeaturedProgramModel";
 import LatestCamps from "./LatestCamps";
-import { Rate } from "antd";
+import { Rate, Dropdown, Menu } from "antd";
 import { FiMapPin } from "react-icons/fi";
 import { GiPathDistance } from "react-icons/gi";
 import { RiHospitalFill } from "react-icons/ri";
 import OutstationClinic from "./OutstationClinic";
-
+import { BiEdit } from "react-icons/bi";
+import { RiDeleteBin7Line } from "react-icons/ri";
+import { BsThreeDotsVertical } from "react-icons/bs";
 export const FeaturedPrograms = () => {
   const [modals, setModals] = useState({
     program: false,
@@ -97,10 +99,44 @@ export const FeaturedPrograms = () => {
       category: "Hospital",
     },
   ];
-
+  const sortMenu = (
+    <Menu>
+      <Menu.Item key="edit" className="filter-menu-item">
+        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        Edit
+      </Menu.Item>
+      <Menu.Item key="delete" className="filter-menu-item">
+        <RiDeleteBin7Line
+          style={{ color: "var(--red-color)", marginRight: "4px" }}
+        />
+        Delete
+      </Menu.Item>
+    </Menu>
+  );
+  const filterMenu = (
+    <Menu>
+      <Menu.Item key="edit" className="filter-menu-item">
+        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        Edit
+      </Menu.Item>
+      <Menu.Item key="delete" className="filter-menu-item">
+        <RiDeleteBin7Line
+          style={{ color: "var(--red-color)", marginRight: "4px" }}
+        />
+        Delete
+      </Menu.Item>
+    </Menu>
+  );
   const renderEventCard = (event) => (
     <div className="col-lg-4">
       <div className="feature-program-card" key={event.title}>
+        <div className="action-icon-container">
+          <Dropdown overlay={sortMenu} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical />
+            </button>
+          </Dropdown>
+        </div>
         <div className="d-flex justify-content-center align-items-center mb-3">
           <img src={event.img} alt={event.title} />
         </div>
@@ -113,13 +149,19 @@ export const FeaturedPrograms = () => {
           <ul>
             <li>{event.department}</li>
           </ul>
-          <button className="edit-event-button">Edit</button>
         </div>
       </div>
     </div>
   );
   const renderLatestCamps = (camp) => (
     <div className="col-lg-4">
+      <div className="action-icon-container">
+        <Dropdown overlay={filterMenu} trigger={["click"]}>
+          <button className="action-icon-button">
+            <BsThreeDotsVertical />
+          </button>
+        </Dropdown>
+      </div>
       <div className="recommend-video-card">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3773.423259243416!2d72.81684837418092!3d18.956905855702594!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7ce11a208b68b%3A0x231538ea71de5051!2sRaja%20Ram%20Mohan%20Roy%20Rd%2C%20Girgaon%2C%20Mumbai%2C%20Maharashtra%20400004%2C%20India!5e0!3m2!1sen!2sjp!4v1733119289892!5m2!1sen!2sjp"
@@ -136,6 +178,13 @@ export const FeaturedPrograms = () => {
 
   const renderOutstationClinic = (clinic) => (
     <div className="col-lg-4">
+      <div className="action-icon-container">
+        <Dropdown overlay={sortMenu} trigger={["click"]}>
+          <button className="action-icon-button">
+            <BsThreeDotsVertical />
+          </button>
+        </Dropdown>
+      </div>
       <div className="feature-program-card" key={clinic.title}>
         <div className="d-flex justify-content-center align-items-center mb-3">
           <img src={clinic.img} alt={clinic.title} />

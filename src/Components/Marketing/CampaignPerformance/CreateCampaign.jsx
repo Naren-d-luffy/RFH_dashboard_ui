@@ -4,6 +4,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
+
 import {showSuccessMessage} from "../../../globalConstant" 
 import { RiDeleteBin5Line } from "react-icons/ri";
 
@@ -17,9 +18,10 @@ const modules = {
     ["clean"],
   ],
 };
-const handleSuccessDelete=()=>{
+const handleSuccessDelete = () => {
   showSuccessMessage("Successfully Created Campaign", "");
-}
+};
+
 
 const CreateCampaign = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -36,6 +38,7 @@ const CreateCampaign = ({ open, handleCancel }) => {
     setUploadedImage(null);
   };
   return(
+
   <Modal
     open={open}
     title={<span className="create-campaign-modal-title">Create Campaign</span>}

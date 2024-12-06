@@ -214,7 +214,7 @@ export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
             >
               <p
                 style={{
-                  margin: "0",
+                  marginLeft: "100px",
                   fontSize: "10px",
                   fontWeight: "bold",
                   maxWidth: "200px",
