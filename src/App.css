@@ -76,7 +76,6 @@ body,
 .dropdown-hover-color .ant-btn:hover,
 .dropdown-hover-color .ant-btn:focus {
   background-color: var(--primary-green) !important;
-  border-color: var(--primary-green) !important;
   color: white; 
 }
 /* Checkbox */
@@ -94,4 +93,30 @@ body,
 .ant-checkbox-wrapper:hover .ant-checkbox-checked .ant-checkbox-inner {
   background-color: var(--primary-green) !important;
   border-color: var(--primary-green) !important;
+  color: white !important;
+}
+  
+
+.ant-table-wrapper .ant-table-tbody .ant-table-row >.ant-table-cell-row-hover{
+  background: var(--table-head-bg-color);
+}
+
+.ant-table-tbody > tr > td {
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -2%;
+  line-height: 18px;
+  background-color: var(--table-data-bg-color);
+  color: var(--black-color);
+}
+
+.ant-table-thead > tr > th {
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -2%;
+  line-height: 18px;
+  color: var(--table-heading-color);
+  background-color: var(--table-head-bg-color) !important;
 }
