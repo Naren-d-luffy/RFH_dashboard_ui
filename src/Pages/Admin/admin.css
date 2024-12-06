@@ -54,6 +54,46 @@
     margin-top: -25px;
     margin-bottom: -20px;
 }
+ .ant-card .ant-card-body .filter-card{
+    padding: 10px !important;
+}
+.filter-card{
+    width: 300;
+    padding: 8px;
+    border: 1px solid #f0f0f0;
+}
+.filter-card p{
+    color: var(--gray-text-color);
+    font-size: 12px;
+}
+/* Custom Checkbox Color */
+.ant-checkbox-checked .ant-checkbox-inner {
+    border-color: var(--primary-green);
+    background-color: var(--primary-green);
+  }
+  
+  .ant-checkbox-checked:hover .ant-checkbox-inner {
+    border-color: var(--primary-green) !important;
+    background-color: var(--primary-green) !important;
+  }
+  
+  .ant-checkbox-inner {
+    border-color: var(--primary-green);
+  }
+  
+  /* Hover state */
+  .ant-checkbox:hover .ant-checkbox-inner {
+    border-color: var(--primary-green) !important;
+  }
+  
+  .ant-checkbox-input:checked + .ant-checkbox-inner {
+    background-color: var(--primary-green);
+  }
+  
+  .ant-checkbox-input:checked:hover + .ant-checkbox-inner {
+    background-color: var(--primary-green) !important;
+  }
+  
 /* .rfh-basic-button {
     background-color: var(--primary-green);
     color: var(--white-color);

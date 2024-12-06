@@ -1,4 +1,4 @@
-import { Button, Checkbox, Divider, Form, Input, Popover, Rate, Upload } from 'antd'
+import { Button, Checkbox, Divider, Form, Input, Modal, Popover, Rate, Upload } from 'antd'
 import React, { useState } from 'react'
 import { FaTimes } from 'react-icons/fa';
 import { FaPlus, FaRegCircleCheck, FaRegStar } from 'react-icons/fa6'
@@ -7,11 +7,23 @@ import { LuWrapText } from 'react-icons/lu';
 import { MdFormatListBulleted, MdOutlineShortText } from 'react-icons/md';
 import { VscCloudUpload } from 'react-icons/vsc';
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
+import success_icon from "../../../Assets/Icons/success.png"
+import { useNavigate } from 'react-router-dom';
+
 
 const CreateSurveyPage = () => {
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const navigate=useNavigate()
     const handlePopoverVisibleChange = (visible) => {
         setIsPopoverOpen(visible);
+    };
+    const handleSend = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleModalClose = () => {
+        setIsModalVisible(false);
     };
     const [questions, setQuestions] = useState([]);
     const content = (
@@ -200,14 +212,30 @@ const CreateSurveyPage = () => {
                         </Popover>
                     </div>
                     <div className='d-flex justify-content-end mt-4'>
-                        <button className='export-button'>
+                        <button className='rfh-basic-button' onClick={handleSend}>
                             Send
                         </button>
                     </div>
 
                 </Form>
             </div>
-
+            <Modal
+                title=""
+                visible={isModalVisible}
+                onOk={handleModalClose}
+                onCancel={handleModalClose}
+                footer={null}
+            >
+                <div className=''>
+                    <div className='d-flex justify-content-center mb-0'><img src={success_icon} style={{ width: "100px", height: "100px" }} /></div>
+                    <div className='delete-message' style={{fontWeight:600}}>Link Generated</div>
+                    <p className='mb-0 mt-1 crateSurvey-copy-link-p' style={{textAlign:"center"}}>https://docs.google.com/forms/d/e/1FAIpQLSc0_VGjRaAC98COVusuiMBGfOZno9HqYesOsEC_J0hEtLr-hA/viewform?usp=sf_link</p>
+                    <div className='d-flex gap-3 align-items-center justify-content-center mt-3'>
+                        <button className='create-survey-cancel-button' onClick={handleModalClose}>Cancel</button>
+                        <button className='create-survey-save-button' onClick={()=>navigate("/feedback/create-survey")}>CopyLink</button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     )
 }

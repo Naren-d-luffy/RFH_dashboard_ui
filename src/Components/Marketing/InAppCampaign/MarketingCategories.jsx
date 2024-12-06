@@ -25,9 +25,11 @@ export const MarketingCategories = () => {
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
   const items = [
-    { label: "Last Day", key: "1" },
-    { label: "Last Week", key: "2" },
-    { label: "Last Month", key: "3" },
+    { label: "Upcoming Events", key: "1" },
+    { label: "Recomended", key: "2" },
+    { label: "Featured Programs", key: "3" },
+    { label: "Latest Camps", key: "4" },
+    { label: "Outstation Clinic", key: "5" },
   ];
   const handleMenuClick = ({ key }) => {};
 
@@ -250,8 +252,8 @@ export const MarketingCategories = () => {
                 }}
               />
             </div>
+            <Dropdown menu={menuProps} overlayClassName="dropdown-hover-color">
 
-            <Dropdown menu={menuProps}>
               <Button>
                 <Space>
                   <VscSettings />

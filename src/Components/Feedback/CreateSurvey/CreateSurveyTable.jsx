@@ -2,16 +2,19 @@ import React, { useState } from "react";
 import { Table, Dropdown, Button, Space, Input, } from "antd";
 import { FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
-import { LuFilter } from "react-icons/lu";
 import { FeedbackCreateSurveyCard } from "./FeedbackCreateSurveyCard";
 import { FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png"
 import CreateSurveyPage from "./CreateSurveyPage";
 import { useNavigate } from "react-router-dom";
-import {showDeleteMessage} from "../../../globalConstant"
+import { showDeleteMessage } from "../../../globalConstant"
+import { filterDropdown } from "../../../globalConstant"
+import { VscSettings } from "react-icons/vsc";
 
 const CreateSurveyTable = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedValues, setSelectedValues] = useState([]);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const navigate = useNavigate()
 
     const showModal = () => {
@@ -25,7 +28,7 @@ const CreateSurveyTable = () => {
     }
     const handleDelete = (name) => {
         showDeleteMessage({ message: `${name}` });
-      };
+    };
 
     const columns = [
         {
@@ -160,6 +163,45 @@ const CreateSurveyTable = () => {
         onClick: handleMenuClick,
     };
 
+    const handleCheckboxChange = (value, checked) => {
+        if (checked) {
+            setSelectedValues((prev) => [...prev, value]);
+        } else {
+            setSelectedValues((prev) => prev.filter((item) => item !== value));
+        }
+    };
+
+    const handleApply = () => {
+        console.log('Applied Filters:', selectedValues);
+        setIsDropdownOpen(false);
+    };
+    const handleReset = () => {
+        setSelectedValues([]);
+    };
+    const options = [
+        {
+            label: 'Type',
+            options: [
+                { label: 'All', value: 'all' },
+                { label: 'OPD', value: 'opd' },
+                { label: 'IPD', value: 'ipd' },
+            ],
+        },
+        {
+            label: 'Last Visit',
+            options: [
+                { label: 'Last 7 days', value: 'last7days' },
+                { label: 'Last 30 days', value: 'last30days' },
+            ],
+        },
+        {
+            label: 'All Users',
+            options: [
+                { label: 'Active Users', value: 'activeusers' },
+                { label: 'Inactive Users', value: 'inactiveusers' },
+            ],
+        },
+    ];
     return (
         <div className="container mt-1">
             {data.length > 0 ? (
@@ -188,21 +230,24 @@ const CreateSurveyTable = () => {
                                         }}
                                     />
                                 </div>
-
-                                <Dropdown menu={menuProps}>
+                                <Dropdown menu={menuProps} overlayClassName="dropdown-hover-color">
                                     <Button>
                                         <Space>
-                                            Sort By
-                                            <BiSortAlt2 />
+                                        Sort By
+                                        <BiSortAlt2 />
                                         </Space>
                                     </Button>
                                 </Dropdown>
-                                <Dropdown menu={menuProps}>
-                                    <Button>
-                                        <Space>
-                                            Filter 
-                                            <LuFilter />
-                                        </Space>
+                                <Dropdown
+                                    overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
+                                    trigger={['click']}
+                                    open={isDropdownOpen}
+                                    onOpenChange={setIsDropdownOpen}
+                                    placement="bottomLeft"
+                                >
+                                    <Button style={{ width: 160 }}>
+                                        <VscSettings />
+                                        Filters
                                     </Button>
                                 </Dropdown>
                             </div>
