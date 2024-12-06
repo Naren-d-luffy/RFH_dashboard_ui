@@ -7,7 +7,7 @@ import { Avatar, Badge } from "antd";
 import { TbPinned } from "react-icons/tb";
 import addFile from "../../Assets/Icons/addFile.png";
 import { FaRegSmile } from "react-icons/fa";
-import { IoMdSend } from "react-icons/io";
+import { IoMdArrowBack, IoMdSend } from "react-icons/io";
 const Chat = () => {
   const [activeTab, setActiveTab] = useState("All");
   const allChats = [
@@ -274,6 +274,23 @@ const Chat = () => {
             {selectedChat ? (
               <>
                 <div className="chat-messages p-4">
+                  {/* Back Button for Mobile */}
+                  <button
+                      className="btn btn-light back-btn d-lg-none"
+                      onClick={() => setIsChatVisible(false)}
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        left: "10px",
+                        zIndex: "10",
+                        backgroundColor: "transparent",
+                        border: "none",
+                        cursor: "pointer",
+                        marginBottom:"20px"
+                      }}
+                    >
+                      <IoMdArrowBack size={24} />
+                    </button>
                   <h6 style={{ textAlign: "center" }}>Today 10:27am</h6>
                   {demoChat.map((message, index) => (
                     <div

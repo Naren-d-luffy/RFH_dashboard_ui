@@ -229,17 +229,55 @@ const UserManagementGraph = () => {
                   ></div>
                   {data.datasets[0].data[0]}%
                 </div>
-              </div>
-              <div>
-                <p>Patients</p>
-                <div className="d-flex gap-2 align-items-center">
-                  <div
-                    className="userAquisition-tooltip-dot"
-                    style={{
-                      backgroundColor: data.datasets[0].backgroundColor[1],
-                    }}
-                  ></div>
-                  {data.datasets[0].data[1]}%
+                <div className='col-lg-5'>
+                    <div className="userManaggement-card">
+                        <div className="d-flex justify-content-between align-items-center w-100">
+                            <h2 className="card-title text-start mb-2">
+                                Category
+                            </h2>
+                            <Dropdown menu={actionMenu} trigger={['click']}>
+                                <Button type="text">
+                                    <PiDotsThreeOutlineLight size={24} style={{ color: 'var(--secondary-text-color)' }} />
+                                </Button>
+                            </Dropdown>
+                        </div>
+                        <div className="d-flex justify-content-center align-items-start userMnagement-doughnut-div">
+                            <Doughnut data={data} options={options} height={260} width="100%" />
+                            <div className="userManagement-halfGraph-text" style={{
+                                position: 'absolute',
+                                top: '85%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                textAlign: 'center'
+                            }}>
+                                <h6 style={{ margin: 10 ,color:"var(--black-color)"}} >Last Updated</h6>
+                                <p style={{ margin: 0, textAlign: "center" }}>24, Feb 2024</p>
+                            </div>
+                        </div>
+                        <div className="d-flex gap-5 justify-content-center">
+                            <div>
+                                <p>Doctors</p>
+                                <div className="d-flex gap-2 align-items-center">
+                                    <div
+                                        className="userAquisition-tooltip-dot"
+                                        style={{ backgroundColor: data.datasets[0].backgroundColor[0] }}
+                                    ></div>
+                                    {data.datasets[0].data[0]}%
+                                </div>
+                            </div>
+                            <div>
+                                <p>Patients</p>
+                                <div className="d-flex gap-2 align-items-center">
+                                    <div
+                                        className="userAquisition-tooltip-dot"
+                                        style={{ backgroundColor: data.datasets[0].backgroundColor[1] }}
+                                    ></div>
+                                    {data.datasets[0].data[1]}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
               </div>
             </div>

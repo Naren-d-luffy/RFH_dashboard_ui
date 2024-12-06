@@ -74,8 +74,8 @@ const UserAquisitionSecondGraphs = () => {
                                         data={trafficData}
                                         cx="50%"
                                         cy="50%"
-                                        innerRadius={80}
-                                        outerRadius={120}
+                                        innerRadius={70}
+                                        outerRadius={110}
                                         dataKey="value"
                                         startAngle={90}
                                         endAngle={450}
@@ -95,7 +95,7 @@ const UserAquisitionSecondGraphs = () => {
                                             border: "none",
                                         }}
                                         formatter={(value, name, props) => {
-                                            const color = props.payload?.color || "#000"; 
+                                            const color = props.payload?.color || "#000";
                                             return (
                                                 <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                                                     <div
@@ -124,12 +124,12 @@ const UserAquisitionSecondGraphs = () => {
                                         style={{ marginBottom: "20px" }}
                                         formatter={(value, entry) => (
                                             <span
+                                                className="userAquisition-color-dot-div"
                                                 style={{
                                                     color: entry.color,
                                                     fontWeight: "bold",
                                                     fontSize: "14px",
                                                     justifyContent: "flex-start",
-
                                                 }}
                                             >
                                                 <span
@@ -184,9 +184,9 @@ const UserAquisitionSecondGraphs = () => {
                         </div>
                         <div
                             className="d-flex justify-content-start w-100"
-                            style={{ position: "relative"}}
+                            style={{ position: "relative" }}
                         >
-                            <ResponsiveContainer width="100%" height={200} style={{ position: "relative"}}>
+                            <ResponsiveContainer width="100%" height={200} style={{ position: "relative" }}>
                                 <AreaChart data={churnRateData} >
                                     <CartesianGrid
                                         strokeDasharray="1 1"
