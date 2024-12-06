@@ -206,7 +206,7 @@ const DoctorDetail = () => {
           </Row>
         </div>
 
-        <div className="d-flex gap-4 col-lg-12">
+        <div className="d-flex gap-4 col-lg-12 flex-lg-row flex-xl-row flex-column ">
           <div className="col-lg-6">
             <Form.Item>
               <ReactQuill

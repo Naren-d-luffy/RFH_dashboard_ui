@@ -19,7 +19,6 @@ const UserManagementCards = () => {
 
     const handleOk = () => {
         setIsModalVisible(false);
-        // Handle export functionality here
         console.log("Export initiated!");
     };
 

@@ -201,10 +201,10 @@ const EducationOverviewTable = () => {
   return (
     <div className="container mt-4">
       <div className="campaign-performance-table-head">
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between align-items-center flex-lg-row flex-xl-row flex-column">
           <h6>Campaign Performance Table</h6>
 
-          <div className="d-flex gap-3 align-items-center">
+          <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-row">
             <div
               className="d-flex align-items-center px-3"
               style={{

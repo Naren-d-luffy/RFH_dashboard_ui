@@ -156,7 +156,7 @@ const MedicationTrackerFirstTable = () => {
   return (
     <div className="mt-4">
       <div className="campaign-performance-table-head">
-        <div className="d-flex justify-content-between align-items-center">
+        {/* <div className="d-flex justify-content-between align-items-center">
           <h6>Recent Patient's</h6>
           <div className="d-flex gap-3 align-items-center">
             <div
@@ -195,7 +195,49 @@ const MedicationTrackerFirstTable = () => {
               </button>
             </div>
           </div>
+        </div> */}
+
+<div className="d-flex justify-content-between flex-lg-row flex-xl-row flex-column align-items-center">
+          <h6>Recent Patient's</h6>
+          <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-column align-items-center">
+            <div
+              className="d-flex align-items-center px-3"
+              style={{
+                border: "1px solid var(--border-color)",
+                borderRadius: "8px",
+                height: "33px",
+              }}
+            >
+              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
+              <Input
+                type="text"
+                placeholder="Search anything here"
+                style={{
+                  border: "none",
+                  outline: "none",
+                }}
+              />
+            </div>
+            <div className="d-flex gap-3 align-items-center">
+            <Dropdown menu={menuProps}>
+              <Button>
+                <Space>
+                  <VscSettings />
+                  Filter
+                </Space>
+              </Button>
+            </Dropdown>
+            <button
+                className="rfh-basic-button"
+                onClick={() => navigate(`/medication-tracker/add-patient-detail`)}
+                style={{ cursor: "pointer" }}
+              >
+                <GoPlus size={20} /> Add Medication
+              </button>
+            </div>
+          </div>
         </div>
+
         <div className="mt-3">
           <Table
             columns={columns}

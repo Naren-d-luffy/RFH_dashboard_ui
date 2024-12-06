@@ -61,15 +61,9 @@ export const AppRouter = () => {
             path="/marketing/patient-acquisition/patient-detail"
             element={<PatientDetailPage />}
           />
-          <Route
-            path="/dashboard/settings"
-            element={<SettingsPage />}
-          />
+          <Route path="/dashboard/settings" element={<SettingsPage />} />
 
-          <Route
-            path="/user-engagement"
-            element={<UserEngagementPage />}
-          />
+          <Route path="/user-engagement" element={<UserEngagementPage />} />
           <Route
             path="marketing/in-app-campaign"
             element={<InAppCampaignPage />}
@@ -150,30 +144,24 @@ export const AppRouter = () => {
             path="/medication-tracker/add-patient-detail"
             element={<AddPatientDetailPage />}
           />
-          <Route
-            path="/sidebar/notification"
-            element={<NotificationIndex />}
-          />
+          <Route path="/sidebar/notification" element={<NotificationIndex />} />
           <Route
             path="/header/notification"
             element={<HeaderNotificationPage />}
           />
           <Route
-          path="/operational/service-utilization"
-          element={<ServiceUtilizationPage />}
-        />
-        <Route
-          path="/operational/financial-performance"
-          element={<FinancialPerformancePage />}
-        />
-            <Route
-          path="/teleconsultation/technical-support"
-          element={<ChatPage />}
-        />
-        <Route
-          path="/chat"
-          element={<ChattingPage />}
-        />
+            path="/operational/service-utilization"
+            element={<ServiceUtilizationPage />}
+          />
+          <Route
+            path="/operational/financial-performance"
+            element={<FinancialPerformancePage />}
+          />
+          <Route
+            path="/teleconsultation/technical-support"
+            element={<ChatPage />}
+          />
+          <Route path="/chat" element={<ChattingPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

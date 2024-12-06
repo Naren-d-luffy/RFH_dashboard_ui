@@ -1,16 +1,13 @@
-import React, { useState } from "react";
-import { Table, Dropdown, Button, Input } from "antd";
+import React from "react";
+import { Table, Dropdown, Button, Space, Input } from "antd";
 import { FiSearch, FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import image from "../../../Assets/Images/image.png";
-import { showDeleteMessage } from "../../../globalConstant"
-import {filterDropdown} from "../../../globalConstant"
+import { showDeleteMessage } from "../../../globalConstant";
 
 const VirtualManagementTable = () => {
-  const [selectedValues, setSelectedValues] = useState([]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const handleDelete = (name) => {
     showDeleteMessage({ message: name });
@@ -93,7 +90,10 @@ const VirtualManagementTable = () => {
           <div className="campaign-performance-table-edit-icon">
             <FiEdit />
           </div>
-          <div className="campaign-performance-table-delete-icon"  onClick={() => handleDelete(record.doctorName)}>
+          <div
+            className="campaign-performance-table-delete-icon"
+            onClick={() => handleDelete(record.doctorName)}
+          >
             <FiTrash2 />
           </div>
         </div>
@@ -155,52 +155,25 @@ const VirtualManagementTable = () => {
     },
   ];
 
-  const handleCheckboxChange = (value, checked) => {
-    if (checked) {
-      setSelectedValues((prev) => [...prev, value]);
-    } else {
-      setSelectedValues((prev) => prev.filter((item) => item !== value));
-    }
-  };
-
-  const handleApply = () => {
-    console.log('Applied Filters:', selectedValues);
-    setIsDropdownOpen(false);
-  };
-  const handleReset = () => {
-    setSelectedValues([]);
-  };
-  const options = [
-    {
-      label: 'Type',
-      options: [
-        { label: 'All', value: 'all' },
-        { label: 'OPD', value: 'opd' },
-        { label: 'IPD', value: 'ipd' },
-      ],
-    },
-    {
-      label: 'Last Visit',
-      options: [
-        { label: 'Last 7 days', value: 'last7days' },
-        { label: 'Last 30 days', value: 'last30days' },
-      ],
-    },
-    {
-      label: 'All Users',
-      options: [
-        { label: 'Active Users', value: 'activeusers' },
-        { label: 'Inactive Users', value: 'inactiveusers' },
-      ],
-    },
+  const items = [
+    { label: "Last Day", key: "1" },
+    { label: "Last Week", key: "2" },
+    { label: "Last Month", key: "3" },
   ];
+
+  const handleMenuClick = ({ key }) => {};
+
+  const menuProps = {
+    items,
+    onClick: handleMenuClick,
+  };
 
   return (
     <div className=" mt-4">
       <div className="campaign-performance-table-head">
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between flex-lg-row flex-xl-row flex-column align-items-center">
           <h6>Doctor List</h6>
-          <div className="d-flex gap-3 align-items-center">
+          <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-column align-items-center">
             <div
               className="d-flex align-items-center px-3"
               style={{
@@ -219,25 +192,18 @@ const VirtualManagementTable = () => {
                 }}
               />
             </div>
-            <Dropdown
-              overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
-              trigger={['click']}
-              open={isDropdownOpen}
-              onOpenChange={setIsDropdownOpen}
-              placement="bottomLeft"
-            >
-              <Button style={{ width: 160 }}>
-                <VscSettings />
-                Filters
-              </Button>
-            </Dropdown>
-
-            <div>
+            <div className="d-flex gap-3 align-items-center">
+              <Dropdown menu={menuProps}>
+                <Button>
+                  <Space>
+                    <VscSettings />
+                    Filter
+                  </Space>
+                </Button>
+              </Dropdown>
               <button
                 className="rfh-basic-button"
-                onClick={() =>
-                  navigate(`/teleconsultation/doctor-detail`)
-                }
+                onClick={() => navigate(`/teleconsultation/doctor-detail`)}
               >
                 <GoPlus size={20} /> Add Doctor
               </button>

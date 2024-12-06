@@ -125,11 +125,11 @@ export const UserEngagementCards = () => {
                   <ResponsiveContainer width="100%" height={60}>
                     <LineChart data={card.graphData}>
                       <Line
-                        type="linear" // Ensures sharp edges
+                        type="linear" 
                         dataKey="value"
                         stroke={card.graphColor}
                         strokeWidth={2}
-                        dot={false} // Removes dots for a clean look
+                        dot={false} 
                       />
                     </LineChart>
                   </ResponsiveContainer>
