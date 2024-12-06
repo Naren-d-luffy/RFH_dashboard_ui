@@ -1,10 +1,13 @@
-import React from "react";
-import { Table, Input, Button, Dropdown, Space } from "antd";
+import React, { useState } from "react";
+import { Table, Input, Button, Dropdown } from "antd";
 import { FiSearch } from "react-icons/fi";
 import image from "../../../Assets/Images/image.png";
 import { VscSettings } from "react-icons/vsc";
+import {filterDropdown} from "../../../globalConstant"
 
 const FinancialPerformanceTable = () => {
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const columns = [
     {
       title: "Payment ID",
@@ -132,6 +135,45 @@ const FinancialPerformanceTable = () => {
     },
   ];
 
+  const handleCheckboxChange = (value, checked) => {
+    if (checked) {
+      setSelectedValues((prev) => [...prev, value]);
+    } else {
+      setSelectedValues((prev) => prev.filter((item) => item !== value));
+    }
+  };
+
+  const handleApply = () => {
+    console.log('Applied Filters:', selectedValues);
+    setIsDropdownOpen(false);
+  };
+  const handleReset = () => {
+    setSelectedValues([]);
+  };
+  const options = [
+    {
+      label: 'Type',
+      options: [
+        { label: 'All', value: 'all' },
+        { label: 'OPD', value: 'opd' },
+        { label: 'IPD', value: 'ipd' },
+      ],
+    },
+    {
+      label: 'Last Visit',
+      options: [
+        { label: 'Last 7 days', value: 'last7days' },
+        { label: 'Last 30 days', value: 'last30days' },
+      ],
+    },
+    {
+      label: 'All Users',
+      options: [
+        { label: 'Active Users', value: 'activeusers' },
+        { label: 'Inactive Users', value: 'inactiveusers' },
+      ],
+    },
+  ];
   return (
     <div className="mt-3">
       <div className="campaign-performance-table-head">
@@ -156,13 +198,16 @@ const FinancialPerformanceTable = () => {
                 }}
               />
             </div>
-
-            <Dropdown menu={{ items: [{ label: "Filter", key: "1" }] }}>
-              <Button>
-                <Space>
-                  <VscSettings />
-                  Filter
-                </Space>
+            <Dropdown
+              overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
+              trigger={['click']}
+              open={isDropdownOpen}
+              onOpenChange={setIsDropdownOpen}
+              placement="bottomLeft"
+            >
+              <Button style={{ width: 160 }}>
+                <VscSettings />
+                Filters
               </Button>
             </Dropdown>
           </div>

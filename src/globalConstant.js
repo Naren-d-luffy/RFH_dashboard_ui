@@ -2,7 +2,8 @@ import Swal from "sweetalert2";
 import deleteIcon from "./Assets/Icons/delete-warning-icon.png"
 import success from "./Assets/Icons/success.png"
 
-import { Modal } from "antd";
+import { Button, Card, Checkbox, Input, Modal } from "antd";
+import { FiSearch } from "react-icons/fi";
 // export const IMG_URL = `https://digitalcard-bucket.s3.amazonaws.com`;
 
 export const showSuccessMessage = (message, extraContent = "") => {
@@ -81,7 +82,7 @@ export const showDeleteMessage = ({
 							if (onDelete && typeof onDelete === "function") {
 								onDelete();
 							}
-							showSuccessMessage("Deleted successfully","Details deleted");
+							showSuccessMessage("Deleted successfully", "Details deleted");
 							Modal.destroyAll();
 						}}
 					>
@@ -138,7 +139,7 @@ export const showLogoutMessage = ({
 							if (onDelete && typeof onDelete === "function") {
 								onDelete();
 							}
-							showSuccessMessage("Deleted successfully","Details deleted");
+							showSuccessMessage("Deleted successfully", "Details deleted");
 							Modal.destroyAll();
 						}}
 					>
@@ -155,3 +156,49 @@ export const showLogoutMessage = ({
 	});
 };
 
+export const filterDropdown = (options, selectedValues, handleCheckboxChange, handleApply, handleReset) => (
+	<Card className="filter-card">
+		<div
+			className="d-flex align-items-center px-3 mb-3"
+			style={{
+				border: "1px solid var(--border-color)",
+				borderRadius: "8px",
+				height: "33px",
+				width: 138,
+			}}
+		>
+			<FiSearch style={{ color: "#888", marginRight: "10px" }} />
+			<Input
+				type="text"
+				placeholder="Search"
+				style={{
+					border: "none",
+					outline: "none",
+				}}
+			/>
+		</div>
+		{options.map((group) => (
+			<div key={group.label} style={{ marginBottom: '16px' }}>
+				<p style={{ marginBottom: '8px' }}>{group.label}</p>
+				{group.options.map((option) => (
+					<div key={option.value} style={{ marginBottom: '8px' }}>
+						<Checkbox
+							checked={selectedValues.includes(option.value)}
+							onChange={(e) => handleCheckboxChange(option.value, e.target.checked)}
+						>
+							{option.label}
+						</Checkbox>
+					</div>
+				))}
+			</div>
+		))}
+		<div className="d-flex justify-content-between gap-2 mt-3">
+			<Button className="create-campaign-save-button" onClick={handleApply}>
+				Apply
+			</Button>
+			<Button className="create-campaign-cancel-button" onClick={handleReset}>
+				Reset
+			</Button>
+		</div>
+	</Card>
+);

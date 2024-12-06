@@ -67,6 +67,9 @@
     color: var(--white-color);
     border: none;
 }
+.createSurvey-addForms-button:hover{
+  background: var(--dark-green);
+}
 .create-survey-popover {
     background-color: transparent !important;
     box-shadow: none !important;

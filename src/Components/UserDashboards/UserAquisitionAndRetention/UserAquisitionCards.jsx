@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { FaArrowDown, FaUsers } from 'react-icons/fa6';
 import { PiExport } from 'react-icons/pi';
 import profile_tick from '../../../Assets/Icons/profile-tick.png'
-import { Button, Modal } from 'antd';
-import {showSuccessMessage} from "../../../globalConstant"
+import { Button, Dropdown, Form, Modal, Select, Space } from 'antd';
+import { showSuccessMessage } from "../../../globalConstant"
+import { VscSettings } from 'react-icons/vsc';
+import { IoIosArrowDown } from 'react-icons/io';
+import { Option } from 'antd/es/mentions';
 
 export const UserAquisitionCards = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const handleSuccessDelete=()=>{
+  const handleSuccessDelete = () => {
     showSuccessMessage("Export Successfully", "Please check your document, and open your document file");
     setIsModalVisible(false);
   }
@@ -75,6 +78,17 @@ export const UserAquisitionCards = () => {
       boxShadowColor: '#7EC2FF',
     },
   ];
+  const items = [
+    { label: "Week", key: "1" },
+    { label: "Month", key: "2" },
+    { label: "Year", key: "3" },
+  ];
+  const handleMenuClick = ({ key }) => { };
+
+  const menuProps = {
+    items,
+    onClick: handleMenuClick,
+  };
 
   return (
     <div className="container">
@@ -86,16 +100,14 @@ export const UserAquisitionCards = () => {
           </p>
         </div>
         <div className="d-flex align-items-center gap-3">
-          <select
-            className="form-select userAquisition-dropdown"
-            aria-label="Default select example"
-          >
-            <option selected>Week 1</option>
-            <option value="1">Week 2</option>
-            <option value="2">Week 3</option>
-            <option value="3">Week 4</option>
-            <option value="4">Week 5</option>
-          </select>
+          <Dropdown menu={menuProps} overlayClassName="dropdown-hover-color">
+            <Button>
+              <Space>
+                Select
+                <IoIosArrowDown />
+              </Space>
+            </Button>
+          </Dropdown>
           <button className="d-flex gap-2 align-items-center rfh-basic-button" onClick={showModal}>
             <PiExport />
             Export
@@ -156,15 +168,19 @@ export const UserAquisitionCards = () => {
           <span>Choose a type of document</span>
           <div className='row'>
             <div className='col-lg-12 mt-3'>
-              <select
-                className="form-select userAquisition-dropdown"
-                aria-label="Default select example"
-              >
-                <option selected>PDF</option>
-                <option value="1">Excel</option>
-                <option value="2">PNG</option>
-                <option value="3">Text document</option>
-              </select>
+              <Form.Item>
+                <Select
+                  className="create-camapign-input-select"
+                  placeholder="Select State"
+                  style={{ width: "100%" }}
+                  dropdownClassName="create-campaign-dropdown"
+                >
+                  <Option value="Low">PDF</Option>
+                  <Option value="Medium">Word</Option>
+                  <Option value="Medium">Excel</Option>
+                  <Option value="Medium">Text</Option>
+                </Select>
+              </Form.Item>
             </div>
           </div>
           <div className='d-flex justify-content-center gap-3 mt-3'>

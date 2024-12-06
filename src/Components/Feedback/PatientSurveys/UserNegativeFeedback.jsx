@@ -4,31 +4,53 @@ import { FiSearch } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import IndexUserNegativeFeedback from "./IndexUserNegativeFeedback";
 import NegativeFeedbackReplyAllModal from "./NegativeFeedbackReplyAllModal";
+import { filterDropdown } from "../../../globalConstant"
+
 export const UserNegativeFeedback = () => {
-
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [selectedValues, setSelectedValues] = useState([]);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const showModal = () => setIsModalOpen(true);
     const handleCancel = () => setIsModalOpen(false);
-    const handleMenuClick = ({ key }) => { };
-    const items = [
+    const handleCheckboxChange = (value, checked) => {
+        if (checked) {
+            setSelectedValues((prev) => [...prev, value]);
+        } else {
+            setSelectedValues((prev) => prev.filter((item) => item !== value));
+        }
+    };
+
+    const handleApply = () => {
+        console.log('Applied Filters:', selectedValues);
+        setIsDropdownOpen(false);
+    };
+    const handleReset = () => {
+        setSelectedValues([]);
+    };
+    const options = [
         {
-            label: "Last Day",
-            key: "1",
+            label: 'Type',
+            options: [
+                { label: 'All', value: 'all' },
+                { label: 'OPD', value: 'opd' },
+                { label: 'IPD', value: 'ipd' },
+            ],
         },
         {
-            label: "Last week",
-            key: "2",
+            label: 'Last Visit',
+            options: [
+                { label: 'Last 7 days', value: 'last7days' },
+                { label: 'Last 30 days', value: 'last30days' },
+            ],
         },
         {
-            label: "Last Month",
-            key: "3",
+            label: 'All Users',
+            options: [
+                { label: 'Active Users', value: 'activeusers' },
+                { label: 'Inactive Users', value: 'inactiveusers' },
+            ],
         },
     ];
-    const menuProps = {
-        items,
-        onClick: handleMenuClick,
-    };
     return (
         <div className="">
             <div className='user-engagement-header'>
@@ -55,10 +77,16 @@ export const UserNegativeFeedback = () => {
                     />
                 </div>
                 <div className="d-flex align-items-center gap-2">
-                    <Dropdown menu={menuProps}>
-                        <Button>
+                    <Dropdown
+                        overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
+                        trigger={['click']}
+                        open={isDropdownOpen}
+                        onOpenChange={setIsDropdownOpen}
+                        placement="bottomLeft"
+                    >
+                        <Button style={{ width: 160 }}>
                             <VscSettings />
-                            Filter
+                            Filters
                         </Button>
                     </Dropdown>
                     <button className="d-flex gap-3 align-items-center rfh-basic-button" onClick={showModal}>

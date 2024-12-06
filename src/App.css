@@ -11,7 +11,8 @@ body,
 .ant-select,
 .ant-checkbox,
 .ant-radio,
-.ant-form-item-label {
+.ant-form-item-label,
+.ant-tabs {
   font-family: 'Poppins' !important;
   /* color: var(--black-color) !important; */
 }
@@ -64,4 +65,16 @@ body,
 }
 .global-cancel-button:hover{
   background: var( --button-bg-color );
+}
+/* Dropdown */
+.dropdown-hover-color .ant-dropdown-menu-item:hover,
+.dropdown-hover-color .ant-dropdown-menu-item-selected {
+  background-color: var(--primary-green) !important;
+  color: white; /* Optional: Adjust text color for better contrast */
+}
+
+.dropdown-hover-color .ant-btn:hover,
+.dropdown-hover-color .ant-btn:focus {
+  background-color: var(--primary-green) !important;
+  color: white; /* Optional: Adjust button text color */
 }
