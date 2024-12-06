@@ -354,7 +354,8 @@
   color: var(--secondary-text-color);
 }
 
-.patient-detail-personal-information-text {
+.patient-detail-personal-information-text,
+ .patient-detail-address-text{
   border-left: 1px solid var(--border-color);
 }
 
@@ -370,10 +371,6 @@
   font-weight: 400;
   line-height: 19.5px;
   color: var(--black-color);
-}
-
-.patient-detail-address-text {
-  border-left: 1px solid var(--border-color);
 }
 
 .patient-detail-address-text p {
@@ -539,17 +536,6 @@
   text-align: left;
 }
 
-.edit-video-button {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  padding: 4px 15px;
-  background-color: var(--white-color);
-  color: var(--primary-green);
-  border: var(--primary-green) 1px solid;
-  border-radius: 8px;
-  z-index: 2;
-}
 .video-preview {
   position: absolute;
   top: 0;
@@ -643,7 +629,31 @@ color: var(--black-color);
 margin-top: 8px;
 margin-bottom: 10px;
 }
-.feature-program-card ul{
+.feature-program-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 17.11px;
+  text-align: left;
+  color: var(--black-color);
+}
+.feature-program-card h6 {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  text-align: left;
+  color: var(--primary-grey-color);
+  margin-bottom: 0;
+}
+.feature-program-card p {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14.52px;
+  text-align: left;
+  color: var(--black-color);
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+.feature-program-card ul {
   padding-left: 20px;
 }
 .feature-program-card ul li {
@@ -695,12 +705,29 @@ margin-bottom: 10px;
   display: none !important;
 }
 
+.action-icon-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
 .action-icon-button {
   color: var(--black-color);
-  display: flex;
-  justify-content: end;
-  align-items: end;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
+.filter-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 2px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
 /* manju */
 
 .recommend-video-card iframe {
@@ -716,19 +743,18 @@ margin-bottom: 10px;
   position: absolute;
   bottom: 0;
   width: 100%;
-  z-index: 2; 
-  color: white; 
- padding: 12px;
-  
+  z-index: 2;
+  color: white;
+  padding: 12px;
 }
 .recommend-video-card-content h4 {
-font-size: 20px;
-margin-bottom: 4px;
+  font-size: 20px;
+  margin-bottom: 4px;
 }
 .recommend-video-card-content p {
   font-size: 11px;
-  }
-.clinic-vertical-line{
+}
+.clinic-vertical-line {
   border: 1px solid var(--primary-green);
   height: 14px;
 }
@@ -738,3 +764,17 @@ margin-bottom: 4px;
 
 
 
+
+
+@media (max-width: 768px) {
+
+  .campaign-performance-head button {
+    font-size: 12px;
+  }
+  .patient-detail-personal-information-text,
+  .patient-detail-address-text { 
+    border-top: 1px solid var(--border-color);
+    border-left: none;
+    padding-top: 10px;
+  }
+}
