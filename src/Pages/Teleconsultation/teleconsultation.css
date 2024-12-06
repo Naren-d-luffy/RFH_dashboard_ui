@@ -908,6 +908,15 @@
   .chat-visible .chat-sidebar {
     display: none;
   }
+  
+}
+@media (max-width: 576px) {
+  .message-input-container{
+    width: 240px;
+  }
+  .message-input-container input{
+    width: 120px;
+  }
 }
 .chat-header-icon {
   display: flex;

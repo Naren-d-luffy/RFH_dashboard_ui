@@ -386,3 +386,8 @@
   height: auto;
   left: 65%;
 }
+@media (max-width: 768px){
+  .userAquisition-color-dot-div{
+    padding-left: 30px !important;
+  } 
+}

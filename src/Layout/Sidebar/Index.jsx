@@ -189,7 +189,7 @@ function SidebarAdmin() {
   return (
     <>
       <button
-        className="toggle-btn-header d-block d-sm-none"
+        className="toggle-btn-header d-block d-sm-block d-md-block d-lg-none"
         onClick={toggleSidebar}
       >
         <IoMenu style={{ width: "30px", height: "30px", position: "fixed" }} />
@@ -205,7 +205,7 @@ function SidebarAdmin() {
               onClick={() => navigate("/")}
             />
             <button
-              className="close-btn d-block d-sm-none"
+              className="close-btn menu-close-button-response"
               onClick={toggleSidebar}
             >
               <IoMdClose />
