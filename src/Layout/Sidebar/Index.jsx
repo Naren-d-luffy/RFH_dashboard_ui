@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../layout.css";
-import logo from "../../Assets/Images/logo.png";
+import lightLogo from "../../Assets/Images/logo.png";
+import darkLogo from "../../Assets/Images/darkLogo.png"
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineDashboard } from "react-icons/md";
@@ -19,6 +20,7 @@ import {
 import { SlGraduation } from "react-icons/sl";
 import { IoMenu, IoTelescopeOutline } from "react-icons/io5";
 import { BiCapsule } from "react-icons/bi";
+import { useDarkMode } from "../../DarkMode";
 
 const menuConfig = [
   {
@@ -142,6 +144,7 @@ function SidebarAdmin() {
   const toggleMenu = (menu) => {
     setExpandedMenu(expandedMenu === menu ? null : menu);
   };
+  const { isDarkMode } = useDarkMode();
 
   useEffect(() => {
     const pathToMenuMap = {
@@ -198,8 +201,7 @@ function SidebarAdmin() {
       <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
         <aside className={`sidebar-content ${isSidebarOpen ? "open" : ""}`}>
           <div className="sidebar-header d-flex justify-content-center align-items-center">
-            <img
-              src={logo}
+          <img src={isDarkMode ? darkLogo : lightLogo}
               alt="Logo"
               className="sidebar-logo"
               onClick={() => navigate("/")}
