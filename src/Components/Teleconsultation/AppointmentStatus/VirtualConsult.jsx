@@ -110,14 +110,14 @@ const VirtualConsult = () => {
           {appointmentData.map((appointment, index) => (
             <div className="col-lg-4" key={index}>
               <div className="appointment-cards mb-4">
-                <div className="appointment-card-header d-flex justify-content-between align-items-center">
-                  <div className="d-flex gap-3 appointment-title align-items-center">
+                <div className="appointment-card-header d-flex flex-row flex-lg-column flex-xl-row justify-content-between align-items-center">
+                  <div className="d-flex gap-3 appointment-title align-items-center"                  >
                     <div className="appointment-title-icon">
                       <TbReportMedical size={22} style={{color:"var(--black-color)"}} />
                     </div>
                     <h5>{appointment.id}</h5>
                   </div>
-                  <button className="">Virtual Consult</button>
+                  <button className="mt-0 mt-md-0 mt-lg-2 mt-xl-0">Virtual Consult</button>
                 </div>
                 <hr />
                 <div className="appointment-card-body">

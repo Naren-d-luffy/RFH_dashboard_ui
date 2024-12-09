@@ -148,7 +148,7 @@ const Chat = () => {
           isChatVisible ? "chat-visible" : "sidebar-visible"
         }`}
       >
-        <div className="col-lg-4">
+        <div className="col-lg-5 col-xl-4">
           <div className="chat-sidebar">
             <h6 style={{ color: "var(--black-color)" }}>Online Now</h6>
             <div className="d-flex gap-2 mb-2">
@@ -269,7 +269,7 @@ const Chat = () => {
             </div>
           </div>
         </div>
-        <div className="col-lg-8">
+        <div className="col-lg-7 col-xl-8">
           <div className="main-chat ">
             {selectedChat ? (
               <>

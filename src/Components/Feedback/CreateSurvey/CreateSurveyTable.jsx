@@ -208,10 +208,10 @@ const CreateSurveyTable = () => {
         <>
           <FeedbackCreateSurveyCard />
           <div className="campaign-performance-table-head mt-4">
-            <div className="d-flex justify-content-between align-items-center">
+            <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
               <h6>Surveys</h6>
 
-              <div className="d-flex gap-3 align-items-center">
+              <div className="d-flex flex-column flex-md-row gap-3 align-items-center">
                 <div
                   className="d-flex align-items-center px-3"
                   style={{
@@ -231,26 +231,28 @@ const CreateSurveyTable = () => {
                   />
                 </div>
 
-                <Dropdown menu={menuProps}>
-                  <Button>
-                    <Space>
-                      Sort By
-                      <BiSortAlt2 />
-                    </Space>
-                  </Button>
-                </Dropdown>
-                <Dropdown
-                  overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
-                  trigger={['click']}
-                  open={isDropdownOpen}
-                  onOpenChange={setIsDropdownOpen}
-                  placement="bottomLeft"
-                >
-                  <Button style={{ width: 160 }}>
-                    <VscSettings />
-                    Filters
-                  </Button>
-                </Dropdown>
+                <div className="d-flex gap-2">
+                  <Dropdown menu={menuProps}>
+                    <Button>
+                      <Space>
+                        Sort By
+                        <BiSortAlt2 />
+                      </Space>
+                    </Button>
+                  </Dropdown>
+                  <Dropdown
+                    overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
+                    trigger={['click']}
+                    open={isDropdownOpen}
+                    onOpenChange={setIsDropdownOpen}
+                    placement="bottomLeft"
+                  >
+                    <Button style={{ width: 160 }}>
+                      <VscSettings />
+                      Filters
+                    </Button>
+                  </Dropdown>
+                </div>
               </div>
             </div>
             <div className="mt-3">

@@ -180,7 +180,7 @@ const MedicationTrackerSecondTable = () => {
   return (
     <div className="mt-4">
       <div className="campaign-performance-table-head">
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between align-items-center flex-column flex-sm-row">
           <h6>Refill Reminders</h6>
           <div className="d-flex gap-3 align-items-center">
             <div
