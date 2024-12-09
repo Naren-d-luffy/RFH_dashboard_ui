@@ -6,8 +6,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { useNavigate } from "react-router-dom";
-import { showSuccessMessage } from "../../../globalConstant"
-
+import { showSuccessMessage } from "../../../globalConstant";
 
 const DoctorDetail = () => {
   const navigate = useNavigate();
@@ -22,7 +21,7 @@ const DoctorDetail = () => {
   };
   const handleClick = () => {
     showSuccessMessage("Doctor Details Added Successfully", "");
-  }
+  };
   return (
     <div className="container">
       <div className="mt-4 campaign-performance-head">
@@ -82,8 +81,9 @@ const DoctorDetail = () => {
                 <DatePicker
                   className="add-events-datepicker"
                   placeholder="Select Date"
-                  style={{ width: "100%" }}
+                  style={{ width: "100%"}}
                   format="DD/MM/YYYY"
+                  color="var(--black-color)"
                 />
                 <span className="create-campaign-input-span">
                   Date Of Birth
@@ -244,7 +244,11 @@ const DoctorDetail = () => {
         >
           Cancel
         </Button>
-        <Button key="save" className="create-campaign-save-button" onClick={handleClick}>
+        <Button
+          key="save"
+          className="create-campaign-save-button"
+          onClick={handleClick}
+        >
           Save
         </Button>
       </div>

@@ -233,22 +233,12 @@ export const MarketingCategories = () => {
         <div className="d-flex flex-lg-row flex-xl-row flex-column justify-content-between align-items-center">
           <h4>Marketing Categories</h4>
           <div className="d-flex gap-3 align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
+            <div className="search-container">
+              <FiSearch className="search-icon" />
+              <input
                 type="text"
                 placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
+                className="search-input-table"
               />
             </div>
             <Dropdown menu={menuProps} overlayClassName="dropdown-hover-color">

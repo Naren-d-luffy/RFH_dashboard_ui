@@ -230,7 +230,7 @@
   position: absolute;
   top: -10px;
   font-size: 12px;
-  color: var(--secondary-text-color);
+  color: var(--black-color);
   left: 4%;
   z-index: 1;
   background-color: var(--white-color);
@@ -239,6 +239,7 @@
 
 .ant-input.create-camapign-input {
   height: 40px;
+  background: transparent;
 }
 
 .create-camapign-add-button {
@@ -408,7 +409,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   padding: 14px;
-  background-color: var(--white-color);
+  background-color: var(--card-background-color);
 }
 .upcoming-event-card img {
   width: 210px;
@@ -510,7 +511,7 @@
 }
 
 .recommend-video-card h4 {
-  color: var(--white-color);
+  color: var(--text-white-color) !important;
   font-size: 16px;
   position: relative;
   z-index: 2;
@@ -520,7 +521,7 @@
 }
 
 .recommend-video-card p {
-  color: var(--black-color);
+  color: var(--text-white-color);
   font-size: 14px;
   position: relative;
   z-index: 2;
@@ -580,7 +581,7 @@
   font-weight: 700;
   line-height: 17.11px;
   text-align: left;
-  color: var(--black-color);
+  color: var(--text-white-color);
 }
 .feature-program-card span {
   font-size: 12px;
@@ -594,7 +595,7 @@
   font-weight: 400;
   line-height: 14.52px;
   text-align: left;
-  color: var(--black-color);
+  color: var(--text-white-color);
   margin-top: 8px;
   margin-bottom: 10px;
 }
@@ -745,9 +746,11 @@
 .recommend-video-card-content h4 {
   font-size: 20px;
   margin-bottom: 4px;
+  color: var(--text-white-color);
 }
 .recommend-video-card-content p {
   font-size: 11px;
+  color: var(--text-white-color);
 }
 .clinic-vertical-line {
   border: 1px solid var(--primary-green);

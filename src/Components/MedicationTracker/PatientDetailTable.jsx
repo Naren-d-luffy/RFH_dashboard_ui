@@ -1,8 +1,8 @@
-import React from 'react';
-import { Table, Input, Dropdown, Space, Button } from 'antd';
-import { FiSearch } from 'react-icons/fi';
+import React from "react";
+import { Table, Input, Dropdown, Space, Button } from "antd";
+import { FiSearch } from "react-icons/fi";
 import image from "../../Assets/Images/image.png";
-import { VscSettings } from 'react-icons/vsc';
+import { VscSettings } from "react-icons/vsc";
 
 const PatientDetailTable = () => {
   const columns = [
@@ -175,22 +175,12 @@ const PatientDetailTable = () => {
         <div className="d-flex justify-content-between align-items-center">
           <h6>Medication Details</h6>
           <div className="d-flex gap-3 align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid var(--border-color)",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
+            <div className="search-container">
+              <FiSearch className="search-icon" />
+              <input
                 type="text"
                 placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
+                className="search-input-table"
               />
             </div>
             <Dropdown menu={menuProps}>
@@ -201,7 +191,6 @@ const PatientDetailTable = () => {
                 </Space>
               </Button>
             </Dropdown>
-
           </div>
         </div>
         <div className="mt-3">
@@ -219,5 +208,3 @@ const PatientDetailTable = () => {
 };
 
 export default PatientDetailTable;
-
-

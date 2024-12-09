@@ -862,7 +862,7 @@
   font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.1px;
-  color: var(--white-color);
+  color: var(--text-black-color);
 }
 
 .message.self {

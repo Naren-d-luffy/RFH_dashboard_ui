@@ -15,8 +15,14 @@ import {
 import logo from "../../../Assets/Images/logo.png";
 import { showSuccessMessage } from "../../../globalConstant";
 
-// Register Chart.js components
-ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Title, Tooltip);
+ChartJS.register(
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip
+);
 
 export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
   const reportRef = useRef(null);
@@ -46,7 +52,10 @@ export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
-    showSuccessMessage("Completed", "You have successfully downloaded Saikiran file");
+    showSuccessMessage(
+      "Completed",
+      "You have successfully downloaded Saikiran file"
+    );
   };
 
   const graphData = {
@@ -69,10 +78,10 @@ export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
     responsive: true,
     plugins: {
       legend: {
-        display: false, 
+        display: false,
       },
       tooltip: {
-        enabled: true, 
+        enabled: true,
       },
     },
     scales: {
@@ -99,13 +108,13 @@ export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
           },
         },
         ticks: {
-          stepSize: 20, 
+          stepSize: 20,
           font: {
             size: 12,
           },
         },
         min: 0,
-        max: 80, 
+        max: 80,
       },
     },
     layout: {
@@ -182,7 +191,10 @@ export const PatientReport = ({ isModalVisible, setIsModalVisible }) => {
             determinations.
           </p>
         </div>
-        <div className="report-graph" style={{ marginTop: "30px", textAlign: "center" }}>
+        <div
+          className="report-graph"
+          style={{ marginTop: "30px", textAlign: "center" }}
+        >
           <h3 style={{ fontSize: "14px", marginBottom: "10px" }}>
             Glycosylated Haemoglobin | HbA1c | (Test - 1)
           </h3>

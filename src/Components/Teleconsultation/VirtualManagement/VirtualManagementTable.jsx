@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import image from "../../../Assets/Images/image.png";
 import { showDeleteMessage } from "../../../globalConstant";
-import { filterDropdown } from "../../../globalConstant"
+import { filterDropdown } from "../../../globalConstant";
 
 const VirtualManagementTable = () => {
   const [selectedValues, setSelectedValues] = useState([]);
@@ -167,7 +167,7 @@ const VirtualManagementTable = () => {
   };
 
   const handleApply = () => {
-    console.log('Applied Filters:', selectedValues);
+    console.log("Applied Filters:", selectedValues);
     setIsDropdownOpen(false);
   };
   const handleReset = () => {
@@ -175,25 +175,25 @@ const VirtualManagementTable = () => {
   };
   const options = [
     {
-      label: 'Type',
+      label: "Type",
       options: [
-        { label: 'All', value: 'all' },
-        { label: 'OPD', value: 'opd' },
-        { label: 'IPD', value: 'ipd' },
+        { label: "All", value: "all" },
+        { label: "OPD", value: "opd" },
+        { label: "IPD", value: "ipd" },
       ],
     },
     {
-      label: 'Last Visit',
+      label: "Last Visit",
       options: [
-        { label: 'Last 7 days', value: 'last7days' },
-        { label: 'Last 30 days', value: 'last30days' },
+        { label: "Last 7 days", value: "last7days" },
+        { label: "Last 30 days", value: "last30days" },
       ],
     },
     {
-      label: 'All Users',
+      label: "All Users",
       options: [
-        { label: 'Active Users', value: 'activeusers' },
-        { label: 'Inactive Users', value: 'inactiveusers' },
+        { label: "Active Users", value: "activeusers" },
+        { label: "Inactive Users", value: "inactiveusers" },
       ],
     },
   ];
@@ -204,37 +204,33 @@ const VirtualManagementTable = () => {
         <div className="d-flex justify-content-between flex-lg-row flex-xl-row flex-column align-items-center">
           <h6>Doctor List</h6>
           <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-column align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid var(--border-color)",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
+            <div className="search-container">
+              <FiSearch className="search-icon" />
+              <input
                 type="text"
                 placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
+                className="search-input-table"
               />
             </div>
             <div className="d-flex gap-3 align-items-center">
-            <Dropdown
-                  overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
-                  trigger={['click']}
-                  open={isDropdownOpen}
-                  onOpenChange={setIsDropdownOpen}
-                  placement="bottomLeft"
-                >
-                  <Button style={{ width: 160 }}>
-                    <VscSettings />
-                    Filters
-                  </Button>
-                </Dropdown>
+              <Dropdown
+                overlay={filterDropdown(
+                  options,
+                  selectedValues,
+                  handleCheckboxChange,
+                  handleApply,
+                  handleReset
+                )}
+                trigger={["click"]}
+                open={isDropdownOpen}
+                onOpenChange={setIsDropdownOpen}
+                placement="bottomLeft"
+              >
+                <Button style={{ width: 160 }}>
+                  <VscSettings />
+                  Filters
+                </Button>
+              </Dropdown>
               <button
                 className="rfh-basic-button"
                 onClick={() => navigate(`/teleconsultation/doctor-detail`)}

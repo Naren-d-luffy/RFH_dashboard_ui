@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Table, Dropdown, Button, Input, } from "antd";
+import { Table, Dropdown, Button, Input } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
-import { showDeleteMessage } from "../../../globalConstant"
-import { filterDropdown } from "../../../globalConstant"
+import { showDeleteMessage } from "../../../globalConstant";
+import { filterDropdown } from "../../../globalConstant";
 
 const EducationOverviewTable = () => {
   const [selectedValues, setSelectedValues] = useState([]);
@@ -63,8 +63,8 @@ const EducationOverviewTable = () => {
           status === "Active"
             ? "green"
             : status === "Paused"
-              ? "orange"
-              : "blue";
+            ? "orange"
+            : "blue";
         return (
           <span
             className="campaign-performance-table-status"
@@ -91,7 +91,10 @@ const EducationOverviewTable = () => {
           <div className="campaign-performance-table-edit-icon">
             <FiEdit />
           </div>
-          <div className="campaign-performance-table-delete-icon" onClick={handleDelete}>
+          <div
+            className="campaign-performance-table-delete-icon"
+            onClick={handleDelete}
+          >
             <FiTrash2 />
           </div>
         </div>
@@ -167,7 +170,7 @@ const EducationOverviewTable = () => {
   };
 
   const handleApply = () => {
-    console.log('Applied Filters:', selectedValues);
+    console.log("Applied Filters:", selectedValues);
     setIsDropdownOpen(false);
   };
   const handleReset = () => {
@@ -175,25 +178,25 @@ const EducationOverviewTable = () => {
   };
   const options = [
     {
-      label: 'Type',
+      label: "Type",
       options: [
-        { label: 'All', value: 'all' },
-        { label: 'OPD', value: 'opd' },
-        { label: 'IPD', value: 'ipd' },
+        { label: "All", value: "all" },
+        { label: "OPD", value: "opd" },
+        { label: "IPD", value: "ipd" },
       ],
     },
     {
-      label: 'Last Visit',
+      label: "Last Visit",
       options: [
-        { label: 'Last 7 days', value: 'last7days' },
-        { label: 'Last 30 days', value: 'last30days' },
+        { label: "Last 7 days", value: "last7days" },
+        { label: "Last 30 days", value: "last30days" },
       ],
     },
     {
-      label: 'All Users',
+      label: "All Users",
       options: [
-        { label: 'Active Users', value: 'activeusers' },
-        { label: 'Inactive Users', value: 'inactiveusers' },
+        { label: "Active Users", value: "activeusers" },
+        { label: "Inactive Users", value: "inactiveusers" },
       ],
     },
   ];
@@ -205,28 +208,24 @@ const EducationOverviewTable = () => {
           <h6>Campaign Performance Table</h6>
 
           <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-row">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
+            <div className="search-container">
+              <FiSearch className="search-icon" />
+              <input
                 type="text"
                 placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
+                className="search-input-table"
               />
             </div>
 
             <Dropdown
-              overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
-              trigger={['click']}
+              overlay={filterDropdown(
+                options,
+                selectedValues,
+                handleCheckboxChange,
+                handleApply,
+                handleReset
+              )}
+              trigger={["click"]}
               open={isDropdownOpen}
               onOpenChange={setIsDropdownOpen}
               placement="bottomLeft"
@@ -253,4 +252,3 @@ const EducationOverviewTable = () => {
 };
 
 export default EducationOverviewTable;
-

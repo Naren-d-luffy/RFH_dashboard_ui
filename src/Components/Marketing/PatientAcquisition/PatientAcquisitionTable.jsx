@@ -3,9 +3,8 @@ import { Table, Dropdown, Button, Input } from "antd";
 import { FiSearch, FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
-import { showDeleteMessage } from "../../../globalConstant"
-import { filterDropdown } from "../../../globalConstant"
-
+import { showDeleteMessage } from "../../../globalConstant";
+import { filterDropdown } from "../../../globalConstant";
 
 const PatientAcquisitionTable = () => {
   const [selectedValues, setSelectedValues] = useState([]);
@@ -83,7 +82,9 @@ const PatientAcquisitionTable = () => {
         <div className="campaign-performance-table-action-icons">
           <div
             className="campaign-performance-table-eye-icon"
-            onClick={() => navigate(`/marketing/patient-acquisition/patient-detail`)}
+            onClick={() =>
+              navigate(`/marketing/patient-acquisition/patient-detail`)
+            }
             style={{ cursor: "pointer" }}
           >
             <FiEye />
@@ -91,10 +92,11 @@ const PatientAcquisitionTable = () => {
           <div className="campaign-performance-table-edit-icon">
             <FiEdit />
           </div>
-          <div className="campaign-performance-table-delete-icon" onClick={() => handleDelete(record.patientName)}>
-            <FiTrash2
-              style={{ cursor: "pointer" }}
-            />
+          <div
+            className="campaign-performance-table-delete-icon"
+            onClick={() => handleDelete(record.patientName)}
+          >
+            <FiTrash2 style={{ cursor: "pointer" }} />
           </div>
         </div>
       ),
@@ -169,7 +171,7 @@ const PatientAcquisitionTable = () => {
   };
 
   const handleApply = () => {
-    console.log('Applied Filters:', selectedValues);
+    console.log("Applied Filters:", selectedValues);
     setIsDropdownOpen(false);
   };
   const handleReset = () => {
@@ -177,25 +179,25 @@ const PatientAcquisitionTable = () => {
   };
   const options = [
     {
-      label: 'Type',
+      label: "Type",
       options: [
-        { label: 'All', value: 'all' },
-        { label: 'OPD', value: 'opd' },
-        { label: 'IPD', value: 'ipd' },
+        { label: "All", value: "all" },
+        { label: "OPD", value: "opd" },
+        { label: "IPD", value: "ipd" },
       ],
     },
     {
-      label: 'Last Visit',
+      label: "Last Visit",
       options: [
-        { label: 'Last 7 days', value: 'last7days' },
-        { label: 'Last 30 days', value: 'last30days' },
+        { label: "Last 7 days", value: "last7days" },
+        { label: "Last 30 days", value: "last30days" },
       ],
     },
     {
-      label: 'All Users',
+      label: "All Users",
       options: [
-        { label: 'Active Users', value: 'activeusers' },
-        { label: 'Inactive Users', value: 'inactiveusers' },
+        { label: "Active Users", value: "activeusers" },
+        { label: "Inactive Users", value: "inactiveusers" },
       ],
     },
   ];
@@ -206,27 +208,23 @@ const PatientAcquisitionTable = () => {
         <div className="d-flex flex-lg-row flex-xl-row flex-column justify-content-between align-items-center">
           <h6>All Patient Table</h6>
           <div className="d-flex gap-3 align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid var(--border-color)",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
+            <div className="search-container">
+              <FiSearch className="search-icon" />
+              <input
                 type="text"
                 placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
+                className="search-input-table"
               />
             </div>
             <Dropdown
-              overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
-              trigger={['click']}
+              overlay={filterDropdown(
+                options,
+                selectedValues,
+                handleCheckboxChange,
+                handleApply,
+                handleReset
+              )}
+              trigger={["click"]}
               open={isDropdownOpen}
               onOpenChange={setIsDropdownOpen}
               placement="bottomLeft"
@@ -253,4 +251,3 @@ const PatientAcquisitionTable = () => {
 };
 
 export default PatientAcquisitionTable;
-
