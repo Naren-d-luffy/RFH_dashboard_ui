@@ -1,5 +1,5 @@
 import { Avatar } from "antd";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { TbReportMedical } from "react-icons/tb";
 import patient from "../../../Assets/Images/patient.png";
 import doctor from "../../../Assets/Images/ladydoctor.png";
@@ -86,23 +86,23 @@ const VirtualConsult = () => {
           />
         </div>
         <div className="search-table-container d-flex gap-4">
-        <div
-            onClick={handleGridViewToggle}
-          >
-            <RxGrid className={`d-flex align-items-center  ${
-              !isTableView ? "appointment-active-icon" : "table-card-list"
-            }`} />
+          <div onClick={handleGridViewToggle}>
+            <RxGrid
+              className={`d-flex align-items-center  ${
+                !isTableView ? "appointment-active-icon" : "table-card-list"
+              }`}
+            />
           </div>
-          <div
-            onClick={handleTableViewToggle}
-          >
-            <LuMenu className={`d-flex align-items-center ${
-              isTableView ? "appointment-active-icon" : "table-data-list"
-            }`} />
+          <div onClick={handleTableViewToggle}>
+            <LuMenu
+              className={`d-flex align-items-center ${
+                isTableView ? "appointment-active-icon" : "table-data-list"
+              }`}
+            />
           </div>
         </div>
       </div>
-  
+
       {isTableView ? (
         <AppoinmentDataList />
       ) : (
@@ -111,13 +111,18 @@ const VirtualConsult = () => {
             <div className="col-lg-4" key={index}>
               <div className="appointment-cards mb-4">
                 <div className="appointment-card-header d-flex flex-row flex-lg-column flex-xl-row justify-content-between align-items-center">
-                  <div className="d-flex gap-3 appointment-title align-items-center"                  >
+                  <div className="d-flex gap-3 appointment-title align-items-center">
                     <div className="appointment-title-icon">
-                      <TbReportMedical size={22} style={{color:"var(--black-color)"}} />
+                      <TbReportMedical
+                        size={22}
+                        style={{ color: "var(--black-color)" }}
+                      />
                     </div>
                     <h5>{appointment.id}</h5>
                   </div>
-                  <button className="mt-0 mt-md-0 mt-lg-2 mt-xl-0">Virtual Consult</button>
+                  <button className="mt-0 mt-md-0 mt-lg-2 mt-xl-0">
+                    Virtual Consult
+                  </button>
                 </div>
                 <hr />
                 <div className="appointment-card-body">
@@ -166,7 +171,6 @@ const VirtualConsult = () => {
       )}
     </div>
   );
-  
 };
 
 export default VirtualConsult;

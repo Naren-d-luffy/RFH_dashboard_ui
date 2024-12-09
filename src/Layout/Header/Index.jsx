@@ -57,7 +57,7 @@ const HeaderAdmin = () => {
               className="notification-button"
               onClick={handleNotificationClick}
             >
-              <GoBell className="notification-icon" />
+              <GoBell className="notification-icon" color="var(--black-color)"/>
               <span className="notification-badge">4</span>
             </button>
 
