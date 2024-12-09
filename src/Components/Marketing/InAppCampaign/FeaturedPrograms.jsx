@@ -130,15 +130,16 @@ export const FeaturedPrograms = () => {
   const renderEventCard = (event) => (
     <div className="col-lg-4">
       <div className="feature-program-card" key={event.title}>
-        <div className="action-icon-container">
+       
+        <div className="mb-3">
+          <img src={event.img} alt={event.title} />
+          <div className="featured-program-icon-container">
           <Dropdown overlay={sortMenu} trigger={["click"]}>
             <button className="action-icon-button">
               <BsThreeDotsVertical />
             </button>
           </Dropdown>
         </div>
-        <div className="d-flex justify-content-center align-items-center mb-3">
-          <img src={event.img} alt={event.title} />
         </div>
         <div className="p-3">
           <div className="d-flex justify-content-between mb-2">
@@ -155,19 +156,19 @@ export const FeaturedPrograms = () => {
   );
   const renderLatestCamps = (camp) => (
     <div className="col-lg-4">
-      <div className="action-icon-container">
-        <Dropdown overlay={filterMenu} trigger={["click"]}>
-          <button className="action-icon-button">
-            <BsThreeDotsVertical />
-          </button>
-        </Dropdown>
-      </div>
       <div className="recommend-video-card">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3773.423259243416!2d72.81684837418092!3d18.956905855702594!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7ce11a208b68b%3A0x231538ea71de5051!2sRaja%20Ram%20Mohan%20Roy%20Rd%2C%20Girgaon%2C%20Mumbai%2C%20Maharashtra%20400004%2C%20India!5e0!3m2!1sen!2sjp!4v1733119289892!5m2!1sen!2sjp"
           allowFullScreen
           title="Map showing Raja Ram Mohan Roy Road in Girgaon, Mumbai"
         ></iframe>
+         <div className="featured-program-icon-container" style={{right:0}}>
+          <Dropdown overlay={filterMenu} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical />
+            </button>
+          </Dropdown>
+        </div>
         <div className="recommend-video-card-content">
           <h4>{camp.campName}</h4>
           <p>{camp.Description}</p>
@@ -178,16 +179,16 @@ export const FeaturedPrograms = () => {
 
   const renderOutstationClinic = (clinic) => (
     <div className="col-lg-4">
-      <div className="action-icon-container">
-        <Dropdown overlay={sortMenu} trigger={["click"]}>
-          <button className="action-icon-button">
-            <BsThreeDotsVertical />
-          </button>
-        </Dropdown>
-      </div>
       <div className="feature-program-card" key={clinic.title}>
-        <div className="d-flex justify-content-center align-items-center mb-3">
+        <div className=" mb-3">
           <img src={clinic.img} alt={clinic.title} />
+          <div className="featured-program-icon-container">
+          <Dropdown overlay={sortMenu} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical style={{color:"#fff"}}/>
+            </button>
+          </Dropdown>
+        </div>
         </div>
         <div className="clinic-content p-3">
           <div className="d-flex align-items-center justify-content-between">

@@ -12,10 +12,12 @@ import img1 from "../../../Assets/Images/img1.png";
 import img2 from "../../../Assets/Images/img2.png";
 import img3 from "../../../Assets/Images/img3.png";
 import {filterDropdown} from "../../../globalConstant"
-
+import {   Menu } from "antd";
+import { BiEdit } from "react-icons/bi";
+import { RiDeleteBin7Line } from "react-icons/ri";
+import { BsThreeDotsVertical } from "react-icons/bs";
 const EducationCategoriesGastroIllness = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showMenu, setShowMenu] = useState(null); 
   const [selectedValues, setSelectedValues] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -46,44 +48,30 @@ const EducationCategoriesGastroIllness = () => {
     },
   ];
 
-  const toggleMenu = (index) => {
-    setShowMenu(showMenu === index ? null : index);
-  };
+  const sortMenu = (
+    <Menu>
+      <Menu.Item key="edit" className="filter-menu-item">
+        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        Edit
+      </Menu.Item>
+      <Menu.Item key="delete" className="filter-menu-item">
+        <RiDeleteBin7Line
+          style={{ color: "var(--red-color)", marginRight: "4px" }}
+        />
+        Delete
+      </Menu.Item>
+    </Menu>
+  );
 
   const renderEventCard = (event, index) => (
     <div className="col-lg-4" key={index}>
       <div className="upcoming-event-card p-3" style={{ position: "relative" }}>
-        <div
-          className="education-categories-faq-menu"
-          onClick={(e) => {
-            e.stopPropagation(); 
-            toggleMenu(index);
-          }}
-          style={{
-            cursor: "pointer",
-            position: "absolute",
-            top: "10px",
-            right: "10px",
-            zIndex: 10,
-          }}
-        >
-          <IoEllipsisVerticalSharp size={20} />
-          {showMenu === index && (
-            <div
-              className="education-categories-menu-options"
-            >
-              <button
-                onClick={() => console.log(`Edit ${event.title}`)}
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => console.log(`Delete ${event.title}`)}
-              >
-                Delete
-              </button>
-            </div>
-          )}
+      <div className="treatment-info-icon-container">
+          <Dropdown overlay={sortMenu} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical />
+            </button>
+          </Dropdown>
         </div>
 
         <div className="d-flex justify-content-center align-items-center mb-3">

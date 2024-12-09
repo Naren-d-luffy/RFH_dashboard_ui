@@ -7,10 +7,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AddReadingMaterials from "./AddReadingMaterials";
 import { IoEllipsisVerticalSharp } from "react-icons/io5";
-
+import {  Dropdown, Menu } from "antd";
+import { BiEdit } from "react-icons/bi";
+import { RiDeleteBin7Line } from "react-icons/ri";
+import { BsThreeDotsVertical } from "react-icons/bs";
 const EducationCategoriesReadingMaterials = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showMenu, setShowMenu] = useState(null);  
 
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
@@ -36,9 +38,20 @@ const EducationCategoriesReadingMaterials = () => {
     },
   ];
 
-  const toggleMenu = (id) => {
-    setShowMenu(showMenu === id ? null : id);  
-  };
+  const sortMenu = (
+    <Menu>
+      <Menu.Item key="edit" className="filter-menu-item">
+        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        Edit
+      </Menu.Item>
+      <Menu.Item key="delete" className="filter-menu-item">
+        <RiDeleteBin7Line
+          style={{ color: "var(--red-color)", marginRight: "4px" }}
+        />
+        Delete
+      </Menu.Item>
+    </Menu>
+  );
 
   const renderImageCard = (image) => (
     <div className="col-lg-4" key={image.id}>
@@ -48,35 +61,12 @@ const EducationCategoriesReadingMaterials = () => {
           backgroundImage: `url(${image.image})`,
         }}
       >
-        <div
-          className="education-categories-faq-menu"
-          onClick={(e) => {
-            e.stopPropagation(); 
-            toggleMenu(image.id);
-          }}
-          style={{
-            cursor: "pointer",
-            position: "absolute",
-            top: "10px",
-            right: "10px",
-            zIndex: 10,
-          }}
-        >
-          <IoEllipsisVerticalSharp size={20} />
-          {showMenu === image.id && (
-            <div className="education-categories-menu-options" style={{ position: "absolute", top: "25px", right: "0", backgroundColor: "#fff", border: "1px solid #ccc", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", borderRadius: "4px", zIndex: 100, padding: "5px" }}>
-              <button
-                onClick={() => console.log(`Edit ${image.title}`)}  
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => console.log(`Delete ${image.title}`)} 
-              >
-                Delete
-              </button>
-            </div>
-          )}
+       <div className="treatment-info-icon-container">
+          <Dropdown overlay={sortMenu} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical />
+            </button>
+          </Dropdown>
         </div>
 
         <div>
