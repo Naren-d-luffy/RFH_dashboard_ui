@@ -161,7 +161,7 @@ const EducationCategoriesGastroIllness = () => {
   return (
     <div className="container mt-4">
       <div className="marketing-categories-section">
-        <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="d-flex flex-column flex-sm-column flex-md-row justify-content-between align-items-center mb-4"        >
           <h4>Education Categories</h4>
           <div className="d-flex gap-3 align-items-center">
             <div

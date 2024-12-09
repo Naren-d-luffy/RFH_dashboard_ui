@@ -1,11 +1,11 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Button, Modal, Form, Input, Row, Col } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 
-import {showSuccessMessage} from "../../../globalConstant" 
+import { showSuccessMessage } from "../../../globalConstant"
 import { RiDeleteBin5Line } from "react-icons/ri";
 
 
@@ -37,33 +37,33 @@ const CreateCampaign = ({ open, handleCancel }) => {
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
-  return(
+  return (
 
-  <Modal
-    open={open}
-    title={<span className="create-campaign-modal-title">Create Campaign</span>}
-    onCancel={handleCancel}
-    width={680}
-    footer={[
-      <Button
-        key="back"
-        onClick={handleCancel}
-        className="create-campaign-cancel-button"
-      >
-        Cancel
-      </Button>,
-      <Button
-        key="save"
-        onClick={handleSuccessDelete}
-        className="create-campaign-save-button"
-      >
-        Save
-      </Button>,
-    ]}
-  >
-    <Form layout="vertical" className="mt-4">
-      <Form.Item label="Brand logo">
-      <Upload
+    <Modal
+      open={open}
+      title={<span className="create-campaign-modal-title">Create Campaign</span>}
+      onCancel={handleCancel}
+      width={680}
+      footer={[
+        <Button
+          key="back"
+          onClick={handleCancel}
+          className="create-campaign-cancel-button"
+        >
+          Cancel
+        </Button>,
+        <Button
+          key="save"
+          onClick={handleSuccessDelete}
+          className="create-campaign-save-button"
+        >
+          Save
+        </Button>,
+      ]}
+    >
+      <Form layout="vertical" className="mt-4">
+        <Form.Item label="Brand logo">
+          <Upload
             listType="picture"
             showUploadList={false}
             onChange={handleUpload}
@@ -94,47 +94,46 @@ const CreateCampaign = ({ open, handleCancel }) => {
                 style={{
                   marginTop: "10px",
                   backgroundColor: "#e6f2ed",
-                  borderRadius:"50%",
-                  fontSize:"16px",
-                  padding:"4px 12px"
+                  borderRadius: "50%",
+                  fontSize: "16px",
+                  padding: "4px 12px"
                 }}
               >
                 <RiDeleteBin5Line />
               </Button>
             </div>
           )}
-      </Form.Item>
+        </Form.Item>
 
-      <Form.Item>
-        <Input className="create-camapign-input" placeholder="RFH Welcome" />
-        <span className="create-campaign-input-span">Campaign Title</span>
-      </Form.Item>
+        <Form.Item>
+          <Input className="create-camapign-input" placeholder="RFH Welcome" />
+          <span className="create-campaign-input-span">Campaign Title</span>
+        </Form.Item>
 
-      <Form.Item label="Campaign Description">
-        <ReactQuill
-          theme="snow"
-          modules={modules}
-          placeholder="Your text goes here"
-        />
-      </Form.Item>
-      <Row gutter={24}>
-        <Col span={7}>
-          <Form.Item>
-            <Button block className="create-camapign-add-button">
-              + Add Button
-            </Button>
-          </Form.Item>
-        </Col>
+        <Form.Item label="Campaign Description">
+          <ReactQuill
+            theme="snow"
+            modules={modules}
+            placeholder="Your text goes here"
+          />
+        </Form.Item>
+        <Row gutter={24}>
+          <Col xs={24} sm={7}>
+            <Form.Item>
+              <Button block className="create-camapign-add-button">
+                + Add Button
+              </Button>
+            </Form.Item>
+          </Col>
 
-        <Col span={7}>
-          <Form.Item>
-            <Input className="create-camapign-input" placeholder="Click Here" />
-            <span className="create-campaign-input-span">Button Name</span>
-          </Form.Item>
-        </Col>
+          <Col xs={12} sm={7}>
+            <Form.Item>
+              <Input className="create-camapign-input" placeholder="Click Here" />
+              <span className="create-campaign-input-span">Button Name</span>
+            </Form.Item>
+          </Col>
 
-        <Col span={10}>
-          <Form.Item>
+          <Col xs={12} sm={10}>
             <Form.Item>
               <Input
                 className="create-camapign-input"
@@ -142,12 +141,11 @@ const CreateCampaign = ({ open, handleCancel }) => {
               />
               <span className="create-campaign-input-span">Link</span>
             </Form.Item>
-          </Form.Item>
-        </Col>
-      </Row>
-    </Form>
-  </Modal>
-)
+          </Col>
+        </Row>
+      </Form>
+    </Modal>
+  )
 }
 
 export default CreateCampaign;

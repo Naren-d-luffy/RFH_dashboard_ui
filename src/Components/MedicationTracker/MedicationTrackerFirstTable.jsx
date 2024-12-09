@@ -228,7 +228,7 @@ const MedicationTrackerFirstTable = () => {
           </div>
         </div> */}
 
-<div className="d-flex justify-content-between flex-lg-row flex-xl-row flex-column align-items-center">
+        <div className="d-flex justify-content-between flex-lg-row flex-xl-row flex-column align-items-center">
           <h6>Recent Patient's</h6>
           <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-column align-items-center">
             <div
@@ -250,19 +250,19 @@ const MedicationTrackerFirstTable = () => {
               />
             </div>
             <div className="d-flex gap-3 align-items-center">
-            <Dropdown
-              overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
-              trigger={['click']}
-              open={isDropdownOpen}
-              onOpenChange={setIsDropdownOpen}
-              placement="bottomLeft"
-            >
-              <Button style={{ width: 160 }}>
-                <VscSettings />
-                Filters
-              </Button>
-            </Dropdown>
-            <button
+              <Dropdown
+                overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
+                trigger={['click']}
+                open={isDropdownOpen}
+                onOpenChange={setIsDropdownOpen}
+                placement="bottomLeft"
+              >
+                <Button style={{ width: 160 }}>
+                  <VscSettings />
+                  Filters
+                </Button>
+              </Dropdown>
+              <button
                 className="rfh-basic-button"
                 onClick={() => navigate(`/medication-tracker/add-patient-detail`)}
                 style={{ cursor: "pointer" }}

@@ -43,7 +43,7 @@ export const AppointmentReportGraphs = () => {
   const declinedPercentage = 18;
   return (
     <div className="row mt-4">
-      <div className="col-lg-5 mb-4">
+      <div className="col-xl-5 mb-4 ">
         <div className="d-flex flex-column gap-4 top-used-screens">
           <div className="d-flex justify-content-between align-items-center w-100">
             <div className="d-flex gap-2 align-items-center">
@@ -65,8 +65,8 @@ export const AppointmentReportGraphs = () => {
                   data={trafficData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={70}
-                  outerRadius={100}
+                  innerRadius={65}
+                  outerRadius={88}
                   dataKey="value"
                   startAngle={90}
                   endAngle={450}
@@ -127,7 +127,7 @@ export const AppointmentReportGraphs = () => {
                   content={({ payload }) => (
                     <div>
                       {payload.map((entry, index) => (
-                        <div className="d-flex flex-column">
+                        <div className="d-flex flex-column ms-2">
                           <div
                             style={{
                               display: "flex",
@@ -165,7 +165,7 @@ export const AppointmentReportGraphs = () => {
           </div>
         </div>
       </div>
-      <div className="col-lg-7">
+      <div className="col-xl-7">
         <div className="appointment-bboking-graph">
           <div className="application-dashboard-graph d-flex justify-content-between align-items-center w-100">
             <div className="d-flex gap-2 align-items-center">

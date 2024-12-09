@@ -69,49 +69,56 @@ const feedbackData = [
 ];
 
 const SolvedUserNegativeFeedback = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 6;
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 6;
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
-  const totalEntries = feedbackData.length;
-  const startIndex = (currentPage - 1) * pageSize + 1;
-  const endIndex = Math.min(currentPage * pageSize, totalEntries);
 
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("/feedback/patient-surveys");
-  };
+    const totalEntries = feedbackData.length;
+    const startIndex = (currentPage - 1) * pageSize + 1;
+    const endIndex = Math.min(currentPage * pageSize, totalEntries);
 
-  return (
-    <div className="py-4">
-      <div className="row g-3">
-        {feedbackData
-          .filter((feedback) => feedback.status === "Solved")
-          .map((feedback, index) => (
-            <div key={index} className="col-md-12">
-              <div className="card all-user-negative-feedback-card shadow-sm">
-                <div className="card-body">
-                  <div
-                    className="px-4"
-                    style={{ borderLeft: `2px solid ${feedback.borderColor}` }}
-                  >
-                    <div className="d-flex align-items-center justify-content-between mb-3">
-                      <div className="d-flex align-items-center">
-                        <Avatar size={50} src={profile4} className="me-3" />
-                        <div>
-                          <div className="d-flex gap-2 align-items-center">
-                            <h5 className="mb-0">{feedback.name}</h5>
-                            <span className="all-users-negtaivefeedback-dot"></span>
-                            <small className="all-user-negative-feedback-text-muted">
-                              {feedback.timeAgo}
-                            </small>
-                          </div>
-                          <p className="all-user-negative-feedback-text-muted mb-0">
-                            {feedback.role}
-                          </p>
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate("/feedback/patient-surveys")
+    }
+
+    return (
+        <div className="py-4">
+            <div className="row g-3">
+                {feedbackData
+                    .filter((feedback) => feedback.status === "Solved") 
+                    .map((feedback, index) => (
+                        <div key={index} className="col-md-12">
+                            <div className="card all-user-negative-feedback-card shadow-sm">
+                                <div className="card-body">
+                                    <div className="px-4" style={{ borderLeft: `2px solid ${feedback.borderColor}` }}>
+                                        <div className="d-flex align-items-center justify-content-between mb-3">
+                                            <div className="d-flex align-items-center">
+                                                <Avatar size={50} src={profile4} className="me-3" />
+                                                <div>
+                                                    <div className="d-flex gap-1 align-items-center">
+                                                        <h5 className="mb-0">{feedback.name}</h5>
+                                                        <span className="all-users-negtaivefeedback-dot"></span><small className="text-muted">{feedback.timeAgo}</small>
+                                                    </div>
+                                                    <p className="text-muted mb-0">{feedback.role}</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <h6 className="fw-bold">{feedback.feedbackTitle}</h6>
+                                        <p className="text-muted">{feedback.feedbackDescription}</p>
+                                    </div>
+                                    <div className="d-flex justify-content-between align-items-center negativeFeedack-send-div">
+                                    <input type="text" className="reply-feedback-text form-control border-0 bg-transparent" placeholder="Reply Feedback" />                                    
+                                        <FaTelegramPlane size={38} className="all-users-feedback-telegram" />
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                       </div>
                     </div>
