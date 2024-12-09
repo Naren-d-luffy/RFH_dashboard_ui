@@ -14,8 +14,8 @@ const feedbackData = [
         feedbackDescription:
             "Like any digital format, there is a potential for hacking or data breaches, which might make users reluctant to share sensitive contact details.",
         timeAgo: "1 hour ago",
-        borderColor:"#FEB052",
-        status:"Unsolved",
+        borderColor: "#FEB052",
+        status: "Unsolved",
     },
     {
         name: "Siddu M",
@@ -24,8 +24,8 @@ const feedbackData = [
         feedbackDescription:
             "Although digital cards offer flexibility, they might lack the creative textures, finishes, or designs of physical cards that stand out and reflect a brand or personality effectively.",
         timeAgo: "4 hours ago",
-        borderColor:"#00963F",
-        status:"Solved",
+        borderColor: "#00963F",
+        status: "Solved",
     },
     {
         name: "Navaneethan M",
@@ -34,8 +34,8 @@ const feedbackData = [
         feedbackDescription:
             "Sharing digital cards often depends on internet access, which can be a limitation in low-coverage areas or in certain professional settings.",
         timeAgo: "1 day ago",
-        borderColor:"#FEB052",
-        status:"Unsolved",
+        borderColor: "#FEB052",
+        status: "Unsolved",
     },
     {
         name: "Manjunath B",
@@ -44,8 +44,8 @@ const feedbackData = [
         feedbackDescription:
             "Sharing a digital card may sometimes expose contact information to third parties through tracking or data collection, raising privacy issues.",
         timeAgo: "1 day ago",
-        borderColor:"#00963F",
-        status:"Solved",
+        borderColor: "#00963F",
+        status: "Solved",
     },
     {
         name: "Madhu G",
@@ -54,8 +54,8 @@ const feedbackData = [
         feedbackDescription:
             "Some digital business cards can become cluttered with too much information, making them hard to read or navigate, especially on smaller screens.",
         timeAgo: "2 days ago",
-        borderColor:"#FEB052",
-        status:"Unsolved",
+        borderColor: "#FEB052",
+        status: "Unsolved",
     },
     {
         name: "Charan K",
@@ -64,13 +64,13 @@ const feedbackData = [
         feedbackDescription:
             "Digital business cards rely on smartphones, tablets, or computers for display. If either party has a low battery or is without a device, it can make sharing inconvenient.",
         timeAgo: "4 days ago",
-        borderColor:"#00963F",
-        status:"Solved",
+        borderColor: "#00963F",
+        status: "Solved",
     },
 
 ];
 
-const AllUserNegativeFeedback = () => {
+const UnsolvedUserNegativeFeedback = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 6;
 
@@ -114,7 +114,7 @@ const AllUserNegativeFeedback = () => {
                                         <p className="text-muted">{feedback.feedbackDescription}</p>
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center negativeFeedack-send-div">
-                                        <span className="reply-feedback-text">Reply Feedback</span>
+                                        <input type="text" className="reply-feedback-text form-control border-0 bg-transparent" placeholder="Reply Feedback" />
                                         <FaTelegramPlane size={38} className="all-users-feedback-telegram" />
                                     </div>
                                 </div>
@@ -147,4 +147,4 @@ const AllUserNegativeFeedback = () => {
     );
 };
 
-export default AllUserNegativeFeedback;
+export default UnsolvedUserNegativeFeedback;

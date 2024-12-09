@@ -45,7 +45,7 @@ const UserManagementGraph = () => {
     cutout: "85%",
     circumference: 200,
     rotation: -100,
-    radius: 140,
+    radius: 128,
     elements: {
       arc: {
         borderRadius: 10,
@@ -69,6 +69,13 @@ const UserManagementGraph = () => {
       },
     },
   };
+  function adjustRadius() {
+    const mediaQuery = window.matchMedia('(min-width: 992px) and (max-width: 1150px)');
+    options.radius = mediaQuery.matches ? 100 : 128;
+  }
+
+  adjustRadius();
+  window.addEventListener('resize', adjustRadius);
 
   const actionMenu = {
     items: [
@@ -213,14 +220,16 @@ const UserManagementGraph = () => {
                   textAlign: "center",
                 }}
               >
-                <h6 style={{ margin: 10 }}>Last Updated</h6>
+                <h6 style={{ margin: 10, color: "var(--black-color)" }}>
+                  Last Updated
+                </h6>
                 <p style={{ margin: 0, textAlign: "center" }}>24, Feb 2024</p>
               </div>
             </div>
             <div className="d-flex gap-5 justify-content-center">
               <div>
                 <p>Doctors</p>
-                <div className="d-flex gap-2 align-items-center">
+                <div className="d-flex gap-2 align-items-center" style={{color:'var(--black-color)'}}>
                   <div
                     className="userAquisition-tooltip-dot"
                     style={{
@@ -229,55 +238,17 @@ const UserManagementGraph = () => {
                   ></div>
                   {data.datasets[0].data[0]}%
                 </div>
-                <div className='col-lg-5'>
-                    <div className="userManaggement-card">
-                        <div className="d-flex justify-content-between align-items-center w-100">
-                            <h2 className="card-title text-start mb-2">
-                                Category
-                            </h2>
-                            <Dropdown menu={actionMenu} trigger={['click']}>
-                                <Button type="text">
-                                    <PiDotsThreeOutlineLight size={24} style={{ color: 'var(--secondary-text-color)' }} />
-                                </Button>
-                            </Dropdown>
-                        </div>
-                        <div className="d-flex justify-content-center align-items-start userMnagement-doughnut-div">
-                            <Doughnut data={data} options={options} height={260} width="100%" />
-                            <div className="userManagement-halfGraph-text" style={{
-                                position: 'absolute',
-                                top: '85%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                textAlign: 'center'
-                            }}>
-                                <h6 style={{ margin: 10 ,color:"var(--black-color)"}} >Last Updated</h6>
-                                <p style={{ margin: 0, textAlign: "center" }}>24, Feb 2024</p>
-                            </div>
-                        </div>
-                        <div className="d-flex gap-5 justify-content-center">
-                            <div>
-                                <p>Doctors</p>
-                                <div className="d-flex gap-2 align-items-center">
-                                    <div
-                                        className="userAquisition-tooltip-dot"
-                                        style={{ backgroundColor: data.datasets[0].backgroundColor[0] }}
-                                    ></div>
-                                    {data.datasets[0].data[0]}%
-                                </div>
-                            </div>
-                            <div>
-                                <p>Patients</p>
-                                <div className="d-flex gap-2 align-items-center">
-                                    <div
-                                        className="userAquisition-tooltip-dot"
-                                        style={{ backgroundColor: data.datasets[0].backgroundColor[1] }}
-                                    ></div>
-                                    {data.datasets[0].data[1]}%
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+              </div>
+              <div>
+                <p>Patients</p>
+                <div className="d-flex gap-2 align-items-center" style={{color:'var(--black-color)'}}>
+                  <div
+                    className="userAquisition-tooltip-dot"
+                    style={{
+                      backgroundColor: data.datasets[0].backgroundColor[1],
+                    }}
+                  ></div>
+                  {data.datasets[0].data[1]}%
                 </div>
               </div>
             </div>

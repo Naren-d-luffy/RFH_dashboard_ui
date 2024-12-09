@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { Table, Dropdown, Button, Input, } from "antd";
+import { Table, Dropdown, Button, Input } from "antd";
 import { FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { VscSettings } from "react-icons/vsc";
-import { showDeleteMessage } from "../../../globalConstant"
-import { filterDropdown } from "../../../globalConstant"
+import { showDeleteMessage } from "../../../globalConstant";
+import { filterDropdown } from "../../../globalConstant";
 
 const PatientSurveysTable = () => {
   const [selectedValues, setSelectedValues] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/feedback/view-feedback")
-  }
+    navigate("/feedback/view-feedback");
+  };
   const handleDelete = (name) => {
     showDeleteMessage({ message: name });
   };
@@ -30,17 +30,16 @@ const PatientSurveysTable = () => {
       key: "feedback",
       className: "campaign-performance-table-column",
       render: (feedback) => {
-        // Define styles based on feedback value
         let style = {
           padding: "2px 12px",
           borderRadius: "16px",
         };
 
         if (feedback.toLowerCase() === "good") {
-          style.background = "#F2F4F7";
+          // style.background = "#F2F4F7";
           style.color = "var(--black-color)";
         } else if (feedback.toLowerCase() === "average") {
-          style.background = "#F2F4F7";
+          // style.background = "#F2F4F7";
           style.color = "var(--black-color)";
         }
 
@@ -81,10 +80,16 @@ const PatientSurveysTable = () => {
       key: "action",
       render: (_, record) => (
         <div className="campaign-performance-table-action-icons">
-          <div className="campaign-performance-table-eye-icon" onClick={handleClick}>
+          <div
+            className="campaign-performance-table-eye-icon"
+            onClick={handleClick}
+          >
             <FiEye />
           </div>
-          <div className="campaign-performance-table-delete-icon" onClick={() => handleDelete(record.patientname)} >
+          <div
+            className="campaign-performance-table-delete-icon"
+            onClick={() => handleDelete(record.patientname)}
+          >
             <FiTrash2 />
           </div>
         </div>
@@ -149,7 +154,7 @@ const PatientSurveysTable = () => {
   };
 
   const handleApply = () => {
-    console.log('Applied Filters:', selectedValues);
+    console.log("Applied Filters:", selectedValues);
     setIsDropdownOpen(false);
   };
   const handleReset = () => {
@@ -157,25 +162,25 @@ const PatientSurveysTable = () => {
   };
   const options = [
     {
-      label: 'Type',
+      label: "Type",
       options: [
-        { label: 'All', value: 'all' },
-        { label: 'OPD', value: 'opd' },
-        { label: 'IPD', value: 'ipd' },
+        { label: "All", value: "all" },
+        { label: "OPD", value: "opd" },
+        { label: "IPD", value: "ipd" },
       ],
     },
     {
-      label: 'Last Visit',
+      label: "Last Visit",
       options: [
-        { label: 'Last 7 days', value: 'last7days' },
-        { label: 'Last 30 days', value: 'last30days' },
+        { label: "Last 7 days", value: "last7days" },
+        { label: "Last 30 days", value: "last30days" },
       ],
     },
     {
-      label: 'All Users',
+      label: "All Users",
       options: [
-        { label: 'Active Users', value: 'activeusers' },
-        { label: 'Inactive Users', value: 'inactiveusers' },
+        { label: "Active Users", value: "activeusers" },
+        { label: "Inactive Users", value: "inactiveusers" },
       ],
     },
   ];
@@ -204,8 +209,14 @@ const PatientSurveysTable = () => {
               />
             </div>
             <Dropdown
-              overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
-              trigger={['click']}
+              overlay={filterDropdown(
+                options,
+                selectedValues,
+                handleCheckboxChange,
+                handleApply,
+                handleReset
+              )}
+              trigger={["click"]}
               open={isDropdownOpen}
               onOpenChange={setIsDropdownOpen}
               placement="bottomLeft"
@@ -228,7 +239,7 @@ const PatientSurveysTable = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PatientSurveysTable
+export default PatientSurveysTable;

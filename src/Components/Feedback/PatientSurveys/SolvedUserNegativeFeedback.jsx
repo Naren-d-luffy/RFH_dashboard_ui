@@ -115,7 +115,7 @@ const SolvedUserNegativeFeedback = () => {
                                         <p className="text-muted">{feedback.feedbackDescription}</p>
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center negativeFeedack-send-div">
-                                        <span className="reply-feedback-text">Reply Feedback</span>
+                                    <input type="text" className="reply-feedback-text form-control border-0 bg-transparent" placeholder="Reply Feedback" />                                    
                                         <FaTelegramPlane size={38} className="all-users-feedback-telegram" />
                                     </div>
                                 </div>

@@ -44,7 +44,7 @@ const SidebarActiveNotification = () => {
             {notifications.map((notification, index) => (
                 <div
                     key={index}
-                    className="all-user-negative-feedback-card d-flex justify-content-between align-items-center p-3 mb-2"
+                    className="all-user-negative-feedback-card d-flex flex-column flex-md-row justify-content-between align-items-center p-3 mb-2"
                 >
                     <div className="d-flex align-items-start gap-3">
                         <div>

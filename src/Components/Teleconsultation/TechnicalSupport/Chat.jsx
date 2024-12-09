@@ -202,7 +202,7 @@ const MessageChat = () => {
                   <div className="chat-header">
                     {/* Back Button for Mobile */}
                     <button
-                      className="btn btn-light back-btn d-lg-none"
+                      className="btn btn-light back-btn d-md-block d-lg-none"
                       onClick={() => setIsChatVisible(false)}
                       style={{
                         position: "absolute",
@@ -267,7 +267,7 @@ const MessageChat = () => {
             <div className="message-input-container">
               <div className="message-input-box">
                 <button className="emoji-btn">
-                  <FaRegSmile size={24} />
+                  <FaRegSmile size={24} color="var(--black-color)"/>
                 </button>
                 <input
                   type="text"

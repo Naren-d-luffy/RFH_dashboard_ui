@@ -7,12 +7,14 @@ import UserManagementAddPatientsModal from "./UserManagementAddPatientsModal";
 import UserManagementViewPatientsModal from "./UserManagementViewPatientsModal";
 import UserManagementEditPatientsModal from "./UserManagementEditPatientsModal";
 import { showDeleteMessage } from "../../../globalConstant";
-
+import { filterDropdown } from "../../../globalConstant";
 
 const UserManagementTable = () => {
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleDelete = (name) => {
     showDeleteMessage({ message: `this patient ${name}'s details` });
@@ -198,6 +200,45 @@ const UserManagementTable = () => {
     },
   ];
 
+  const handleCheckboxChange = (value, checked) => {
+    if (checked) {
+      setSelectedValues((prev) => [...prev, value]);
+    } else {
+      setSelectedValues((prev) => prev.filter((item) => item !== value));
+    }
+  };
+
+  const handleApply = () => {
+    console.log("Applied Filters:", selectedValues);
+    setIsDropdownOpen(false);
+  };
+  const handleReset = () => {
+    setSelectedValues([]);
+  };
+  const options = [
+    {
+      label: "Type",
+      options: [
+        { label: "All", value: "all" },
+        { label: "OPD", value: "opd" },
+        { label: "IPD", value: "ipd" },
+      ],
+    },
+    {
+      label: "Last Visit",
+      options: [
+        { label: "Last 7 days", value: "last7days" },
+        { label: "Last 30 days", value: "last30days" },
+      ],
+    },
+    {
+      label: "All Users",
+      options: [
+        { label: "Active Users", value: "activeusers" },
+        { label: "Inactive Users", value: "inactiveusers" },
+      ],
+    },
+  ];
   const items = [
     {
       label: "Last Day",
@@ -242,19 +283,27 @@ const UserManagementTable = () => {
                 }}
               />
             </div>
-            <div className="d-flex gap-3 align-items-center">
-              <Dropdown menu={menuProps}>
-                <Button>
-                  <Space>
-                    <VscSettings />
-                    Filter
-                  </Space>
-                </Button>
-              </Dropdown>
-              <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} /> Add Patients
-              </button>
-            </div>
+            <Dropdown
+              overlay={filterDropdown(
+                options,
+                selectedValues,
+                handleCheckboxChange,
+                handleApply,
+                handleReset
+              )}
+              trigger={["click"]}
+              open={isDropdownOpen}
+              onOpenChange={setIsDropdownOpen}
+              placement="bottomLeft"
+            >
+              <Button style={{ width: 160 }}>
+                <VscSettings />
+                Filters
+              </Button>
+            </Dropdown>
+            <button className="rfh-basic-button" onClick={showModal}>
+              <GoPlus size={20} /> Add Patients
+            </button>
           </div>
         </div>
         <div className="mt-3">

@@ -30,7 +30,15 @@
   align-items: center;
 }
 
-.userAquisition-card p,
+.userAquisition-card p{
+  color: var(--black-color);
+  font-weight: 500;
+  line-height: 19.6px;
+  letter-spacing: -2%;
+  font-size: 12px;
+  text-align: left;
+}
+
 .application-dashboard-graph h2,
 .userAquisition-model p,
 .userAquisition-model span,
@@ -131,7 +139,7 @@
   font-weight: bold;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   border-radius: 50%;
-  padding: 25px;
+  padding: 15px;
 }
 .total-user-display-first-graph {
   position: absolute;
@@ -385,4 +393,9 @@
   width: auto;
   height: auto;
   left: 65%;
+}
+@media (max-width: 768px){
+  .userAquisition-color-dot-div{
+    /* padding-left: 30px !important; */
+  } 
 }

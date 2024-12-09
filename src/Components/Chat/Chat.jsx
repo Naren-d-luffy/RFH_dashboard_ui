@@ -7,7 +7,7 @@ import { Avatar, Badge } from "antd";
 import { TbPinned } from "react-icons/tb";
 import addFile from "../../Assets/Icons/addFile.png";
 import { FaRegSmile } from "react-icons/fa";
-import { IoMdSend } from "react-icons/io";
+import { IoMdArrowBack, IoMdSend } from "react-icons/io";
 const Chat = () => {
   const [activeTab, setActiveTab] = useState("All");
   const allChats = [
@@ -148,9 +148,9 @@ const Chat = () => {
           isChatVisible ? "chat-visible" : "sidebar-visible"
         }`}
       >
-        <div className="col-lg-4">
+        <div className="col-lg-5 col-xl-4">
           <div className="chat-sidebar">
-            <h6>Online Now</h6>
+            <h6 style={{ color: "var(--black-color)" }}>Online Now</h6>
             <div className="d-flex gap-2 mb-2">
               <Badge
                 dot
@@ -269,11 +269,28 @@ const Chat = () => {
             </div>
           </div>
         </div>
-        <div className="col-lg-8">
+        <div className="col-lg-7 col-xl-8">
           <div className="main-chat ">
             {selectedChat ? (
               <>
                 <div className="chat-messages p-4">
+                  {/* Back Button for Mobile */}
+                  <button
+                    className="btn btn-light back-btn d-lg-none"
+                    onClick={() => setIsChatVisible(false)}
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      left: "10px",
+                      zIndex: "10",
+                      backgroundColor: "transparent",
+                      border: "none",
+                      cursor: "pointer",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    <IoMdArrowBack size={24} />
+                  </button>
                   <h6 style={{ textAlign: "center" }}>Today 10:27am</h6>
                   {demoChat.map((message, index) => (
                     <div
@@ -306,7 +323,7 @@ const Chat = () => {
             <div className="message-input-container">
               <div className="message-input-box">
                 <button className="emoji-btn">
-                  <FaRegSmile size={24} />
+                  <FaRegSmile size={24} color="var(--black-color)"/>
                 </button>
                 <input
                   type="text"
