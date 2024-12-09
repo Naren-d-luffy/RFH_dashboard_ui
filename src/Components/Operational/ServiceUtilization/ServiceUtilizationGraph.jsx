@@ -16,7 +16,6 @@ import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import { PiGenderFemaleBold } from "react-icons/pi";
 
-
 const demographicData = [
   { day: "Mon", Male: 1.5, Female: 1, Seniors: 0.5 },
   { day: "Tue", Male: 2, Female: 1.5, Seniors: 0.8 },
@@ -41,6 +40,7 @@ export const ServiceUtilizationGraph = () => {
     <div className="row mt-4 ">
       {/* First Graph */}
       <div className="col-xl-7">
+
         <div className="appointment-bboking-graph">
           <div className="d-flex justify-content-between align-items-center mb-3 view-doctor-detail-graph-header">
             <div>
@@ -64,6 +64,7 @@ export const ServiceUtilizationGraph = () => {
                 tickFormatter={formatYAxis}
                 tick={{ fontSize: 12 }}
               />
+
               <Tooltip
                 contentStyle={{
                   background: "#f7f7f7",

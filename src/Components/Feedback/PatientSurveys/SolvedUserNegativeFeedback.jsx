@@ -5,69 +5,67 @@ import { useNavigate } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
 
-
 const feedbackData = [
-    {
-        name: "Kiran K",
-        role: "UI/UX Designer",
-        feedbackTitle: "Possible Security Risks",
-        feedbackDescription:
-            "Like any digital format, there is a potential for hacking or data breaches, which might make users reluctant to share sensitive contact details.",
-        timeAgo: "1 hour ago",
-        borderColor: "#FEB052",
-        status: "Unsolved",
-    },
-    {
-        name: "Siddu M",
-        role: "UI/UX Designer",
-        feedbackTitle: "Limited Customization Options",
-        feedbackDescription:
-            "Although digital cards offer flexibility, they might lack the creative textures, finishes, or designs of physical cards that stand out and reflect a brand or personality effectively.",
-        timeAgo: "4 hours ago",
-        borderColor: "#00963F",
-        status: "Solved",
-    },
-    {
-        name: "Navaneethan M",
-        role: "UI/UX Designer",
-        feedbackTitle: "Network Limitations",
-        feedbackDescription:
-            "Sharing digital cards often depends on internet access, which can be a limitation in low-coverage areas or in certain professional settings.",
-        timeAgo: "1 day ago",
-        borderColor: "#FEB052",
-        status: "Unsolved",
-    },
-    {
-        name: "Manjunath B",
-        role: "Graphics Designer",
-        feedbackTitle: "Privacy Concerns",
-        feedbackDescription:
-            "Sharing a digital card may sometimes expose contact information to third parties through tracking or data collection, raising privacy issues.",
-        timeAgo: "1 day ago",
-        borderColor: "#00963F",
-        status: "Solved",
-    },
-    {
-        name: "Madhu G",
-        role: "Sales Manager",
-        feedbackTitle: "Overwhelming Information",
-        feedbackDescription:
-            "Some digital business cards can become cluttered with too much information, making them hard to read or navigate, especially on smaller screens.",
-        timeAgo: "2 days ago",
-        borderColor: "#FEB052",
-        status: "Unsolved",
-    },
-    {
-        name: "Charan K",
-        role: "Sales Manager",
-        feedbackTitle: "Device Dependency",
-        feedbackDescription:
-            "Digital business cards rely on smartphones, tablets, or computers for display. If either party has a low battery or is without a device, it can make sharing inconvenient.",
-        timeAgo: "4 days ago",
-        borderColor: "#00963F",
-        status: "Solved",
-    },
-
+  {
+    name: "Kiran K",
+    role: "UI/UX Designer",
+    feedbackTitle: "Possible Security Risks",
+    feedbackDescription:
+      "Like any digital format, there is a potential for hacking or data breaches, which might make users reluctant to share sensitive contact details.",
+    timeAgo: "1 hour ago",
+    borderColor: "#FEB052",
+    status: "Unsolved",
+  },
+  {
+    name: "Siddu M",
+    role: "UI/UX Designer",
+    feedbackTitle: "Limited Customization Options",
+    feedbackDescription:
+      "Although digital cards offer flexibility, they might lack the creative textures, finishes, or designs of physical cards that stand out and reflect a brand or personality effectively.",
+    timeAgo: "4 hours ago",
+    borderColor: "#00963F",
+    status: "Solved",
+  },
+  {
+    name: "Navaneethan M",
+    role: "UI/UX Designer",
+    feedbackTitle: "Network Limitations",
+    feedbackDescription:
+      "Sharing digital cards often depends on internet access, which can be a limitation in low-coverage areas or in certain professional settings.",
+    timeAgo: "1 day ago",
+    borderColor: "#FEB052",
+    status: "Unsolved",
+  },
+  {
+    name: "Manjunath B",
+    role: "Graphics Designer",
+    feedbackTitle: "Privacy Concerns",
+    feedbackDescription:
+      "Sharing a digital card may sometimes expose contact information to third parties through tracking or data collection, raising privacy issues.",
+    timeAgo: "1 day ago",
+    borderColor: "#00963F",
+    status: "Solved",
+  },
+  {
+    name: "Madhu G",
+    role: "Sales Manager",
+    feedbackTitle: "Overwhelming Information",
+    feedbackDescription:
+      "Some digital business cards can become cluttered with too much information, making them hard to read or navigate, especially on smaller screens.",
+    timeAgo: "2 days ago",
+    borderColor: "#FEB052",
+    status: "Unsolved",
+  },
+  {
+    name: "Charan K",
+    role: "Sales Manager",
+    feedbackTitle: "Device Dependency",
+    feedbackDescription:
+      "Digital business cards rely on smartphones, tablets, or computers for display. If either party has a low battery or is without a device, it can make sharing inconvenient.",
+    timeAgo: "4 days ago",
+    borderColor: "#00963F",
+    status: "Solved",
+  },
 ];
 
 const SolvedUserNegativeFeedback = () => {
@@ -120,35 +118,52 @@ const SolvedUserNegativeFeedback = () => {
                                     </div>
                                 </div>
                             </div>
+
                         </div>
-                    ))}
-            </div>
-            <div className="d-flex justify-content-between align-items-center mt-4">
-                <div>
-                    <span>
-                        Showing {startIndex} to {endIndex} of {totalEntries} entries
-                    </span>
+                      </div>
+                    </div>
+                    <h6 className="fw-bold">{feedback.feedbackTitle}</h6>
+                    <p className="all-user-negative-feedback-text-muted">
+                      {feedback.feedbackDescription}
+                    </p>
+                  </div>
+                  <div className="d-flex justify-content-between align-items-center negativeFeedack-send-div">
+                    <span className="reply-feedback-text">Reply Feedback</span>
+                    <FaTelegramPlane
+                      size={38}
+                      className="all-users-feedback-telegram"
+                    />
+                  </div>
                 </div>
-                <Pagination
-                    current={currentPage}
-                    pageSize={pageSize}
-                    total={totalEntries}
-                    onChange={handlePageChange}
-                />
+              </div>
             </div>
-
-            <div className='d-flex justify-content-start mt-5'>
-                <button className="d-flex gap-2 align-items-center rfh-basic-button" onClick={handleClick}>
-                    <FaAngleLeft />
-                    Back
-                </button>
-            </div>
-
+          ))}
+      </div>
+      <div className="d-flex justify-content-between align-items-center mt-4">
+        <div>
+          <span style={{color:'var(--black-color)'}}>
+            Showing {startIndex} to {endIndex} of {totalEntries} entries
+          </span>
         </div>
-    );
+        <Pagination
+          current={currentPage}
+          pageSize={pageSize}
+          total={totalEntries}
+          onChange={handlePageChange}
+        />
+      </div>
+
+      <div className="d-flex justify-content-start mt-5">
+        <button
+          className="d-flex gap-2 align-items-center rfh-basic-button"
+          onClick={handleClick}
+        >
+          <FaAngleLeft />
+          Back
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default SolvedUserNegativeFeedback;
-
-
-

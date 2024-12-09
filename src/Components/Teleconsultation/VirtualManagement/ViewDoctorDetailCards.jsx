@@ -51,7 +51,7 @@ const ViewDoctorDetailCards = () => {
   ];
 
   return (
-      <div className="row campaign-performance-container">
+      <div className="row">
         {cardsData.map((card, index) => (
           <div className="col-lg-4 col-md-4 col-sm-12 mt-2" key={index}>
             <div

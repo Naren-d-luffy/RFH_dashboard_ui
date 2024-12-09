@@ -55,7 +55,7 @@
   --page-background-color: #2d2d2d;
   --card-background-color:#353535;
   --black-color:#f9f9f9;
-  --secondary-text-color:#dce4e8;
+  --secondary-text-color:#929292;
   --white-color:#222;
   --grey-color:#f2efff;
   --primary-grey-color: #f2efff;
@@ -64,5 +64,7 @@
   --table-data-bg-color: #393939;
   --rfh-button-text-color: #fff;
   --graph-text-color: #fafafa;
+  --faq-ans-color:#c9c7c7;
+  --bg-gray-color: #b5b2b2;
 }
 
