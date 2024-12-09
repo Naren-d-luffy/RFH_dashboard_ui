@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
 
+
 const feedbackData = [
     {
         name: "Kiran K",
@@ -120,52 +121,36 @@ const AllUserNegativeFeedback = () => {
                                     <FaTelegramPlane size={38} className="all-users-feedback-telegram" />
                                 </div>
                             </div>
-
                         </div>
-                        <p className="all-user-negative-feedback-text-muted mb-0">{feedback.role}</p>
-                      </div>
                     </div>
-                  </div>
-                  <h6 className="fw-bold">{feedback.feedbackTitle}</h6>
-                  <p className="all-user-negative-feedback-text-muted">{feedback.feedbackDescription}</p>
-                </div>
-                <div className="d-flex justify-content-between align-items-center negativeFeedack-send-div">
-                  <span className="reply-feedback-text">Reply Feedback</span>
-                  <FaTelegramPlane
-                    size={38}
-                    className="all-users-feedback-telegram"
-                  />
-                </div>
-              </div>
+                ))}
             </div>
-          </div>
-        ))}
-      </div>
-      <div className="d-flex justify-content-between align-items-center mt-4">
-        <div>
-          <span style={{color:'var(--black-color)'}}>
-            Showing {startIndex} to {endIndex} of {totalEntries} entries
-          </span>
-        </div>
-        <Pagination
-          current={currentPage}
-          pageSize={pageSize}
-          total={totalEntries}
-          onChange={handlePageChange}
-        />
-      </div>
+            <div className="d-flex justify-content-between align-items-center mt-4">
+                <div>
+                    <span>
+                        Showing {startIndex} to {endIndex} of {totalEntries} entries
+                    </span>
+                </div>
+                <Pagination
+                    current={currentPage}
+                    pageSize={pageSize}
+                    total={totalEntries}
+                    onChange={handlePageChange}
+                />
+            </div>
 
-      <div className="d-flex justify-content-start mt-5">
-        <button
-          className="d-flex gap-2 align-items-center rfh-basic-button"
-          onClick={handleClick}
-        >
-          <FaAngleLeft />
-          Back
-        </button>
-      </div>
-    </div>
-  );
+            <div className='d-flex justify-content-start mt-5'>
+                <button className="d-flex gap-2 align-items-center rfh-basic-button" onClick={handleClick}>
+                    <FaAngleLeft />
+                    Back
+                </button>
+            </div>
+
+        </div>
+    );
 };
 
 export default AllUserNegativeFeedback;
+
+
+
