@@ -23,7 +23,7 @@
   align-items: center;
   padding-left: 8px;
   font-size: 24px;
-  color: var(--text-color);
+  color: var(--secondary-text-color);
 }
 
 .search-icon svg {
@@ -469,7 +469,7 @@
 }
 
 @media (min-width: 769px) {
-  .menu-close-button-response{
+  .menu-close-button-response {
     display: none;
   }
 }
