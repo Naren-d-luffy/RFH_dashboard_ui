@@ -74,8 +74,8 @@ const UserAquisitionSecondGraphs = () => {
                                         data={trafficData}
                                         cx="50%"
                                         cy="50%"
-                                        innerRadius={70}
-                                        outerRadius={110}
+                                        innerRadius={65}
+                                        outerRadius={90}
                                         dataKey="value"
                                         startAngle={90}
                                         endAngle={450}

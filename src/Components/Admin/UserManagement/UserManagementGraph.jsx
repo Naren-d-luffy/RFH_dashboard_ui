@@ -41,7 +41,7 @@ const UserManagementGraph = () => {
     cutout: '85%',
     circumference: 200,
     rotation: -100,
-    radius: 140,
+    radius: 128,
     elements: {
       arc: {
         borderRadius: 10,
@@ -65,6 +65,13 @@ const UserManagementGraph = () => {
       }
     }
   };
+  function adjustRadius() {
+    const mediaQuery = window.matchMedia('(min-width: 992px) and (max-width: 1150px)');
+    options.radius = mediaQuery.matches ? 100 : 128;
+  }
+
+  adjustRadius();
+  window.addEventListener('resize', adjustRadius);
 
   const actionMenu = {
     items: [
