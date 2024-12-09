@@ -574,6 +574,7 @@
 .feature-program-card img {
   width: 100%;
   height: 250px;
+  position: relative;
 }
 .feature-program-card h4 {
   font-size: 16px;
@@ -766,4 +767,20 @@
     border-left: none;
     padding-top: 10px;
   }
+}
+
+/* ===========keerthi========= */
+
+.recommended-video-action-button{
+  position: relative;
+  z-index: 2;
+  color: var(--white-color);
+  background-color: none;
+  width: 100%;
+  border: none;
+}
+.featured-program-icon-container{
+  z-index: 2;
+  position: absolute;
+  top: 15px;
 }

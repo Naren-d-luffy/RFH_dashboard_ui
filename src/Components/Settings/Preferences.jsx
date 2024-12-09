@@ -4,27 +4,29 @@ import lightmode from "../../Assets/Images/lightmode.png";
 import darkmode from "../../Assets/Images/darkmode.png";
 
 import "react-international-phone/style.css";
+import { useDarkMode } from "../../DarkMode";
 
 export const Preferences = () => {
   const [form] = Form.useForm();
 
-  const [activeTheme, setActiveTheme] = useState("light");
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const [activeTheme, setActiveTheme] = useState(isDarkMode ? "dark" : "light");
   useEffect(() => {
-    const savedDarkMode = localStorage.getItem("darkMode");
-    if (savedDarkMode === "true") {
-      setIsDarkMode(true);
-    }
-  }, []);
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark-mode");
-      localStorage.setItem("darkMode", "true");
-    } else {
-      document.documentElement.classList.remove("dark-mode");
-      localStorage.setItem("darkMode", "false");
-    }
+    setActiveTheme(isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
+
+  const handleLightModeClick = () => {
+    if (isDarkMode) {
+      toggleDarkMode(); 
+    }
+  };
+
+  const handleDarkModeClick = () => {
+    if (!isDarkMode) {
+      toggleDarkMode(); 
+    }
+  };
+ 
   return (
     <div className="settings-personal-information">
       <div className="container">
@@ -35,28 +37,18 @@ export const Preferences = () => {
           <h5>Select Theme</h5>
           <div className="row mt-4">
             <div className="col-md-6">
-              <div className="settings-theme-image">
-                <img src={lightmode} alt="" onClick={() => {
-                  setActiveTheme("light");
-                  setIsDarkMode(false);
-                }}/>
+            <div className="settings-theme-image" onClick={handleLightModeClick}>
+                <img src={lightmode} alt="Light Mode" />
                 <p className={activeTheme === "light" ? "active" : ""}>
-                  Light Mode (Active)
+                  Light Mode {activeTheme === "light" && "(Active)"}
                 </p>
               </div>
             </div>
             <div className="col-md-6">
-              <div
-                className="settings-theme-image"
-                
-                style={{ cursor: "pointer" }}
-              >
-                <img src={darkmode} alt="Dark Mode" onClick={() => {
-                  setActiveTheme("dark");
-                  setIsDarkMode(true);
-                }} />
+            <div className="settings-theme-image" onClick={handleDarkModeClick}>
+                <img src={darkmode} alt="Dark Mode" />
                 <p className={activeTheme === "dark" ? "active" : ""}>
-                  Dark Mode
+                  Dark Mode {activeTheme === "dark" && "(Active)"}
                 </p>
               </div>
             </div>

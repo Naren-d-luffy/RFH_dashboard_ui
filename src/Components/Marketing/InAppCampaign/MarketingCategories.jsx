@@ -145,13 +145,6 @@ export const MarketingCategories = () => {
   );
   const renderRecommendVideo = (video) => (
     <div className="col-lg-4">
-      <div className="action-icon-container">
-        <Dropdown overlay={sortMenu} trigger={["click"]}>
-          <button className="action-icon-button">
-            <BsThreeDotsVertical />
-          </button>
-        </Dropdown>
-      </div>
       <div
         className="recommend-video-card p-3"
         style={{
@@ -167,7 +160,13 @@ export const MarketingCategories = () => {
           playsInline
           preload="metadata"
         ></video>
-
+        <div className="action-icon-container">
+          <Dropdown overlay={sortMenu} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical className="recommended-video-action-button" />
+            </button>
+          </Dropdown>
+        </div>
         <div className="play-button-overlay">
           <FaPlay style={{ color: "var(--white-color)" }} />
         </div>

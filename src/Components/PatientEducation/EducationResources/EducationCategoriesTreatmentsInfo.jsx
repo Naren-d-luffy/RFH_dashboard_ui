@@ -8,6 +8,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AddTreatmentsInfo from "./AddTreatmentsInfo";
+import { Button, Dropdown, Menu, Space } from "antd";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { BiEdit } from "react-icons/bi";
+import { RiDeleteBin7Line } from "react-icons/ri";
 
 const EducationCategoriesTreatmentsInfo = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,9 +41,20 @@ const EducationCategoriesTreatmentsInfo = () => {
     },
   ];
 
-  const toggleMenu = (id) => {
-    setShowMenu(showMenu === id ? null : id);
-  };
+  const sortMenu = (
+    <Menu>
+      <Menu.Item key="edit" className="filter-menu-item">
+        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        Edit
+      </Menu.Item>
+      <Menu.Item key="delete" className="filter-menu-item">
+        <RiDeleteBin7Line
+          style={{ color: "var(--red-color)", marginRight: "4px" }}
+        />
+        Delete
+      </Menu.Item>
+    </Menu>
+  );
 
   const renderImageCard = (image) => (
     <div className="col-lg-4" key={image.id}>
@@ -52,33 +67,13 @@ const EducationCategoriesTreatmentsInfo = () => {
           backgroundPosition: "center",
         }}
       >
-        <div
-          className="education-categories-faq-menu"
-          onClick={(e) => {
-            e.stopPropagation(); 
-            toggleMenu(image.id);
-          }}
-          style={{
-            cursor: "pointer",
-            position: "absolute",
-            top: "10px",
-            right: "10px",
-            zIndex: 10,
-          }}
-        >
-          <IoEllipsisVerticalSharp size={20} />
-          {showMenu === image.id && (
-            <div className="education-categories-menu-options">
-              <button onClick={() => console.log(`Edit ${image.title}`)}>
-                Edit
-              </button>
-              <button onClick={() => console.log(`Delete ${image.title}`)}>
-                Delete
-              </button>
-            </div>
-          )}
+        <div className="treatment-info-icon-container">
+          <Dropdown overlay={sortMenu} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical style={{color:"#fff"}}/>
+            </button>
+          </Dropdown>
         </div>
-
         <div>
           <div className="d-flex justify-content-between mb-2 w-100">
             <div style={{ position: "absolute", bottom: "0px", color: "#fff" }}>
