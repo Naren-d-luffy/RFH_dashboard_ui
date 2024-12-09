@@ -30,7 +30,15 @@
   align-items: center;
 }
 
-.userAquisition-card p,
+.userAquisition-card p{
+  color: var(--black-color);
+  font-weight: 500;
+  line-height: 19.6px;
+  letter-spacing: -2%;
+  font-size: 12px;
+  text-align: left;
+}
+
 .application-dashboard-graph h2,
 .userAquisition-model p,
 .userAquisition-model span,

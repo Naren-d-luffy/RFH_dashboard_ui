@@ -6,9 +6,8 @@ import { GoPlus } from "react-icons/go";
 import UserManagementAddPatientsModal from "./UserManagementAddPatientsModal";
 import UserManagementViewPatientsModal from "./UserManagementViewPatientsModal";
 import UserManagementEditPatientsModal from "./UserManagementEditPatientsModal";
-import { showDeleteMessage } from '../../../globalConstant'
-import { filterDropdown } from "../../../globalConstant"
-
+import { showDeleteMessage } from "../../../globalConstant";
+import { filterDropdown } from "../../../globalConstant";
 
 const UserManagementTable = () => {
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
@@ -210,7 +209,7 @@ const UserManagementTable = () => {
   };
 
   const handleApply = () => {
-    console.log('Applied Filters:', selectedValues);
+    console.log("Applied Filters:", selectedValues);
     setIsDropdownOpen(false);
   };
   const handleReset = () => {
@@ -218,25 +217,25 @@ const UserManagementTable = () => {
   };
   const options = [
     {
-      label: 'Type',
+      label: "Type",
       options: [
-        { label: 'All', value: 'all' },
-        { label: 'OPD', value: 'opd' },
-        { label: 'IPD', value: 'ipd' },
+        { label: "All", value: "all" },
+        { label: "OPD", value: "opd" },
+        { label: "IPD", value: "ipd" },
       ],
     },
     {
-      label: 'Last Visit',
+      label: "Last Visit",
       options: [
-        { label: 'Last 7 days', value: 'last7days' },
-        { label: 'Last 30 days', value: 'last30days' },
+        { label: "Last 7 days", value: "last7days" },
+        { label: "Last 30 days", value: "last30days" },
       ],
     },
     {
-      label: 'All Users',
+      label: "All Users",
       options: [
-        { label: 'Active Users', value: 'activeusers' },
-        { label: 'Inactive Users', value: 'inactiveusers' },
+        { label: "Active Users", value: "activeusers" },
+        { label: "Inactive Users", value: "inactiveusers" },
       ],
     },
   ];
@@ -285,8 +284,14 @@ const UserManagementTable = () => {
               />
             </div>
             <Dropdown
-              overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
-              trigger={['click']}
+              overlay={filterDropdown(
+                options,
+                selectedValues,
+                handleCheckboxChange,
+                handleApply,
+                handleReset
+              )}
+              trigger={["click"]}
               open={isDropdownOpen}
               onOpenChange={setIsDropdownOpen}
               placement="bottomLeft"
@@ -296,7 +301,7 @@ const UserManagementTable = () => {
                 Filters
               </Button>
             </Dropdown>
-            <button className="rfh-basic-button" onClick={showModal} >
+            <button className="rfh-basic-button" onClick={showModal}>
               <GoPlus size={20} /> Add Patients
             </button>
           </div>
