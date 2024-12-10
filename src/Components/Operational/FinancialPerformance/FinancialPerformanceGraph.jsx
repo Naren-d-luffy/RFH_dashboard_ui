@@ -79,7 +79,7 @@ export const FinancialPerformanceGraph = () => {
               {/* Bars with rounded ends and specified colors */}
               <Bar
                 dataKey="Completed"
-                fill="var(--black-color)"
+                fill="var(--graph-field-color)"
                 radius={[8, 8, 8, 8]} 
               />
               <Bar

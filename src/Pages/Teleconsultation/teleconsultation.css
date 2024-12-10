@@ -676,7 +676,7 @@
   font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.1px;
-  color: var(--text-color);
+  color: var(--secondary-text-color);
   box-shadow: 0px 4px 34px 0px #00963F1A;
 
 }
@@ -784,6 +784,7 @@
   flex: 1;
   margin-right: 10px;
   background: transparent !important;
+  color: var(--black-color);
 }
 
 .add-document-button {
