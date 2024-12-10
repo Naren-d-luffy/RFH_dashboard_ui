@@ -289,7 +289,7 @@ const Chat = () => {
                       marginBottom: "20px",
                     }}
                   >
-                    <IoMdArrowBack size={24} />
+                    <IoMdArrowBack size={24} color="var(--black-color)"/>
                   </button>
                   <h6 style={{ textAlign: "center" }}>Today 10:27am</h6>
                   {demoChat.map((message, index) => (
