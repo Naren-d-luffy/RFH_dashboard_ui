@@ -8,8 +8,8 @@ function App() {
     <div className="App">
       <DarkModeProvider>
         <AppRouter/>
-        </DarkModeProvider>,
-        document.getElementById("root")
+        </DarkModeProvider>
+        {/* document.getElementById("root") */}
     </div>
   );
 }
