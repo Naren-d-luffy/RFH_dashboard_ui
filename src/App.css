@@ -35,12 +35,12 @@ body,
 }
 .delete-message {
   font-size: 24px;
-  color: var(--swal-color) !important;
+  color: var(--black-color) !important;
   text-align: center;
 }
 .global-delete-button {
   background-color: var(--red-color);
-  color: var(--white-color);
+  color: var(--black-color);
   padding: 13px 24px !important;
   border-radius: 10px !important;
   border: none !important;
@@ -56,7 +56,7 @@ body,
   gap: 20px !important;
 }
 .global-cancel-button {
-  color: var(--swal-color) !important;
+  color: var(--black-color) !important;
   border: 1px solid #dce4e8 !important;
   padding: 13px 24px !important;
   border-radius: 10px !important;
@@ -66,7 +66,7 @@ body,
 .global-cancel-button:hover {
   background: var(--button-bg-color);
 }
-/* Dropdown menu*/
+
 .dropdown-hover-color .ant-dropdown-menu-item:hover,
 .dropdown-hover-color .ant-dropdown-menu-item-selected {
   background-color: var(--primary-green) !important;
@@ -78,7 +78,7 @@ body,
   background-color: var(--primary-green) !important;
   color: white;
 }
-/* Checkbox */
+
 .ant-checkbox-checked .ant-checkbox-inner {
   background-color: var(--primary-green);
   border-color: var(--primary-green);
@@ -161,6 +161,7 @@ body,
 .ant-picker {
   background-color: var(--white-color) !important;
   color: var(--black-color) !important;
+  background: transparent !important;
 }
 
 .ant-picker-dropdown {
@@ -254,3 +255,91 @@ body,
 .ant-input.settings-input {
   color: var(--black-color);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.ant-modal .ant-modal-content{
+  background-color: var(--model-background-color);
+}
+
+.ant-modal .ant-modal-title{
+  background-color: var(--model-background-color) !important;
+}
+
+.ant-input.create-camapign-input:hover {
+  background: transparent !important;
+}
+
+.form-select {
+  font-size: 12px;
+  color: var(--black-color) !important;
+  background-color: var(--model-background-color);
+  padding: 10px 10px;
+}
+
+.form-select:focus-within, 
+.form-select:hover {
+  border-color: var(--primary-green) !important;
+}
+
+.ant-input-outlined:focus-within, 
+.ant-input-outlined:hover{
+  border-color: var(--primary-green) !important;
+}
+
+.readOnly-disabled-bg:disabled {
+  background-color: transparent !important;
+}
+
+.ant-input{
+  color: var(--black-color);
+  background: transparent;
+}
+
+.ant-form-vertical .ant-form-item:not(.ant-form-item-horizontal) .ant-form-item-label >label{
+  color: var(--black-color);
+}
+
+
+.ant-input.settings-input {
+  background: transparent !important;
+}
+
+.ant-input-affix-wrapper >input.ant-input {
+  color: var(--black-color);
+}
+
+.ant-input-affix-wrapper.settings-input {
+  background-color: var(--model-background-color);
+}
+
+.swal2-center>.swal2-popup {
+  background-color: var(--model-background-color);
+  color: var(--black-color) !important;
+}
+
+.swal2-html-container{
+  color: var(--black-color);
+}
+
+.ant-modal .ant-modal-close{
+  color: var(--black-color);
+}
+
+.ant-modal .ant-modal-close:hover {
+  color: var(--black-color);
+}
+

@@ -51,6 +51,7 @@
   --rfh-button-text-color: #fff;
   --text-white-color: #fff;
   --text-black-color: #333;
+  --model-background-color: #fff;
 }
 
 .dark-mode{
@@ -70,5 +71,6 @@
   --bg-gray-color: #b5b2b2;
   --text-white-color: #fff;
   --text-black-color: #333;
+  --model-background-color: #333;
 }
 
