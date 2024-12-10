@@ -783,6 +783,7 @@
 .message-input-container input {
   flex: 1;
   margin-right: 10px;
+  background: transparent !important;
 }
 
 .add-document-button {
@@ -862,7 +863,7 @@
   font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.1px;
-  color: var(--white-color);
+  color: var(--text-black-color);
 }
 
 .message.self {

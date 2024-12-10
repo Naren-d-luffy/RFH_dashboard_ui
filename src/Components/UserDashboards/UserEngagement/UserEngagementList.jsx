@@ -160,24 +160,14 @@ export const UserEngagementList = () => {
           <h6>User Engagement List</h6>
 
           <div className="d-flex gap-3 align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
-                type="text"
-                placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
-              />
-            </div>
+          <div className="search-container">
+          <FiSearch className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search anything here"
+            className="search-input-table"
+          />
+        </div>
 
             <Dropdown
               overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}

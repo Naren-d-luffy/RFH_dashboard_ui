@@ -316,7 +316,7 @@
     font-weight: 600;
   }
   .all-user-negative-feedback-card p {
-    color: var(--black-color);
+    color: var(--black-color) !important;
     font-size: 12px;
     font-weight: 500;
   } 

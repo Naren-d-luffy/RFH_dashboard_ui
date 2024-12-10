@@ -5,8 +5,7 @@ import { GoPlus } from "react-icons/go";
 import image from "../../Assets/Images/image.png";
 import { useNavigate } from "react-router-dom";
 import { VscSettings } from "react-icons/vsc";
-import { filterDropdown } from "../../globalConstant"
-
+import { filterDropdown } from "../../globalConstant";
 
 const MedicationTrackerFirstTable = () => {
   const [selectedValues, setSelectedValues] = useState([]);
@@ -153,7 +152,7 @@ const MedicationTrackerFirstTable = () => {
   };
 
   const handleApply = () => {
-    console.log('Applied Filters:', selectedValues);
+    console.log("Applied Filters:", selectedValues);
     setIsDropdownOpen(false);
   };
   const handleReset = () => {
@@ -161,25 +160,25 @@ const MedicationTrackerFirstTable = () => {
   };
   const options = [
     {
-      label: 'Type',
+      label: "Type",
       options: [
-        { label: 'All', value: 'all' },
-        { label: 'OPD', value: 'opd' },
-        { label: 'IPD', value: 'ipd' },
+        { label: "All", value: "all" },
+        { label: "OPD", value: "opd" },
+        { label: "IPD", value: "ipd" },
       ],
     },
     {
-      label: 'Last Visit',
+      label: "Last Visit",
       options: [
-        { label: 'Last 7 days', value: 'last7days' },
-        { label: 'Last 30 days', value: 'last30days' },
+        { label: "Last 7 days", value: "last7days" },
+        { label: "Last 30 days", value: "last30days" },
       ],
     },
     {
-      label: 'All Users',
+      label: "All Users",
       options: [
-        { label: 'Active Users', value: 'activeusers' },
-        { label: 'Inactive Users', value: 'inactiveusers' },
+        { label: "Active Users", value: "activeusers" },
+        { label: "Inactive Users", value: "inactiveusers" },
       ],
     },
   ];
@@ -187,72 +186,27 @@ const MedicationTrackerFirstTable = () => {
   return (
     <div className="mt-4">
       <div className="campaign-performance-table-head">
-        {/* <div className="d-flex justify-content-between align-items-center">
-          <h6>Recent Patient's</h6>
-          <div className="d-flex gap-3 align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid var(--border-color)",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
-                type="text"
-                placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
-              />
-            </div>
-            <Dropdown menu={menuProps}>
-              <Button>
-                <Space>
-                  <VscSettings />
-                  Filter
-                </Space>
-              </Button>
-            </Dropdown>
-            <div>
-              <button
-                className="rfh-basic-button"
-                onClick={() => navigate(`/medication-tracker/add-patient-detail`)}
-                style={{ cursor: "pointer" }}
-              >
-                <GoPlus size={20} /> Add Medication
-              </button>
-            </div>
-          </div>
-        </div> */}
-
         <div className="d-flex justify-content-between flex-lg-row flex-xl-row flex-column align-items-center">
           <h6>Recent Patient's</h6>
           <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-column align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid var(--border-color)",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
+            <div className="search-container">
+              <FiSearch className="search-icon" />
+              <input
                 type="text"
                 placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
+                className="search-input-table"
               />
             </div>
             <div className="d-flex gap-3 align-items-center">
               <Dropdown
-                overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
-                trigger={['click']}
+                overlay={filterDropdown(
+                  options,
+                  selectedValues,
+                  handleCheckboxChange,
+                  handleApply,
+                  handleReset
+                )}
+                trigger={["click"]}
                 open={isDropdownOpen}
                 onOpenChange={setIsDropdownOpen}
                 placement="bottomLeft"
@@ -264,7 +218,9 @@ const MedicationTrackerFirstTable = () => {
               </Dropdown>
               <button
                 className="rfh-basic-button"
-                onClick={() => navigate(`/medication-tracker/add-patient-detail`)}
+                onClick={() =>
+                  navigate(`/medication-tracker/add-patient-detail`)
+                }
                 style={{ cursor: "pointer" }}
               >
                 <GoPlus size={20} /> Add Medication

@@ -49,6 +49,9 @@
   --swal-color: #1A1C1E;
   --table-border: #133E58;
   --rfh-button-text-color: #fff;
+  --text-white-color: #fff;
+  --text-black-color: #333;
+  --model-background-color: #fff;
 }
 
 .dark-mode{
@@ -66,5 +69,8 @@
   --graph-text-color: #fafafa;
   --faq-ans-color:#c9c7c7;
   --bg-gray-color: #b5b2b2;
+  --text-white-color: #fff;
+  --text-black-color: #333;
+  --model-background-color: #333;
 }
 

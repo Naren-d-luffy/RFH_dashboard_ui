@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { Table, Button, Input, Dropdown} from "antd";
+import { Table, Button, Input, Dropdown } from "antd";
 import { FiSearch } from "react-icons/fi";
 import image from "../../Assets/Images/image.png";
 import { VscSettings } from "react-icons/vsc";
-import {showSuccessMessage} from "../../globalConstant"
-import { filterDropdown } from "../../globalConstant"
+import { showSuccessMessage } from "../../globalConstant";
+import { filterDropdown } from "../../globalConstant";
 
 const MedicationTrackerSecondTable = () => {
   const [selectedValues, setSelectedValues] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const handleClick=()=>{
+  const handleClick = () => {
     showSuccessMessage("Successfully Sent Reminder", "");
-  }
+  };
   const columns = [
     {
       title: "Patient ID",
@@ -79,7 +79,12 @@ const MedicationTrackerSecondTable = () => {
       title: "Reminder",
       key: "reminder",
       render: () => (
-        <button className="medication-tracker-second-table-button" onClick={handleClick}>Remind</button>
+        <button
+          className="medication-tracker-second-table-button"
+          onClick={handleClick}
+        >
+          Remind
+        </button>
       ),
       className: "campaign-performance-table-column",
     },
@@ -147,7 +152,7 @@ const MedicationTrackerSecondTable = () => {
   };
 
   const handleApply = () => {
-    console.log('Applied Filters:', selectedValues);
+    console.log("Applied Filters:", selectedValues);
     setIsDropdownOpen(false);
   };
   const handleReset = () => {
@@ -155,25 +160,25 @@ const MedicationTrackerSecondTable = () => {
   };
   const options = [
     {
-      label: 'Type',
+      label: "Type",
       options: [
-        { label: 'All', value: 'all' },
-        { label: 'OPD', value: 'opd' },
-        { label: 'IPD', value: 'ipd' },
+        { label: "All", value: "all" },
+        { label: "OPD", value: "opd" },
+        { label: "IPD", value: "ipd" },
       ],
     },
     {
-      label: 'Last Visit',
+      label: "Last Visit",
       options: [
-        { label: 'Last 7 days', value: 'last7days' },
-        { label: 'Last 30 days', value: 'last30days' },
+        { label: "Last 7 days", value: "last7days" },
+        { label: "Last 30 days", value: "last30days" },
       ],
     },
     {
-      label: 'All Users',
+      label: "All Users",
       options: [
-        { label: 'Active Users', value: 'activeusers' },
-        { label: 'Inactive Users', value: 'inactiveusers' },
+        { label: "Active Users", value: "activeusers" },
+        { label: "Inactive Users", value: "inactiveusers" },
       ],
     },
   ];
@@ -183,27 +188,23 @@ const MedicationTrackerSecondTable = () => {
         <div className="d-flex justify-content-between align-items-center flex-column flex-sm-row">
           <h6>Refill Reminders</h6>
           <div className="d-flex gap-3 align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid var(--border-color)",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
+            <div className="search-container">
+              <FiSearch className="search-icon" />
+              <input
                 type="text"
                 placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
+                className="search-input-table"
               />
             </div>
             <Dropdown
-              overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
-              trigger={['click']}
+              overlay={filterDropdown(
+                options,
+                selectedValues,
+                handleCheckboxChange,
+                handleApply,
+                handleReset
+              )}
+              trigger={["click"]}
               open={isDropdownOpen}
               onOpenChange={setIsDropdownOpen}
               placement="bottomLeft"

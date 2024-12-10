@@ -1,21 +1,21 @@
 import React, { useState } from "react";
-import { Table, Dropdown, Button, Space, Input, } from "antd";
+import { Table, Dropdown, Button, Space, Input } from "antd";
 import { FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FeedbackCreateSurveyCard } from "./FeedbackCreateSurveyCard";
 import { FaPlus } from "react-icons/fa6";
-import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png"
+import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png";
 import CreateSurveyPage from "./CreateSurveyPage";
 import { useNavigate } from "react-router-dom";
-import { showDeleteMessage } from "../../../globalConstant"
-import { filterDropdown } from "../../../globalConstant"
+import { showDeleteMessage } from "../../../globalConstant";
+import { filterDropdown } from "../../../globalConstant";
 import { VscSettings } from "react-icons/vsc";
 
 const CreateSurveyTable = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedValues, setSelectedValues] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -24,8 +24,8 @@ const CreateSurveyTable = () => {
     setIsModalVisible(false);
   };
   const handleClick = () => {
-    navigate("/feedback/create-survey/single-survey-details")
-  }
+    navigate("/feedback/create-survey/single-survey-details");
+  };
   const handleDelete = (name) => {
     showDeleteMessage({ message: `${name}` });
   };
@@ -64,10 +64,10 @@ const CreateSurveyTable = () => {
           status === "Active"
             ? "#0CBC53"
             : status === "Paused"
-              ? "orange"
-              : status === "Inactive"
-                ? "#FB5757"
-                : "blue";
+            ? "orange"
+            : status === "Inactive"
+            ? "#FB5757"
+            : "blue";
         return (
           <span
             className="campaign-performance-table-status"
@@ -88,10 +88,16 @@ const CreateSurveyTable = () => {
       key: "action",
       render: (_, record) => (
         <div className="campaign-performance-table-action-icons">
-          <div className="campaign-performance-table-eye-icon" onClick={handleClick}>
+          <div
+            className="campaign-performance-table-eye-icon"
+            onClick={handleClick}
+          >
             <FiEye />
           </div>
-          <div className="campaign-performance-table-delete-icon" onClick={() => handleDelete(record.surveyName)}>
+          <div
+            className="campaign-performance-table-delete-icon"
+            onClick={() => handleDelete(record.surveyName)}
+          >
             <FiTrash2 />
           </div>
         </div>
@@ -157,7 +163,7 @@ const CreateSurveyTable = () => {
       key: "3",
     },
   ];
-  const handleMenuClick = ({ key }) => { };
+  const handleMenuClick = ({ key }) => {};
   const menuProps = {
     items,
     onClick: handleMenuClick,
@@ -171,7 +177,7 @@ const CreateSurveyTable = () => {
   };
 
   const handleApply = () => {
-    console.log('Applied Filters:', selectedValues);
+    console.log("Applied Filters:", selectedValues);
     setIsDropdownOpen(false);
   };
   const handleReset = () => {
@@ -179,25 +185,25 @@ const CreateSurveyTable = () => {
   };
   const options = [
     {
-      label: 'Type',
+      label: "Type",
       options: [
-        { label: 'All', value: 'all' },
-        { label: 'OPD', value: 'opd' },
-        { label: 'IPD', value: 'ipd' },
+        { label: "All", value: "all" },
+        { label: "OPD", value: "opd" },
+        { label: "IPD", value: "ipd" },
       ],
     },
     {
-      label: 'Last Visit',
+      label: "Last Visit",
       options: [
-        { label: 'Last 7 days', value: 'last7days' },
-        { label: 'Last 30 days', value: 'last30days' },
+        { label: "Last 7 days", value: "last7days" },
+        { label: "Last 30 days", value: "last30days" },
       ],
     },
     {
-      label: 'All Users',
+      label: "All Users",
       options: [
-        { label: 'Active Users', value: 'activeusers' },
-        { label: 'Inactive Users', value: 'inactiveusers' },
+        { label: "Active Users", value: "activeusers" },
+        { label: "Inactive Users", value: "inactiveusers" },
       ],
     },
   ];
@@ -212,22 +218,12 @@ const CreateSurveyTable = () => {
               <h6>Surveys</h6>
 
               <div className="d-flex flex-column flex-md-row gap-3 align-items-center">
-                <div
-                  className="d-flex align-items-center px-3"
-                  style={{
-                    border: "1px solid var(--border-color)",
-                    borderRadius: "8px",
-                    height: "33px",
-                  }}
-                >
-                  <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-                  <Input
+                <div className="search-container">
+                  <FiSearch className="search-icon" />
+                  <input
                     type="text"
                     placeholder="Search anything here"
-                    style={{
-                      border: "none",
-                      outline: "none",
-                    }}
+                    className="search-input-table"
                   />
                 </div>
 
@@ -241,8 +237,14 @@ const CreateSurveyTable = () => {
                     </Button>
                   </Dropdown>
                   <Dropdown
-                    overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
-                    trigger={['click']}
+                    overlay={filterDropdown(
+                      options,
+                      selectedValues,
+                      handleCheckboxChange,
+                      handleApply,
+                      handleReset
+                    )}
+                    trigger={["click"]}
                     open={isDropdownOpen}
                     onOpenChange={setIsDropdownOpen}
                     placement="bottomLeft"
@@ -286,23 +288,17 @@ const CreateSurveyTable = () => {
           <div className="no-data-container-text d-flex flex-column justify-content-center">
             <h4>No Surveys Found</h4>
             <p>
-              Currently, there are no surveys available to display.<br /> Please check
-              back later or contact support for further assistance if this is an
-              error
+              Currently, there are no surveys available to display.
+              <br /> Please check back later or contact support for further
+              assistance if this is an error
             </p>
             <div className="d-flex justify-content-center">
-              <button
-                className="rfh-basic-button"
-                onClick={showModal}
-              >
+              <button className="rfh-basic-button" onClick={showModal}>
                 <FaPlus /> Create Surveys
               </button>
             </div>
           </div>
-          <CreateSurveyPage
-            visible={isModalVisible}
-            onClose={handleCancel}
-          />
+          <CreateSurveyPage visible={isModalVisible} onClose={handleCancel} />
         </div>
       )}
     </div>

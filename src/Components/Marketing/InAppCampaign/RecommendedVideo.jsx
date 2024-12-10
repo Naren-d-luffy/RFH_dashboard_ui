@@ -7,7 +7,7 @@ import { showSuccessMessage } from "../../../globalConstant";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
 const handleClick = () => {
-  showSuccessMessage("Successfully Created", "");
+  showSuccessMessage("", "");
 };
 
 const RecommendedVideo = ({ open, handleCancel }) => {

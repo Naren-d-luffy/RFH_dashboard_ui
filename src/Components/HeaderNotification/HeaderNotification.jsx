@@ -59,7 +59,7 @@ export const HeaderNotification = () => {
             <p>{data.feedback}</p>
             <div className="d-flex justify-content-end notification-feedback-time align-items-center">
               <span className="notification-time">
-                <MdOutlineAccessTime />
+                <MdOutlineAccessTime style={{ color: "var(--black-color)" }} />
               </span>
               <p>{data.time}</p>
             </div>
