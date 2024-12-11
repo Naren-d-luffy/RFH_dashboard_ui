@@ -10,7 +10,8 @@ import chatIcon from "../../../Assets/Icons/chat-header.png";
 import addFile from "../../../Assets/Icons/addFile.png";
 import { FaRegSmile } from "react-icons/fa";
 import { IoMdSend } from "react-icons/io";
-
+import Lottie from "react-lottie";
+import animationData from "../../../Assets/Jsons/chat boat2.json";
 const MessageChat = () => {
   const allChats = [
     {
@@ -118,6 +119,15 @@ const MessageChat = () => {
       avatar: image3,
     },
   ];
+  
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData.animation,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   return (
     <div>
@@ -217,7 +227,8 @@ const MessageChat = () => {
                       <IoMdArrowBack size={24} />
                     </button>
                     <div className="chat-header-icon">
-                      <img src={chatIcon} alt="" />
+                      {/* <img src={chatIcon} alt="" /> */}
+                      <Lottie options={defaultOptions} height={160} width={160} style={{marginTop:"20px"}} />
                       <h4>
                         {selectedChat.name}
                         <br />
@@ -255,19 +266,21 @@ const MessageChat = () => {
               <div>
                 <div className="chat-header">
                   <div className="chat-header-icon">
-                    <img src={chatIcon} alt="" />
+                  <Lottie options={defaultOptions} height={160} width={160} style={{marginTop:"20px"}} />
                     <h4>
                       What do you want to <br /> Know About RFH?
                     </h4>
                   </div>
                 </div>
-                <p className="no-chat-selected">Select a chat to view messages</p>
+                <p className="no-chat-selected">
+                  Select a chat to view messages
+                </p>
               </div>
             )}
             <div className="message-input-container">
               <div className="message-input-box">
                 <button className="emoji-btn">
-                  <FaRegSmile size={24} color="var(--black-color)"/>
+                  <FaRegSmile size={24} color="var(--black-color)" />
                 </button>
                 <input
                   type="text"
@@ -302,4 +315,3 @@ const MessageChat = () => {
 };
 
 export default MessageChat;
-
