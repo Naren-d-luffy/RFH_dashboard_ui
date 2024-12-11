@@ -28,7 +28,7 @@ const menuConfig = [
     label: "User Dashboards",
     icon: <MdOutlineDashboard className="sidebar-icon" />,
     subMenu: [
-      { label: "User Acquisition & Retention", to: "/" },
+      { label: "User Acquisition & Retention", to: "/user-dashboards/user-aquisition" },
       { label: "User Engagement", to: "/user-dashboards/user-engagement" },
     ],
   },
@@ -148,7 +148,7 @@ function SidebarAdmin() {
 
   useEffect(() => {
     const pathToMenuMap = {
-      "/": "userDashboards",
+      "/user-dashboards/user-aquisition": "userDashboards",
       "/user-dashboards/user-engagement": "userDashboards",
       "/admin/user-management": "admin",
       "/marketing/campaign-performance": "marketing",
