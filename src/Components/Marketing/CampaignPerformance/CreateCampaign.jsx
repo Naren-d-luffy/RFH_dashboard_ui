@@ -5,9 +5,8 @@ import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 
-import { showSuccessMessage } from "../../../globalConstant"
+import { showSuccessMessage } from "../../../globalConstant";
 import { RiDeleteBin5Line } from "react-icons/ri";
-
 
 const modules = {
   toolbar: [
@@ -21,7 +20,6 @@ const modules = {
 const handleSuccessDelete = () => {
   showSuccessMessage("Successfully Created Campaign", "");
 };
-
 
 const CreateCampaign = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -38,10 +36,11 @@ const CreateCampaign = ({ open, handleCancel }) => {
     setUploadedImage(null);
   };
   return (
-
     <Modal
       open={open}
-      title={<span className="create-campaign-modal-title">Create Campaign</span>}
+      title={
+        <span className="create-campaign-modal-title">Create Campaign</span>
+      }
       onCancel={handleCancel}
       width={680}
       footer={[
@@ -96,10 +95,10 @@ const CreateCampaign = ({ open, handleCancel }) => {
                   backgroundColor: "#e6f2ed",
                   borderRadius: "50%",
                   fontSize: "16px",
-                  padding: "4px 12px"
+                  padding: "4px 12px",
                 }}
               >
-                <RiDeleteBin5Line />
+                <RiDeleteBin5Line className="model-image-upload-delete-icon"/>
               </Button>
             </div>
           )}
@@ -128,7 +127,10 @@ const CreateCampaign = ({ open, handleCancel }) => {
 
           <Col xs={12} sm={7}>
             <Form.Item>
-              <Input className="create-camapign-input" placeholder="Click Here" />
+              <Input
+                className="create-camapign-input"
+                placeholder="Click Here"
+              />
               <span className="create-campaign-input-span">Button Name</span>
             </Form.Item>
           </Col>
@@ -145,7 +147,7 @@ const CreateCampaign = ({ open, handleCancel }) => {
         </Row>
       </Form>
     </Modal>
-  )
-}
+  );
+};
 
 export default CreateCampaign;

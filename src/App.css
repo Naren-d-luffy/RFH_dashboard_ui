@@ -57,14 +57,15 @@ body,
 }
 .global-cancel-button {
   color: var(--black-color) !important;
-  border: 1px solid #dce4e8 !important;
+  border: 1px solid var(--border-color) !important;
   padding: 13px 24px !important;
   border-radius: 10px !important;
   background: none;
   font-weight: 500 !important;
 }
 .global-cancel-button:hover {
-  background: var(--button-bg-color);
+  background-color: none;
+  color: var(--black-color);
 }
 
 .dropdown-hover-color .ant-dropdown-menu-item:hover,
@@ -256,26 +257,11 @@ body,
   color: var(--black-color);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.ant-modal .ant-modal-content{
+.ant-modal .ant-modal-content {
   background-color: var(--model-background-color);
 }
 
-.ant-modal .ant-modal-title{
+.ant-modal .ant-modal-title {
   background-color: var(--model-background-color) !important;
 }
 
@@ -290,13 +276,13 @@ body,
   padding: 10px 10px;
 }
 
-.form-select:focus-within, 
+.form-select:focus-within,
 .form-select:hover {
   border-color: var(--primary-green) !important;
 }
 
-.ant-input-outlined:focus-within, 
-.ant-input-outlined:hover{
+.ant-input-outlined:focus-within,
+.ant-input-outlined:hover {
   border-color: var(--primary-green) !important;
 }
 
@@ -304,21 +290,23 @@ body,
   background-color: transparent !important;
 }
 
-.ant-input{
+.ant-input {
   color: var(--black-color);
   background: transparent;
 }
 
-.ant-form-vertical .ant-form-item:not(.ant-form-item-horizontal) .ant-form-item-label >label{
+.ant-form-vertical
+  .ant-form-item:not(.ant-form-item-horizontal)
+  .ant-form-item-label
+  > label {
   color: var(--black-color);
 }
-
 
 .ant-input.settings-input {
   background: transparent !important;
 }
 
-.ant-input-affix-wrapper >input.ant-input {
+.ant-input-affix-wrapper > input.ant-input {
   color: var(--black-color);
 }
 
@@ -326,16 +314,16 @@ body,
   background-color: var(--model-background-color);
 }
 
-.swal2-center>.swal2-popup {
+.swal2-center > .swal2-popup {
   background-color: var(--model-background-color);
   color: var(--black-color) !important;
 }
 
-.swal2-html-container{
+.swal2-html-container {
   color: var(--black-color);
 }
 
-.ant-modal .ant-modal-close{
+.ant-modal .ant-modal-close {
   color: var(--black-color);
 }
 
@@ -343,6 +331,7 @@ body,
   color: var(--black-color);
 }
 
-.ant-radio-wrapper span.ant-radio+*{
+.ant-radio-wrapper span.ant-radio + * {
   color: var(--secondary-text-color);
 }
+

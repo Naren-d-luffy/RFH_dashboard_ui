@@ -25,7 +25,7 @@ const CreateSidebarNotificationModal = ({ open, handleCancel }) => {
     };
     return (
         <Modal
-            title="Create Alerts"
+        title={<span className="create-campaign-modal-title">Create Alerts</span>}
             visible={open}
             onCancel={handleCancel}
             width={680}

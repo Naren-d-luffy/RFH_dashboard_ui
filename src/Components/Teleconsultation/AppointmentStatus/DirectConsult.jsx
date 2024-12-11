@@ -117,7 +117,7 @@ const DirectConsult = () => {
                     </div>
                     <h5>{appointment.id}</h5>
                   </div>
-                  <button className="">Virtual Consult</button>
+                  <button className="">Direct Consult</button>
                 </div>
                 <hr />
                 <div className="appointment-card-body">
