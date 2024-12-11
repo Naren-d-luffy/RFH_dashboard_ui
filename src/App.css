@@ -40,7 +40,7 @@ body,
 }
 .global-delete-button {
   background-color: var(--red-color);
-  color: var(--black-color);
+  color: var(--white-color);
   padding: 13px 24px !important;
   border-radius: 10px !important;
   border: none !important;
