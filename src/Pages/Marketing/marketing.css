@@ -784,3 +784,8 @@
   position: absolute;
   top: 15px;
 }
+
+.model-image-upload-delete-icon{
+  color: var(--black-color);
+  background-color: var(--white-color);
+}

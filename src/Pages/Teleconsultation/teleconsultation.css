@@ -319,8 +319,6 @@
   background-color: var(--white-color);
 }
 
-
-
 /* manju */
 
 .virtual-management-graph-head h3 {
@@ -667,7 +665,7 @@
   letter-spacing: -0.1px;
   color: var(--text-color);
 }
-.search-bar input{
+.search-bar input {
   width: 100%;
   padding: 6px;
   border: none;
@@ -677,8 +675,7 @@
   font-weight: 600;
   letter-spacing: -0.1px;
   color: var(--secondary-text-color);
-  box-shadow: 0px 4px 34px 0px #00963F1A;
-
+  box-shadow: 0px 4px 34px 0px #00963f1a;
 }
 
 .search-bar input:focus,
@@ -910,13 +907,12 @@
   .chat-visible .chat-sidebar {
     display: none;
   }
-  
 }
 @media (max-width: 576px) {
-  .message-input-container{
+  .message-input-container {
     width: 240px;
   }
-  .message-input-container input{
+  .message-input-container input {
     width: 120px;
   }
 }
@@ -1001,7 +997,7 @@
   text-align: left;
   color: var(--secondary-text-color);
 }
-.chat-messages h6{
+.chat-messages h6 {
   font-size: 12px;
   color: var(--secondary-text-color);
 }

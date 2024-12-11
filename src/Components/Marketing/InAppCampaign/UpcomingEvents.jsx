@@ -97,7 +97,7 @@ const UpcomingEvents = ({ open, handleCancel }) => {
                   padding:"4px 12px"
                 }}
               >
-                <RiDeleteBin5Line />
+                <RiDeleteBin5Line className="model-image-upload-delete-icon"/>
               </Button>
             </div>
           )}
