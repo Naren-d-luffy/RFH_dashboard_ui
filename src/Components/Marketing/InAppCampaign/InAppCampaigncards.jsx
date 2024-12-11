@@ -54,7 +54,7 @@ export const InAppCampaigncards = () => {
         },
       ];
       return (
-        <div className="row">
+        <div>
           <div className="campaign-performance-head">
             <div>
               <h3>InApp Campaign overview</h3>
@@ -62,7 +62,6 @@ export const InAppCampaigncards = () => {
             </div>
             
           </div>
-    
           <div className="row campaign-performance-container">
             {cardsData.map((card, index) => (
               <div className="col-lg-3 col-md-6 col-sm-12 mt-2" key={index}>

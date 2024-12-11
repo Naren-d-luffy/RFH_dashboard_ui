@@ -29,7 +29,7 @@ const CampaignPerformanceGraph = () => {
   return (
     <div className="container mt-3">
       <div className="campaign-performance-graph-card">
-        <div className="d-flex justify-content-between align-items-center mb-3">
+        <div className="d-flex flex-lg-row flex-xl-row flex-column justify-content-between align-items-center mb-3">
           <h3>Campaign Statistics</h3>
           <div className="d-flex align-items-center">
             <div className="d-flex align-items-center">
@@ -52,17 +52,16 @@ const CampaignPerformanceGraph = () => {
           <BarChart
             data={data}
             barCategoryGap={10}
-            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis
               dataKey="name"
-              tick={{ fontSize: 12, fontWeight: 500, color: "#666" }}
+              tick={{ fontSize: 12, fontWeight: 500}}
             />
             <YAxis
               domain={[20, 100]}
               allowDataOverflow={true}
-              tick={{ fontSize: 12, fontWeight: 500, color: "#666" }}
+              tick={{ fontSize: 12, fontWeight: 500 }}
             />
 
             <Tooltip />

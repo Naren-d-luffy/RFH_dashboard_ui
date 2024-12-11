@@ -91,14 +91,14 @@ const DirectConsult = () => {
           >
             <RxGrid className={`d-flex align-items-center  ${
               !isTableView ? "appointment-active-icon" : "table-card-list"
-            }`} />
+            }`}/>
           </div>
           <div
             onClick={handleTableViewToggle}
           >
             <LuMenu className={`d-flex align-items-center ${
               isTableView ? "appointment-active-icon" : "table-data-list"
-            }`} />
+            }`}/>
           </div>
         </div>
       </div>
@@ -113,11 +113,11 @@ const DirectConsult = () => {
                 <div className="appointment-card-header d-flex justify-content-between align-items-center">
                   <div className="d-flex gap-3 appointment-title align-items-center">
                     <div className="appointment-title-icon">
-                      <TbReportMedical size={22} />
+                      <TbReportMedical size={22} style={{color:"var(--black-color)"}} />
                     </div>
                     <h5>{appointment.id}</h5>
                   </div>
-                  <button className="">Virtual Consult</button>
+                  <button className="">Direct Consult</button>
                 </div>
                 <hr />
                 <div className="appointment-card-body">

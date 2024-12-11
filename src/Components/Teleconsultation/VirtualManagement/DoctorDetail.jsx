@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Row, Col, DatePicker, Select, Button } from "antd";
 import { Option } from "antd/es/mentions";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -6,8 +6,8 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { useNavigate } from "react-router-dom";
-import { showSuccessMessage } from "../../../globalConstant"
-
+import { showSuccessMessage } from "../../../globalConstant";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const DoctorDetail = () => {
   const navigate = useNavigate();
@@ -22,7 +22,21 @@ const DoctorDetail = () => {
   };
   const handleClick = () => {
     showSuccessMessage("Doctor Details Added Successfully", "");
-  }
+  };
+
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const handleUpload = (info) => {
+    const file = info.file.originFileObj;
+    const reader = new FileReader();
+    reader.onload = () => {
+      setUploadedImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDeleteImage = () => {
+    setUploadedImage(null);
+  };
   return (
     <div className="container">
       <div className="mt-4 campaign-performance-head">
@@ -84,6 +98,7 @@ const DoctorDetail = () => {
                   placeholder="Select Date"
                   style={{ width: "100%" }}
                   format="DD/MM/YYYY"
+                  color="var(--black-color)"
                 />
                 <span className="create-campaign-input-span">
                   Date Of Birth
@@ -206,7 +221,7 @@ const DoctorDetail = () => {
           </Row>
         </div>
 
-        <div className="d-flex gap-4 col-lg-12">
+        <div className="d-flex gap-4 col-lg-12 flex-lg-row flex-xl-row flex-column ">
           <div className="col-lg-6">
             <Form.Item>
               <ReactQuill
@@ -221,17 +236,48 @@ const DoctorDetail = () => {
           </div>
           <div className="col-lg-6">
             <Form.Item>
-              <Upload listType="picture" className="create-campaign-upload">
+              <Upload
+                listType="picture"
+                showUploadList={false}
+                onChange={handleUpload}
+                className="create-campaign-upload"
+              >
                 <p className="create-campaign-ant-upload-text">
-                  Drop image here
+                  Drop files here or click to upload
                 </p>
                 <span className="create-campaign-ant-upload-drag-icon">
-                  <IoCloudUploadOutline color="var(--red-color)" size={20} />{" "}
+                  <IoCloudUploadOutline />{" "}
                   <span className="create-campaign-input-span">
-                    Upload Your Latest Photo
+                    Upload Image
                   </span>
                 </span>
               </Upload>
+              {uploadedImage && (
+                <div className="uploaded-image-preview d-flex gap-2">
+                  <img
+                    src={uploadedImage}
+                    alt="Uploaded"
+                    style={{
+                      width: "200px",
+                      height: "auto",
+                      marginTop: "10px",
+                      borderRadius: "5px",
+                    }}
+                  />
+                  <Button
+                    onClick={handleDeleteImage}
+                    style={{
+                      marginTop: "10px",
+                      backgroundColor: "#e6f2ed",
+                      borderRadius: "50%",
+                      fontSize: "16px",
+                      padding: "4px 12px",
+                    }}
+                  >
+                    <RiDeleteBin5Line className="model-image-upload-delete-icon"/>
+                  </Button>
+                </div>
+              )}
             </Form.Item>
           </div>
         </div>
@@ -244,7 +290,11 @@ const DoctorDetail = () => {
         >
           Cancel
         </Button>
-        <Button key="save" className="create-campaign-save-button" onClick={handleClick}>
+        <Button
+          key="save"
+          className="create-campaign-save-button"
+          onClick={handleClick}
+        >
           Save
         </Button>
       </div>

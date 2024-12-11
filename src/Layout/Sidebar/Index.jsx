@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../layout.css";
-import logo from "../../Assets/Images/logo.png";
+import lightLogo from "../../Assets/Images/logo.png";
+import darkLogo from "../../Assets/Images/darkLogo.png"
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineDashboard } from "react-icons/md";
@@ -17,10 +18,10 @@ import {
   Settings,
 } from "lucide-react";
 import { SlGraduation } from "react-icons/sl";
-import { IoTelescopeOutline } from "react-icons/io5";
+import { IoMenu, IoTelescopeOutline } from "react-icons/io5";
 import { BiCapsule } from "react-icons/bi";
+import { useDarkMode } from "../../DarkMode";
 
-// Menu configuration object
 const menuConfig = [
   {
     id: "userDashboards",
@@ -69,13 +70,13 @@ const menuConfig = [
         label: "Appointment Status",
         to: "/teleconsultation/appointment-status",
       },
-      { label: "Technical Support", to: "/" },
+      { label: "Technical Support", to: "/teleconsultation/technical-support" },
     ],
   },
   {
     id: "feedback",
     label: "Feedback",
-    icon: <MessageCircleCode className="sidebar-icon" size={14}/>,
+    icon: <MessageCircleCode className="sidebar-icon" size={14} />,
     subMenu: [
       { label: "Create Survey", to: "/feedback/create-survey" },
       { label: "Patient Survey", to: "/feedback/patient-surveys" },
@@ -97,7 +98,7 @@ const menuConfig = [
   {
     id: "technical",
     label: "Technical",
-    icon: <MemoryStick className="sidebar-icon" size={14}/>,
+    icon: <MemoryStick className="sidebar-icon" size={14} />,
     subMenu: [
       { label: "User Acquisition & Retention", to: "/" },
       { label: "User Engagement", to: "/" },
@@ -113,17 +114,17 @@ const menuConfig = [
   {
     id: "chat",
     label: "Chat",
-    icon: <MessageSquareMore className="sidebar-icon" size={14}/>,
+    icon: <MessageSquareMore className="sidebar-icon" size={14} />,
     to: "/chat",
   },
   {
     label: "Notification",
-    icon: <Bell className="sidebar-icon" size={14}/>,
+    icon: <Bell className="sidebar-icon" size={14} />,
     to: "/sidebar/notification",
   },
   {
     label: "Settings",
-    icon: <Settings className="sidebar-icon" size={14}/>,
+    icon: <Settings className="sidebar-icon" size={14} />,
     to: "/dashboard/settings",
   },
   {
@@ -140,14 +141,10 @@ function SidebarAdmin() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState(null);
 
-
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  };
-
   const toggleMenu = (menu) => {
     setExpandedMenu(expandedMenu === menu ? null : menu);
   };
+  const { isDarkMode } = useDarkMode();
 
   useEffect(() => {
     const pathToMenuMap = {
@@ -170,6 +167,8 @@ function SidebarAdmin() {
       "/feedback/view-feedback": "feedback",
       "/feedback/negative-feedback": "feedback",
       "/teleconsultation/appointment-status": "teleconsultation",
+      "/teleconsultation/doctor-detail": "teleconsultation",
+      "/teleconsultation/technical-support": "teleconsultation",
       "/operational/appointment-reports": "operational",
       "/operational/service-utilization": "operational",
       "/operational/financial-performance": "operational",
@@ -186,85 +185,105 @@ function SidebarAdmin() {
 
     setExpandedMenu(activeMenu);
   }, [location.pathname]);
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
-    <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
-      <aside className={`sidebar-content ${isSidebarOpen ? "open" : ""}`}>
-        <div className="sidebar-header d-flex justify-content-center align-items-center">
-          <img
-            src={logo}
-            alt="Logo"
-            className="sidebar-logo"
-            onClick={() => navigate("/")}
-          />
-          <div className="d-lg-none" onClick={closeSidebar}>
-            <IoMdClose size={26} />
+    <>
+      <button
+        className="toggle-btn-header d-block d-sm-block d-md-block d-lg-none"
+        onClick={toggleSidebar}
+      >
+        <IoMenu style={{ width: "30px", height: "30px", position: "fixed" }} />
+        <span className="visually-hidden">Toggle sidebar</span>
+      </button>
+      <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
+        <aside className={`sidebar-content ${isSidebarOpen ? "open" : ""}`}>
+          <div className="sidebar-header d-flex justify-content-center align-items-center">
+          <img src={isDarkMode ? darkLogo : lightLogo}
+              alt="Logo"
+              className="sidebar-logo"
+              onClick={() => navigate("/")}
+            />
+            <button
+              className="close-btn menu-close-button-response"
+              onClick={toggleSidebar}
+            >
+              <IoMdClose />
+            </button>
           </div>
-        </div>
-        <nav className="sidebar-nav">
-          <ul>
-            {menuConfig.map((menuItem) => (
-              <li key={menuItem.id}>
-                {menuItem.subMenu ? (
-                  <>
-                    <div
-                      className={`nav-link ${
-                        expandedMenu === menuItem.id ? "active-nav-links" : ""
-                      }`}
-                      onClick={() => toggleMenu(menuItem.id)}
-                    >
-                      <span className="d-flex align-items-center justify-content-between">
-                        <span className="d-flex align-items-center">
-                          {menuItem.icon}
-                          <span>{menuItem.label}</span>
+          <nav className="sidebar-nav">
+            <ul>
+              {menuConfig.map((menuItem) => (
+                <li key={menuItem.id}>
+                  {menuItem.subMenu ? (
+                    <>
+                      <div
+                        className={`nav-link ${
+                          expandedMenu === menuItem.id ? "active-nav-links" : ""
+                        }`}
+                        onClick={() => toggleMenu(menuItem.id)}
+                      >
+                        <span className="d-flex align-items-center justify-content-between">
+                          <span className="d-flex align-items-center">
+                            {menuItem.icon}
+                            <span>{menuItem.label}</span>
+                          </span>
+                          {expandedMenu === menuItem.id ? (
+                            <FiChevronUp className="dropdown-icon" />
+                          ) : (
+                            <FiChevronDown className="dropdown-icon" />
+                          )}
                         </span>
-                        {expandedMenu === menuItem.id ? (
-                          <FiChevronUp className="dropdown-icon" />
-                        ) : (
-                          <FiChevronDown className="dropdown-icon" />
-                        )}
-                      </span>
-                    </div>
-                    <ul
-                      className={`sub-menu ${
-                        expandedMenu === menuItem.id ? "active" : ""
+                      </div>
+                      <ul
+                        className={`sub-menu ${
+                          expandedMenu === menuItem.id ? "active" : ""
+                        }`}
+                      >
+                        {menuItem.subMenu.map((subItem, subIndex) => (
+                          <li key={subIndex} className="sub-nav-list">
+                            <Link
+                              to={subItem.to}
+                              className={`sub-nav-link ${
+                                location.pathname === subItem.to
+                                  ? "active-sub-link"
+                                  : ""
+                              }`}
+                              onClick={() => {
+                                if (isSidebarOpen) toggleSidebar();
+                              }}
+                            >
+                              {subItem.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : (
+                    <Link
+                      to={menuItem.to}
+                      className={`nav-link ${
+                        location.pathname === menuItem.to
+                          ? "active-nav-links"
+                          : ""
                       }`}
+                      onClick={() => {
+                        if (isSidebarOpen) toggleSidebar();
+                      }}
                     >
-                      {menuItem.subMenu.map((subItem, subIndex) => (
-                        <li key={subIndex} className="sub-nav-list">
-                          <Link
-                            to={subItem.to}
-                            className={`sub-nav-link ${
-                              location.pathname === subItem.to
-                                ? "active-sub-link"
-                                : ""
-                            }`}
-                          >
-                            {subItem.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                ) : (
-                  <Link
-                    to={menuItem.to}
-                    className={`nav-link ${
-                      location.pathname === menuItem.to
-                        ? "active-nav-links"
-                        : ""
-                    }`}
-                  >
-                    {menuItem.icon}
-                    {menuItem.label}
-                  </Link>
-                )}
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </aside>
-    </div>
+                      {menuItem.icon}
+                      {menuItem.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
+      </div>
+    </>
   );
 }
 

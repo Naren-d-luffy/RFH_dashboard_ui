@@ -69,14 +69,14 @@ const EducationOverviewGraph = () => {
                   className="patient-acquisition-legend-color"
                   style={{ backgroundColor: "var(--primary-green)" }}
                 ></span>
-                Online Consult
+                <span style={{color:'var(--black-color)'}}>Online Consult</span>
               </div>
               <div className="d-flex align-items-center gap-2">
                 <span
                   className="patient-acquisition-legend-color"
                   style={{ backgroundColor: "var(--dark-green)" }}
                 ></span>
-                Offline Consult
+                <span style={{color:'var(--black-color)'}}>Offline Consult</span>
               </div>
             </div>
           </div>
@@ -167,14 +167,14 @@ const EducationOverviewGraph = () => {
                 className="patient-acquisition-legend-color"
                 style={{ backgroundColor: "var(--primary-green)" }}
               ></span>
-              Male Patients
+              <span style={{color:'var(--black-color)'}}>Male Patients</span>
             </div>
             <div className="d-flex align-items-center gap-1">
               <span
                 className="patient-acquisition-legend-color"
                 style={{ backgroundColor: "var(--dark-green)" }}
               ></span>
-              Female Patients
+              <span style={{color:'var(--black-color)'}}>Female Patients</span>
             </div>
           </div>
         </div>

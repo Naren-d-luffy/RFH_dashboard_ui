@@ -139,43 +139,35 @@ const SingleSurveyTable = () => {
   return (
     <div className=" mt-4">
       <div className="campaign-performance-table-head mt-4">
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between flex-lg-row flex-xl-row flex-column align-items-center">
           <h6>Surveys</h6>
-          <div className="d-flex gap-3 align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid var(--border-color)",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
+          <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-column align-items-center">
+            <div className="search-container">
+              <FiSearch className="search-icon" />
+              <input
                 type="text"
                 placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
+                className="search-input-table"
               />
             </div>
-            <Dropdown menu={menuProps}>
-              <Button>
-                <Space>
-                  Sort By
-                  <BiSortAlt2 />
-                </Space>
-              </Button>
-            </Dropdown>
-            <Dropdown menu={menuProps}>
-              <Button>
-                <Space>
-                  Filter
-                  <LuFilter />
-                </Space>
-              </Button>
-            </Dropdown>
+            <div className="d-flex gap-3 align-items-center">
+              <Dropdown menu={menuProps}>
+                <Button>
+                  <Space>
+                    Sort By
+                    <BiSortAlt2 />
+                  </Space>
+                </Button>
+              </Dropdown>
+              <Dropdown menu={menuProps}>
+                <Button>
+                  <Space>
+                    <LuFilter />
+                    Filter
+                  </Space>
+                </Button>
+              </Dropdown>
+            </div>
           </div>
         </div>
         <div className="mt-3">

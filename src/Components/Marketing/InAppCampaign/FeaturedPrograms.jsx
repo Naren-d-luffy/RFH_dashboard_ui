@@ -9,12 +9,14 @@ import clinic1 from "../../../Assets/Images/clinic1.png";
 import clinic2 from "../../../Assets/Images/clinic2.png";
 import FeaturedProgramModel from "./FeaturedProgramModel";
 import LatestCamps from "./LatestCamps";
-import { Rate } from "antd";
+import { Rate, Dropdown, Menu } from "antd";
 import { FiMapPin } from "react-icons/fi";
 import { GiPathDistance } from "react-icons/gi";
 import { RiHospitalFill } from "react-icons/ri";
 import OutstationClinic from "./OutstationClinic";
-
+import { BiEdit } from "react-icons/bi";
+import { RiDeleteBin7Line } from "react-icons/ri";
+import { BsThreeDotsVertical } from "react-icons/bs";
 export const FeaturedPrograms = () => {
   const [modals, setModals] = useState({
     program: false,
@@ -97,12 +99,47 @@ export const FeaturedPrograms = () => {
       category: "Hospital",
     },
   ];
-
+  const sortMenu = (
+    <Menu>
+      <Menu.Item key="edit" className="filter-menu-item">
+        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        Edit
+      </Menu.Item>
+      <Menu.Item key="delete" className="filter-menu-item">
+        <RiDeleteBin7Line
+          style={{ color: "var(--red-color)", marginRight: "4px" }}
+        />
+        Delete
+      </Menu.Item>
+    </Menu>
+  );
+  const filterMenu = (
+    <Menu>
+      <Menu.Item key="edit" className="filter-menu-item">
+        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        Edit
+      </Menu.Item>
+      <Menu.Item key="delete" className="filter-menu-item">
+        <RiDeleteBin7Line
+          style={{ color: "var(--red-color)", marginRight: "4px" }}
+        />
+        Delete
+      </Menu.Item>
+    </Menu>
+  );
   const renderEventCard = (event) => (
     <div className="col-lg-4">
       <div className="feature-program-card" key={event.title}>
-        <div className="d-flex justify-content-center align-items-center mb-3">
+       
+        <div className="mb-3">
           <img src={event.img} alt={event.title} />
+          <div className="featured-program-icon-container">
+          <Dropdown overlay={sortMenu} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical />
+            </button>
+          </Dropdown>
+        </div>
         </div>
         <div className="p-3">
           <div className="d-flex justify-content-between mb-2">
@@ -113,7 +150,6 @@ export const FeaturedPrograms = () => {
           <ul>
             <li>{event.department}</li>
           </ul>
-          <button className="edit-event-button">Edit</button>
         </div>
       </div>
     </div>
@@ -126,6 +162,13 @@ export const FeaturedPrograms = () => {
           allowFullScreen
           title="Map showing Raja Ram Mohan Roy Road in Girgaon, Mumbai"
         ></iframe>
+         <div className="featured-program-icon-container" style={{right:0}}>
+          <Dropdown overlay={filterMenu} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical />
+            </button>
+          </Dropdown>
+        </div>
         <div className="recommend-video-card-content">
           <h4>{camp.campName}</h4>
           <p>{camp.Description}</p>
@@ -137,8 +180,15 @@ export const FeaturedPrograms = () => {
   const renderOutstationClinic = (clinic) => (
     <div className="col-lg-4">
       <div className="feature-program-card" key={clinic.title}>
-        <div className="d-flex justify-content-center align-items-center mb-3">
+        <div className=" mb-3">
           <img src={clinic.img} alt={clinic.title} />
+          <div className="featured-program-icon-container">
+          <Dropdown overlay={sortMenu} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical style={{color:"#fff"}}/>
+            </button>
+          </Dropdown>
+        </div>
         </div>
         <div className="clinic-content p-3">
           <div className="d-flex align-items-center justify-content-between">

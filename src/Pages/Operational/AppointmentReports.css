@@ -30,14 +30,14 @@
 
 /* manju */
 .report-header h1 {
-  color: var(--black-color);
+  color: var(--secondary-text-color);
   font-size: 25px;
   font-weight: 500;
   border-left: 6px solid var(--primary-green);
   padding-left: 3px;
 }
 .report-header p {
-  color: var(--black-color);
+  color: var(--secondary-text-color);
   font-weight: 400;
   font-size: 12px;
 }
@@ -61,7 +61,7 @@
   text-align: center;
   padding: 10px;
   font-size: 12px;
-  color: var(--black-color);
+  color: var(--secondary-text-color);
 }
 .subtext {
   font-weight: 700;
@@ -97,9 +97,48 @@
 }
 .clinical-info p {
   font-size: 12px;
-  color: var(--black-color);
+  color: var(--secondary-text-color);
   font-weight: 400;
 }
+
+
+
+/* Responsive adjustments for smaller screens */
+@media screen and (max-width: 768px) {
+  .styled-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .styled-table thead {
+    display: none;
+  }
+
+  .styled-table tbody tr {
+    display: block;
+    margin-bottom: 15px;
+  }
+
+  .styled-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .styled-table tbody td:before {
+    content: attr(data-label);
+    font-weight: bold;
+    flex: 1;
+    text-transform: capitalize;
+  }
+
+  .styled-table tbody td:last-child {
+    border-bottom: none;
+  }
+}
+
 
 /* manju */
 

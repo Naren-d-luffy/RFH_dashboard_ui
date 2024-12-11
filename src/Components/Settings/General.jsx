@@ -1,30 +1,30 @@
 import React, { useState, useRef } from "react";
-import { Form, Input, Select } from "antd";
+import { Form, Input, Select, Upload, Button } from "antd";
+import ImgCrop from "antd-img-crop";
 import DefaultUser from "../../Assets/Images/DefaultUser.png";
 import "react-international-phone/style.css";
-import { Option } from "antd/es/mentions";
+
+const { Option } = Select;
 
 export const General = () => {
   const [form] = Form.useForm();
-  const fileInputRef = useRef(null);
-  const [previewImage, setPreviewImage] = useState("");
-  const [, setProfileImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(DefaultUser); 
+  const [profileImage, setProfileImage] = useState(null); 
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProfileImage(file);
+
+  const handleUploadChange = ({ file, fileList }) => {
+    if (file.status === "done" && file.originFileObj) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewImage(reader.result);
+        setPreviewImage(reader.result); 
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file.originFileObj); 
+    } else if (file.status === "removed") {
+      setPreviewImage(DefaultUser); 
     }
+    setProfileImage(file.originFileObj); 
   };
 
-  const handleEditClick = () => {
-    fileInputRef.current.click();
-  };
 
   return (
     <div className="settings-personal-information">
@@ -37,45 +37,54 @@ export const General = () => {
           <div className="row mt-4">
             <div className="settings-profile-icon-section">
               <img
-                src={previewImage ? previewImage : DefaultUser}
+                src={previewImage} 
                 alt="Profile"
                 className="settings-profile-image"
               />
-              <input
-                type="file"
-                ref={fileInputRef}
-                style={{ display: "none" }}
-                onChange={handleFileChange}
-                accept="image/*"
-              />
-              <button
-                type="button"
-                className="settings-edit-icon-button ms-3"
-                onClick={handleEditClick}
-              >
-                Upload new
-              </button>
+              <ImgCrop rotationSlider>
+                <Upload
+                  showUploadList={false} 
+                  customRequest={({ file, onSuccess }) => {
+                    setTimeout(() => onSuccess("ok"), 0); 
+                  }}
+                  onChange={handleUploadChange}
+                  accept="image/*"
+                >
+                  <button className="settings-edit-icon-button ms-3">Upload New</button>
+                </Upload>
+              </ImgCrop>
+
               <button type="button" className="settings-delete-button ms-3">
                 Delete
               </button>
             </div>
           </div>
+
+          {/* Form for hospital details */}
           <div className="row mt-4">
             <div className="col-md-6 mt-4">
               <Form.Item>
-                <Input className="settings-input" placeholder="RFH Hospital" defaultValue="RFH Hospital" />
-                <span className="settings-input-span">
-                  Hospital/ Medical name
-                </span>
+                <Input
+                  className="settings-input"
+                  placeholder="RFH Hospital"
+                  defaultValue="RFH Hospital"
+                />
+                <span className="settings-input-span">Hospital/ Medical name</span>
               </Form.Item>
             </div>
             <div className="col-md-6 mt-4">
               <Form.Item>
-                <Input className="settings-input" placeholder="Email ID" defaultValue="rumahsehat@gmail.go.id" />
+                <Input
+                  className="settings-input"
+                  placeholder="Email ID"
+                  defaultValue="rumahsehat@gmail.go.id"
+                />
                 <span className="settings-input-span">Email Address</span>
               </Form.Item>
             </div>
           </div>
+
+          {/* Form for address details */}
           <hr className="line-tag" />
           <h3 className="address-title">Address</h3>
           <div className="row">
@@ -112,38 +121,8 @@ export const General = () => {
               </Form.Item>
             </div>
           </div>
-          <div className="row">
-            <div className="col-md-6 mt-2">
-              <Form.Item>
-                <Input className="settings-input" placeholder="Flat" defaultValue="MI 48329"/>
-                <span className="settings-input-span">
-                Flat/Unit
-                </span>
-              </Form.Item>
-            </div>
-            <div className="col-md-6 mt-2">
-              <Form.Item>
-                <Input className="settings-input" placeholder="Enter Street" defaultValue="Wall Court Waterford"/>
-                <span className="settings-input-span">Street</span>
-              </Form.Item>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-6 mt-2">
-              <Form.Item>
-                <Input className="settings-input" placeholder="Enter Number" defaultValue="123456789"/>
-                <span className="settings-input-span">
-                Number
-                </span>
-              </Form.Item>
-            </div>
-            <div className="col-md-6 mt-2">
-              <Form.Item>
-                <Input className="settings-input" placeholder="Postcode" defaultValue="545676"/>
-                <span className="settings-input-span">Postcode</span>
-              </Form.Item>
-            </div>
-          </div>
+
+          {/* Submit and cancel buttons */}
           <div className="row mt-4">
             <div className="d-flex justify-content-end gap-2">
               <button className="settings-delete-button" type="button">

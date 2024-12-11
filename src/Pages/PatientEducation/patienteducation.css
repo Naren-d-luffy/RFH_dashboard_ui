@@ -8,6 +8,7 @@
 
 .add-events-datepicker.ant-picker-outlined {
   padding: 8px 6px;
+  background: transparent;
 }
 
 .ant-select-selector {
@@ -39,7 +40,7 @@
 }
 
 .recommend-image-card h4 {
-  color: var(--white-color);
+  color: var(--text-white-color) !important;
   font-size: 19px;
   position: relative;
   z-index: 2;
@@ -49,7 +50,7 @@
 }
 
 .recommend-image-card p {
-  color: var(--white-color);
+  color: var(--text-white-color);
   font-size: 11px;
   position: relative;
   z-index: 2;
@@ -118,4 +119,10 @@
   font-weight: 500;
   line-height: 30px;
   color: var(--faq-ans-color);
+}
+.treatment-info-icon-container{
+  position: absolute;
+  z-index: 2;
+  top: 15px;
+  right: 10px;
 }

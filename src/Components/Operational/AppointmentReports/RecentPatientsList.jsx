@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import { Table, Dropdown, Button, Space, Input, Avatar } from "antd";
+import { Table, Dropdown, Button, Input, Avatar } from "antd";
 import { FiEye, FiSearch } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import defaultUser from "../../../Assets/Images/DefaultUser.png";
 import { IoCloudDownloadOutline } from "react-icons/io5";
 import { PatientReport } from "./PatientReport";
+import { filterDropdown } from "../../../globalConstant";
+
 export const RecentPatientsList = () => {
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const columns = [
@@ -140,26 +144,45 @@ export const RecentPatientsList = () => {
     },
   ];
 
-  const items = [
+  const handleCheckboxChange = (value, checked) => {
+    if (checked) {
+      setSelectedValues((prev) => [...prev, value]);
+    } else {
+      setSelectedValues((prev) => prev.filter((item) => item !== value));
+    }
+  };
+
+  const handleApply = () => {
+    console.log("Applied Filters:", selectedValues);
+    setIsDropdownOpen(false);
+  };
+  const handleReset = () => {
+    setSelectedValues([]);
+  };
+  const options = [
     {
-      label: "Last Day",
-      key: "1",
+      label: "Type",
+      options: [
+        { label: "All", value: "all" },
+        { label: "OPD", value: "opd" },
+        { label: "IPD", value: "ipd" },
+      ],
     },
     {
-      label: "Last Week",
-      key: "2",
+      label: "Last Visit",
+      options: [
+        { label: "Last 7 days", value: "last7days" },
+        { label: "Last 30 days", value: "last30days" },
+      ],
     },
     {
-      label: "Last Month",
-      key: "3",
+      label: "All Users",
+      options: [
+        { label: "Active Users", value: "activeusers" },
+        { label: "Inactive Users", value: "inactiveusers" },
+      ],
     },
   ];
-
-  const handleMenuClick = ({ key }) => {};
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
 
   return (
     <div className="mt-2">
@@ -168,31 +191,31 @@ export const RecentPatientsList = () => {
           <h6>Recent Patients</h6>
 
           <div className="d-flex gap-3 align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
+            <div className="search-container">
+              <FiSearch className="search-icon" />
+              <input
                 type="text"
                 placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
+                className="search-input-table"
               />
             </div>
 
-            <Dropdown menu={menuProps}>
-              <Button>
-                <Space>
-                  <VscSettings />
-                  Filter
-                </Space>
+            <Dropdown
+              overlay={filterDropdown(
+                options,
+                selectedValues,
+                handleCheckboxChange,
+                handleApply,
+                handleReset
+              )}
+              trigger={["click"]}
+              open={isDropdownOpen}
+              onOpenChange={setIsDropdownOpen}
+              placement="bottomLeft"
+            >
+              <Button style={{ width: 160 }}>
+                <VscSettings />
+                Filters
               </Button>
             </Dropdown>
           </div>

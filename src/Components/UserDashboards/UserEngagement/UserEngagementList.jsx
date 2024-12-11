@@ -1,9 +1,13 @@
-import React from "react";
-import { Table, Dropdown, Button, Space, Input } from "antd";
+import React, { useState } from "react";
+import { Table, Dropdown, Button, Input } from "antd";
 import { FiSearch } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
+import { filterDropdown } from "../../../globalConstant"
+
 
 export const UserEngagementList = () => {
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const columns = [
     {
       title: "User ID",
@@ -117,26 +121,37 @@ export const UserEngagementList = () => {
     },
   ];
 
-  const items = [
+  const handleCheckboxChange = (value, checked) => {
+    if (checked) {
+      setSelectedValues((prev) => [...prev, value]);
+    } else {
+      setSelectedValues((prev) => prev.filter((item) => item !== value));
+    }
+  };
+
+  const handleApply = () => {
+    console.log('Applied Filters:', selectedValues);
+    setIsDropdownOpen(false);
+  };
+  const handleReset = () => {
+    setSelectedValues([]);
+  };
+  const options = [
     {
-      label: "Last Day",
-      key: "1",
+      label: 'Time frame',
+      options: [
+        { label: 'Last 7 days', value: 'last7days' },
+        { label: 'Last 30 days', value: 'last30days' },
+      ],
     },
     {
-      label: "Last Week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
+      label: 'User Type',
+      options: [
+        { label: 'Active Users', value: 'activeusers' },
+        { label: 'Inactive Users', value: 'inactiveusers' },
+      ],
     },
   ];
-
-  const handleMenuClick = ({ key }) => {};
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
 
   return (
     <div className="mt-2">
@@ -145,31 +160,25 @@ export const UserEngagementList = () => {
           <h6>User Engagement List</h6>
 
           <div className="d-flex gap-3 align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
-                type="text"
-                placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
-              />
-            </div>
+          <div className="search-container">
+          <FiSearch className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search anything here"
+            className="search-input-table"
+          />
+        </div>
 
-            <Dropdown menu={menuProps}>
-              <Button>
-                <Space>
-                  <VscSettings />
-                  Filter
-                </Space>
+            <Dropdown
+              overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
+              trigger={['click']}
+              open={isDropdownOpen}
+              onOpenChange={setIsDropdownOpen}
+              placement="bottomLeft"
+            >
+              <Button style={{ width: 160 }}>
+                <VscSettings />
+                Filters
               </Button>
             </Dropdown>
           </div>

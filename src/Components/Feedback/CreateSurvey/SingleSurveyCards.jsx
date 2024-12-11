@@ -74,7 +74,7 @@ const SingleSurveyCards = () => {
                             <h2 className="fw-bold">{card.value}</h2>
                             <p className="userAquisition-card-body-p mb-0">
                                 <span
-                                    className={`userAquisition-card-body-span ${card.changeType === 'up' ? 'text-success' : 'text-danger'
+                                    className={`userAquisition-card-body-span ${card.changeType === 'up' ? 'var(--primary-green)' : 'var(--red-color)'
                                         }`}
                                 >
                                     {<> {card.percentage} </>}

@@ -1,72 +1,69 @@
 .userManaggement-card {
-    border: 1px solid #DFDEDE;
-    border-radius: 20px;
-    padding: 20px;
+  border: 1px solid #dfdede;
+  border-radius: 20px;
+  padding: 20px;
 }
 
 .userManagement-halfGraph-text {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    text-align: left;
-    bottom: -70%;
-    right: 7%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  text-align: left;
+  bottom: -70%;
+  right: 7%;
 }
 
 .graph-div h6 {
-    color: var(--primary-grey-color);
-    font-weight: 500;
-    font-size: 20px;
+  color: var(--primary-grey-color);
+  font-weight: 500;
+  font-size: 20px;
 }
 
 .graph-div p {
-    color: var(--black-color);
+  color: var(--black-color);
 }
 
 .addPatient-modal-heder {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--primary-green);
-    text-decoration: underline;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--primary-green);
+  text-decoration: underline;
 }
 
 .readOnly-disabled-bg:disabled {
-    background-color: var(--white-color);
+  background-color: var(--white-color);
 }
 
 .userManagement-deleteWarning-icon {
-    width: 91px;
-    height: 91px;
+  width: 91px;
+  height: 91px;
 }
 
 .userManagement-deleteWarning-p {
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 40px;
-    letter-spacing: -0.03em;
-    text-align: center;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: none;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 40px;
+  letter-spacing: -0.03em;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
 }
-.userMnagement-doughnut-div{
-    position: relative;
-    height: 278px; 
-    width: 100%;
-    margin-top: -25px;
-    margin-bottom: -20px;
+.userMnagement-doughnut-div {
+  position: relative;
+  height: 278px;
+  width: 100%;
+  margin-top: -25px;
+  margin-bottom: -20px;
 }
-/* .rfh-basic-button {
-    background-color: var(--primary-green);
-    color: var(--white-color);
-    border: none;
-    border-radius: 10px;
+
+@media (max-width: 768px) {
+  .user-engagement-header h3{
     font-size: 14px;
-    font-weight: 500;
-    padding: 8px 12px;
   }
+}
+
+
+
+
+
+
   
-  .rfh-basic-button:hover {
-    color: var(--primary-green);
-    border: 1px solid var(--primary-green);
-    background-color: var(--white-color);
-  }
-   */

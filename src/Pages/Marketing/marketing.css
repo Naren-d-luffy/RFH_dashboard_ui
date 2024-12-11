@@ -1,5 +1,5 @@
 .campaign-performance-card {
-  background-color: var(--white-color);
+  background-color: var(--card-background-color);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 18px 10px;
@@ -26,11 +26,12 @@
   font-weight: 500;
   letter-spacing: -2%;
   line-height: 16.8px;
+  color: var(--black-color);
 }
 
 .rfh-basic-button {
   background-color: var(--primary-green);
-  color: var(--white-color);
+  color: var(--rfh-button-text-color);
   border: none;
   border-radius: 10px;
   font-size: 14px;
@@ -46,6 +47,7 @@
 .campaign-performance-card h3 {
   font-size: 20px;
   font-weight: 600;
+  color: var(--black-color);
 }
 
 .campaign-performance-card p {
@@ -54,6 +56,7 @@
   letter-spacing: -2%;
   line-height: 19.6px;
   margin-bottom: 0px;
+  color: var(--black-color);
 }
 
 .campaign-performance-stats {
@@ -78,6 +81,7 @@
   font-weight: 500;
   font-size: 18px;
   text-align: left;
+  color: var(--black-color);
 }
 
 .campaign-performance-graph-status-circle {
@@ -100,6 +104,7 @@
   font-size: 14px;
   font-weight: 500;
   margin-right: 15px;
+  color: var(--black-color);
 }
 
 .campaign-performance-graph-dropdown-btn {
@@ -126,23 +131,6 @@
   letter-spacing: -2%;
   line-height: 19px;
   color: var(--secondary-text-color);
-}
-
-.campaign-performance-table .ant-table-tbody > tr > td {
-  border: none;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: -2%;
-  line-height: 18px;
-}
-
-.campaign-performance-table .ant-table-thead > tr > th {
-  border: none;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: -2%;
-  line-height: 18px;
-  color: var(--table-heading-color);
 }
 
 .campaign-performance-table-action-buttons {
@@ -242,7 +230,7 @@
   position: absolute;
   top: -10px;
   font-size: 12px;
-  color: var(--secondary-text-color);
+  color: var(--black-color);
   left: 4%;
   z-index: 1;
   background-color: var(--white-color);
@@ -251,6 +239,7 @@
 
 .ant-input.create-camapign-input {
   height: 40px;
+  background: transparent;
 }
 
 .create-camapign-add-button {
@@ -272,6 +261,7 @@
   font-size: 18px;
   font-weight: 600;
   line-height: 28px;
+  color: var(--black-color);
 }
 
 .patient-acquisition-graph-overview,
@@ -321,6 +311,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--black-color);
 }
 
 .patient-acquisition-background-circle {
@@ -345,6 +336,7 @@
   font-size: 18px;
   font-weight: 600;
   line-height: 22px;
+  color: var(--black-color);
 }
 
 .patient-detail-head-text p {
@@ -354,7 +346,8 @@
   color: var(--secondary-text-color);
 }
 
-.patient-detail-personal-information-text {
+.patient-detail-personal-information-text,
+.patient-detail-address-text {
   border-left: 1px solid var(--border-color);
 }
 
@@ -370,10 +363,6 @@
   font-weight: 400;
   line-height: 19.5px;
   color: var(--black-color);
-}
-
-.patient-detail-address-text {
-  border-left: 1px solid var(--border-color);
 }
 
 .patient-detail-address-text p {
@@ -405,8 +394,9 @@
   letter-spacing: -0.03em;
   text-align: left;
   margin-bottom: 0;
-  color: var(--black-color);
+  color: var(--black-color) !important;
 }
+
 .marketing-categories-section h6 {
   font-size: 18px;
   font-weight: 600;
@@ -419,7 +409,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   padding: 14px;
-  background-color: var(--white-color);
+  background-color: var(--card-background-color);
 }
 .upcoming-event-card img {
   width: 210px;
@@ -456,6 +446,7 @@
   font-weight: 600;
   line-height: 14.52px;
   text-align: left;
+  color: var(--black-color);
 }
 .edit-event-button {
   padding: 4px 15px;
@@ -520,7 +511,7 @@
 }
 
 .recommend-video-card h4 {
-  color: var(--white-color);
+  color: var(--text-white-color) !important;
   font-size: 16px;
   position: relative;
   z-index: 2;
@@ -530,7 +521,7 @@
 }
 
 .recommend-video-card p {
-  color: var(--white-color);
+  color: var(--text-white-color);
   font-size: 14px;
   position: relative;
   z-index: 2;
@@ -539,17 +530,6 @@
   text-align: left;
 }
 
-.edit-video-button {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  padding: 4px 15px;
-  background-color: var(--white-color);
-  color: var(--primary-green);
-  border: var(--primary-green) 1px solid;
-  border-radius: 8px;
-  z-index: 2;
-}
 .video-preview {
   position: absolute;
   top: 0;
@@ -594,13 +574,14 @@
 .feature-program-card img {
   width: 100%;
   height: 250px;
+  position: relative;
 }
 .feature-program-card h4 {
   font-size: 16px;
   font-weight: 700;
   line-height: 17.11px;
   text-align: left;
-  color: var(--black-color);
+  color: var(--text-white-color);
 }
 .feature-program-card span {
   font-size: 12px;
@@ -614,38 +595,60 @@
   font-weight: 400;
   line-height: 14.52px;
   text-align: left;
+  color: var(--text-white-color);
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+.feature-program-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 17.11px;
+  text-align: left;
+  color: var(--black-color);
+}
+.feature-program-card h6 {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  text-align: left;
+  color: var(--primary-grey-color);
+  margin-bottom: 0;
+}
+.feature-program-card p {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14.52px;
+  text-align: left;
+  color: var(--black-color);
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+.feature-program-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 17.11px;
+  text-align: left;
+  color: var(--black-color);
+}
+.feature-program-card h6 {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  text-align: left;
+  color: var(--primary-grey-color);
+  margin-bottom: 0;
+}
+.feature-program-card p {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14.52px;
+  text-align: left;
   color: var(--black-color);
   margin-top: 8px;
   margin-bottom: 10px;
 }
 .feature-program-card ul {
-  
-}
-.feature-program-card h4{
-font-size: 16px;
-font-weight: 700;
-line-height: 17.11px;
-text-align: left;
-color: var(--black-color);
-}
-.feature-program-card h6{
-font-size: 12px;
-font-weight: 400;
-line-height: 18px;
-text-align: left;
-color: var(--primary-grey-color);
-margin-bottom: 0;
-}
-.feature-program-card p{
-font-size: 12px;
-font-weight: 400;
-line-height: 14.52px;
-text-align: left;
-color: var(--black-color);
-margin-top: 8px;
-margin-bottom: 10px;
-}
-.feature-program-card ul{
   padding-left: 20px;
 }
 .feature-program-card ul li {
@@ -653,6 +656,7 @@ margin-bottom: 10px;
   font-weight: 600;
   line-height: 14.52px;
   text-align: left;
+  color: var(--black-color);
 }
 
 /* manju */
@@ -697,12 +701,29 @@ margin-bottom: 10px;
   display: none !important;
 }
 
+.action-icon-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
 .action-icon-button {
   color: var(--black-color);
-  display: flex;
-  justify-content: end;
-  align-items: end;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
+.filter-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 2px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
 /* manju */
 
 .recommend-video-card iframe {
@@ -718,20 +739,53 @@ margin-bottom: 10px;
   position: absolute;
   bottom: 0;
   width: 100%;
-  z-index: 2; 
-  color: white; 
- padding: 12px;
-  
+  z-index: 2;
+  color: white;
+  padding: 12px;
 }
 .recommend-video-card-content h4 {
-font-size: 20px;
-margin-bottom: 4px;
+  font-size: 20px;
+  margin-bottom: 4px;
+  color: var(--text-white-color);
 }
 .recommend-video-card-content p {
   font-size: 11px;
-  }
-.clinic-vertical-line{
+  color: var(--text-white-color);
+}
+.clinic-vertical-line {
   border: 1px solid var(--primary-green);
   height: 14px;
 }
-  
+
+@media (max-width: 768px) {
+  .campaign-performance-head button {
+    font-size: 12px;
+  }
+  .patient-detail-personal-information-text,
+  .patient-detail-address-text {
+    border-top: 1px solid var(--border-color);
+    border-left: none;
+    padding-top: 10px;
+  }
+}
+
+/* ===========keerthi========= */
+
+.recommended-video-action-button{
+  position: relative;
+  z-index: 2;
+  color: var(--white-color);
+  background-color: none;
+  width: 100%;
+  border: none;
+}
+.featured-program-icon-container{
+  z-index: 2;
+  position: absolute;
+  top: 15px;
+}
+
+.model-image-upload-delete-icon{
+  color: var(--black-color);
+  background-color: var(--white-color);
+}

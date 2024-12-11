@@ -1,10 +1,13 @@
-import React from "react";
-import { Table, Dropdown, Button, Space, Input,} from "antd";
+import React, { useState } from "react";
+import { Table, Dropdown, Button, Input } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
-import {showDeleteMessage} from "../../../globalConstant"
+import { showDeleteMessage } from "../../../globalConstant";
+import { filterDropdown } from "../../../globalConstant";
 
 const EducationOverviewTable = () => {
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const handleDelete = () => {
     showDeleteMessage({ message: "" });
   };
@@ -88,7 +91,10 @@ const EducationOverviewTable = () => {
           <div className="campaign-performance-table-edit-icon">
             <FiEdit />
           </div>
-          <div className="campaign-performance-table-delete-icon" onClick={handleDelete}>
+          <div
+            className="campaign-performance-table-delete-icon"
+            onClick={handleDelete}
+          >
             <FiTrash2 />
           </div>
         </div>
@@ -155,58 +161,78 @@ const EducationOverviewTable = () => {
     },
   ];
 
-  const items = [
+  const handleCheckboxChange = (value, checked) => {
+    if (checked) {
+      setSelectedValues((prev) => [...prev, value]);
+    } else {
+      setSelectedValues((prev) => prev.filter((item) => item !== value));
+    }
+  };
+
+  const handleApply = () => {
+    console.log("Applied Filters:", selectedValues);
+    setIsDropdownOpen(false);
+  };
+  const handleReset = () => {
+    setSelectedValues([]);
+  };
+  const options = [
     {
-      label: "Last Day",
-      key: "1",
+      label: "Type",
+      options: [
+        { label: "All", value: "all" },
+        { label: "OPD", value: "opd" },
+        { label: "IPD", value: "ipd" },
+      ],
     },
     {
-      label: "Last week",
-      key: "2",
+      label: "Last Visit",
+      options: [
+        { label: "Last 7 days", value: "last7days" },
+        { label: "Last 30 days", value: "last30days" },
+      ],
     },
     {
-      label: "Last Month",
-      key: "3",
+      label: "All Users",
+      options: [
+        { label: "Active Users", value: "activeusers" },
+        { label: "Inactive Users", value: "inactiveusers" },
+      ],
     },
   ];
-  const handleMenuClick = ({ key }) => {};
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
 
   return (
     <div className="container mt-4">
       <div className="campaign-performance-table-head">
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between align-items-center flex-lg-row flex-xl-row flex-column">
           <h6>Campaign Performance Table</h6>
 
-          <div className="d-flex gap-3 align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
+          <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-row">
+            <div className="search-container">
+              <FiSearch className="search-icon" />
+              <input
                 type="text"
                 placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
+                className="search-input-table"
               />
             </div>
 
-            <Dropdown menu={menuProps}>
-              <Button>
-                <Space>
-                 <VscSettings />
-                   Filter
-                </Space>
+            <Dropdown
+              overlay={filterDropdown(
+                options,
+                selectedValues,
+                handleCheckboxChange,
+                handleApply,
+                handleReset
+              )}
+              trigger={["click"]}
+              open={isDropdownOpen}
+              onOpenChange={setIsDropdownOpen}
+              placement="bottomLeft"
+            >
+              <Button style={{ width: 160 }}>
+                <VscSettings />
+                Filters
               </Button>
             </Dropdown>
           </div>
@@ -226,4 +252,3 @@ const EducationOverviewTable = () => {
 };
 
 export default EducationOverviewTable;
-

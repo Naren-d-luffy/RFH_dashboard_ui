@@ -1,17 +1,20 @@
 import React, { useState } from "react";
-import { Table, Dropdown, Button, Space, Input, } from "antd";
+import { Table, Dropdown, Button, Space, Input } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { GoPlus } from "react-icons/go";
 import UserManagementAddPatientsModal from "./UserManagementAddPatientsModal";
 import UserManagementViewPatientsModal from "./UserManagementViewPatientsModal";
 import UserManagementEditPatientsModal from "./UserManagementEditPatientsModal";
-import { showDeleteMessage } from '../../../globalConstant'
+import { showDeleteMessage } from "../../../globalConstant";
+import { filterDropdown } from "../../../globalConstant";
 
 const UserManagementTable = () => {
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleDelete = (name) => {
     showDeleteMessage({ message: `this patient ${name}'s details` });
@@ -91,10 +94,10 @@ const UserManagementTable = () => {
           status === "Active"
             ? "#0CBC53"
             : status === "Paused"
-              ? "orange"
-              : status === "Inactive"
-                ? "#FB5757"
-                : "blue";
+            ? "orange"
+            : status === "Inactive"
+            ? "#FB5757"
+            : "blue";
         return (
           <span
             className="campaign-performance-table-status"
@@ -115,14 +118,23 @@ const UserManagementTable = () => {
       key: "action",
       render: (_, record) => (
         <div className="campaign-performance-table-action-icons">
-          <div className="campaign-performance-table-eye-icon" onClick={showViewModal}>
+          <div
+            className="campaign-performance-table-eye-icon"
+            onClick={showViewModal}
+          >
             <FiEye />
           </div>
-          <div className="campaign-performance-table-edit-icon" onClick={showEditModal}>
+          <div
+            className="campaign-performance-table-edit-icon"
+            onClick={showEditModal}
+          >
             <FiEdit />
           </div>
-          <div className="campaign-performance-table-delete-icon" onClick={() => handleDelete(record.name)}>
-            <FiTrash2  />
+          <div
+            className="campaign-performance-table-delete-icon"
+            onClick={() => handleDelete(record.name)}
+          >
+            <FiTrash2 />
           </div>
         </div>
       ),
@@ -188,6 +200,45 @@ const UserManagementTable = () => {
     },
   ];
 
+  const handleCheckboxChange = (value, checked) => {
+    if (checked) {
+      setSelectedValues((prev) => [...prev, value]);
+    } else {
+      setSelectedValues((prev) => prev.filter((item) => item !== value));
+    }
+  };
+
+  const handleApply = () => {
+    console.log("Applied Filters:", selectedValues);
+    setIsDropdownOpen(false);
+  };
+  const handleReset = () => {
+    setSelectedValues([]);
+  };
+  const options = [
+    {
+      label: "Type",
+      options: [
+        { label: "All", value: "all" },
+        { label: "OPD", value: "opd" },
+        { label: "IPD", value: "ipd" },
+      ],
+    },
+    {
+      label: "Last Visit",
+      options: [
+        { label: "Last 7 days", value: "last7days" },
+        { label: "Last 30 days", value: "last30days" },
+      ],
+    },
+    {
+      label: "All Users",
+      options: [
+        { label: "Active Users", value: "activeusers" },
+        { label: "Inactive Users", value: "inactiveusers" },
+      ],
+    },
+  ];
   const items = [
     {
       label: "Last Day",
@@ -202,7 +253,7 @@ const UserManagementTable = () => {
       key: "3",
     },
   ];
-  const handleMenuClick = ({ key }) => { };
+  const handleMenuClick = ({ key }) => {};
   const menuProps = {
     items,
     onClick: handleMenuClick,
@@ -211,38 +262,36 @@ const UserManagementTable = () => {
   return (
     <div className="container mt-4">
       <div className="campaign-performance-table-head">
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-between flex-lg-row flex-xl-row flex-column align-items-center">
           <h6>Patients List</h6>
-
-          <div className="d-flex gap-3 align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid var(--border-color)",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
+          <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-column align-items-center">
+            <div className="search-container">
+              <FiSearch className="search-icon" />
+              <input
                 type="text"
                 placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
+                className="search-input-table"
               />
             </div>
-
-            <Dropdown menu={menuProps}>
-              <Button>
-                <Space>
-                  <VscSettings />
-                  Filter
-                </Space>
+            <Dropdown
+              overlay={filterDropdown(
+                options,
+                selectedValues,
+                handleCheckboxChange,
+                handleApply,
+                handleReset
+              )}
+              trigger={["click"]}
+              open={isDropdownOpen}
+              onOpenChange={setIsDropdownOpen}
+              placement="bottomLeft"
+            >
+              <Button style={{ width: 160 }}>
+                <VscSettings />
+                Filters
               </Button>
             </Dropdown>
-            <button className="rfh-basic-button" onClick={showModal} >
+            <button className="rfh-basic-button" onClick={showModal}>
               <GoPlus size={20} /> Add Patients
             </button>
           </div>

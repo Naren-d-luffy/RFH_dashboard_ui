@@ -4,10 +4,26 @@ import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { EnvironmentOutlined } from "@ant-design/icons";
 import { showSuccessMessage } from "../../../globalConstant";
+import { RiDeleteBin5Line } from "react-icons/ri";
+import { useState } from "react";
 const handleClick = () => {
   showSuccessMessage("Successfully Created", "");
 };
-const OutstationClinic = ({ open, handleCancel }) => (
+const OutstationClinic = ({ open, handleCancel }) => {
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const handleUpload = (info) => {
+    const file = info.file.originFileObj;
+    const reader = new FileReader();
+    reader.onload = () => {
+      setUploadedImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDeleteImage = () => {
+    setUploadedImage(null);
+  };
+  return(
   <Modal
     open={open}
     title={
@@ -34,15 +50,46 @@ const OutstationClinic = ({ open, handleCancel }) => (
   >
     <Form layout="vertical" className="mt-4">
       <Form.Item label="Upload image">
-        <Upload listType="picture" className="create-campaign-upload">
-          <p className="create-campaign-ant-upload-text">
-            Drop files here or click to upload
-          </p>
-          <span className="create-campaign-ant-upload-drag-icon">
-            <IoCloudUploadOutline />{" "}
-            <span style={{ color: "#727880" }}>Upload Image</span>
-          </span>
-        </Upload>
+      <Upload
+            listType="picture"
+            showUploadList={false}
+            onChange={handleUpload}
+            className="create-campaign-upload"
+          >
+            <p className="create-campaign-ant-upload-text">
+              Drop files here or click to upload
+            </p>
+            <span className="create-campaign-ant-upload-drag-icon">
+              <IoCloudUploadOutline />{" "}
+              <span style={{ color: "#727880" }}>Upload Image</span>
+            </span>
+          </Upload>
+          {uploadedImage && (
+            <div className="uploaded-image-preview d-flex gap-2">
+              <img
+                src={uploadedImage}
+                alt="Uploaded"
+                style={{
+                  width: "200px",
+                  height: "auto",
+                  marginTop: "10px",
+                  borderRadius: "5px",
+                }}
+              />
+              <Button
+                onClick={handleDeleteImage}
+                style={{
+                  marginTop: "10px",
+                  backgroundColor: "#e6f2ed",
+                  borderRadius:"50%",
+                  fontSize:"16px",
+                  padding:"4px 12px"
+                }}
+              >
+                <RiDeleteBin5Line className="model-image-upload-delete-icon"/>
+              </Button>
+            </div>
+          )}
       </Form.Item>
       <div className="row">
         <div className="col-md-6 mt-2">
@@ -141,6 +188,6 @@ const OutstationClinic = ({ open, handleCancel }) => (
       </div>
     </Form>
   </Modal>
-);
+)};
 
 export default OutstationClinic;

@@ -30,12 +30,21 @@
   align-items: center;
 }
 
-.userAquisition-card p,
+.userAquisition-card p{
+  color: var(--black-color);
+  font-weight: 500;
+  line-height: 19.6px;
+  letter-spacing: -2%;
+  font-size: 12px;
+  text-align: left;
+}
+
 .application-dashboard-graph h2,
 .userAquisition-model p,
 .userAquisition-model span,
 .userManaggement-card h2,
-.userManaggement-card p {
+.userManaggement-card p,
+.crateSurvey-copy-link-p {
   font-size: 12px;
   text-align: left;
   color: var(--secondary-text-color);
@@ -130,7 +139,7 @@
   font-weight: bold;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   border-radius: 50%;
-  padding: 25px;
+  padding: 15px;
 }
 .total-user-display-first-graph {
   position: absolute;
@@ -152,10 +161,13 @@
 .total-users-count {
   font-size: 24px;
   font-weight: 600;
+  color: var(--black-color);
 }
 .total-users-count-1 {
   font-size: 20px;
   font-weight: 600;
+  color: var(--black-color);
+
 }
 
 .recharts-legend-item {
@@ -181,6 +193,7 @@
 .app-status-items h1 {
   font-size: 28px;
   font-weight: 700;
+  color: var(--black-color);
 }
 
 .total-user-display h3 {
@@ -218,9 +231,15 @@
   height: 12px;
   border-radius: 6px;
 }
-.userAquisition-model h3,
+
 .userAquisition-model p {
   text-align: center;
+  color: var(--secondary-text-color);
+}
+
+.userAquisition-model h3 {
+  text-align: center;
+  color: var(--black-color);
 }
 
 /* ==============css by keerthi============ */
@@ -295,6 +314,8 @@
   font-weight: 500;
   line-height: 58px;
   letter-spacing: -2px;
+  color: var(--black-color);
+
 }
 .most-user-success-tag {
   background: var(--tag-green-bg);
@@ -379,3 +400,8 @@
   height: auto;
   left: 65%;
 }
+/* @media (max-width: 768px){
+  .userAquisition-color-dot-div{
+    
+  } 
+} */
