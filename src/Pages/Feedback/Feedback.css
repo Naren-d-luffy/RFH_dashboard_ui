@@ -113,7 +113,7 @@
   border-right: none;
   border-radius: 0;
   padding: 8px 0;
-  color: var(--text-secondary-color);
+  color: var(--secondary-text-color);
   background-color: var(--white-color);
 }
 
