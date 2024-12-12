@@ -11,7 +11,7 @@
 }
 
 .patient-detail-main-section {
-  background-color: var(--light-gray-bg-color);
+  background-color: var(--card-background-color);
   padding: 23px 32px;
   border-radius: 12px;
 }
@@ -21,6 +21,7 @@
   font-weight: 500;
   line-height: 37.93px;
   letter-spacing: -0.03em;
+  color: var(--black-color);
 }
 
 .patient-detail-top-text h3 {

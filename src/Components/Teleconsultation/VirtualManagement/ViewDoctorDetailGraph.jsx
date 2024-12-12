@@ -26,7 +26,7 @@ const data = [
 
 const ViewDoctorDetailGraph = () => {
   return (
-    <div className="view-doctor-detail-graph-container">
+    <div className="view-doctor-detail-graph-container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3 view-doctor-detail-graph-header ">
         <div>
           <h3>Appointment Stats</h3>

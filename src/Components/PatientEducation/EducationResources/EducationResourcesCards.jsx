@@ -58,7 +58,7 @@ const EducationResourcesCards = () => {
   return (
     <div className="container mt-4">
       <div className="campaign-performance-head">
-        <h3>InApp Campaign overview</h3>
+        <h3>Education Campaign overview</h3>
         <p>there is the latest update for the last 7 days. check now</p>
       </div>
 

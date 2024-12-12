@@ -37,6 +37,7 @@
 .table-data-list {
   font-size: 26px;
   font-weight: 600;
+  color: var(--black-color);
 }
 .table-data-list:hover,
 .table-card-list:hover {
@@ -55,6 +56,7 @@
   box-shadow: 0px 2px 6px 0px #0d0a2c14;
   padding: 20px 9px;
   border-radius: 5px;
+  background-color: var(--card-background-color);
 }
 .appointment-title-icon {
   border-radius: 50%;
@@ -68,6 +70,7 @@
 .appointment-title h5 {
   font-size: 14px;
   font-weight: 600;
+  color: var(--black-color);
 }
 .appointment-card-header button {
   font-size: 14px;
@@ -87,19 +90,22 @@
   color: var(--black-color);
   font-weight: 600;
 }
-.ant-table-wrapper .ant-table-thead > tr > th {
-  background: none;
-}
+
 .ant-tabs > .ant-tabs-nav {
   margin-bottom: 0;
 }
+
+.ant-tabs .ant-tabs-tab {
+  color: var(--black-color);
+}
+
 .appoinment-table-data {
   border: 1px solid var(--border-color);
   border-radius: 5px;
 }
 
 .patient-feedback-div {
-  background-color: var(--white-color);
+  background-color: var(--card-background-color);
   border-radius: 10px;
   border: 1px solid var(--border-color);
 }
@@ -127,17 +133,17 @@
   font-weight: 500;
 }
 .patient-feedback-title {
-  color: var(--dark-blue);
+  color: var(--black-color);
   font-weight: 500;
   font-size: 12px;
 }
 .patient-feedback-div h6 {
-  color: var(--dark-blue);
+  color: var(--black-color);
   font-weight: 600;
   font-size: 12px;
 }
 .patient-feedback-div p {
-  color: var(--gray-text-color);
+  color: var(--secondary-text-color);
   font-weight: 500;
   font-size: 12px;
 }
@@ -201,7 +207,7 @@
   border-radius: 12px;
   overflow: hidden;
   padding: 5px;
-  background-color: var(--white-color);
+  background-color: var(--card-background-color);
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 .between-line {
@@ -230,7 +236,7 @@
 
 .view-doctor-detail-availability {
   background-color: var(--bg-green-color);
-  color: var(--black-color);
+  color: var(--secondary-text-color);
   border-radius: 16px;
   padding: 2px 8px;
 }
@@ -306,7 +312,6 @@
   background-position: center;
   border-radius: 5px;
   height: 128px;
-  /* width: 323px; */
 }
 .view-doctor-profile-image {
   top: 80px;
@@ -314,12 +319,10 @@
   background-color: var(--white-color);
 }
 
-
-
 /* manju */
 
 .virtual-management-graph-head h3 {
-  color: var(--heading-text-color);
+  color: var(--black-color);
   font-size: 14px;
   font-weight: 500;
   line-height: 21px;
@@ -333,6 +336,7 @@
   border: 1px solid var(--button-text-color);
   padding: 0px 20px;
   background: none;
+  color: var(--black-color);
 }
 
 .virtual-management-graph-btn-text {
@@ -382,7 +386,7 @@
 
 .custom-donut-center-circle p {
   font-size: 12px;
-  color: var(--grey-color);
+  color: var(--black-color);
 }
 
 .custom-donut-legend-item {
@@ -416,7 +420,7 @@
 
 .create-campaign-upload.ant-upload-wrapper {
   height: 187px;
-  background-color: var(--white-color) !important;
+  background-color: var(--card-background-color) !important;
 }
 
 .doctor-detail-page-head {
@@ -436,6 +440,7 @@
   font-size: 18px;
   font-weight: 400;
   line-height: 25.2px;
+  color: var(--black-color);
 }
 
 .view-doctor-detail-graph-header p {
@@ -449,7 +454,7 @@
   font-weight: 400;
   line-height: 18px;
   cursor: pointer;
-  color: var(--black-color);
+  color: var(--secondary-text-color);
   background-color: var(--button-bg-color);
   border: none;
   padding: 5px 8px;
@@ -508,7 +513,7 @@
 }
 
 .view-doctor-detail-review-card {
-  background-color: var(--card-bg-color);
+  background-color: var(--card-background-color);
   border-radius: 12px;
   padding: 15px;
   width: 300px;
@@ -600,7 +605,7 @@
   font-size: 14px;
   margin: 0;
   font-weight: 600;
-  color: var(--text-color);
+  color: var(--black-color);
   letter-spacing: -0.1px;
 }
 
@@ -660,7 +665,7 @@
   letter-spacing: -0.1px;
   color: var(--text-color);
 }
-.search-bar input{
+.search-bar input {
   width: 100%;
   padding: 6px;
   border: none;
@@ -669,9 +674,8 @@
   font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.1px;
-  color: var(--text-color);
-  box-shadow: 0px 4px 34px 0px #00963F1A;
-
+  color: var(--secondary-text-color);
+  box-shadow: 0px 4px 34px 0px #00963f1a;
 }
 
 .search-bar input:focus,
@@ -690,7 +694,7 @@
   border: none;
   border-radius: 20px;
   background-color: var(--white-color);
-  color: var(--text-color);
+  color: var(--black-color);
   cursor: pointer;
   transition: background-color 0.3s ease;
   border: 1px solid var(--border-color);
@@ -726,6 +730,7 @@
   align-items: center;
   justify-content: center;
   min-height: 30vh;
+  color: var(--black-color);
 }
 
 .message.received {
@@ -769,17 +774,19 @@
   position: absolute;
   width: 100%;
   bottom: 0px;
+  background-color: var(--white-color);
 }
 
 .message-input-container input {
   flex: 1;
   margin-right: 10px;
+  background: transparent !important;
+  color: var(--black-color);
 }
 
 .add-document-button {
   padding: 10px;
   background-color: var(--border-color);
-  color: var(--black-color);
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -854,6 +861,7 @@
   font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.1px;
+  color: var(--text-black-color);
 }
 
 .message.self {
@@ -900,6 +908,14 @@
     display: none;
   }
 }
+@media (max-width: 576px) {
+  .message-input-container {
+    width: 240px;
+  }
+  .message-input-container input {
+    width: 120px;
+  }
+}
 .chat-header-icon {
   display: flex;
   flex-direction: column;
@@ -938,7 +954,7 @@
   align-items: center;
   border: 1px solid var(--border-color);
   border-radius: 25px;
-  padding: 5px 10px;
+  /* padding: 5px 10px; */
   width: 100%;
   background-color: var(--white-color);
 }
@@ -981,7 +997,7 @@
   text-align: left;
   color: var(--secondary-text-color);
 }
-.chat-messages h6{
+.chat-messages h6 {
   font-size: 12px;
   color: var(--secondary-text-color);
 }

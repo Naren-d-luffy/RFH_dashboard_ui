@@ -1,7 +1,7 @@
-import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, TimePicker, Radio  } from 'antd'
+import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, TimePicker, Radio } from 'antd'
 import React, { useState } from 'react'
 import ReactQuill from 'react-quill'
-import {showSuccessMessage} from "../../globalConstant"
+import { showSuccessMessage } from "../../globalConstant"
 
 
 const modules = {
@@ -13,9 +13,9 @@ const modules = {
         ["clean"],
     ],
 };
-const handleClick=()=>{
+const handleClick = () => {
     showSuccessMessage("Successfully Sent", "");
-  }
+}
 const CreateSidebarNotificationModal = ({ open, handleCancel }) => {
     const [selectedValue, setSelectedValue] = useState("none");
 
@@ -25,7 +25,7 @@ const CreateSidebarNotificationModal = ({ open, handleCancel }) => {
     };
     return (
         <Modal
-            title="Create Alerts"
+        title={<span className="create-campaign-modal-title">Create Alerts</span>}
             visible={open}
             onCancel={handleCancel}
             width={680}
@@ -63,7 +63,7 @@ const CreateSidebarNotificationModal = ({ open, handleCancel }) => {
                         <span className="settings-input-span">Notification Description </span>
                     </Form.Item>
                 </div>
-                <div className="col-lg-6">
+                <div className="col-lg-6 mb-4">
                     <Row gutter={24}>
                         <Col span={24}>
                             <Select
@@ -80,7 +80,23 @@ const CreateSidebarNotificationModal = ({ open, handleCancel }) => {
                         </Col>
                     </Row>
                 </div>
-                <div className="col-lg-3">
+                <div className="col-lg-6">
+                    <Row gutter={24}>
+                        <Col span={12}>
+                            <Form.Item>
+                                <DatePicker />
+                                <span className="create-campaign-input-span">Schedule</span>
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item>
+                                <TimePicker />
+                                <span className="create-campaign-input-span">Time</span>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </div>
+                {/* <div className="col-lg-3">
                     <Form.Item>
                         <DatePicker />
                         <span className="create-campaign-input-span">Schedule</span>
@@ -91,7 +107,7 @@ const CreateSidebarNotificationModal = ({ open, handleCancel }) => {
                         <TimePicker />
                         <span className="create-campaign-input-span">Time</span>
                     </Form.Item>
-                </div>
+                </div> */}
                 <div className="col-lg-10">
                     <div>
                         <label style={{ fontWeight: 600, marginBottom: "8px", display: "block" }}>

@@ -5,37 +5,23 @@ import { useNavigate } from "react-router-dom";
 import DefaultUser from "../../Assets/Images/DefaultUser.png";
 import { GoBell } from "react-icons/go";
 import { FiSearch } from "react-icons/fi";
-
+import { Switch } from "antd";
+import { useDarkMode } from "../../DarkMode";
 const HeaderAdmin = () => {
   const navigate = useNavigate();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
-  useEffect(() => {
-    const savedDarkMode = localStorage.getItem("darkMode");
-    if (savedDarkMode === "true") {
-      setIsDarkMode(true);
-    }
-  }, []);
 
   const handleNotificationClick = () => {
     navigate("/header/notification");
   };
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark-mode");
-      localStorage.setItem("darkMode", "true");
-    } else {
-      document.documentElement.classList.remove("dark-mode");
-      localStorage.setItem("darkMode", "false");
-    }
-  }, [isDarkMode]);
+
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
-
 
   return (
     <div style={{ position: "sticky", top: "0", zIndex: "999" }}>
@@ -48,7 +34,16 @@ const HeaderAdmin = () => {
             className="search-input-header"
           />
         </div>
-        <div className="d-flex w-100 justify-content-end">
+       
+        <div className="d-flex w-100 justify-content-end align-items-center gap-2">
+        <div className="toggle-container">
+          <Switch
+            checked={isDarkMode}
+            onClick={toggleDarkMode}
+            className={`custom-switch ${isDarkMode ? "ant-switch-dark" : "ant-switch-light"}`}
+            />
+         
+        </div>
           <div className="d-flex align-items-center gap-2">
             <button
               type="button"
@@ -57,7 +52,7 @@ const HeaderAdmin = () => {
               className="notification-button"
               onClick={handleNotificationClick}
             >
-              <GoBell className="notification-icon" />
+              <GoBell className="notification-icon" color="var(--black-color)"/>
               <span className="notification-badge">4</span>
             </button>
 
@@ -72,7 +67,7 @@ const HeaderAdmin = () => {
                 onClick={toggleDropdown}
                 aria-expanded={isDropdownOpen}
               >
-                <img className="profile--icon" src={DefaultUser} alt=""/>
+                <img className="profile--icon" src={DefaultUser} alt="" />
               </button>
               <div className="user-info">
                 <span

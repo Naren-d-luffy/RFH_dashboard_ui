@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Dropdown, Input, Space } from "antd";
+import { Button, Dropdown, Input } from "antd";
 import { FiSearch } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
 import { VscSettings } from "react-icons/vsc";
@@ -11,21 +11,18 @@ import "slick-carousel/slick/slick-theme.css";
 import img1 from "../../../Assets/Images/img1.png";
 import img2 from "../../../Assets/Images/img2.png";
 import img3 from "../../../Assets/Images/img3.png";
-
+import {filterDropdown} from "../../../globalConstant"
+import {   Menu } from "antd";
+import { BiEdit } from "react-icons/bi";
+import { RiDeleteBin7Line } from "react-icons/ri";
+import { BsThreeDotsVertical } from "react-icons/bs";
 const EducationCategoriesGastroIllness = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showMenu, setShowMenu] = useState(null); 
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
-
-  const items = [
-    { label: "Last Day", key: "1" },
-    { label: "Last Week", key: "2" },
-    { label: "Last Month", key: "3" },
-  ];
-  const handleMenuClick = ({ key }) => {};
-  const menuProps = { items, onClick: handleMenuClick };
 
   const eventData = [
     {
@@ -51,44 +48,31 @@ const EducationCategoriesGastroIllness = () => {
     },
   ];
 
-  const toggleMenu = (index) => {
-    setShowMenu(showMenu === index ? null : index);
-  };
+  const sortMenu = (
+    <Menu>
+      <Menu.Item key="edit" className="filter-menu-item">
+        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        Edit
+      </Menu.Item>
+      <Menu.Item key="delete" className="filter-menu-item">
+        <RiDeleteBin7Line
+          style={{ color: "var(--red-color)", marginRight: "4px" }}
+        />
+        Delete
+      </Menu.Item>
+    </Menu>
+  );
 
   const renderEventCard = (event, index) => (
     <div className="col-lg-4" key={index}>
       <div className="upcoming-event-card p-3" style={{ position: "relative" }}>
-        <div
-          className="education-categories-faq-menu"
-          onClick={(e) => {
-            e.stopPropagation(); 
-            toggleMenu(index);
-          }}
-          style={{
-            cursor: "pointer",
-            position: "absolute",
-            top: "10px",
-            right: "10px",
-            zIndex: 10,
-          }}
-        >
-          <IoEllipsisVerticalSharp size={20} />
-          {showMenu === index && (
-            <div
-              className="education-categories-menu-options"
-            >
-              <button
-                onClick={() => console.log(`Edit ${event.title}`)}
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => console.log(`Delete ${event.title}`)}
-              >
-                Delete
-              </button>
-            </div>
-          )}
+
+      <div className="treatment-info-icon-container">
+          <Dropdown overlay={sortMenu} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical />
+            </button>
+          </Dropdown>
         </div>
 
         <div className="d-flex justify-content-center align-items-center mb-3">
@@ -123,33 +107,76 @@ const EducationCategoriesGastroIllness = () => {
     ],
   };
 
+  const handleCheckboxChange = (value, checked) => {
+    if (checked) {
+      setSelectedValues((prev) => [...prev, value]);
+    } else {
+      setSelectedValues((prev) => prev.filter((item) => item !== value));
+    }
+  };
+
+  const handleApply = () => {
+    console.log("Applied Filters:", selectedValues);
+    setIsDropdownOpen(false);
+  };
+  const handleReset = () => {
+    setSelectedValues([]);
+  };
+  const options = [
+    {
+      label: "Type",
+      options: [
+        { label: "All", value: "all" },
+        { label: "OPD", value: "opd" },
+        { label: "IPD", value: "ipd" },
+      ],
+    },
+    {
+      label: "Last Visit",
+      options: [
+        { label: "Last 7 days", value: "last7days" },
+        { label: "Last 30 days", value: "last30days" },
+      ],
+    },
+    {
+      label: "All Users",
+      options: [
+        { label: "Active Users", value: "activeusers" },
+        { label: "Inactive Users", value: "inactiveusers" },
+      ],
+    },
+  ];
+
   return (
     <div className="container mt-4">
       <div className="marketing-categories-section">
-        <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="d-flex flex-column flex-sm-column flex-md-row justify-content-between align-items-center mb-4">
           <h4>Education Categories</h4>
           <div className="d-flex gap-3 align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
+            <div className="search-container">
+              <FiSearch className="search-icon" />
+              <input
                 type="text"
                 placeholder="Search anything here"
-                style={{ border: "none", outline: "none" }}
+                className="search-input-table"
               />
             </div>
-            <Dropdown menu={menuProps}>
-              <Button>
-                <Space>
-                  <VscSettings />
-                  Filter
-                </Space>
+            <Dropdown
+              overlay={filterDropdown(
+                options,
+                selectedValues,
+                handleCheckboxChange,
+                handleApply,
+                handleReset
+              )}
+              trigger={["click"]}
+              open={isDropdownOpen}
+              onOpenChange={setIsDropdownOpen}
+              placement="bottomLeft"
+            >
+              <Button style={{ width: 160 }}>
+                <VscSettings />
+                Filters
               </Button>
             </Dropdown>
           </div>

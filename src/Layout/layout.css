@@ -23,7 +23,7 @@
   align-items: center;
   padding-left: 8px;
   font-size: 24px;
-  color: var(--text-color);
+  color: var(--secondary-text-color);
 }
 
 .search-icon svg {
@@ -462,4 +462,52 @@
     cursor: pointer;
     color: var(--black-color);
   }
+}
+
+.menu-close-button-response {
+  display: block;
+}
+
+@media (min-width: 769px) {
+  .menu-close-button-response {
+    display: none;
+  }
+}
+.custom-switch.ant-switch .ant-switch-handle::before {
+    background: url("../Assets/Icons/sunicon.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.custom-switch.ant-switch-dark .ant-switch-handle::before {
+    background: url("../Assets/Icons/moonicon.png"); 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.custom-switch.ant-switch .ant-switch-inner {
+    padding-inline-start: 0px;
+    padding-inline-end: 0px;
+}
+
+.custom-switch.ant-switch .ant-switch-inner-unchecked {
+    background: url("../Assets/Icons/lightmode.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.custom-switch.ant-switch .ant-switch-inner-checked {
+    background: url("../Assets/Icons/darkmode.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.custom-switch.ant-switch{
+    min-width: 55px;
+}
+.notification-icon{
+    color: var(--black-color);
 }

@@ -25,9 +25,11 @@ export const MarketingCategories = () => {
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
   const items = [
-    { label: "Last Day", key: "1" },
-    { label: "Last Week", key: "2" },
-    { label: "Last Month", key: "3" },
+    { label: "Upcoming Events", key: "1" },
+    { label: "Recomended", key: "2" },
+    { label: "Featured Programs", key: "3" },
+    { label: "Latest Camps", key: "4" },
+    { label: "Outstation Clinic", key: "5" },
   ];
   const handleMenuClick = ({ key }) => {};
 
@@ -143,13 +145,6 @@ export const MarketingCategories = () => {
   );
   const renderRecommendVideo = (video) => (
     <div className="col-lg-4">
-      <div className="action-icon-container">
-        <Dropdown overlay={sortMenu} trigger={["click"]}>
-          <button className="action-icon-button">
-            <BsThreeDotsVertical />
-          </button>
-        </Dropdown>
-      </div>
       <div
         className="recommend-video-card p-3"
         style={{
@@ -165,7 +160,13 @@ export const MarketingCategories = () => {
           playsInline
           preload="metadata"
         ></video>
-
+        <div className="action-icon-container">
+          <Dropdown overlay={sortMenu} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical className="recommended-video-action-button" />
+            </button>
+          </Dropdown>
+        </div>
         <div className="play-button-overlay">
           <FaPlay style={{ color: "var(--white-color)" }} />
         </div>
@@ -232,26 +233,15 @@ export const MarketingCategories = () => {
         <div className="d-flex flex-lg-row flex-xl-row flex-column justify-content-between align-items-center">
           <h4>Marketing Categories</h4>
           <div className="d-flex gap-3 align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
+            <div className="search-container">
+              <FiSearch className="search-icon" />
+              <input
                 type="text"
                 placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
+                className="search-input-table"
               />
             </div>
-
-            <Dropdown menu={menuProps}>
+            <Dropdown menu={menuProps} overlayClassName="dropdown-hover-color">
               <Button>
                 <Space>
                   <VscSettings />

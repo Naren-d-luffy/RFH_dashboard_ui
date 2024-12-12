@@ -38,7 +38,7 @@ export const FinancialPerformanceGraph = () => {
   return (
     <div className="row mt-4 ">
       {/* First Graph */}
-      <div className="col-lg-7">
+      <div className="col-xl-7">
         <div className="appointment-bboking-graph">
           <div className="d-flex justify-content-between align-items-center mb-3 view-doctor-detail-graph-header">
             <div>
@@ -79,7 +79,7 @@ export const FinancialPerformanceGraph = () => {
               {/* Bars with rounded ends and specified colors */}
               <Bar
                 dataKey="Completed"
-                fill="var(--black-color)"
+                fill="var(--graph-field-color)"
                 radius={[8, 8, 8, 8]} 
               />
               <Bar
@@ -98,7 +98,7 @@ export const FinancialPerformanceGraph = () => {
       </div>
 
       {/* Second Graph */}
-      <div className="col-lg-5 mb-4">
+      <div className="col-xl-5 mb-4">
         <div className="d-flex flex-column gap-4 top-used-screens">
           <div className="d-flex justify-content-between align-items-center w-100">
             <div className="d-flex gap-2 align-items-center">
@@ -119,8 +119,8 @@ export const FinancialPerformanceGraph = () => {
                   data={trafficData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={70}
-                  outerRadius={100}
+                  innerRadius={65}
+                  outerRadius={90}
                   dataKey="value"
                   startAngle={90}
                   endAngle={450}
@@ -151,7 +151,7 @@ export const FinancialPerformanceGraph = () => {
                   content={({ payload }) => (
                     <div>
                       {payload.map((entry, index) => (
-                        <div className="d-flex flex-column">
+                        <div className="d-flex flex-column ms-3">
                           <div
                             style={{
                               display: "flex",

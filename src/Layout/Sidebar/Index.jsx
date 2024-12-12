@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../layout.css";
-import logo from "../../Assets/Images/logo.png";
+import lightLogo from "../../Assets/Images/logo.png";
+import darkLogo from "../../Assets/Images/darkLogo.png"
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineDashboard } from "react-icons/md";
@@ -19,6 +20,7 @@ import {
 import { SlGraduation } from "react-icons/sl";
 import { IoMenu, IoTelescopeOutline } from "react-icons/io5";
 import { BiCapsule } from "react-icons/bi";
+import { useDarkMode } from "../../DarkMode";
 
 const menuConfig = [
   {
@@ -26,7 +28,7 @@ const menuConfig = [
     label: "User Dashboards",
     icon: <MdOutlineDashboard className="sidebar-icon" />,
     subMenu: [
-      { label: "User Acquisition & Retention", to: "/" },
+      { label: "User Acquisition & Retention", to: "/user-dashboards/user-aquisition" },
       { label: "User Engagement", to: "/user-dashboards/user-engagement" },
     ],
   },
@@ -68,7 +70,7 @@ const menuConfig = [
         label: "Appointment Status",
         to: "/teleconsultation/appointment-status",
       },
-      { label: "Technical Support", to: "/" },
+      { label: "Technical Support", to: "/teleconsultation/technical-support" },
     ],
   },
   {
@@ -142,10 +144,11 @@ function SidebarAdmin() {
   const toggleMenu = (menu) => {
     setExpandedMenu(expandedMenu === menu ? null : menu);
   };
+  const { isDarkMode } = useDarkMode();
 
   useEffect(() => {
     const pathToMenuMap = {
-      "/": "userDashboards",
+      "/user-dashboards/user-aquisition": "userDashboards",
       "/user-dashboards/user-engagement": "userDashboards",
       "/admin/user-management": "admin",
       "/marketing/campaign-performance": "marketing",
@@ -164,6 +167,8 @@ function SidebarAdmin() {
       "/feedback/view-feedback": "feedback",
       "/feedback/negative-feedback": "feedback",
       "/teleconsultation/appointment-status": "teleconsultation",
+      "/teleconsultation/doctor-detail": "teleconsultation",
+      "/teleconsultation/technical-support": "teleconsultation",
       "/operational/appointment-reports": "operational",
       "/operational/service-utilization": "operational",
       "/operational/financial-performance": "operational",
@@ -187,7 +192,7 @@ function SidebarAdmin() {
   return (
     <>
       <button
-        className="toggle-btn-header d-block d-sm-none"
+        className="toggle-btn-header d-block d-sm-block d-md-block d-lg-none"
         onClick={toggleSidebar}
       >
         <IoMenu style={{ width: "30px", height: "30px", position: "fixed" }} />
@@ -196,14 +201,13 @@ function SidebarAdmin() {
       <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
         <aside className={`sidebar-content ${isSidebarOpen ? "open" : ""}`}>
           <div className="sidebar-header d-flex justify-content-center align-items-center">
-            <img
-              src={logo}
+          <img src={isDarkMode ? darkLogo : lightLogo}
               alt="Logo"
               className="sidebar-logo"
               onClick={() => navigate("/")}
             />
             <button
-              className="close-btn d-block d-sm-none"
+              className="close-btn menu-close-button-response"
               onClick={toggleSidebar}
             >
               <IoMdClose />

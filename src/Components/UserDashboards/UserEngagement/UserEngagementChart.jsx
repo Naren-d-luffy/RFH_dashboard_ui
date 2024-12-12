@@ -84,7 +84,7 @@ export const UserEngagementChart = () => {
           {/* Individual Data Sections */}
           <div className="row mt-4">
             {data.map((item, index) => (
-              <div key={index} className="col-md-6 mb-2">
+              <div key={index} className="col-lg-6 col-md-6 mb-2">
                 <div className="individual-most-user-card">
                   <div className="d-flex gap-2 align-items-center mb-2">
                     <div
@@ -127,7 +127,7 @@ export const UserEngagementChart = () => {
             </div>
             <Dropdown menu={menuProps}>
               <Button type="text">
-                <PiDotsThreeOutlineLight size={24} />
+                <PiDotsThreeOutlineLight size={24} color="var(--black-color)"/>
               </Button>
             </Dropdown>
           </div>
@@ -158,7 +158,6 @@ export const UserEngagementChart = () => {
                     borderRadius: "8px",
                     color: "var(--white-color)",
                     border: "none",
-                    
                   }}
                   formatter={(value, name, props) => {
                     const color = props.payload?.color || "#000";
@@ -187,12 +186,11 @@ export const UserEngagementChart = () => {
                           }}
                         >
                           {value.toLocaleString()}{" "}
-                         
                         </p>
                       </span>
                     );
                   }}
-                  labelFormatter={() => ""} 
+                  labelFormatter={() => ""}
                 />
 
                 <Legend
