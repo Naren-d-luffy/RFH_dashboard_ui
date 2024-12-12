@@ -35,6 +35,7 @@ import ChattingPage from "./Pages/Chat/chatPage";
 
 import Layout from "./Pages";
 import SignIn from "./Components/Auth/SignIn";
+import NewsPage from "./Pages/News/NewsPage";
 
 export const AppRouter = () => {
   return (
@@ -164,6 +165,8 @@ export const AppRouter = () => {
             element={<ChatPage />}
           />
           <Route path="/chat" element={<ChattingPage />} />
+          <Route path="/news" element={<NewsPage />} />
+
         </Route>
       </Routes>
     </BrowserRouter>
