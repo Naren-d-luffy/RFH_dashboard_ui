@@ -18,7 +18,7 @@ import {
   Settings,
 } from "lucide-react";
 import { SlGraduation } from "react-icons/sl";
-import { IoMenu, IoTelescopeOutline } from "react-icons/io5";
+import { IoMenu, IoNewspaperOutline, IoTelescopeOutline } from "react-icons/io5";
 import { BiCapsule } from "react-icons/bi";
 import { useDarkMode } from "../../DarkMode";
 
@@ -28,7 +28,7 @@ const menuConfig = [
     label: "User Dashboards",
     icon: <MdOutlineDashboard className="sidebar-icon" />,
     subMenu: [
-      { label: "User Acquisition & Retention", to: "/" },
+      { label: "User Acquisition & Retention", to: "/user-dashboards/user-aquisition" },
       { label: "User Engagement", to: "/user-dashboards/user-engagement" },
     ],
   },
@@ -96,6 +96,12 @@ const menuConfig = [
     ],
   },
   {
+    id: "news",
+    label: "News",
+    icon: <IoNewspaperOutline className="sidebar-icon" size={14} />,
+    to: "/news",
+  },
+  {
     id: "technical",
     label: "Technical",
     icon: <MemoryStick className="sidebar-icon" size={14} />,
@@ -148,7 +154,7 @@ function SidebarAdmin() {
 
   useEffect(() => {
     const pathToMenuMap = {
-      "/": "userDashboards",
+      "/user-dashboards/user-aquisition": "userDashboards",
       "/user-dashboards/user-engagement": "userDashboards",
       "/admin/user-management": "admin",
       "/marketing/campaign-performance": "marketing",

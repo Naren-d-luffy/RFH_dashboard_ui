@@ -34,13 +34,16 @@ import ChatPage from "./Pages/Teleconsultation/ChatPage";
 import ChattingPage from "./Pages/Chat/chatPage";
 
 import Layout from "./Pages";
+import SignIn from "./Components/Auth/SignIn";
+import NewsPage from "./Pages/News/NewsPage";
 
 export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
+      <Route path="/" element={<SignIn />} />
         <Route element={<Layout />}>
-          <Route path="/" element={<UserAquisitionPage />} />
+          <Route path="/user-dashboards/user-aquisition" element={<UserAquisitionPage />} />
           <Route
             path="/user-dashboards/user-engagement"
             element={<UserEngagementPage />}
@@ -162,6 +165,8 @@ export const AppRouter = () => {
             element={<ChatPage />}
           />
           <Route path="/chat" element={<ChattingPage />} />
+          <Route path="/news" element={<NewsPage />} />
+
         </Route>
       </Routes>
     </BrowserRouter>
