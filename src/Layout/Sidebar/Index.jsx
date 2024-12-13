@@ -182,6 +182,8 @@ function SidebarAdmin() {
       "/teleconsultation/virtual-management": "teleconsultation",
       "/teleconsultation/view-doctor-detail": "teleconsultation",
       "/medication-tracker": "medicationtracker",
+      "/medication-tracker/add-patient-detail": "medicationtracker",
+      "/medication-tracker/patient-detail": "medicationtracker",
       "/sidebar/notification": "",
       "/logout": "logout",
     };

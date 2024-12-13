@@ -789,3 +789,6 @@
   color: var(--black-color);
   background-color: var(--white-color);
 }
+.image-upload-icon{
+  color: var(--black-color);
+}

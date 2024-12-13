@@ -324,8 +324,9 @@ const DoctorDetail = () => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline /> Upload Image
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "} Upload Image
               </span>
+
             </Upload>
             {uploadedFile && (
               <div className="uploaded-image-preview d-flex gap-2">
