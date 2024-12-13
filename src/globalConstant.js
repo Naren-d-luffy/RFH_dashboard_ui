@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
-import deleteIcon from "./Assets/Icons/delete-warning-icon.png"
-import success from "./Assets/Icons/success.png"
+import deleteIcon from "./Assets/Icons/delete-warning-icon.png";
+import success from "./Assets/Icons/success.png";
 
 import { Button, Card, Checkbox, Input, Modal } from "antd";
 import { FiSearch } from "react-icons/fi";
@@ -11,7 +11,7 @@ export const showSuccessMessage = (message, extraContent = "") => {
 		imageUrl: success,
 		imageWidth: 100,
 		imageHeight: 100,
-		padding: '10px',
+		padding: "10px",
 		html: `
 			<p style='color: var(--black-color); font-size: 24px; font-weight: 600; margin-bottom: 0; text-align: center; margin-top: -25px;'>
 				${message}
@@ -22,12 +22,12 @@ export const showSuccessMessage = (message, extraContent = "") => {
 		`,
 		confirmButtonText: "Done",
 		confirmButtonColor: "var(--primary-green)",
-		width: '420px',
+		width: "420px",
 		customClass: {
-			popup: 'custom-swal-popup',
-			confirmButton: 'custom-swal-button',
-			image: 'custom-swal-image'
-		}
+			popup: "custom-swal-popup",
+			confirmButton: "custom-swal-button",
+			image: "custom-swal-image",
+		},
 	});
 };
 
@@ -57,7 +57,11 @@ export const showDeleteMessage = ({
 					gap: "10px",
 				}}
 			>
-				<img src={deleteIcon} alt="" style={{ width: "100px", height: "100px" }} />
+				<img
+					src={deleteIcon}
+					alt=""
+					style={{ width: "100px", height: "100px" }}
+				/>
 				<div className="delete-message">
 					{title} {message && <div>{message}?</div>}
 				</div>
@@ -114,7 +118,11 @@ export const showLogoutMessage = ({
 					gap: "10px",
 				}}
 			>
-				<img src={deleteIcon} alt="" style={{ width: "100px", height: "100px" }} />
+				<img
+					src={deleteIcon}
+					alt=""
+					style={{ width: "100px", height: "100px" }}
+				/>
 				<div className="delete-message">
 					{title} {message && <div>{message}?</div>}
 				</div>
@@ -139,7 +147,7 @@ export const showLogoutMessage = ({
 							if (onDelete && typeof onDelete === "function") {
 								onDelete();
 							}
-							showSuccessMessage("Deleted successfully", "Details deleted");
+							showSuccessMessage("Logout successfully");
 							Modal.destroyAll();
 						}}
 					>
@@ -156,7 +164,13 @@ export const showLogoutMessage = ({
 	});
 };
 
-export const filterDropdown = (options, selectedValues, handleCheckboxChange, handleApply, handleReset) => (
+export const filterDropdown = (
+	options,
+	selectedValues,
+	handleCheckboxChange,
+	handleApply,
+	handleReset
+) => (
 	<Card className="filter-card">
 		<div
 			className="d-flex align-items-center px-3 mb-3"
@@ -178,13 +192,15 @@ export const filterDropdown = (options, selectedValues, handleCheckboxChange, ha
 			/>
 		</div>
 		{options.map((group) => (
-			<div key={group.label} style={{ marginBottom: '16px' }}>
-				<p style={{ marginBottom: '8px' }}>{group.label}</p>
+			<div key={group.label} style={{ marginBottom: "16px" }}>
+				<p style={{ marginBottom: "8px" }}>{group.label}</p>
 				{group.options.map((option) => (
-					<div key={option.value} style={{ marginBottom: '8px' }}>
+					<div key={option.value} style={{ marginBottom: "8px" }}>
 						<Checkbox
 							checked={selectedValues.includes(option.value)}
-							onChange={(e) => handleCheckboxChange(option.value, e.target.checked)}
+							onChange={(e) =>
+								handleCheckboxChange(option.value, e.target.checked)
+							}
 						>
 							{option.label}
 						</Checkbox>

@@ -1,20 +1,19 @@
 .login-container {
-  display: flex;
   height: 100vh;
 }
 
 .login-form {
-  flex: 1;
   padding: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   background-image: radial-gradient(#d0ecdb, #e6f5ec, #57ba81);
+  height: 100vh;
 }
 
 .logo {
-  width: 200px;
-  margin-bottom: 32px;
+  width: 150px;
+  margin-bottom: 16px;
 }
 
 .login--p {
@@ -37,7 +36,7 @@ label {
 
 input {
   width: 100%;
-  padding: 10px;
+  padding: 5px;
   border: 1px solid #ccc;
   border-radius: 8px;
 }
@@ -64,10 +63,12 @@ input {
   text-decoration: none;
   font-weight: 500;
 }
-
+.forgot-password:hover{
+  color: var(--primary-green);
+}
 .login-button {
   width: 100%;
-  padding: 10px;
+  padding: 5px;
   background-color: #00963f;
   color: #fff;
   border: none;
@@ -78,21 +79,22 @@ input {
 .terms {
   font-size: 14px;
   color: #373737;
-  margin-top: 12px;
+  /* margin-top: 12px; */
   font-weight: 500;
 }
 
 .login-image {
-  flex: 1;
   position: relative;
   overflow: hidden;
+  height: 100vh;
+  padding: 0;
 }
 
 .login-image .ant-carousel,
 .login-image .ant-carousel .slick-slider,
 .login-image .ant-carousel .slick-list,
 .login-image .ant-carousel .slick-track,
-.login-image .ant-carousel .slick-slide>div {
+.login-image .ant-carousel .slick-slide > div {
   height: 100%;
 }
 
@@ -100,7 +102,6 @@ input {
   position: relative;
   text-align: center;
   height: 100%;
-  background: #00963f;
 }
 
 .login-image .ant-carousel .slick-slide img {
@@ -116,13 +117,22 @@ input {
   right: 0;
   padding: 20px;
   color: #fff;
-  text-align: center;
+  text-align: left;
   background: rgba(0, 0, 0, 0.05);
 }
-
+.image-overlay h1 {
+  margin: 0;
+  padding: 10px;
+  font-size: 26px;
+  line-height: 1.5;
+  color: #fff;
+  font-weight: 500;
+  font-family: "Inter";
+}
 .image-overlay p {
   margin: 0;
   font-size: 16px;
+  padding: 10px;
   line-height: 1.5;
   color: #fff;
   font-weight: 500;
@@ -148,22 +158,17 @@ input {
   width: 40px;
 }
 
-
-
 .signup-container {
-  display: flex;
-  height: 100%;
-  background-color: #f0f0f0;
+  height: 100vh;
 }
 
 .signup-form {
-  flex: 1;
   padding: 40px;
   background-image: radial-gradient(#d0ecdb, #e6f5ec, #57ba81);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 600px;
+  height: 100vh;
 }
 
 .welcome-text {
@@ -172,13 +177,13 @@ input {
   letter-spacing: -0.1px;
   line-height: normal;
   color: #000;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 .signup-title {
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   color: #333;
   line-height: normal;
   letter-spacing: 0.1px;
@@ -190,13 +195,16 @@ input {
   font-weight: 500;
   letter-spacing: 0.1px;
   margin-top: 4px;
+  margin-bottom: 0;
+
 }
 
 .login-link {
   color: #667085;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 10px;
   font-size: 14px;
+  margin-bottom: 0;
   font-weight: 500;
   letter-spacing: -0.1px;
 }
@@ -224,12 +232,13 @@ input {
 }
 
 .signup-image {
-  flex: 1;
   background-color: #f8f8f8;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  height: 100vh;
+  padding: 0;
 }
 
 .signup-image img {
@@ -238,20 +247,19 @@ input {
   object-fit: cover;
 }
 
-
-
 /* ============================================================================================ */
 /* ============================================================================================ */
 /* ============================================================================================ */
 /* ============================================================================================ */
-
 
 @media (max-width: 768px) {
   .signup-container {
     flex-direction: column;
     height: 100vh;
   }
-
+  .login-image {
+    display: none;
+  }
   .signup-form {
     max-width: 100%;
   }
@@ -263,4 +271,50 @@ input {
   .login-form {
     flex: unset;
   }
+}
+.ant-carousel .slick-list .slick-slide.slick-active {
+  padding: 0;
+}
+.otp-input-group {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.otp-input {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  border: 1px solid var(--secondary-text-color);
+  border-radius: 10px;
+  margin: 0 8px;
+  color: var(--primary-green);
+  background-color: transparent;
+  caret-color: transparent;
+}
+
+.otp-input:focus {
+  outline: none;
+}
+.resend-info {
+  text-align: center;
+}
+
+.resend-info p {
+  color: var(--black-color);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.resend-info span {
+  color: var(--secondary-text-color);
+  font-size: 14px;
+  font-weight: 600;
+}
+.resend-link {
+  color: var(--red-color) !important;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
 }

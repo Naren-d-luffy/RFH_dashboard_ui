@@ -37,12 +37,21 @@ import Layout from "./Pages";
 import SignIn from "./Components/Auth/SignIn";
 import HelloDoctorPage from "./Pages/HelloDoctor/HelloDoctorPage";
 import NewsPage from "./Pages/News/NewsPage";
+import SignUp from "./Components/Auth/SignUp";
+import ForgotPassword from "./Components/Auth/ForgotPassword";
+import OtpScreen from "./Components/Auth/OtpScreen";
+import ConfirmPassword from "./Components/Auth/ConfirmPassword";
 
 export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/otp-verification" element={<OtpScreen />} />
+        <Route path="/confirm-password" element={<ConfirmPassword />} />
+
         <Route element={<Layout />}>
           <Route
             path="/user-dashboards/user-aquisition"
