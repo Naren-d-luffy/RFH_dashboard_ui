@@ -554,9 +554,6 @@
 .view-doctor-detail-slider-line.active {
   background-color: var(--primary-green);
 }
-.team-chat-container {
-  height: 75vh;
-}
 
 .chat-sidebar {
   padding: 24px;
@@ -772,7 +769,7 @@
   border-top: 1px solid var(--border-color);
   gap: 4px;
   position: absolute;
-  width: 100%;
+  width: 100% !important;
   bottom: 0px;
   background-color: var(--white-color);
 }

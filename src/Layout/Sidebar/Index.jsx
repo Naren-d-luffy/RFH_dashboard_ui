@@ -18,6 +18,9 @@ import {
   Settings,
 } from "lucide-react";
 import { SlGraduation } from "react-icons/sl";
+
+import {  IoVideocamOutline } from "react-icons/io5";
+
 import { IoMenu, IoNewspaperOutline, IoTelescopeOutline } from "react-icons/io5";
 import { BiCapsule } from "react-icons/bi";
 import { useDarkMode } from "../../DarkMode";
@@ -47,6 +50,12 @@ const menuConfig = [
       { label: "InApp Campaign", to: "/marketing/in-app-campaign" },
       { label: "Patient Acquisition", to: "/marketing/patient-acquisition" },
     ],
+  },
+  {
+    id: "hello doctor",
+    label: "Hello Doctor",
+    icon: <IoVideocamOutline className="sidebar-icon" />,
+    subMenu: [{ label: "Hello Doctor", to: "/hello-doctor" }],
   },
   {
     id: "education",
@@ -159,6 +168,7 @@ function SidebarAdmin() {
       "/admin/user-management": "admin",
       "/marketing/campaign-performance": "marketing",
       "/marketing/patient-acquisition": "marketing",
+      "/hello-doctor": "hello doctor",
       "/marketing/in-app-campaign": "marketing",
       "/marketing/patient-acquisition/patient-detail": "marketing",
       "/dashboard/settings": "",
@@ -182,6 +192,8 @@ function SidebarAdmin() {
       "/teleconsultation/virtual-management": "teleconsultation",
       "/teleconsultation/view-doctor-detail": "teleconsultation",
       "/medication-tracker": "medicationtracker",
+      "/medication-tracker/add-patient-detail": "medicationtracker",
+      "/medication-tracker/patient-detail": "medicationtracker",
       "/sidebar/notification": "",
       "/logout": "logout",
     };

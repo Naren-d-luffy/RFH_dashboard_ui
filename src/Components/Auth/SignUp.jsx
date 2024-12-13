@@ -4,7 +4,7 @@ import logo from "../Assets/Logo/logo.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { message, Spin } from "antd";
-import Instance from "../AxiosConfig";
+import {loginInstance} from "../AxiosConfig";
 import signup from "../../Assets/Images/SignUp.png";
 import { LoadingOutlined } from "@ant-design/icons";
 
@@ -37,7 +37,7 @@ const SignUp = () => {
 
         try {
             setLoading(true);
-            const response = await Instance.post("/auth/register", {
+            const response = await loginInstance.post("/auth/register", {
                 name,
                 email,
                 phoneNumber,

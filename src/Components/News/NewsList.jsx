@@ -9,7 +9,7 @@ import { showDeleteMessage } from "../../globalConstant";
 import { filterDropdown } from "../../globalConstant";
 import { VscSettings } from "react-icons/vsc";
 import { GoPlus } from "react-icons/go";
-import Instance from "../../AxiosConfig";
+import {Instance} from "../../AxiosConfig";
 import dayjs from "dayjs";
 import CreateNews from "./CreateNews";
 import EditNews from "./EditNews";

@@ -60,8 +60,10 @@
     font-size: 14px;
   }
 }
-
-
+.userAquisition-dropdown option:hover {
+  background-color: var(--primary-green);
+  color: #fff; /* Optional: Ensure text is readable */
+}
 
 
 

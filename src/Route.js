@@ -35,15 +35,19 @@ import ChattingPage from "./Pages/Chat/chatPage";
 
 import Layout from "./Pages";
 import SignIn from "./Components/Auth/SignIn";
+import HelloDoctorPage from "./Pages/HelloDoctor/HelloDoctorPage";
 import NewsPage from "./Pages/News/NewsPage";
 
 export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
-      <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<SignIn />} />
         <Route element={<Layout />}>
-          <Route path="/user-dashboards/user-aquisition" element={<UserAquisitionPage />} />
+          <Route
+            path="/user-dashboards/user-aquisition"
+            element={<UserAquisitionPage />}
+          />
           <Route
             path="/user-dashboards/user-engagement"
             element={<UserEngagementPage />}
@@ -64,6 +68,12 @@ export const AppRouter = () => {
             path="/marketing/patient-acquisition/patient-detail"
             element={<PatientDetailPage />}
           />
+
+          <Route
+            path="/hello-doctor"
+            element={<HelloDoctorPage />}
+          />
+
           <Route path="/dashboard/settings" element={<SettingsPage />} />
 
           <Route path="/user-engagement" element={<UserEngagementPage />} />
@@ -132,7 +142,11 @@ export const AppRouter = () => {
             element={<DoctorDetailPage />}
           />
           <Route
-            path="/teleconsultation/view-doctor-detail"
+            path="/teleconsultation/doctor-detail/:id"
+            element={<DoctorDetailPage />}
+          />
+          <Route
+            path="/teleconsultation/view-doctor-detail/:id"
             element={<ViewDoctorDetailPage />}
           />
           <Route

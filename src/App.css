@@ -107,13 +107,13 @@ body,
   font-weight: 600;
   letter-spacing: -2%;
   line-height: 18px;
-  background-color: var(--table-data-bg-color);
+  background-color: var(--table-data-bg-color) !important;
   color: var(--black-color);
 }
 
 .ant-table-thead > tr > th {
   border: none;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: -2%;
   line-height: 18px;
