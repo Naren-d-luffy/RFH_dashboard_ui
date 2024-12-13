@@ -252,7 +252,7 @@ export const MarketingCategories = () => {
           </div>
         </div>
 
-        {/* Upcoming Events */}
+        {/* Upcoming Events  */}
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Upcoming Events</h6>
