@@ -40,7 +40,7 @@ const SidebarActiveNotification = () => {
         },
     ];
     return (
-        <div className="container-fluid mt-3">
+        <div className="mt-3">
             {notifications.map((notification, index) => (
                 <div
                     key={index}

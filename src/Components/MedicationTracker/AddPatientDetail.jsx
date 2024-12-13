@@ -286,7 +286,7 @@ const AddPatientDetail = () => {
                       Drop files here or click to upload
                     </p>
                     <span className="create-campaign-ant-upload-drag-icon">
-                      <IoCloudUploadOutline />{" "}
+                      <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                       <span className="create-campaign-input-span">
                         Upload Image
                       </span>
