@@ -14,7 +14,7 @@ import moment from "moment"
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useNavigate, useLocation } from "react-router-dom";
 import { showSuccessMessage } from "../../../globalConstant";
-import {Instance} from "../../../AxiosConfig"; // Replace with the correct import path for your axios instance
+import {Instance} from "../../../AxiosConfig"; 
 
 const { Option } = Select;
 

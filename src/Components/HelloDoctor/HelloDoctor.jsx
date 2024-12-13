@@ -3,7 +3,7 @@ import { GoPlus } from "react-icons/go";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Instance from "../../AxiosConfig";
+import {Instance} from "../../AxiosConfig";
 import ReactPlayer from "react-player";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "../layout.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -7,22 +7,38 @@ import { GoBell } from "react-icons/go";
 import { FiSearch } from "react-icons/fi";
 import { Switch } from "antd";
 import { useDarkMode } from "../../DarkMode";
+import { showLogoutMessage } from "../../globalConstant";
 const HeaderAdmin = () => {
   const navigate = useNavigate();
+  const username = JSON.parse(localStorage.getItem("userInfo"));
+  const infoUsers = {
+    userName: username?.name || "Guest",
+    role: "Admin",
+  };
+
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { isDarkMode, toggleDarkMode } = useDarkMode();
-
 
   const handleNotificationClick = () => {
     navigate("/header/notification");
   };
 
-
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
-
+  const handleLogout = () => {
+    showLogoutMessage({
+      title: "Confirm Logout",
+      content: "Are you sure you want to log out?",
+      onDelete: () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userInfo");
+          navigate("/");
+      },
+    });
+  };
+  
   return (
     <div style={{ position: "sticky", top: "0", zIndex: "999" }}>
       <nav className="navbar-header">
@@ -34,16 +50,17 @@ const HeaderAdmin = () => {
             className="search-input-header"
           />
         </div>
-       
+
         <div className="d-flex w-100 justify-content-end align-items-center gap-2">
-        <div className="toggle-container">
-          <Switch
-            checked={isDarkMode}
-            onClick={toggleDarkMode}
-            className={`custom-switch ${isDarkMode ? "ant-switch-dark" : "ant-switch-light"}`}
+          <div className="toggle-container">
+            <Switch
+              checked={isDarkMode}
+              onClick={toggleDarkMode}
+              className={`custom-switch ${
+                isDarkMode ? "ant-switch-dark" : "ant-switch-light"
+              }`}
             />
-         
-        </div>
+          </div>
           <div className="d-flex align-items-center gap-2">
             <button
               type="button"
@@ -52,7 +69,10 @@ const HeaderAdmin = () => {
               className="notification-button"
               onClick={handleNotificationClick}
             >
-              <GoBell className="notification-icon" color="var(--black-color)"/>
+              <GoBell
+                className="notification-icon"
+                color="var(--black-color)"
+              />
               <span className="notification-badge">4</span>
             </button>
 
@@ -78,7 +98,7 @@ const HeaderAdmin = () => {
                     letterSpacing: "0.5px",
                   }}
                 >
-                  Alexandro
+                  {infoUsers.userName}
                 </span>
               </div>
 
@@ -100,7 +120,7 @@ const HeaderAdmin = () => {
                     >
                       Edit Profile
                     </Link>
-                    <div className="dropdown-item" role="menuitem" tabIndex="0">
+                    <div className="dropdown-item" role="menuitem" tabIndex="0" onClick={handleLogout}>
                       Log out
                     </div>
                   </div>
