@@ -4,11 +4,11 @@ import { FaCirclePlus } from "react-icons/fa6";
 import { FaUserPlus } from "react-icons/fa";
 import patient from '../../../Assets/Icons/patient.png'
 
-const ViewDoctorDetailCards = () => {
+const ViewDoctorDetailCards = ({ doctor }) => {
   const cardsData = [
     {
       title: "Total Patient",
-      value: 20,
+      value: doctor.patients,
       percentage: (
         <>
            <FaArrowUp style={{ color: "var(--primary-green)", fontSize: "12px" }} /> {" "}5%
@@ -21,8 +21,8 @@ const ViewDoctorDetailCards = () => {
       iconBackground: "#dffaf0",
     },
     {
-      title: "Total Reach",
-      value: "22,500",
+      title: "Experience",
+      value: doctor.experienceYears + "+ years",
       percentage: (
         <>
            <FaArrowUp style={{ color: "var(--primary-green)", fontSize: "12px" }} /> {" "}2%

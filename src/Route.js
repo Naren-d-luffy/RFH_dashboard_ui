@@ -36,6 +36,7 @@ import ChattingPage from "./Pages/Chat/chatPage";
 import Layout from "./Pages";
 import SignIn from "./Components/Auth/SignIn";
 import HelloDoctorPage from "./Pages/HelloDoctor/HelloDoctorPage";
+import NewsPage from "./Pages/News/NewsPage";
 
 export const AppRouter = () => {
   return (
@@ -141,7 +142,11 @@ export const AppRouter = () => {
             element={<DoctorDetailPage />}
           />
           <Route
-            path="/teleconsultation/view-doctor-detail"
+            path="/teleconsultation/doctor-detail/:id"
+            element={<DoctorDetailPage />}
+          />
+          <Route
+            path="/teleconsultation/view-doctor-detail/:id"
             element={<ViewDoctorDetailPage />}
           />
           <Route
@@ -174,6 +179,8 @@ export const AppRouter = () => {
             element={<ChatPage />}
           />
           <Route path="/chat" element={<ChattingPage />} />
+          <Route path="/news" element={<NewsPage />} />
+
         </Route>
       </Routes>
     </BrowserRouter>

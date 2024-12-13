@@ -18,7 +18,10 @@ import {
   Settings,
 } from "lucide-react";
 import { SlGraduation } from "react-icons/sl";
-import { IoMenu, IoTelescopeOutline, IoVideocamOutline } from "react-icons/io5";
+
+import {  IoVideocamOutline } from "react-icons/io5";
+
+import { IoMenu, IoNewspaperOutline, IoTelescopeOutline } from "react-icons/io5";
 import { BiCapsule } from "react-icons/bi";
 import { useDarkMode } from "../../DarkMode";
 
@@ -102,6 +105,12 @@ const menuConfig = [
     ],
   },
   {
+    id: "news",
+    label: "News",
+    icon: <IoNewspaperOutline className="sidebar-icon" size={14} />,
+    to: "/news",
+  },
+  {
     id: "technical",
     label: "Technical",
     icon: <MemoryStick className="sidebar-icon" size={14} />,
@@ -183,6 +192,8 @@ function SidebarAdmin() {
       "/teleconsultation/virtual-management": "teleconsultation",
       "/teleconsultation/view-doctor-detail": "teleconsultation",
       "/medication-tracker": "medicationtracker",
+      "/medication-tracker/add-patient-detail": "medicationtracker",
+      "/medication-tracker/patient-detail": "medicationtracker",
       "/sidebar/notification": "",
       "/logout": "logout",
     };
