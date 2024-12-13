@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { message, Spin, Carousel } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
-import Instance from "../../AxiosConfig";
+import {loginInstance} from "../../AxiosConfig";
 import login1 from "../../Assets/Images/login-1.png";
 import login2 from "../../Assets/Images/login-2.png";
 import login3 from "../../Assets/Images/login-3.png";
@@ -52,7 +52,7 @@ const SignIn = () => {
     const loginUser = async (email, password) => {
         try {
             setLoading(true);
-            const response = await Instance.post("/auth/login", {
+            const response = await loginInstance.post("/auth/login", {
                 email,
                 password
             });

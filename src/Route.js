@@ -132,7 +132,11 @@ export const AppRouter = () => {
             element={<DoctorDetailPage />}
           />
           <Route
-            path="/teleconsultation/view-doctor-detail"
+            path="/teleconsultation/doctor-detail/:id"
+            element={<DoctorDetailPage />}
+          />
+          <Route
+            path="/teleconsultation/view-doctor-detail/:id"
             element={<ViewDoctorDetailPage />}
           />
           <Route
