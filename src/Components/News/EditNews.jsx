@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -7,7 +7,8 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { ColorPicker } from "antd";
 import Instance from "../../AxiosConfig";
 import { showSuccessMessage } from "../../globalConstant";
-import { addNews } from "../../Features/NewsSlice";
+import DOMPurify from "dompurify";
+import { editNews } from "../../Features/NewsSlice";
 import { useDispatch } from "react-redux";
 const modules = {
   toolbar: [
@@ -21,65 +22,93 @@ const modules = {
 
 const { TextArea } = Input;
 
-const CreateNews = ({ open, handleCancel }) => {
+const EditNews = ({ open, handleCancel, newsData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [heading, setHeading] = useState("");
   const [subheading, setSubheading] = useState("");
   const [about, setAbout] = useState("");
   const [content, setContent] = useState("");
-  const [backgroundColor, setBackgroundColor] = useState("");
+  const [backgroundColor, setBackgroundColor] = useState("#1677ff");
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch=useDispatch();
+const dispatch=useDispatch();
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
-    setUploadedImage(file);
+    setUploadedImage(file); 
   };
 
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
 
-  const handleSave = async () => {
-    if (!heading || !subheading || !content || !uploadedImage ||!about ||!backgroundColor) {
+
+  useEffect(() => {
+    if (newsData) {
+      setHeading(newsData.heading || "");
+      setSubheading(newsData.subheading || "");
+      setAbout(newsData.about || "");
+      setContent(DOMPurify.sanitize(newsData.content || ""));
+      setBackgroundColor(newsData.backgroundColor || "#1677ff");
+      setUploadedImage(newsData.image || null);
+    }
+  }, [newsData]);
+  
+  
+
+  const handleUpdate = async () => {
+    if (!heading || !subheading || !content ||!uploadedImage ||!about ||!backgroundColor) {
       message.error("Please fill in all required fields.");
       return;
     }
+  
     setIsLoading(true);
+  
     try {
       const formData = new FormData();
-      formData.append("heading", heading);
-      formData.append("subheading", subheading);
-      formData.append("about", about);
-      formData.append("content", content);
-      formData.append("backgroundColor", backgroundColor);
+  
+      const data = {
+        heading: heading || "",
+        subheading: subheading || "",
+        about: about || "",
+        content: content || "",
+        backgroundColor: backgroundColor || "#1677ff", 
+      };
+  
+      formData.append("data", JSON.stringify(data));
+  
       if (uploadedImage) {
-        formData.append("image", uploadedImage);
+        formData.append("image", uploadedImage);  
+      } else if (newsData.image) {
+        formData.append("image", newsData.image);  
       }
-      const response = await Instance.post("/cards", formData);
-      if (response?.status === 200||response?.status === 201) {
-        handleCancel(); 
-
-        showSuccessMessage("News created successfully!");
-        dispatch(addNews(response.data));
-        setHeading("");
-        setSubheading("")
-        setAbout("")
-        setContent("")
-        setUploadedImage("")
-        setBackgroundColor("")
+  
+      console.log("Form data being sent:", formData);
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
       }
+  
+      const response = await Instance.put(`/cards/${newsData._id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+  
+      if (response?.status === 200 || response?.status === 201) {
+        handleCancel();
+        showSuccessMessage("News Edited successfully!");
+        dispatch(editNews(response.data));
+      }
+      console.log("response", response);
     } catch (error) {
-      console.error(error);
-      message.error("Failed to create news.");
+      console.error("Error updating news:", error);
+      message.error("Failed to update news.");
     } finally {
       setIsLoading(false);
     }
   };
-
+  
+  
   return (
     <Modal
       visible={open}
-      title={<span className="create-campaign-modal-title">Create News</span>}
+      title={<span className="create-campaign-modal-title">Edit News</span>}
       onCancel={handleCancel}
       width={680}
       footer={[
@@ -92,11 +121,11 @@ const CreateNews = ({ open, handleCancel }) => {
         </Button>,
         <Button
           key="save"
-          onClick={handleSave}
+          onClick={handleUpdate}
           className="create-campaign-save-button"
           loading={isLoading}
         >
-          Save
+          Update
         </Button>,
       ]}
     >
@@ -119,7 +148,11 @@ const CreateNews = ({ open, handleCancel }) => {
           {uploadedImage && (
             <div className="uploaded-image-preview d-flex gap-2">
               <img
-                src={URL.createObjectURL(uploadedImage)}
+                src={
+                  typeof uploadedImage === "string"
+                    ? uploadedImage
+                    : URL.createObjectURL(uploadedImage)
+                }
                 alt="Uploaded"
                 style={{
                   width: "200px",
@@ -148,7 +181,6 @@ const CreateNews = ({ open, handleCancel }) => {
             value={heading}
             onChange={(e) => setHeading(e.target.value)}
             placeholder="Add Heading"
-            required
           />
         </Form.Item>
         <Form.Item label="Sub Heading">
@@ -156,7 +188,6 @@ const CreateNews = ({ open, handleCancel }) => {
             value={subheading}
             onChange={(e) => setSubheading(e.target.value)}
             placeholder="Add Sub Heading"
-            required
           />
         </Form.Item>
         <Form.Item label="About">
@@ -164,19 +195,17 @@ const CreateNews = ({ open, handleCancel }) => {
             value={about}
             onChange={(e) => setAbout(e.target.value)}
             placeholder="About"
-            required
           />
         </Form.Item>
         <Form.Item label="Background Color">
           <ColorPicker
-            defaultValue={backgroundColor} 
+            value={backgroundColor}
             onChange={(color) => {
               const hexColor = color.toHexString();
-              setBackgroundColor(hexColor); 
+              setBackgroundColor(hexColor);
             }}
             showText
-            allowClear={false} 
-            required
+            allowClear={false}
           />
         </Form.Item>
 
@@ -187,7 +216,6 @@ const CreateNews = ({ open, handleCancel }) => {
             value={content}
             onChange={setContent}
             placeholder="Your text goes here"
-            required
           />
         </Form.Item>
       </Form>
@@ -195,4 +223,4 @@ const CreateNews = ({ open, handleCancel }) => {
   );
 };
 
-export default CreateNews;
+export default EditNews;
