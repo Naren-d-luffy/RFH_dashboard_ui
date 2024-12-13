@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 // Instance for Login
 const loginInstance = axios.create({
   baseURL: "https://relience-server.azurewebsites.net/api/",
