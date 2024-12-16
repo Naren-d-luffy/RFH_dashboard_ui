@@ -24,6 +24,7 @@ import {  IoVideocamOutline } from "react-icons/io5";
 import { IoMenu, IoNewspaperOutline, IoTelescopeOutline } from "react-icons/io5";
 import { BiCapsule } from "react-icons/bi";
 import { useDarkMode } from "../../DarkMode";
+import { HiOutlineUserGroup } from "react-icons/hi";
 
 const menuConfig = [
   {
@@ -46,7 +47,7 @@ const menuConfig = [
     label: "Marketing",
     icon: <TbCirclePercentage className="sidebar-icon" />,
     subMenu: [
-      { label: "Campaign Performance", to: "/marketing/campaign-performance" },
+      // { label: "Campaign Performance", to: "/marketing/campaign-performance" },
       { label: "InApp Campaign", to: "/marketing/in-app-campaign" },
       { label: "Patient Acquisition", to: "/marketing/patient-acquisition" },
     ],
@@ -111,6 +112,12 @@ const menuConfig = [
     to: "/news",
   },
   {
+    id: "community post",
+    label: "Community Post",
+    icon: <HiOutlineUserGroup className="sidebar-icon" size={14} />,
+    to: "/community-post",
+  },
+ {
     id: "healthPackage",
     label: "Health Package",
     icon: <FiActivity className="sidebar-icon" size={14} />,
@@ -194,6 +201,7 @@ function SidebarAdmin() {
       "/operational/appointment-reports": "operational",
       "/operational/service-utilization": "operational",
       "/operational/financial-performance": "operational",
+      "/community-post": "community post",
       "/teleconsultation/appointment-feedback": "teleconsultation",
       "/teleconsultation/virtual-management": "teleconsultation",
       "/teleconsultation/view-doctor-detail": "teleconsultation",

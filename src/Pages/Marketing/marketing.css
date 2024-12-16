@@ -500,6 +500,7 @@
   padding: 10px;
   border-radius: 8px;
   height: 380px;
+  background-color: var(--card-background-color);
 }
 
 /* .recommend-video-card::before {
