@@ -58,7 +58,8 @@ const AddHealthPackage = ({ open, handleCancel }) => {
           console.log(response.data)
         handleCancel();
         showSuccessMessage("Health package created successfully!");
-        dispatch(addHealthPackage(response.data))
+        console.log(response.data)
+        dispatch(addHealthPackage(response.data.newHealthCheckup))
       }
     } catch (error) {
       console.error(error);
