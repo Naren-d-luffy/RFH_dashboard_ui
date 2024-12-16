@@ -10,6 +10,7 @@ import { showSuccessMessage } from "../../globalConstant";
 import DOMPurify from "dompurify";
 import { editNews } from "../../Features/NewsSlice";
 import { useDispatch } from "react-redux";
+import Loader from "../../Loader";
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -106,6 +107,8 @@ const dispatch=useDispatch();
   
   
   return (
+    <>
+    {isLoading && <Loader/>}
     <Modal
       visible={open}
       title={<span className="create-campaign-modal-title">Edit News</span>}
@@ -220,6 +223,7 @@ const dispatch=useDispatch();
         </Form.Item>
       </Form>
     </Modal>
+    </>
   );
 };
 

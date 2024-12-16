@@ -12,8 +12,13 @@ import { Instance } from "../../AxiosConfig";
 import { deleteNews, setNews } from "../../Features/NewsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import AddHealthPackage from "./AddHealthpackage";
-import { deleteHealthPackage, setPackages } from "../../Features/HealthPackageSlice";
+import {
+  deleteHealthPackage,
+  setPackages,
+} from "../../Features/HealthPackageSlice";
 import EditHealthPackage from "./EditHealthPackage";
+import ViewHealthPackage from "./ViewHealthPackage";
+import Loader from "../../Loader";
 
 const HealthPackagelist = () => {
   const [selectedValues, setSelectedValues] = useState([]);
@@ -22,16 +27,18 @@ const HealthPackagelist = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewNewsModalOpen, setIsViewNewsModalOpen] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [packageList, setPackageList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPackage, setSelectedPackage] = useState([]);
-  const [totalRows, setTotalRows] = useState(0); 
-  const healthPackage = useSelector((state) => state.healthPackage.healthPackage);
+  const [totalRows, setTotalRows] = useState(0);
+  const healthPackage = useSelector(
+    (state) => state.healthPackage.healthPackage
+  );
   const [searchText, setSearchText] = useState("");
 
   const dispatch = useDispatch();
-  const itemsPerPage = 10; 
+  const itemsPerPage = 10;
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -62,7 +69,9 @@ const HealthPackagelist = () => {
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/package/health-checkups/${_id}`);
+          const response = await Instance.delete(
+            `/package/health-checkups/${_id}`
+          );
           if (response.status === 200) {
             dispatch(deleteHealthPackage(_id));
           }
@@ -74,26 +83,29 @@ const HealthPackagelist = () => {
   };
 
   const fetchPackageList = async (page) => {
+    setIsLoading(true);
     try {
       const response = await Instance.get(`/package/health-checkups`, {
         params: { page, limit: itemsPerPage },
       });
-      console.log(response.data)
+      console.log(response.data);
       setPackageList(response.data || []);
-      setTotalRows(response.data.length);  
+      setTotalRows(response.data.length);
       dispatch(setPackages(response.data));
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching healthPackage:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return healthPackage;
-    return healthPackage.filter(
-      (healthPackage) =>
-        `${healthPackage.packageName}{}${healthPackage.price}{}${healthPackage.rating}{}${healthPackage.duration}`
-          .toLowerCase()
-          .includes(searchText.toLowerCase())
+    return healthPackage.filter((healthPackage) =>
+      `${healthPackage.packageName}{}${healthPackage.price}{}${healthPackage.rating}{}${healthPackage.duration}`
+        .toLowerCase()
+        .includes(searchText.toLowerCase())
     );
   }, [searchText, healthPackage]);
 
@@ -102,7 +114,7 @@ const HealthPackagelist = () => {
   }, [currentPage]);
 
   const handleTableChange = (pagination) => {
-    setCurrentPage(pagination.current); 
+    setCurrentPage(pagination.current);
   };
 
   const columns = [
@@ -122,10 +134,10 @@ const HealthPackagelist = () => {
       className: "campaign-performance-table-column",
     },
     {
-        title: "Duration",
-        dataIndex: "duration",
-        className: "campaign-performance-table-column",
-      },
+      title: "Duration",
+      dataIndex: "duration",
+      className: "campaign-performance-table-column",
+    },
     {
       title: "Action",
       key: "action",
@@ -180,7 +192,9 @@ const HealthPackagelist = () => {
 
   return (
     <div className="container mt-1">
-      {packageList.length > 0 ? (
+      {isLoading ? (
+        <Loader />
+      ) : packageList.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
@@ -192,7 +206,7 @@ const HealthPackagelist = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-              Add Health Package
+                Add Health Package
               </button>
             </div>
           </div>
@@ -262,11 +276,11 @@ const HealthPackagelist = () => {
         handleCancel={handleCancelEditModal}
         packageData={selectedPackage}
       />
-      {/* <ViewNews
+      <ViewHealthPackage
         open={isViewNewsModalOpen}
         handleCancel={handleCancelNewsModal}
-        newsData={selectedPackage}
-      /> */}
+        packageData={selectedPackage}
+      />
     </div>
   );
 };

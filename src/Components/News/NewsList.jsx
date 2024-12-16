@@ -14,6 +14,7 @@ import EditNews from "./EditNews";
 import { deleteNews, setNews } from "../../Features/NewsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ViewNews from "./ViewNews";
+import Loader from "../../Loader";
 
 const NewsList = () => {
   const [selectedValues, setSelectedValues] = useState([]);
@@ -22,7 +23,7 @@ const NewsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewNewsModalOpen, setIsViewNewsModalOpen] = useState(false);
-
+  const [isLoading,setIsLoading]=useState(false)
   const [newsList, setNewsList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedNews, setSelectedNews] = useState({ content: [] });
@@ -74,6 +75,7 @@ const NewsList = () => {
   };
 
   const fetchNewsList = async (page) => {
+    setIsLoading(true)
     try {
       const response = await Instance.get(`/cards`, {
         params: { page, limit: itemsPerPage },
@@ -81,8 +83,12 @@ const NewsList = () => {
       setNewsList(response.data || []);
       setTotalRows(response.data.length);  
       dispatch(setNews(response.data));
+      setIsLoading(false)
     } catch (error) {
       console.error("Error fetching news:", error);
+    }
+    finally{
+      setIsLoading(false)
     }
   };
 
@@ -173,8 +179,11 @@ const NewsList = () => {
   };
 
   return (
+
     <div className="container mt-1">
-      {newsList.length > 0 ? (
+      {isLoading ? (
+        <Loader />
+      ) : newsList.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">

@@ -51,12 +51,12 @@ const menuConfig = [
       { label: "Patient Acquisition", to: "/marketing/patient-acquisition" },
     ],
   },
-  {
-    id: "hello doctor",
-    label: "Hello Doctor",
-    icon: <IoVideocamOutline className="sidebar-icon" />,
-    subMenu: [{ label: "Hello Doctor", to: "/hello-doctor" }],
-  },
+  // {
+  //   id: "hello doctor",
+  //   label: "Hello Doctor",
+  //   icon: <IoVideocamOutline className="sidebar-icon" />,
+  //   subMenu: [{ label: "Hello Doctor", to: "/hello-doctor" }],
+  // },
   {
     id: "education",
     label: "Patient Education",
