@@ -1,0 +1,22 @@
+.health-package-add-feature{
+    width: fit-content;
+    padding: 4px 8px;
+    background-color: var(--white-color);
+    border: 1px solid var(--primary-green);
+    border-radius: 5px;
+    color: var(--primary-green);
+}
+.health-package-input{
+    border: var(--primary-green) 1px solid;
+    background-color: var(--nav-color);
+    color: var(--black-color) !important;
+    padding: 6px 12px;
+    border-radius: 5px;
+    width: fit-content;
+    font-size: 14px;
+    font-weight: 600;
+}
+.trash-icon-health-package{
+    color: var(--primary-green);
+    font-size: 20px;
+}

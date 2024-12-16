@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../layout.css";
 import lightLogo from "../../Assets/Images/logo.png";
 import darkLogo from "../../Assets/Images/darkLogo.png"
-import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FiActivity, FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineDashboard } from "react-icons/md";
 import { GoShieldCheck } from "react-icons/go";
@@ -116,6 +116,12 @@ const menuConfig = [
     label: "Community Post",
     icon: <HiOutlineUserGroup className="sidebar-icon" size={14} />,
     to: "/community-post",
+  },
+ {
+    id: "healthPackage",
+    label: "Health Package",
+    icon: <FiActivity className="sidebar-icon" size={14} />,
+    to: "/health-package",
   },
   {
     id: "technical",

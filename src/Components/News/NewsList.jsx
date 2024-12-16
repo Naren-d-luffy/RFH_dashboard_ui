@@ -7,30 +7,32 @@ import Empty_survey_image from "../../Assets/Icons/Empty_survey_image.png";
 import { useNavigate } from "react-router-dom";
 import { showDeleteMessage } from "../../globalConstant";
 import { filterDropdown } from "../../globalConstant";
-import { VscSettings } from "react-icons/vsc";
 import { GoPlus } from "react-icons/go";
-import {Instance} from "../../AxiosConfig";
-import dayjs from "dayjs";
+import { Instance } from "../../AxiosConfig";
 import CreateNews from "./CreateNews";
 import EditNews from "./EditNews";
 import { deleteNews, setNews } from "../../Features/NewsSlice";
 import { useDispatch, useSelector } from "react-redux";
+import ViewNews from "./ViewNews";
+
 const NewsList = () => {
   const [selectedValues, setSelectedValues] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isViewNewsModalOpen, setIsViewNewsModalOpen] = useState(false);
+
   const [newsList, setNewsList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedNews, setSelectedNews] = useState({ content: [] });
-  const [totalRows, setTotalRows] = useState(0);
-  const [imageFile, setImageFile] = useState(null);
+  const [totalRows, setTotalRows] = useState(0); 
   const news = useSelector((state) => state.news.news);
   const [searchText, setSearchText] = useState("");
 
   const dispatch = useDispatch();
-  const itemsPerPage = 10;
+  const itemsPerPage = 10; 
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -41,21 +43,34 @@ const NewsList = () => {
     setSelectedNews(news);
     setIsEditModalOpen(true);
   };
-
   const handleCancelEditModal = () => {
     setSelectedNews(null);
     setIsEditModalOpen(false);
   };
-  const handleDeleteNews = async (_id) => {
-    try {
-      const response = await Instance.delete(`/cards/${_id}`);
-      if (response.status === 200) {
-        showDeleteMessage({ message: "" });
-        dispatch(deleteNews(_id));
-      }
-    } catch (error) {
-      console.log(error);
-    }
+
+  const ShowNewsModal = (news) => {
+    setSelectedNews(news);
+    setIsViewNewsModalOpen(true);
+  };
+  const handleCancelNewsModal = () => {
+    setSelectedNews(null);
+    setIsViewNewsModalOpen(false);
+  };
+
+  const handleDeleteNews = (_id) => {
+    showDeleteMessage({
+      message: "",
+      onDelete: async () => {
+        try {
+          const response = await Instance.delete(`/cards/${_id}`);
+          if (response.status === 200) {
+            dispatch(deleteNews(_id));
+          }
+        } catch (error) {
+          console.error("Error deleting news:", error);
+        }
+      },
+    });
   };
 
   const fetchNewsList = async (page) => {
@@ -64,22 +79,30 @@ const NewsList = () => {
         params: { page, limit: itemsPerPage },
       });
       setNewsList(response.data || []);
-      setTotalRows(response.data.length);
+      setTotalRows(response.data.length);  
       dispatch(setNews(response.data));
-      console.log("response", response.data);
     } catch (error) {
       console.error("Error fetching news:", error);
     }
   };
+
   const dataSource = useMemo(() => {
-    if (searchText.trim() === '') return news;
-    return news.filter((news) =>
-      `${news.heading}{}${news.subheading}`.toLowerCase().includes(searchText.toLowerCase())
+    if (searchText.trim() === "") return news;
+    return news.filter(
+      (news) =>
+        `${news.heading}{}${news.subheading}`
+          .toLowerCase()
+          .includes(searchText.toLowerCase())
     );
   }, [searchText, news]);
+
   useEffect(() => {
     fetchNewsList(currentPage);
   }, [currentPage]);
+
+  const handleTableChange = (pagination) => {
+    setCurrentPage(pagination.current); // Update the current page when the pagination changes
+  };
 
   const columns = [
     {
@@ -104,7 +127,7 @@ const NewsList = () => {
         <div className="campaign-performance-table-action-icons">
           <div
             className="campaign-performance-table-eye-icon"
-            // onClick={handleClick}
+            onClick={() => ShowNewsModal(record)}
           >
             <FiEye />
           </div>
@@ -141,50 +164,13 @@ const NewsList = () => {
       key: "3",
     },
   ];
+
   const handleMenuClick = ({ key }) => {};
+
   const menuProps = {
     items,
     onClick: handleMenuClick,
   };
-  const handleCheckboxChange = (value, checked) => {
-    if (checked) {
-      setSelectedValues((prev) => [...prev, value]);
-    } else {
-      setSelectedValues((prev) => prev.filter((item) => item !== value));
-    }
-  };
-
-  const handleApply = () => {
-    console.log("Applied Filters:", selectedValues);
-    setIsDropdownOpen(false);
-  };
-  const handleReset = () => {
-    setSelectedValues([]);
-  };
-  const options = [
-    {
-      label: "Type",
-      options: [
-        { label: "All", value: "all" },
-        { label: "OPD", value: "opd" },
-        { label: "IPD", value: "ipd" },
-      ],
-    },
-    {
-      label: "Last Visit",
-      options: [
-        { label: "Last 7 days", value: "last7days" },
-        { label: "Last 30 days", value: "last30days" },
-      ],
-    },
-    {
-      label: "All Users",
-      options: [
-        { label: "Active Users", value: "activeusers" },
-        { label: "Inactive Users", value: "inactiveusers" },
-      ],
-    },
-  ];
 
   return (
     <div className="container mt-1">
@@ -192,7 +178,7 @@ const NewsList = () => {
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>News </h3>
+              <h3>News</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -226,31 +212,18 @@ const NewsList = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-                {/* <Dropdown
-                  overlay={filterDropdown(
-                    options,
-                    selectedValues,
-                    handleCheckboxChange,
-                    handleApply,
-                    handleReset
-                  )}
-                  trigger={["click"]}
-                  open={isDropdownOpen}
-                  onOpenChange={setIsDropdownOpen}
-                  placement="bottomLeft"
-                >
-                  <Button style={{ width: 160 }}>
-                    <VscSettings />
-                    Filters
-                  </Button>
-                </Dropdown> */}
               </div>
             </div>
             <div className="mt-3">
               <Table
                 columns={columns}
                 dataSource={dataSource}
-                pagination={false}
+                pagination={{
+                  current: currentPage,
+                  pageSize: itemsPerPage,
+                  total: totalRows,
+                  onChange: handleTableChange, // Update current page on change
+                }}
                 className="campaign-performance-table overflow-y-auto"
                 bordered={false}
               />
@@ -267,7 +240,7 @@ const NewsList = () => {
             <p>
               Currently, there are no News available to display.
               <br /> Please check back later or contact support for further
-              assistance if this is an error
+              assistance if this is an error.
             </p>
             <div className="d-flex justify-content-center">
               <button className="rfh-basic-button" onClick={showModal}>
@@ -281,6 +254,11 @@ const NewsList = () => {
       <EditNews
         open={isEditModalOpen}
         handleCancel={handleCancelEditModal}
+        newsData={selectedNews}
+      />
+      <ViewNews
+        open={isViewNewsModalOpen}
+        handleCancel={handleCancelNewsModal}
         newsData={selectedNews}
       />
     </div>
