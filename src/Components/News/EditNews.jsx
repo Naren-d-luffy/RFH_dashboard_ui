@@ -5,7 +5,8 @@ import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { ColorPicker } from "antd";
-import {Instance} from "../../AxiosConfig";
+import { Instance } from "../../AxiosConfig";
+
 import { showSuccessMessage } from "../../globalConstant";
 import DOMPurify from "dompurify";
 import { editNews } from "../../Features/NewsSlice";
@@ -31,16 +32,15 @@ const EditNews = ({ open, handleCancel, newsData }) => {
   const [content, setContent] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("#1677ff");
   const [isLoading, setIsLoading] = useState(false);
-const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
-    setUploadedImage(file); 
+    setUploadedImage(file);
   };
 
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
-
 
   useEffect(() => {
     if (newsData) {
@@ -52,45 +52,50 @@ const dispatch=useDispatch();
       setUploadedImage(newsData.image || null);
     }
   }, [newsData]);
-  
-  
 
   const handleUpdate = async () => {
-    if (!heading || !subheading || !content ||!uploadedImage ||!about ||!backgroundColor) {
+    if (
+      !heading ||
+      !subheading ||
+      !content ||
+      !uploadedImage ||
+      !about ||
+      !backgroundColor
+    ) {
       message.error("Please fill in all required fields.");
       return;
     }
-  
+
     setIsLoading(true);
-  
+
     try {
       const formData = new FormData();
-  
+
       const data = {
         heading: heading || "",
         subheading: subheading || "",
         about: about || "",
         content: content || "",
-        backgroundColor: backgroundColor || "#1677ff", 
+        backgroundColor: backgroundColor || "#1677ff",
       };
-  
+
       formData.append("data", JSON.stringify(data));
-  
+
       if (uploadedImage) {
-        formData.append("image", uploadedImage);  
+        formData.append("image", uploadedImage);
       } else if (newsData.image) {
-        formData.append("image", newsData.image);  
+        formData.append("image", newsData.image);
       }
-  
+
       console.log("Form data being sent:", formData);
       for (let pair of formData.entries()) {
         console.log(pair[0] + ": " + pair[1]);
       }
-  
+
       const response = await Instance.put(`/cards/${newsData._id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-  
+
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("News Edited successfully!");
@@ -104,8 +109,7 @@ const dispatch=useDispatch();
       setIsLoading(false);
     }
   };
-  
-  
+
   return (
     <>
     {isLoading && <Loader/>}
