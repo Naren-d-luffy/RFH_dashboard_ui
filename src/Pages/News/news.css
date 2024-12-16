@@ -1,0 +1,26 @@
+.news-image{
+width: 200px;
+height: 200px;
+}
+.view-news-modal .ant-modal-content{
+    padding: 0 0 20px 0 !important;
+}
+.news-modal-header{
+    padding: 20px;
+}
+.news-modal-content{
+padding: 20px;
+}
+.news-modal-content h4{
+    font-size: 18px;
+    color: var(--black-color);
+    font-weight: 700;
+}
+.news-modal-content p{
+    font-size: 14px;
+    color: var(--black-color);
+    font-weight: 700;
+}
+.news-content{
+    color: var(--black-color);
+}
