@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { ColorPicker } from "antd";
-import Instance from "../../AxiosConfig";
+import {Instance} from "../../AxiosConfig";
 import { showSuccessMessage } from "../../globalConstant";
 import DOMPurify from "dompurify";
 import { editNews } from "../../Features/NewsSlice";
