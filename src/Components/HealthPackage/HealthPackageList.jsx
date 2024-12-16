@@ -9,13 +9,13 @@ import { showDeleteMessage } from "../../globalConstant";
 import { filterDropdown } from "../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../AxiosConfig";
-import CreateNews from "./CreateNews";
-import EditNews from "./EditNews";
 import { deleteNews, setNews } from "../../Features/NewsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import ViewNews from "./ViewNews";
+import AddHealthPackage from "./AddHealthpackage";
+import { deleteHealthPackage, setPackages } from "../../Features/HealthPackageSlice";
+import EditHealthPackage from "./EditHealthPackage";
 
-const NewsList = () => {
+const HealthPackagelist = () => {
   const [selectedValues, setSelectedValues] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -23,11 +23,11 @@ const NewsList = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewNewsModalOpen, setIsViewNewsModalOpen] = useState(false);
 
-  const [newsList, setNewsList] = useState([]);
+  const [packageList, setPackageList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedNews, setSelectedNews] = useState({ content: [] });
+  const [selectedPackage, setSelectedPackage] = useState([]);
   const [totalRows, setTotalRows] = useState(0); 
-  const news = useSelector((state) => state.news.news);
+  const healthPackage = useSelector((state) => state.healthPackage.healthPackage);
   const [searchText, setSearchText] = useState("");
 
   const dispatch = useDispatch();
@@ -39,21 +39,21 @@ const NewsList = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const showEditModal = (news) => {
-    setSelectedNews(news);
+  const showEditModal = (healthPackage) => {
+    setSelectedPackage(healthPackage);
     setIsEditModalOpen(true);
   };
   const handleCancelEditModal = () => {
-    setSelectedNews(null);
+    setSelectedPackage(null);
     setIsEditModalOpen(false);
   };
 
-  const ShowNewsModal = (news) => {
-    setSelectedNews(news);
+  const ShowNewsModal = (healthPackage) => {
+    setSelectedPackage(healthPackage);
     setIsViewNewsModalOpen(true);
   };
   const handleCancelNewsModal = () => {
-    setSelectedNews(null);
+    setSelectedPackage(null);
     setIsViewNewsModalOpen(false);
   };
 
@@ -62,64 +62,70 @@ const NewsList = () => {
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/cards/${_id}`);
+          const response = await Instance.delete(`/package/health-checkups/${_id}`);
           if (response.status === 200) {
-            dispatch(deleteNews(_id));
+            dispatch(deleteHealthPackage(_id));
           }
         } catch (error) {
-          console.error("Error deleting news:", error);
+          console.error("Error deleting healthPackage:", error);
         }
       },
     });
   };
 
-  const fetchNewsList = async (page) => {
+  const fetchPackageList = async (page) => {
     try {
-      const response = await Instance.get(`/cards`, {
+      const response = await Instance.get(`/package/health-checkups`, {
         params: { page, limit: itemsPerPage },
       });
-      setNewsList(response.data || []);
+      console.log(response.data)
+      setPackageList(response.data || []);
       setTotalRows(response.data.length);  
-      dispatch(setNews(response.data));
+      dispatch(setPackages(response.data));
     } catch (error) {
-      console.error("Error fetching news:", error);
+      console.error("Error fetching healthPackage:", error);
     }
   };
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return news;
-    return news.filter(
-      (news) =>
-        `${news.heading}{}${news.subheading}`
+    if (searchText.trim() === "") return healthPackage;
+    return healthPackage.filter(
+      (healthPackage) =>
+        `${healthPackage.packageName}{}${healthPackage.price}{}${healthPackage.rating}{}${healthPackage.duration}`
           .toLowerCase()
           .includes(searchText.toLowerCase())
     );
-  }, [searchText, news]);
+  }, [searchText, healthPackage]);
 
   useEffect(() => {
-    fetchNewsList(currentPage);
+    fetchPackageList(currentPage);
   }, [currentPage]);
 
   const handleTableChange = (pagination) => {
-    setCurrentPage(pagination.current); // Update the current page when the pagination changes
+    setCurrentPage(pagination.current); 
   };
 
   const columns = [
     {
-      title: "Heading",
-      dataIndex: "heading",
+      title: "Package Name",
+      dataIndex: "packageName",
       className: "campaign-performance-table-column",
     },
     {
-      title: "SubHeading",
-      dataIndex: "subheading",
+      title: "Price",
+      dataIndex: "price",
       className: "campaign-performance-table-column",
     },
     {
-      title: "About",
-      dataIndex: "about",
+      title: "Rating",
+      dataIndex: "rating",
       className: "campaign-performance-table-column",
     },
+    {
+        title: "Duration",
+        dataIndex: "duration",
+        className: "campaign-performance-table-column",
+      },
     {
       title: "Action",
       key: "action",
@@ -174,11 +180,11 @@ const NewsList = () => {
 
   return (
     <div className="container mt-1">
-      {newsList.length > 0 ? (
+      {packageList.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>News</h3>
+              <h3>Health Packages</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -186,7 +192,7 @@ const NewsList = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Create News
+              Add Health Package
               </button>
             </div>
           </div>
@@ -236,33 +242,33 @@ const NewsList = () => {
             <img src={Empty_survey_image} alt="" />
           </div>
           <div className="no-data-container-text d-flex flex-column justify-content-center">
-            <h4>No News Found</h4>
+            <h4>No Packages Found</h4>
             <p>
-              Currently, there are no News available to display.
+              Currently, there are no Packages available to display.
               <br /> Please check back later or contact support for further
               assistance if this is an error.
             </p>
             <div className="d-flex justify-content-center">
               <button className="rfh-basic-button" onClick={showModal}>
-                <FaPlus /> Create News
+                <FaPlus /> Create HealthPackage
               </button>
             </div>
           </div>
         </div>
       )}
-      <CreateNews open={isModalOpen} handleCancel={handleCancel} />
-      <EditNews
+      <AddHealthPackage open={isModalOpen} handleCancel={handleCancel} />
+      <EditHealthPackage
         open={isEditModalOpen}
         handleCancel={handleCancelEditModal}
-        newsData={selectedNews}
+        packageData={selectedPackage}
       />
-      <ViewNews
+      {/* <ViewNews
         open={isViewNewsModalOpen}
         handleCancel={handleCancelNewsModal}
-        newsData={selectedNews}
-      />
+        newsData={selectedPackage}
+      /> */}
     </div>
   );
 };
 
-export default NewsList;
+export default HealthPackagelist;

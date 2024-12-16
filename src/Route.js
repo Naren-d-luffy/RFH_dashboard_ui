@@ -32,15 +32,16 @@ import ServiceUtilizationPage from "./Pages/Operational/ServiceUtilizationPage";
 import FinancialPerformancePage from "./Pages/Operational/FinancialPerformancePage";
 import ChatPage from "./Pages/Teleconsultation/ChatPage";
 import ChattingPage from "./Pages/Chat/chatPage";
-
 import Layout from "./Pages";
 import SignIn from "./Components/Auth/SignIn";
 import HelloDoctorPage from "./Pages/HelloDoctor/HelloDoctorPage";
 import NewsPage from "./Pages/News/NewsPage";
+import { HealthPackagePage } from "./Pages/HealthPackage/HealthPackagePage";
 import SignUp from "./Components/Auth/SignUp";
 import ForgotPassword from "./Components/Auth/ForgotPassword";
 import OtpScreen from "./Components/Auth/OtpScreen";
 import ConfirmPassword from "./Components/Auth/ConfirmPassword";
+
 
 export const AppRouter = () => {
   return (
@@ -189,6 +190,7 @@ export const AppRouter = () => {
           />
           <Route path="/chat" element={<ChattingPage />} />
           <Route path="/news" element={<NewsPage />} />
+          <Route path="/health-package" element={<HealthPackagePage />} />
 
         </Route>
       </Routes>
