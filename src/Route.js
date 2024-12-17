@@ -36,6 +36,7 @@ import Layout from "./Pages";
 import SignIn from "./Components/Auth/SignIn";
 import HelloDoctorPage from "./Pages/HelloDoctor/HelloDoctorPage";
 import NewsPage from "./Pages/News/NewsPage";
+import CommunityPostPage from "./Pages/CommunityPost/CommunityPostPage";
 import { HealthPackagePage } from "./Pages/HealthPackage/HealthPackagePage";
 import SignUp from "./Components/Auth/SignUp";
 import ForgotPassword from "./Components/Auth/ForgotPassword";
@@ -80,10 +81,7 @@ export const AppRouter = () => {
             element={<PatientDetailPage />}
           />
 
-          <Route
-            path="/hello-doctor"
-            element={<HelloDoctorPage />}
-          />
+          <Route path="/hello-doctor" element={<HelloDoctorPage />} />
 
           <Route path="/dashboard/settings" element={<SettingsPage />} />
 
@@ -191,6 +189,8 @@ export const AppRouter = () => {
           />
           <Route path="/chat" element={<ChattingPage />} />
           <Route path="/news" element={<NewsPage />} />
+
+          <Route path="/community-post" element={<CommunityPostPage />} />
           <Route path="/health-package" element={<HealthPackagePage />} />
           <Route path="/department-details" element={<DepartmentDetailsPage />} />
 

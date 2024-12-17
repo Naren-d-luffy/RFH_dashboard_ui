@@ -9,6 +9,7 @@ import {Instance} from "../../AxiosConfig";
 import { showSuccessMessage } from "../../globalConstant";
 import { addNews } from "../../Features/NewsSlice";
 import { useDispatch } from "react-redux";
+import Loader from "../../Loader";
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -77,6 +78,8 @@ const CreateNews = ({ open, handleCancel }) => {
   };
 
   return (
+    <>
+    {isLoading && <Loader/>}
     <Modal
       visible={open}
       title={<span className="create-campaign-modal-title">Create News</span>}
@@ -192,6 +195,8 @@ const CreateNews = ({ open, handleCancel }) => {
         </Form.Item>
       </Form>
     </Modal>
+    </>
+
   );
 };
 
