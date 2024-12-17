@@ -104,7 +104,7 @@ const CreateNews = ({ open, handleCancel }) => {
       ]}
     >
       <Form layout="vertical" className="mt-4">
-        <Form.Item label="Image">
+        <Form.Item>
           <Upload
             listType="picture"
             showUploadList={false}
@@ -145,32 +145,36 @@ const CreateNews = ({ open, handleCancel }) => {
               </Button>
             </div>
           )}
+          <span className="create-campaign-input-span">Image</span>
         </Form.Item>
-        <Form.Item label="Heading">
+        <Form.Item>
           <Input
             value={heading}
             onChange={(e) => setHeading(e.target.value)}
             placeholder="Add Heading"
             required
           />
+          <span className="create-campaign-input-span">Heading</span>
         </Form.Item>
-        <Form.Item label="Sub Heading">
+        <Form.Item>
           <Input
             value={subheading}
             onChange={(e) => setSubheading(e.target.value)}
             placeholder="Add Sub Heading"
             required
           />
+          <span className="create-campaign-input-span">Sub Heading</span>
         </Form.Item>
-        <Form.Item label="About">
+        <Form.Item>
           <TextArea
             value={about}
             onChange={(e) => setAbout(e.target.value)}
             placeholder="About"
             required
           />
+          <span className="create-campaign-input-span">About</span>
         </Form.Item>
-        <Form.Item label="Background Color">
+        <Form.Item>
           <ColorPicker
             defaultValue={backgroundColor} 
             onChange={(color) => {
@@ -181,9 +185,10 @@ const CreateNews = ({ open, handleCancel }) => {
             allowClear={false} 
             required
           />
+          <span className="create-campaign-input-span">Background Color</span>
         </Form.Item>
 
-        <Form.Item label="Content Points">
+        <Form.Item>
           <ReactQuill
             theme="snow"
             modules={modules}
@@ -192,6 +197,7 @@ const CreateNews = ({ open, handleCancel }) => {
             placeholder="Your text goes here"
             required
           />
+          <span className="create-campaign-input-span">Content Points</span>
         </Form.Item>
       </Form>
     </Modal>

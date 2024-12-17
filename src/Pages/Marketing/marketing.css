@@ -165,12 +165,27 @@
   background-color: var(--white-color);
   font-weight: 600;
 }
+
 .campaign-performance-table-edit-icon {
   background-color: var(--icon-background-color);
 }
 
+.campaign-performance-table-edit-icon:hover {
+  color: var(--icon-background-color);
+  border: 1px solid var(--icon-background-color);
+  background-color: var(--white-color);
+  font-weight: 600;
+}
+
 .campaign-performance-table-delete-icon {
   background-color: var(--red-color);
+}
+
+.campaign-performance-table-delete-icon:hover {
+  color: var(--red-color);
+  border: 1px solid var(--red-color);
+  background-color: var(--white-color);
+  font-weight: 600;
 }
 
 .create-campaign-head {
@@ -495,11 +510,11 @@
 }
 
 .recommend-video-page {
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
-  transition: box-shadow 0.3s ease; 
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
   padding: 10px;
   border-radius: 8px;
-  height: 380px;
+  height: 400px;
   background-color: var(--card-background-color);
 }
 
@@ -779,7 +794,7 @@
 
 /* ===========keerthi========= */
 
-.recommended-video-action-button{
+.recommended-video-action-button {
   position: relative;
   z-index: 2;
   color: var(--white-color);
@@ -787,13 +802,13 @@
   width: 100%;
   border: none;
 }
-.featured-program-icon-container{
+.featured-program-icon-container {
   z-index: 2;
   position: absolute;
   top: 15px;
 }
 
-.model-image-upload-delete-icon{
+.model-image-upload-delete-icon {
   color: var(--black-color);
   background-color: var(--white-color);
 }
@@ -827,7 +842,7 @@
   font-size: 24px;
   cursor: pointer;
 } */
-.image-upload-icon{
+
+.image-upload-icon {
   color: var(--black-color);
 }
-

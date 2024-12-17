@@ -4,6 +4,7 @@ import { Instance } from "../../../AxiosConfig";
 import { showSuccessMessage } from "../../../globalConstant";
 import { editHelloDoctorVideos } from "../../../Features/HelloDoctorSlice";
 import { useDispatch } from "react-redux";
+import Loader from "../../../Loader";
 
 const EditVideo = ({ open, handleCancel, videoData, refreshList }) => {
   const [title, setTitle] = useState("");
@@ -46,6 +47,8 @@ const EditVideo = ({ open, handleCancel, videoData, refreshList }) => {
   };
 
   return (
+    <>
+    {isLoading && <Loader/>}
     <Modal
       visible={open}
       title={<span className="create-campaign-modal-title">Edit Video</span>}
@@ -61,24 +64,27 @@ const EditVideo = ({ open, handleCancel, videoData, refreshList }) => {
       ]}
     >
       <Form layout="vertical" className="mt-4">
-        <Form.Item label="Video Title">
+        <Form.Item>
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter Title"
             required
           />
+          <span className="create-campaign-input-span">Video Title</span>
         </Form.Item>
-        <Form.Item label="Video URL">
+        <Form.Item>
           <Input
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="Enter URL"
             required
           />
+          <span className="create-campaign-input-span">Video URL</span>
         </Form.Item>
       </Form>
     </Modal>
+    </>
   );
 };
 

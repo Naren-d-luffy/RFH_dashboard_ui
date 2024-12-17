@@ -1,14 +1,12 @@
 import React from 'react';
-import "./App.css"
+import { FadeLoader } from 'react-spinners';
 
 const Loader = () => {
   return (
-    <>
     <div className="global-loader">
-        <div className="circular-loader"></div>
+      <FadeLoader color="var(--sky-blue-color)" size={50} />
     </div>
-    </>
-  )
-}
+  );
+};
 
 export default Loader;
