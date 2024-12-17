@@ -1,26 +1,88 @@
-.news-image{
-width: 200px;
-height: 200px;
+.news-image {
+  width: 200px;
+  height: 200px;
 }
-.view-news-modal .ant-modal-content{
-    padding: 0 0 20px 0 !important;
+.view-news-modal .ant-modal-content {
+  padding: 0 0 20px 0 !important;
 }
-.news-modal-header{
-    padding: 20px;
+.news-modal-header {
+  padding: 20px;
 }
-.news-modal-content{
-padding: 20px;
+.news-modal-content {
+  padding: 20px;
 }
-.news-modal-content h4{
-    font-size: 18px;
-    color: var(--black-color);
-    font-weight: 700;
+.news-modal-content h4 {
+  font-size: 18px;
+  color: var(--black-color);
+  font-weight: 700;
 }
-.news-modal-content p{
-    font-size: 14px;
-    color: var(--black-color);
-    font-weight: 700;
+.news-modal-content p {
+  font-size: 14px;
+  color: var(--black-color);
+  font-weight: 700;
 }
-.news-content{
-    color: var(--black-color);
+.news-content {
+  color: var(--black-color);
+}
+.department-sections {
+  color: var(--black-color);
+  font-weight: 500;
+  font-size: 20px;
+}
+.department-modal-header {
+  padding: 20px;
+}
+.specialist-modal {
+  padding: 20px;
+}
+.specialist-modal-content {
+  padding: 20px;
+  background-image: url(../../Assets/Images/specialisBg.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+}
+.specialist-subheading {
+  color: var(--rfh-button-text-color);
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.specialist-name {
+  color: var(--rfh-button-text-color);
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.specialist-location {
+  color: var(--rfh-button-text-color);
+  font-weight: 400;
+  font-size: 18px;
+}
+.department-subheading {
+  font-size: 18px;
+  color: var(--black-color);
+  font-weight: 600;
+  margin-top: 20px;
+}
+.department-about {
+  font-size: 14px;
+  color: var(--black-color);
+  font-weight: 600;
+}
+.specialist-heading-name,
+.department-heading {
+  font-size: 24px;
+  color: var(--black-color);
+  font-weight: 600;
+}
+.videos-section {
+  padding: 20px;
+}
+.video-details h4 {
+  color: var(--black-color);
+}
+.ant-modal-root .ant-modal-wrap {
+  z-index: 9999;
 }

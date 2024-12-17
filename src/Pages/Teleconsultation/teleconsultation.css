@@ -422,7 +422,20 @@
   height: 187px;
   background-color: var(--card-background-color) !important;
 }
-
+.upload-users-image {
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  background-color: var(--upload-image-bg);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.upload-users-image.ant-upload-wrapper {
+  background-color: var(--card-background-color) !important;
+}
 .doctor-detail-page-head {
   border: 1px solid var(--border-color);
   padding: 32px;

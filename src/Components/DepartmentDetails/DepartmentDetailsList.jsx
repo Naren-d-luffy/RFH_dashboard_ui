@@ -7,27 +7,30 @@ import Empty_survey_image from "../../Assets/Icons/Empty_survey_image.png";
 import { showDeleteMessage } from "../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../AxiosConfig";
-import CreateNews from "./CreateNews";
-import EditNews from "./EditNews";
-import { deleteNews, setNews } from "../../Features/NewsSlice";
+import {
+  deleteDepartment,
+  setDepartment,
+} from "../../Features/DepartmentSlice";
 import { useDispatch, useSelector } from "react-redux";
-import ViewNews from "./ViewNews";
-import Loader from "../../Loader";
+import ViewDepartmentDetails from "./ViewDepartmentDetails";
+import EditDepartmentDetails from "./EditDepartmentDetails";
+import CreateDepartmentDetails from "./CreateDepartmentDetails";
 
-const NewsList = () => {
+const DepartmentDetailsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isViewNewsModalOpen, setIsViewNewsModalOpen] = useState(false);
-  const [isLoading,setIsLoading]=useState(false)
-  const [newsList, setNewsList] = useState([]);
+  const [isViewDepartmentModalOpen, setIsViewDepartmentModalOpen] =
+    useState(false);
+
+  const [departmentList, setDepartmentList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedNews, setSelectedNews] = useState({ content: [] });
-  const [totalRows, setTotalRows] = useState(0); 
-  const news = useSelector((state) => state.news.news);
+  const [selectedDepartment, setSelectedDepartment] = useState([]);
+  const [totalRows, setTotalRows] = useState(0);
+  const departments = useSelector((state) => state.department.departments);
   const [searchText, setSearchText] = useState("");
 
   const dispatch = useDispatch();
-  const itemsPerPage = 10; 
+  const itemsPerPage = 5;
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -35,90 +38,88 @@ const NewsList = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const showEditModal = (news) => {
-    setSelectedNews(news);
+  const showEditModal = (department) => {
+    setSelectedDepartment(department);
     setIsEditModalOpen(true);
   };
   const handleCancelEditModal = () => {
-    setSelectedNews(null);
+    setSelectedDepartment(null);
     setIsEditModalOpen(false);
   };
 
-  const ShowNewsModal = (news) => {
-    setSelectedNews(news);
-    setIsViewNewsModalOpen(true);
+  const ShowDepartmentModal = (department) => {
+    setSelectedDepartment(department);
+    setIsViewDepartmentModalOpen(true);
   };
-  const handleCancelNewsModal = () => {
-    setSelectedNews(null);
-    setIsViewNewsModalOpen(false);
+  const handleCancelDepartmentModal = () => {
+    setSelectedDepartment(null);
+    setIsViewDepartmentModalOpen(false);
   };
 
-  const handleDeleteNews = (_id) => {
+  const handleDeleteDepartment = (_id) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/cards/${_id}`);
+          const response = await Instance.delete(`/department/${_id}`);
           if (response.status === 200) {
-            dispatch(deleteNews(_id));
+            dispatch(deleteDepartment(_id));
+            setDepartmentList((prev) =>
+              prev.filter((dept) => dept._id !== _id)
+            );
           }
         } catch (error) {
-          console.error("Error deleting news:", error);
+          console.error("Error deleting department list:", error);
         }
       },
     });
   };
 
-  const fetchNewsList = async (page) => {
-    setIsLoading(true)
+  const fetchDepartmentList = async (page) => {
     try {
-      const response = await Instance.get(`/cards`, {
+      const response = await Instance.get(`/department`, {
         params: { page, limit: itemsPerPage },
       });
-      setNewsList(response.data || []);
-      setTotalRows(response.data.length);  
-      dispatch(setNews(response.data));
-      setIsLoading(false)
+      setDepartmentList(response.data.departments || []);
+      console.log(response.data);
+      setTotalRows(response.data.totalDepartments);
+      dispatch(setDepartment(response.data));
     } catch (error) {
-      console.error("Error fetching news:", error);
-    }
-    finally{
-      setIsLoading(false)
+      console.error("Error fetching department list:", error);
     }
   };
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return news;
-    return news.filter(
-      (news) =>
-        `${news.heading}{}${news.subheading}`
-          .toLowerCase()
-          .includes(searchText.toLowerCase())
+    if (searchText.trim() === "") return departments;
+    return departments.filter((department) =>
+      `${department.title} ${department.subtitle}`
+        .toLowerCase()
+        .includes(searchText.toLowerCase())
     );
-  }, [searchText, news]);
+  }, [searchText, departments]);
 
   useEffect(() => {
-    fetchNewsList(currentPage);
+    fetchDepartmentList(currentPage);
   }, [currentPage]);
-
-  const handleTableChange = (pagination) => {
-    setCurrentPage(pagination.current); 
-  };
 
   const columns = [
     {
-      title: "Heading",
-      dataIndex: "heading",
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
       className: "campaign-performance-table-column",
     },
     {
-      title: "SubHeading",
-      dataIndex: "subheading",
+      title: "Subtitle",
+      dataIndex: "subtitle",
+      key: "subtitle",
       className: "campaign-performance-table-column",
     },
     {
-      title: "About",
-      dataIndex: "about",
+      title: "Specialist Name",
+      key: "specialist",
+      render: (_, record) =>
+        record.specialist ? record.specialist.name : "N/A",
       className: "campaign-performance-table-column",
     },
     {
@@ -128,7 +129,7 @@ const NewsList = () => {
         <div className="campaign-performance-table-action-icons">
           <div
             className="campaign-performance-table-eye-icon"
-            onClick={() => ShowNewsModal(record)}
+            onClick={() => ShowDepartmentModal(record)}
           >
             <FiEye />
           </div>
@@ -138,10 +139,9 @@ const NewsList = () => {
           >
             <FiEdit />
           </div>
-
           <div
             className="campaign-performance-table-delete-icon"
-            onClick={() => handleDeleteNews(record._id)}
+            onClick={() => handleDeleteDepartment(record._id)}
           >
             <FiTrash2 />
           </div>
@@ -174,15 +174,12 @@ const NewsList = () => {
   };
 
   return (
-
     <div className="container mt-1">
-      {isLoading ? (
-        <Loader />
-      ) : newsList.length > 0 ? (
+      {departmentList.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>News</h3>
+              <h3>Department List</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -190,7 +187,7 @@ const NewsList = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Create News
+                Create Department
               </button>
             </div>
           </div>
@@ -226,7 +223,7 @@ const NewsList = () => {
                   current: currentPage,
                   pageSize: itemsPerPage,
                   total: totalRows,
-                  onChange: handleTableChange, // Update current page on change
+                  onChange: (page) => setCurrentPage(page),
                 }}
                 className="campaign-performance-table overflow-y-auto"
                 bordered={false}
@@ -240,33 +237,33 @@ const NewsList = () => {
             <img src={Empty_survey_image} alt="" />
           </div>
           <div className="no-data-container-text d-flex flex-column justify-content-center">
-            <h4>No News Found</h4>
+            <h4>No Department Found</h4>
             <p>
-              Currently, there are no News available to display.
+              Currently, there are no Department available to display.
               <br /> Please check back later or contact support for further
               assistance if this is an error.
             </p>
             <div className="d-flex justify-content-center">
               <button className="rfh-basic-button" onClick={showModal}>
-                <FaPlus /> Create News
+                <FaPlus /> Create Department
               </button>
             </div>
           </div>
         </div>
       )}
-      <CreateNews open={isModalOpen} handleCancel={handleCancel} />
-      <EditNews
+      <CreateDepartmentDetails open={isModalOpen} handleCancel={handleCancel} />
+      <EditDepartmentDetails
         open={isEditModalOpen}
         handleCancel={handleCancelEditModal}
-        newsData={selectedNews}
+        departmentData={selectedDepartment}
       />
-      <ViewNews
-        open={isViewNewsModalOpen}
-        handleCancel={handleCancelNewsModal}
-        newsData={selectedNews}
+      <ViewDepartmentDetails
+        open={isViewDepartmentModalOpen}
+        handleCancel={handleCancelDepartmentModal}
+        departmentData={selectedDepartment}
       />
     </div>
   );
 };
 
-export default NewsList;
+export default DepartmentDetailsList;
