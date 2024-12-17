@@ -1,12 +1,13 @@
 .news-image{
 width: 200px;
 height: 200px;
+border-radius: 20px;
 }
 .view-news-modal .ant-modal-content{
     padding: 0 0 20px 0 !important;
 }
 .news-modal-header{
-    padding: 20px;
+    padding: 40px;
 }
 .news-modal-content{
 padding: 20px;
