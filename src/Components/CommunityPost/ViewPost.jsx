@@ -18,9 +18,9 @@ const ViewPost = ({ open, handleCancel, newsData }) => {
   useEffect(() => {
     if (newsData) {
       setPostDetails({
-        title: newsData.title || "N/A",
-        content: newsData.content || "N/A",
-        type: newsData.type || "N/A",
+        title: newsData.title || "",
+        content: newsData.content || "",
+        type: newsData.type || "",
         reports: newsData.reports || 1,
         likes: newsData.likes || 0,
         comments: newsData.comments || 0,
@@ -33,6 +33,7 @@ const ViewPost = ({ open, handleCancel, newsData }) => {
   }, [newsData]);
 
   return (
+    <>
     <Modal
       visible={open}
       onCancel={handleCancel}
@@ -138,6 +139,7 @@ const ViewPost = ({ open, handleCancel, newsData }) => {
         </div>
       )}
     </Modal>
+    </>
   );
 };
 

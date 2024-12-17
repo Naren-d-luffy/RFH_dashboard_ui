@@ -226,7 +226,7 @@ const NewsList = () => {
                   current: currentPage,
                   pageSize: itemsPerPage,
                   total: totalRows,
-                  onChange: handleTableChange, // Update current page on change
+                  onChange: handleTableChange, 
                 }}
                 className="campaign-performance-table overflow-y-auto"
                 bordered={false}
