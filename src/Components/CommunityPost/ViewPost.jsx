@@ -102,7 +102,7 @@ const ViewPost = ({ open, handleCancel, newsData }) => {
               <img
                 key={index}
                 src={url}
-                alt={`Post Image ${index + 1}`}
+                alt={`Post ${index + 1}`}
                 style={{
                   width: "100px",
                   marginRight: "10px",

@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Table } from "antd";
 import { FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Instance } from "../../AxiosConfig";
 import { deletePost, setPost } from "../../Features/PostSlice";
 import { showDeleteMessage } from "../../globalConstant";
@@ -18,7 +17,6 @@ const CommunityPost = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const posts = useSelector((state) => state.post.post || []);
   const itemsPerPage = 10;
 
@@ -31,10 +29,6 @@ const CommunityPost = () => {
 
       if (response.status === 200) {
         const { data, total } = response.data;
-        const filteredPosts = response.data.filter(
-          (post) => post.reportCounts > 0
-        );
-        console.log("asdd", response.data);
         dispatch(setPost(data));
         setTotalRows(total);
       }

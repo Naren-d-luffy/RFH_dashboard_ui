@@ -4,7 +4,7 @@ import { Instance } from "../../AxiosConfig";
 import { showSuccessMessage } from "../../globalConstant";
 import { useDispatch } from "react-redux";
 import { FaTrash } from "react-icons/fa6";
-import { addHealthPackage, editHealthPackage } from "../../Features/HealthPackageSlice";
+import { editHealthPackage } from "../../Features/HealthPackageSlice";
 
 const { TextArea } = Input;
 const { Option } = Select;
