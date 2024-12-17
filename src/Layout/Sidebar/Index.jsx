@@ -12,6 +12,7 @@ import {
   Bell,
   Handshake,
   LogOut,
+  LucideHouse,
   MemoryStick,
   MessageCircleCode,
   MessageSquareMore,
@@ -142,6 +143,11 @@ const menuConfig = [
     label: "Notification",
     icon: <Bell className="sidebar-icon" size={14} />,
     to: "/sidebar/notification",
+  },
+  {
+    label: "Department Details",
+    icon: <LucideHouse className="sidebar-icon" size={14} />,
+    to: "/department-details",
   },
   {
     label: "Settings",
