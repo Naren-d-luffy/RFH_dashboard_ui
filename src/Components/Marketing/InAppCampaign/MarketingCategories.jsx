@@ -69,7 +69,7 @@ export const MarketingCategories = () => {
         try {
           const response = await Instance.delete(`/videos/${_id}`);
           if (response.status === 200 || response.status === 204) {
-            dispatch(deleteHelloDoctorVideos(_id)); 
+            dispatch(deleteHelloDoctorVideos(_id));
           }
         } catch (error) {
           console.error("Error deleting video:", error);
@@ -77,7 +77,6 @@ export const MarketingCategories = () => {
       },
     });
   };
-  
 
   const eventData = [
     {
@@ -184,20 +183,18 @@ export const MarketingCategories = () => {
             </button>
           </Dropdown>
         </div>
-        <div className="recommend-video-card p-3">
-          <div className="video-player-container">
-            <ReactPlayer
-              url={video.url}
-              controls={false}
-              playing={isPlaying}
-              width="100%"
-              height="100px"
-            />
-          </div>
+        <div className=" p-1">
+          <ReactPlayer
+            url={video.url}
+            controls={true}
+            playing={isPlaying}
+            width="100%"
+            height="200px"
+          />
         </div>
         <div className="video-details mt-2">
           <h4>{video.title}</h4>
-          <p>{`${video.likes} Likes | ${new Date(
+          <p style={{color: 'var(--black-color)'}}>{`${video.likes} Likes | ${new Date(
             video.createdAt
           ).toLocaleDateString()}`}</p>
         </div>
