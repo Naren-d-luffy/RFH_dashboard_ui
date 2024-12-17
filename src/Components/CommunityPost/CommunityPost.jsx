@@ -7,6 +7,7 @@ import { Instance } from "../../AxiosConfig";
 import { deletePost, setPost } from "../../Features/PostSlice";
 import { showDeleteMessage } from "../../globalConstant";
 import ViewPost from "./ViewPost";
+import Loader from "../../Loader";
 
 const CommunityPost = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,25 +15,33 @@ const CommunityPost = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedPost, setSelectedPost] = useState(null);
   const [isViewPostModalOpen, setIsViewPostModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const posts = useSelector((state) => state.post.post || []);
   const itemsPerPage = 10;
 
   const fetchPostList = async (page) => {
+    setIsLoading(true);
     try {
       const response = await Instance.get(`/post`, {
         params: { page, limit: itemsPerPage },
       });
-      console.log("API Response:", response.data);
 
       if (response.status === 200) {
         const { data, total } = response.data;
+        const filteredPosts = response.data.filter(
+          (post) => post.reportCounts > 0
+        );
+        console.log("asdd", response.data);
         dispatch(setPost(data));
         setTotalRows(total);
       }
     } catch (error) {
       console.error("Error fetching posts:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -139,50 +148,55 @@ const CommunityPost = () => {
 
   return (
     <div className="container mt-1">
-      <div className="header">
-        <h3 style={{ color: "var(--black-color)" }}>Reported Post List</h3>
-      </div>
-      <div className="campaign-performance-table-head mt-4">
-        <div className="d-flex flex-column flex-md-row gap-3 align-items-center justify-content-end">
-          <div className="search-container">
-            <FiSearch className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search anything here"
-              className="search-input-table"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-            />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <div className="header">
+            <h3 style={{ color: "var(--black-color)" }}>Reported Post List</h3>
           </div>
-        </div>
-        <div className="mt-3">
-          {posts.length > 0 ? (
-            <Table
-              columns={columns}
-              dataSource={dataSource}
-              pagination={{
-                current: currentPage,
-                pageSize: itemsPerPage,
-                total: totalRows,
-                onChange: handleTableChange,
-              }}
-              className="campaign-performance-table overflow-y-auto"
-              bordered={false}
-              rowKey="_id"
-            />
-          ) : (
-            <div className="no-data-container">
-              <p>There are no records to display</p>
+          <div className="campaign-performance-table-head mt-4">
+            <div className="d-flex flex-column flex-md-row gap-3 align-items-center justify-content-end">
+              <div className="search-container">
+                <FiSearch className="search-icon" />
+                <input
+                  type="text"
+                  placeholder="Search anything here"
+                  className="search-input-table"
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                />
+              </div>
             </div>
-          )}
-        </div>
-      </div>
-
-      <ViewPost
-        open={isViewPostModalOpen}
-        handleCancel={handleCancelPostModal}
-        newsData={selectedPost}
-      />
+            <div className="mt-3">
+              {posts.length > 0 ? (
+                <Table
+                  columns={columns}
+                  dataSource={dataSource}
+                  pagination={{
+                    current: currentPage,
+                    pageSize: itemsPerPage,
+                    total: totalRows,
+                    onChange: handleTableChange,
+                  }}
+                  className="campaign-performance-table overflow-y-auto"
+                  bordered={false}
+                  rowKey="_id"
+                />
+              ) : (
+                <div className="no-data-container">
+                  <p>There are no records to display</p>
+                </div>
+              )}
+            </div>
+          </div>
+          <ViewPost
+            open={isViewPostModalOpen}
+            handleCancel={handleCancelPostModal}
+            newsData={selectedPost}
+          />
+        </>
+      )}
     </div>
   );
 };

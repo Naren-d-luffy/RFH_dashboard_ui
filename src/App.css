@@ -293,6 +293,8 @@ body,
 .ant-input {
   color: var(--black-color);
   background: transparent;
+  font-size: 12px;
+  padding: 12px
 }
 
 .ant-form-vertical
@@ -365,4 +367,8 @@ body,
   100% {
     transform: rotate(360deg);
   }
+}
+
+.ant-color-picker-trigger{
+  padding: 10px 18px;
 }
