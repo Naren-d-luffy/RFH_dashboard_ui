@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space, Input } from "antd";
+import { Table, Dropdown, Button, Space } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ViewDepartmentDetails from "./ViewDepartmentDetails";
 import EditDepartmentDetails from "./EditDepartmentDetails";
 import CreateDepartmentDetails from "./CreateDepartmentDetails";
+import Loader from "../../Loader";
 
 const DepartmentDetailsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,6 +29,7 @@ const DepartmentDetailsList = () => {
   const [totalRows, setTotalRows] = useState(0);
   const departments = useSelector((state) => state.department.departments);
   const [searchText, setSearchText] = useState("");
+  const [isLoading,setIsLoading]=useState(false)
 
   const dispatch = useDispatch();
   const itemsPerPage = 5;
@@ -76,6 +78,8 @@ const DepartmentDetailsList = () => {
   };
 
   const fetchDepartmentList = async (page) => {
+    setIsLoading(true)
+
     try {
       const response = await Instance.get(`/department`, {
         params: { page, limit: itemsPerPage },
@@ -86,6 +90,8 @@ const DepartmentDetailsList = () => {
       dispatch(setDepartment(response.data));
     } catch (error) {
       console.error("Error fetching department list:", error);
+    } finally{
+      setIsLoading(false)
     }
   };
 
@@ -175,7 +181,9 @@ const DepartmentDetailsList = () => {
 
   return (
     <div className="container mt-1">
-      {departmentList.length > 0 ? (
+          {isLoading ? (
+            <Loader />
+          ) : departmentList.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">

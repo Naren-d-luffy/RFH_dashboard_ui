@@ -112,7 +112,7 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
           </div>
           <div className="news-modal-image">
             {photo ? (
-              <img src={photo} alt="Specialist image" className="news-image" />
+              <img src={photo} alt="Specialist" className="news-image" />
             ) : (
               <div className="news-placeholder">No Images</div>
             )}
