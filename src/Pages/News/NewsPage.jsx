@@ -1,5 +1,6 @@
 import React from "react";
 import NewsList from "../../Components/News/NewsList";
+import "./news.css"
 const NewsPage = () => {
   return (
     <>

@@ -7,7 +7,9 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { ColorPicker } from "antd";
 import {Instance} from "../../AxiosConfig";
 import { showSuccessMessage } from "../../globalConstant";
-
+import { addNews } from "../../Features/NewsSlice";
+import { useDispatch } from "react-redux";
+import Loader from "../../Loader";
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -26,9 +28,9 @@ const CreateNews = ({ open, handleCancel }) => {
   const [subheading, setSubheading] = useState("");
   const [about, setAbout] = useState("");
   const [content, setContent] = useState("");
-  const [backgroundColor, setBackgroundColor] = useState("#1677ff");
+  const [backgroundColor, setBackgroundColor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const dispatch=useDispatch();
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
     setUploadedImage(file);
@@ -39,13 +41,11 @@ const CreateNews = ({ open, handleCancel }) => {
   };
 
   const handleSave = async () => {
-    if (!heading || !subheading || !content) {
+    if (!heading || !subheading || !content || !uploadedImage ||!about ||!backgroundColor) {
       message.error("Please fill in all required fields.");
       return;
     }
-
     setIsLoading(true);
-
     try {
       const formData = new FormData();
       formData.append("heading", heading);
@@ -57,9 +57,17 @@ const CreateNews = ({ open, handleCancel }) => {
         formData.append("image", uploadedImage);
       }
       const response = await Instance.post("/cards", formData);
-      if (response?.status === 200) {
+      if (response?.status === 200||response?.status === 201) {
         handleCancel(); 
+
         showSuccessMessage("News created successfully!");
+        dispatch(addNews(response.data));
+        setHeading("");
+        setSubheading("")
+        setAbout("")
+        setContent("")
+        setUploadedImage("")
+        setBackgroundColor("")
       }
     } catch (error) {
       console.error(error);
@@ -70,6 +78,8 @@ const CreateNews = ({ open, handleCancel }) => {
   };
 
   return (
+    <>
+    {isLoading && <Loader/>}
     <Modal
       visible={open}
       title={<span className="create-campaign-modal-title">Create News</span>}
@@ -94,7 +104,7 @@ const CreateNews = ({ open, handleCancel }) => {
       ]}
     >
       <Form layout="vertical" className="mt-4">
-        <Form.Item label="Image">
+        <Form.Item>
           <Upload
             listType="picture"
             showUploadList={false}
@@ -135,29 +145,36 @@ const CreateNews = ({ open, handleCancel }) => {
               </Button>
             </div>
           )}
+          <span className="create-campaign-input-span">Image</span>
         </Form.Item>
-        <Form.Item label="Heading">
+        <Form.Item>
           <Input
             value={heading}
             onChange={(e) => setHeading(e.target.value)}
             placeholder="Add Heading"
+            required
           />
+          <span className="create-campaign-input-span">Heading</span>
         </Form.Item>
-        <Form.Item label="Sub Heading">
+        <Form.Item>
           <Input
             value={subheading}
             onChange={(e) => setSubheading(e.target.value)}
             placeholder="Add Sub Heading"
+            required
           />
+          <span className="create-campaign-input-span">Sub Heading</span>
         </Form.Item>
-        <Form.Item label="About">
+        <Form.Item>
           <TextArea
             value={about}
             onChange={(e) => setAbout(e.target.value)}
             placeholder="About"
+            required
           />
+          <span className="create-campaign-input-span">About</span>
         </Form.Item>
-        <Form.Item label="Background Color">
+        <Form.Item>
           <ColorPicker
             defaultValue={backgroundColor} 
             onChange={(color) => {
@@ -166,20 +183,26 @@ const CreateNews = ({ open, handleCancel }) => {
             }}
             showText
             allowClear={false} 
+            required
           />
+          <span className="create-campaign-input-span">Background Color</span>
         </Form.Item>
 
-        <Form.Item label="Content Points">
+        <Form.Item>
           <ReactQuill
             theme="snow"
             modules={modules}
             value={content}
             onChange={setContent}
             placeholder="Your text goes here"
+            required
           />
+          <span className="create-campaign-input-span">Content Points</span>
         </Form.Item>
       </Form>
     </Modal>
+    </>
+
   );
 };
 

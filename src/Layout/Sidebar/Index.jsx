@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../layout.css";
 import lightLogo from "../../Assets/Images/logo.png";
 import darkLogo from "../../Assets/Images/darkLogo.png"
-import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FiActivity, FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineDashboard } from "react-icons/md";
 import { GoShieldCheck } from "react-icons/go";
@@ -12,6 +12,7 @@ import {
   Bell,
   Handshake,
   LogOut,
+  LucideHouse,
   MemoryStick,
   MessageCircleCode,
   MessageSquareMore,
@@ -21,6 +22,7 @@ import { SlGraduation } from "react-icons/sl";
 import { IoMenu, IoNewspaperOutline, IoTelescopeOutline } from "react-icons/io5";
 import { BiCapsule } from "react-icons/bi";
 import { useDarkMode } from "../../DarkMode";
+import { HiOutlineUserGroup } from "react-icons/hi";
 
 const menuConfig = [
   {
@@ -43,11 +45,17 @@ const menuConfig = [
     label: "Marketing",
     icon: <TbCirclePercentage className="sidebar-icon" />,
     subMenu: [
-      { label: "Campaign Performance", to: "/marketing/campaign-performance" },
+      // { label: "Campaign Performance", to: "/marketing/campaign-performance" },
       { label: "InApp Campaign", to: "/marketing/in-app-campaign" },
       { label: "Patient Acquisition", to: "/marketing/patient-acquisition" },
     ],
   },
+  // {
+  //   id: "hello doctor",
+  //   label: "Hello Doctor",
+  //   icon: <IoVideocamOutline className="sidebar-icon" />,
+  //   subMenu: [{ label: "Hello Doctor", to: "/hello-doctor" }],
+  // },
   {
     id: "education",
     label: "Patient Education",
@@ -102,6 +110,18 @@ const menuConfig = [
     to: "/news",
   },
   {
+    id: "community post",
+    label: "Community Post",
+    icon: <HiOutlineUserGroup className="sidebar-icon" size={14} />,
+    to: "/community-post",
+  },
+ {
+    id: "healthPackage",
+    label: "Health Package",
+    icon: <FiActivity className="sidebar-icon" size={14} />,
+    to: "/health-package",
+  },
+  {
     id: "technical",
     label: "Technical",
     icon: <MemoryStick className="sidebar-icon" size={14} />,
@@ -127,6 +147,11 @@ const menuConfig = [
     label: "Notification",
     icon: <Bell className="sidebar-icon" size={14} />,
     to: "/sidebar/notification",
+  },
+  {
+    label: "Department Details",
+    icon: <LucideHouse className="sidebar-icon" size={14} />,
+    to: "/department-details",
   },
   {
     label: "Settings",
@@ -159,6 +184,7 @@ function SidebarAdmin() {
       "/admin/user-management": "admin",
       "/marketing/campaign-performance": "marketing",
       "/marketing/patient-acquisition": "marketing",
+      "/hello-doctor": "hello doctor",
       "/marketing/in-app-campaign": "marketing",
       "/marketing/patient-acquisition/patient-detail": "marketing",
       "/dashboard/settings": "",
@@ -178,10 +204,13 @@ function SidebarAdmin() {
       "/operational/appointment-reports": "operational",
       "/operational/service-utilization": "operational",
       "/operational/financial-performance": "operational",
+      "/community-post": "community post",
       "/teleconsultation/appointment-feedback": "teleconsultation",
       "/teleconsultation/virtual-management": "teleconsultation",
       "/teleconsultation/view-doctor-detail": "teleconsultation",
       "/medication-tracker": "medicationtracker",
+      "/medication-tracker/add-patient-detail": "medicationtracker",
+      "/medication-tracker/patient-detail": "medicationtracker",
       "/sidebar/notification": "",
       "/logout": "logout",
     };

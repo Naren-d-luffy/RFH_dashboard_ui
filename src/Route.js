@@ -32,18 +32,34 @@ import ServiceUtilizationPage from "./Pages/Operational/ServiceUtilizationPage";
 import FinancialPerformancePage from "./Pages/Operational/FinancialPerformancePage";
 import ChatPage from "./Pages/Teleconsultation/ChatPage";
 import ChattingPage from "./Pages/Chat/chatPage";
-
 import Layout from "./Pages";
 import SignIn from "./Components/Auth/SignIn";
+import HelloDoctorPage from "./Pages/HelloDoctor/HelloDoctorPage";
 import NewsPage from "./Pages/News/NewsPage";
+import CommunityPostPage from "./Pages/CommunityPost/CommunityPostPage";
+import { HealthPackagePage } from "./Pages/HealthPackage/HealthPackagePage";
+import SignUp from "./Components/Auth/SignUp";
+import ForgotPassword from "./Components/Auth/ForgotPassword";
+import OtpScreen from "./Components/Auth/OtpScreen";
+import ConfirmPassword from "./Components/Auth/ConfirmPassword";
+import DepartmentDetailsPage from "./Pages/DepartmentDetails/DepartmentPage";
+
 
 export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
-      <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/otp-verification" element={<OtpScreen />} />
+        <Route path="/confirm-password" element={<ConfirmPassword />} />
+
         <Route element={<Layout />}>
-          <Route path="/user-dashboards/user-aquisition" element={<UserAquisitionPage />} />
+          <Route
+            path="/user-dashboards/user-aquisition"
+            element={<UserAquisitionPage />}
+          />
           <Route
             path="/user-dashboards/user-engagement"
             element={<UserEngagementPage />}
@@ -64,6 +80,9 @@ export const AppRouter = () => {
             path="/marketing/patient-acquisition/patient-detail"
             element={<PatientDetailPage />}
           />
+
+          <Route path="/hello-doctor" element={<HelloDoctorPage />} />
+
           <Route path="/dashboard/settings" element={<SettingsPage />} />
 
           <Route path="/user-engagement" element={<UserEngagementPage />} />
@@ -170,6 +189,10 @@ export const AppRouter = () => {
           />
           <Route path="/chat" element={<ChattingPage />} />
           <Route path="/news" element={<NewsPage />} />
+
+          <Route path="/community-post" element={<CommunityPostPage />} />
+          <Route path="/health-package" element={<HealthPackagePage />} />
+          <Route path="/department-details" element={<DepartmentDetailsPage />} />
 
         </Route>
       </Routes>

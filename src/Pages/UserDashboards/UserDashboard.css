@@ -400,6 +400,10 @@
   height: auto;
   left: 65%;
 }
+.anticon{
+  color: var(--black-color);
+}
+
 /* @media (max-width: 768px){
   .userAquisition-color-dot-div{
     

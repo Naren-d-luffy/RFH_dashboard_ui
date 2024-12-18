@@ -14,7 +14,7 @@ import moment from "moment"
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useNavigate, useLocation } from "react-router-dom";
 import { showSuccessMessage } from "../../../globalConstant";
-import {Instance} from "../../../AxiosConfig"; // Replace with the correct import path for your axios instance
+import {Instance} from "../../../AxiosConfig"; 
 
 const { Option } = Select;
 
@@ -324,8 +324,9 @@ const DoctorDetail = () => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline /> Upload Image
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "} Upload Image
               </span>
+
             </Upload>
             {uploadedFile && (
               <div className="uploaded-image-preview d-flex gap-2">

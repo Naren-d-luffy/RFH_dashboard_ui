@@ -1,4 +1,4 @@
-import { DatePicker, Form, Input, Modal } from 'antd'
+import { Button, DatePicker, Form, Input, Modal } from 'antd'
 import React, { useState } from 'react'
 import { FaAngleLeft } from 'react-icons/fa6';
 
@@ -25,8 +25,17 @@ const UserManagementEditPatientsModal = ({ visible, onClose }) => {
                 visible={visible}
                 onCancel={onClose}
                 width={680}
-                footer={null}
-            >
+                footer={[
+                    <div className="d-flex justify-content-start">
+                      <Button
+                        className="d-flex gap-2 align-items-center create-campaign-save-button"
+                        onClick={onClose}
+                      >
+                        <FaAngleLeft />
+                        Back
+                      </Button>
+                    </div>
+                  ]}                >
                 <div className="row mt-4">
                     <div className="col-lg-12 mt-3">
                         <Form.Item>
@@ -126,12 +135,6 @@ const UserManagementEditPatientsModal = ({ visible, onClose }) => {
                             />
                             <span className="create-campaign-input-span">Status</span>
                         </Form.Item>
-                    </div>
-                    <div  className='d-flex justify-content-start'>
-                        <button className="d-flex gap-2 align-items-center export-button" onClick={onClose}>
-                            <FaAngleLeft />
-                            Back
-                        </button>
                     </div>
                 </div>
             </Modal>

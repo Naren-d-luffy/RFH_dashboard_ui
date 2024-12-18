@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Form, Input, Select, Upload, Button } from "antd";
+import React, { useState } from "react";
+import { Form, Input, Select, Upload } from "antd";
 import ImgCrop from "antd-img-crop";
 import DefaultUser from "../../Assets/Images/DefaultUser.png";
 import "react-international-phone/style.css";

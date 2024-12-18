@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { GoPlus } from "react-icons/go";
@@ -9,18 +9,35 @@ import "slick-carousel/slick/slick-theme.css";
 import medicines from "../../../Assets/Images/medicines.png";
 import fruits from "../../../Assets/Images/fruits.png";
 import appointment from "../../../Assets/Images/appointment.png";
-import videoImage1 from "../../../Assets/Images/recommendVideo1.png";
-import videoImage2 from "../../../Assets/Images/recommendVideo2.jpeg";
-import { FaPlay } from "react-icons/fa";
 import UpcomingEvents from "./UpcomingEvents";
-import RecommendedVideo from "./RecommendedVideo";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
-import Input from "antd/es/input/Input";
-export const MarketingCategories = () => {
-  const [modals, setModals] = useState({ event: false, video: false });
+import { Instance } from "../../../AxiosConfig";
+import ReactPlayer from "react-player";
+import AddVideo from "./AddVideo";
+import EditVideo from "./EditVideo";
+import { showDeleteMessage } from "../../../globalConstant";
+import {
+  deleteHelloDoctorVideos,
+  setHelloDoctorVideos,
+} from "../../../Features/HelloDoctorSlice";
+import { useDispatch, useSelector } from "react-redux";
 
+export const MarketingCategories = () => {
+  const [playingVideo] = useState(null);
+  const [modals, setModals] = useState({
+    event: false,
+    video: false,
+    edit: false,
+  });
+  const [, setVideoList] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const dispatch = useDispatch();
+  const videos = useSelector((state) => state.videos.videos);
+  useEffect(() => {
+    console.log("Videos updated:", videos);
+  }, [videos]);
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
@@ -36,6 +53,27 @@ export const MarketingCategories = () => {
   const menuProps = {
     items,
     onClick: handleMenuClick,
+  };
+
+  const handleEditClick = (video) => {
+    setSelectedVideo(video);
+    toggleModal("edit");
+  };
+
+  const handleDeleteClick = (_id) => {
+    showDeleteMessage({
+      message: "",
+      onDelete: async () => {
+        try {
+          const response = await Instance.delete(`/videos/${_id}`);
+          if (response.status === 200 || response.status === 204) {
+            dispatch(deleteHelloDoctorVideos(_id));
+          }
+        } catch (error) {
+          console.error("Error deleting video:", error);
+        }
+      },
+    });
   };
 
   const eventData = [
@@ -62,32 +100,6 @@ export const MarketingCategories = () => {
     },
   ];
 
-  const videoData = [
-    {
-      key: 1,
-      video: medicines,
-      authorName: "Ravi Kumar",
-      view: "10K",
-      time: "1 hour",
-      background: videoImage1,
-    },
-    {
-      key: 2,
-      video: medicines,
-      authorName: "Ravi Kumar",
-      view: "10K",
-      time: "1 hour",
-      background: videoImage2,
-    },
-    {
-      key: 3,
-      video: medicines,
-      authorName: "Ravi Kumar",
-      view: "10K",
-      time: "1 hour",
-      background: videoImage1,
-    },
-  ];
   const filterMenu = (
     <Menu>
       <Menu.Item key="edit" className="filter-menu-item">
@@ -102,13 +114,22 @@ export const MarketingCategories = () => {
       </Menu.Item>
     </Menu>
   );
-  const sortMenu = (
+
+  const sortMenu = (video) => (
     <Menu>
-      <Menu.Item key="edit" className="filter-menu-item">
+      <Menu.Item
+        key="edit"
+        className="filter-menu-item"
+        onClick={() => handleEditClick(video)}
+      >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
-      <Menu.Item key="delete" className="filter-menu-item">
+      <Menu.Item
+        key="delete"
+        className="filter-menu-item"
+        onClick={() => handleDeleteClick(video._id)}
+      >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
         />
@@ -116,9 +137,10 @@ export const MarketingCategories = () => {
       </Menu.Item>
     </Menu>
   );
+
   const renderEventCard = (event) => (
-    <div className="col-lg-4">
-      <div className="upcoming-event-card p-3" key={event.title}>
+    <div className="col-lg-4" key={event.title}>
+      <div className="upcoming-event-card p-3">
         <div className="action-icon-container">
           <Dropdown overlay={filterMenu} trigger={["click"]}>
             <button className="action-icon-button">
@@ -143,66 +165,37 @@ export const MarketingCategories = () => {
       </div>
     </div>
   );
-  const renderRecommendVideo = (video) => (
-    <div className="col-lg-4">
-      <div
-        className="recommend-video-card p-3"
-        style={{
-          backgroundImage: `url(${video.background})`,
-        }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <video
-          className="video-preview"
-          src={video.video}
-          muted
-          loop
-          playsInline
-          preload="metadata"
-        ></video>
+
+  const renderRecommendVideo = (video) => {
+    const isPlaying = playingVideo === video._id;
+
+    return (
+      <div className="col-lg-4 recommend-video-page" key={video._id}>
         <div className="action-icon-container">
-          <Dropdown overlay={sortMenu} trigger={["click"]}>
+          <Dropdown overlay={sortMenu(video)} trigger={["click"]}>
             <button className="action-icon-button">
-              <BsThreeDotsVertical className="recommended-video-action-button" />
+              <BsThreeDotsVertical
+                className="recommended-video-action-button"
+                color="var(--black-color)"
+              />
             </button>
           </Dropdown>
         </div>
-        <div className="play-button-overlay">
-          <FaPlay style={{ color: "var(--white-color)" }} />
+        <div className=" p-1">
+          <ReactPlayer
+            url={video.url}
+            controls={true}
+            playing={isPlaying}
+            width="100%"
+            height="200px"
+          />
         </div>
-        <div>
-          <div className="d-flex justify-content-between mb-2 w-100">
-            <div style={{ position: "absolute", bottom: "0px" }}>
-              <h4>{video.authorName}</h4>
-              <p>{`${video.view} views  | ${video.time} ago`}</p>
-            </div>
-          </div>
+        <div className="video-details mt-2">
+          <h4>{video.title}</h4>
+          <p style={{color: 'var(--black-color)'}}>{`${video.likes} Likes | ${new Date(
+            video.createdAt
+          ).toLocaleDateString()}`}</p>
         </div>
-      </div>
-    </div>
-  );
-  const CustomPrevArrow = (props) => {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, display: "block", zIndex: "1000" }}
-        onClick={onClick}
-      >
-        &#8592;
-      </div>
-    );
-  };
-
-  const CustomNextArrow = (props) => {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, display: "block", zIndex: "1000" }}
-        onClick={onClick}
-      >
-        &#8594;
       </div>
     );
   };
@@ -214,8 +207,8 @@ export const MarketingCategories = () => {
     slidesToShow: 3,
     slidesToScroll: 1,
     arrows: true,
-    prevArrow: <CustomPrevArrow />,
-    nextArrow: <CustomNextArrow />,
+    prevArrow: <div>&#8592;</div>,
+    nextArrow: <div>&#8594;</div>,
     responsive: [
       {
         breakpoint: 768,
@@ -226,6 +219,20 @@ export const MarketingCategories = () => {
       },
     ],
   };
+
+  const fetchVideoList = async () => {
+    try {
+      const response = await Instance.get("/videos");
+      setVideoList(response.data);
+      dispatch(setHelloDoctorVideos(response.data));
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchVideoList();
+  }, []);
 
   return (
     <div className="row mt-4">
@@ -252,7 +259,6 @@ export const MarketingCategories = () => {
           </div>
         </div>
 
-        {/* Upcoming Events */}
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Upcoming Events</h6>
@@ -274,10 +280,9 @@ export const MarketingCategories = () => {
           />
         </div>
 
-        {/* recommended videos */}
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
-            <h6>Recommended Videos</h6>
+            <h6>Hello Doctor</h6>
             <button
               className="rfh-basic-button"
               onClick={() => toggleModal("video")}
@@ -287,15 +292,28 @@ export const MarketingCategories = () => {
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {videoData.map((video) => renderRecommendVideo(video))}
+              {videos.length > 0 ? (
+                videos.map((video) => renderRecommendVideo(video))
+              ) : (
+                <p>No videos available</p>
+              )}
             </Slider>
           </div>
-          <RecommendedVideo
+          <AddVideo
             open={modals.video}
             handleCancel={() => toggleModal("video")}
+            refreshList={fetchVideoList}
+          />
+          <EditVideo
+            open={modals.edit}
+            handleCancel={() => toggleModal("edit")}
+            videoData={selectedVideo}
+            refreshList={fetchVideoList}
           />
         </div>
       </div>
     </div>
   );
 };
+
+export default MarketingCategories;
