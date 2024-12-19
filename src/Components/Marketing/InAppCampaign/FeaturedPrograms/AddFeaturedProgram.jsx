@@ -4,7 +4,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
-import { showSuccessMessage } from "../../../globalConstant";
+import { showSuccessMessage } from "../../../../globalConstant";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
 const modules = {
@@ -20,7 +20,7 @@ const modules = {
 const handleClick = () => {
   showSuccessMessage("Successfully Created", "");
 };
-const FeaturedProgramModel = ({ open, handleCancel }) => {
+const AddFeaturesModal = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
@@ -146,4 +146,4 @@ const FeaturedProgramModel = ({ open, handleCancel }) => {
   );
 };
 
-export default FeaturedProgramModel;
+export default AddFeaturesModal;

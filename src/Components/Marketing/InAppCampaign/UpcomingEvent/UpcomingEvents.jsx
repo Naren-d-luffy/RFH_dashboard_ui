@@ -4,7 +4,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
-import {showSuccessMessage} from "../../../globalConstant"
+import {showSuccessMessage} from "../../../../globalConstant"
 import { RiDeleteBin5Line } from "react-icons/ri";
 
 const modules = {
