@@ -4,6 +4,7 @@ import hellodoctorSlice from "./HelloDoctorSlice"
 import postSlice from "./PostSlice"
 import healthPackageSlice from "./HealthPackageSlice"
 import departmentSlice from "./DepartmentSlice"
+import GastroIllnessSlice from "./GastroIllnessSlice"
 
 
 export default configureStore({
@@ -13,5 +14,6 @@ export default configureStore({
         news: newsSlice,
         healthPackage: healthPackageSlice,
         department: departmentSlice,
+        gastroIllness : GastroIllnessSlice,
     },
 });
