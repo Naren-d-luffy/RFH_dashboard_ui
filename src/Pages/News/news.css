@@ -84,6 +84,6 @@ border-radius: 20px;
 .video-details h4 {
   color: var(--black-color);
 }
-.ant-modal-root .ant-modal-wrap {
+/* .ant-modal-root .ant-modal-wrap {
   z-index: 9999;
-}
+} */

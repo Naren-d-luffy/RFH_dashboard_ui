@@ -8,8 +8,11 @@ import { deletePost, setPost } from "../../Features/PostSlice";
 import { showDeleteMessage } from "../../globalConstant";
 import ViewPost from "./ViewPost";
 import Loader from "../../Loader";
+import { FaPlus } from "react-icons/fa6";
+import Empty_survey_image from "../../Assets/Icons/Empty_survey_image.png";
 
 const CommunityPost = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
   const [searchText, setSearchText] = useState("");
@@ -21,6 +24,10 @@ const CommunityPost = () => {
   const navigate = useNavigate();
   const posts = useSelector((state) => state.post.post || []);
   const itemsPerPage = 10;
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
 
   const fetchPostList = async (page) => {
     setIsLoading(true);
@@ -184,8 +191,23 @@ const CommunityPost = () => {
                   rowKey="_id"
                 />
               ) : (
-                <div className="no-data-container">
-                  <p>There are no records to display</p>
+                <div className="container">
+                  <div className="no-data-container">
+                    <img src={Empty_survey_image} alt="" />
+                  </div>
+                  <div className="no-data-container-text d-flex flex-column justify-content-center">
+                    <h4>No Posts Found</h4>
+                    <p>
+                      Currently, there are no Posts available to display.
+                      <br /> Please check back later or contact support for
+                      further assistance if this is an error.
+                    </p>
+                    <div className="d-flex justify-content-center">
+                      <button className="rfh-basic-button" onClick={showModal}>
+                        <FaPlus /> Create Post
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

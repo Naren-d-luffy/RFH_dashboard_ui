@@ -21,7 +21,7 @@ const handleClick = () => {
   showSuccessMessage("Successfully Created", "");
 };
 
-const AddEventsGastroIllness = ({ open, handleCancel }) => {
+const EditEventsGastroIllness = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
@@ -114,7 +114,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
             <Form.Item>
               <Input
                 className="create-camapign-input"
-                defaultValue=""
+                defaultValue="Gastroscience Department"
               />
               <span className="create-campaign-input-span">Department</span>
             </Form.Item>
@@ -149,4 +149,4 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
     </Modal>
   );
 };
-export default AddEventsGastroIllness;
+export default EditEventsGastroIllness;
