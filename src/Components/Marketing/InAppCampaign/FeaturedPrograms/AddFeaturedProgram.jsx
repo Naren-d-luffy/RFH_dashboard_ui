@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, Row, Col, DatePicker } from "antd";
+import { Button, Modal, Form, Input, DatePicker } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
-import { showSuccessMessage } from "../../../globalConstant";
+import { showSuccessMessage } from "../../../../globalConstant";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
 const modules = {
@@ -20,8 +20,7 @@ const modules = {
 const handleClick = () => {
   showSuccessMessage("Successfully Created", "");
 };
-
-const AddEventsGastroIllness = ({ open, handleCancel }) => {
+const AddFeaturesModal = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
@@ -39,7 +38,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
     <Modal
       open={open}
       title={
-        <span className="create-campaign-modal-title">Gastro Illness</span>
+        <span className="create-campaign-modal-title">Featured programs</span>
       }
       onCancel={handleCancel}
       width={680}
@@ -72,7 +71,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
               Drop files here or click to upload
             </p>
             <span className="create-campaign-ant-upload-drag-icon">
-              <IoCloudUploadOutline className="image-upload-icon" />{" "}
+              <IoCloudUploadOutline />{" "}
               <span style={{ color: "#727880" }}>Upload Image</span>
             </span>
           </Upload>
@@ -105,48 +104,46 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
         </Form.Item>
 
         <Form.Item>
-          <Input className="create-camapign-input" defaultValue="Gastritis" />
-          <span className="create-campaign-input-span">Event Title</span>
+          <Input
+            className="settings-input"
+            placeholder="Medicines"
+            defaultValue="Medicines"
+          />
+          <span className="settings-input-span">Event Title</span>
         </Form.Item>
-
-        <Row gutter={24}>
-          <Col span={12}>
+        <div className="row">
+          <div className="col-md-6 mt-2">
             <Form.Item>
               <Input
-                className="create-camapign-input"
-                defaultValue=""
+                className="settings-input"
+                placeholder="Department"
+                defaultValue="Gastroscience Department"
               />
-              <span className="create-campaign-input-span">Department</span>
+              <span className="settings-input-span">Department</span>
             </Form.Item>
-          </Col>
-
-          <Col span={12}>
+          </div>
+          <div className="col-md-6 mt-2">
             <Form.Item>
-              <Form.Item>
-                <DatePicker
-                  className="add-events-datepicker"
-                  placeholder="21/11/2024"
-                  style={{ width: "100%" }}
-                  format="DD/MM/YYYY"
-                />
-                <span className="create-campaign-input-span">Event Date</span>
-              </Form.Item>
+              <DatePicker
+                className="settings-input w-100"
+                placeholder="Select Date"
+                format="DD-MM-YYYY"
+              />
+              <span className="settings-input-span">Event Date</span>
             </Form.Item>
-          </Col>
-        </Row>
-
+          </div>
+        </div>
         <Form.Item>
           <ReactQuill
             theme="snow"
             modules={modules}
-            placeholder="Write text here"
+            placeholder="Your text goes here"
           />
-          <span className="create-campaign-input-span">
-            Campaign Description
-          </span>
+          <span className="settings-input-span">Description </span>
         </Form.Item>
       </Form>
     </Modal>
   );
 };
-export default AddEventsGastroIllness;
+
+export default AddFeaturesModal;

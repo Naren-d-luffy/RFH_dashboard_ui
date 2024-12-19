@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, DatePicker } from "antd";
+import { Button, Modal, Form, Input, Row, Col, DatePicker } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
@@ -20,7 +20,8 @@ const modules = {
 const handleClick = () => {
   showSuccessMessage("Successfully Created", "");
 };
-const FeaturedProgramModel = ({ open, handleCancel }) => {
+
+const EditEventsGastroIllness = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
@@ -38,7 +39,7 @@ const FeaturedProgramModel = ({ open, handleCancel }) => {
     <Modal
       open={open}
       title={
-        <span className="create-campaign-modal-title">Featured programs</span>
+        <span className="create-campaign-modal-title">Gastro Illness</span>
       }
       onCancel={handleCancel}
       width={680}
@@ -71,7 +72,7 @@ const FeaturedProgramModel = ({ open, handleCancel }) => {
               Drop files here or click to upload
             </p>
             <span className="create-campaign-ant-upload-drag-icon">
-              <IoCloudUploadOutline />{" "}
+              <IoCloudUploadOutline className="image-upload-icon" />{" "}
               <span style={{ color: "#727880" }}>Upload Image</span>
             </span>
           </Upload>
@@ -104,46 +105,48 @@ const FeaturedProgramModel = ({ open, handleCancel }) => {
         </Form.Item>
 
         <Form.Item>
-          <Input
-            className="settings-input"
-            placeholder="Medicines"
-            defaultValue="Medicines"
-          />
-          <span className="settings-input-span">Event Title</span>
+          <Input className="create-camapign-input" defaultValue="Gastritis" />
+          <span className="create-campaign-input-span">Event Title</span>
         </Form.Item>
-        <div className="row">
-          <div className="col-md-6 mt-2">
+
+        <Row gutter={24}>
+          <Col span={12}>
             <Form.Item>
               <Input
-                className="settings-input"
-                placeholder="Department"
+                className="create-camapign-input"
                 defaultValue="Gastroscience Department"
               />
-              <span className="settings-input-span">Department</span>
+              <span className="create-campaign-input-span">Department</span>
             </Form.Item>
-          </div>
-          <div className="col-md-6 mt-2">
+          </Col>
+
+          <Col span={12}>
             <Form.Item>
-              <DatePicker
-                className="settings-input w-100"
-                placeholder="Select Date"
-                format="DD-MM-YYYY"
-              />
-              <span className="settings-input-span">Event Date</span>
+              <Form.Item>
+                <DatePicker
+                  className="add-events-datepicker"
+                  placeholder="21/11/2024"
+                  style={{ width: "100%" }}
+                  format="DD/MM/YYYY"
+                />
+                <span className="create-campaign-input-span">Event Date</span>
+              </Form.Item>
             </Form.Item>
-          </div>
-        </div>
+          </Col>
+        </Row>
+
         <Form.Item>
           <ReactQuill
             theme="snow"
             modules={modules}
-            placeholder="Your text goes here"
+            placeholder="Write text here"
           />
-          <span className="settings-input-span">Description </span>
+          <span className="create-campaign-input-span">
+            Campaign Description
+          </span>
         </Form.Item>
       </Form>
     </Modal>
   );
 };
-
-export default FeaturedProgramModel;
+export default EditEventsGastroIllness;
