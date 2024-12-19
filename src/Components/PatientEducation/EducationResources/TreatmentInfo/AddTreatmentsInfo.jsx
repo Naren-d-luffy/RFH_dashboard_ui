@@ -4,11 +4,11 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage } from "../../../globalConstant";
+import { Instance } from "../../../../AxiosConfig";
+import { showSuccessMessage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
-import Loader from "../../../Loader";
-import { addTreatment } from "../../../Features/TreatmentInfoSlice";
+import Loader from "../../../../Loader";
+import { addTreatment } from "../../../../Features/TreatmentInfoSlice";
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
