@@ -43,7 +43,7 @@ import ForgotPassword from "./Components/Auth/ForgotPassword";
 import OtpScreen from "./Components/Auth/OtpScreen";
 import ConfirmPassword from "./Components/Auth/ConfirmPassword";
 import DepartmentDetailsPage from "./Pages/DepartmentDetails/DepartmentPage";
-import TreatmentList from "./Components/PatientEducation/EducationResources/TreatmentsInfoTable";
+import TreatmentList from "./Components/PatientEducation/EducationResources/TreatmentInfo/TreatmentsInfoTable";
 
 
 export const AppRouter = () => {

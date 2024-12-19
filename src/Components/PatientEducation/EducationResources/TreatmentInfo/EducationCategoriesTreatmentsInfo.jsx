@@ -8,14 +8,15 @@ import {  Dropdown, Menu } from "antd";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
-import { Instance } from "../../../AxiosConfig";
+import { Instance } from "../../../../AxiosConfig";
 import EditTreatmentsInfo from "./EditTreatmentsInfo";
 import { FiEye } from "react-icons/fi";
 import ViewTreatmentsInfo from "./ViewTreatmentsInfo";
-import { showDeleteMessage } from "../../../globalConstant";
-import { deleteTreatment, setTreatment, setTreatmentInfo } from "../../../Features/TreatmentInfoSlice";
+import { showDeleteMessage } from "../../../../globalConstant";
+import { deleteTreatment, setTreatment } from "../../../../Features/TreatmentInfoSlice";
 import { useDispatch,useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../../../Loader";
 const EducationCategoriesTreatmentsInfo = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -199,7 +200,7 @@ const handleDeleteTreatment = (_id) => {
 
           </div>
         </div>
-
+        {isLoading && <Loader/>}
         <div className="row mt-3">
           <Slider {...sliderSettings}>
             {treatmentData.map((treatment) => renderImageCard(treatment))}
