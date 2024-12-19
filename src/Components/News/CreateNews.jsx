@@ -59,7 +59,7 @@ const CreateNews = ({ open, handleCancel }) => {
       const response = await Instance.post("/cards", formData);
       if (response?.status === 200||response?.status === 201) {
         handleCancel(); 
-
+        console.log(response.data)
         showSuccessMessage("News created successfully!");
         dispatch(addNews(response.data));
         setHeading("");

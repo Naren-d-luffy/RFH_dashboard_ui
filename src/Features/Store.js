@@ -4,7 +4,7 @@ import hellodoctorSlice from "./HelloDoctorSlice"
 import postSlice from "./PostSlice"
 import healthPackageSlice from "./HealthPackageSlice"
 import departmentSlice from "./DepartmentSlice"
-
+import treatmentInfoSlice from "./TreatmentInfoSlice"
 
 export default configureStore({
     reducer: {
@@ -13,5 +13,6 @@ export default configureStore({
         news: newsSlice,
         healthPackage: healthPackageSlice,
         department: departmentSlice,
+        treatments:treatmentInfoSlice,
     },
 });
