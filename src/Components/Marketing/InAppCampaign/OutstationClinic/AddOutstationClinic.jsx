@@ -1,17 +1,15 @@
-import React,{useState} from "react";
 import { Button, Modal, Form, Input, DatePicker, TimePicker } from "antd";
 import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { EnvironmentOutlined } from "@ant-design/icons";
-import { showSuccessMessage } from "../../../globalConstant";
+import { showSuccessMessage } from "../../../../globalConstant";
 import { RiDeleteBin5Line } from "react-icons/ri";
-
+import { useState } from "react";
 const handleClick = () => {
   showSuccessMessage("Successfully Created", "");
 };
-
-const LatestCamps = ({ open, handleCancel }) => {
+const AddOutstationClinic = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
@@ -26,10 +24,11 @@ const LatestCamps = ({ open, handleCancel }) => {
     setUploadedImage(null);
   };
   return(
-  
   <Modal
     open={open}
-    title={<span className="create-campaign-modal-title">Latest Camps</span>}
+    title={
+      <span className="create-campaign-modal-title">Outstation Clinic</span>
+    }
     onCancel={handleCancel}
     width={680}
     footer={[
@@ -50,7 +49,7 @@ const LatestCamps = ({ open, handleCancel }) => {
     ]}
   >
     <Form layout="vertical" className="mt-4">
-    <Form.Item label="Upload image">
+      <Form.Item label="Upload image">
       <Upload
             listType="picture"
             showUploadList={false}
@@ -97,10 +96,10 @@ const LatestCamps = ({ open, handleCancel }) => {
           <Form.Item>
             <Input
               className="settings-input"
-              placeholder="Blood Test"
-              defaultValue="Blood Test"
+              placeholder="Clinic name"
+              defaultValue="Acidity clinic"
             />
-            <span className="settings-input-span">Camp name</span>
+            <span className="settings-input-span">Clinic name</span>
           </Form.Item>
         </div>
         <div className="col-md-3 mt-2">
@@ -155,7 +154,7 @@ const LatestCamps = ({ open, handleCancel }) => {
           allowfullscreen=""
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
-          title="Google Maps view of Sir H. N. Reliance Foundation Hospital and Research Centre"
+          title="Map showing Sir H. N. Reliance Foundation Hospital"
         ></iframe>
       </div>
 
@@ -189,6 +188,6 @@ const LatestCamps = ({ open, handleCancel }) => {
       </div>
     </Form>
   </Modal>
-);
-}
-export default LatestCamps;
+)};
+
+export default AddOutstationClinic;

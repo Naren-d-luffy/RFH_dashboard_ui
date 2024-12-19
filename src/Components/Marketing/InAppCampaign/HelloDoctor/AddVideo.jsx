@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, Input, message } from "antd";
-import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage } from "../../../globalConstant";
-import { addHelloDoctorVideos } from "../../../Features/HelloDoctorSlice";
+import { Instance } from "../../../../AxiosConfig";
+import { showSuccessMessage } from "../../../../globalConstant";
+import { addHelloDoctorVideos } from "../../../../Features/HelloDoctorSlice";
 import { useDispatch } from "react-redux";
-import Loader from "../../../Loader";
+import Loader from "../../../../Loader";
 
 const AddVideo = ({ open, handleCancel, refreshList }) => {
   const [title, setTitle] = useState("");
