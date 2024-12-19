@@ -5,11 +5,11 @@ import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { ColorPicker } from "antd";
-import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage } from "../../../globalConstant";
+import { Instance } from "../../../../AxiosConfig";
+import { showSuccessMessage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
-import Loader from "../../../Loader";
-import { editTreatment } from "../../../Features/TreatmentInfoSlice";
+import Loader from "../../../../Loader";
+import { editTreatment } from "../../../../Features/TreatmentInfoSlice";
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -79,8 +79,8 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
       const response = await Instance.put(`/education/${treatmentData._id}`, formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
+        dispatch(editTreatment(response.data))
         showSuccessMessage("Treatment Info Added successfully!");
-        console.log(response.data,"dfg")
         setTitle("");
         setDescription("");
         setContent("");

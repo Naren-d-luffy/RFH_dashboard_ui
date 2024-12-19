@@ -3,13 +3,13 @@ import { Table, Dropdown, Button, Space } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
-import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage } from "../../../globalConstant";
+import Empty_survey_image from "../../../../Assets/Icons/Notification.png";
+import { showDeleteMessage } from "../../../../globalConstant";
 import { GoPlus } from "react-icons/go";
-import { Instance } from "../../../AxiosConfig";
+import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../../../Loader";
-import { deleteTreatment,setTreatmentInfo } from "../../../Features/TreatmentInfoSlice";
+import Loader from "../../../../Loader";
+import { deleteTreatment,setTreatment } from "../../../../Features/TreatmentInfoSlice";
 import DOMPurify from "dompurify";
 import EditTreatmentsInfo from "./EditTreatmentsInfo";
 import ViewTreatmentsInfo from "./ViewTreatmentsInfo";
@@ -25,7 +25,7 @@ const TreatmentList = () => {
   const [totalRows, setTotalRows] = useState(0); 
   const [selectedTreatment, setSelectedTreatment] = useState(null);
 
-  const treatmentData = useSelector((state) => state.treatment.treatment.educations);
+  const treatmentData = useSelector((state) => state.treatments.treatments);
     
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
@@ -68,6 +68,7 @@ const TreatmentList = () => {
             `/education/${_id}`
           );
           if (response.status === 200) {
+            dispatch(deleteTreatment(_id))
           }
         } catch (error) {
           console.error("Error deleting treatment:", error);
@@ -81,8 +82,9 @@ const TreatmentList = () => {
       const response = await Instance.get(`/education`, {
         params: { page, limit: itemsPerPage },
       });
-      setTreatmentList(response.data.educations || []);
-      setTotalRows(response.data.totalEducations || 0); 
+      dispatch(setTreatment(response?.data?.educations))
+      setTreatmentList(response.data?.educations || []);
+      setTotalRows(response.data?.totalEducations || 0); 
     } catch (error) {
       console.error("Error fetching treatments:", error);
     } finally {
@@ -93,20 +95,14 @@ const TreatmentList = () => {
     useEffect(() => {
       fetchTreatmentsInfo(currentPage);
     }, [currentPage]);
-
-    useEffect(() => {
-      }, [treatmentData]); 
-      
+  
     const dataSource = useMemo(() => {
-        if (searchText.trim() === "") return treatmentData; 
-        const filteredData = treatmentData.filter(
-          (treatment) =>
-            `${treatment.title} ${treatment.description}`
-              .toLowerCase()
-              .includes(searchText.toLowerCase())
+        if (searchText.trim() === "") return treatmentData;
+        return treatmentData.filter((treatment) =>
+          `${treatment.title}{}${treatment.description}`
+            .toLowerCase()
+            .includes(searchText.toLowerCase())
         );
-        console.log("Filtered treatment data:", filteredData); 
-        return filteredData;
       }, [searchText, treatmentData]);
       
   const columns = [
