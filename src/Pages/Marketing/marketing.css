@@ -425,6 +425,7 @@
   border-radius: 12px;
   padding: 14px;
   background-color: var(--card-background-color);
+  height: 390px;
 }
 .upcoming-event-card img {
   width: 210px;
