@@ -8,6 +8,7 @@ import { Instance } from "../../../AxiosConfig";
 import { showSuccessMessage } from "../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../Loader";
+import { addTreatment } from "../../../Features/TreatmentInfoSlice";
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -68,7 +69,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
       const response = await Instance.post("/education", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
-
+        dispatch(addTreatment(response.data))
         showSuccessMessage("Treatment Info Added successfully!");
         setTitle("");
         setDescription("");

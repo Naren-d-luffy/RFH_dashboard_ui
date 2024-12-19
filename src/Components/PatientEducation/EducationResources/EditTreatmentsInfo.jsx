@@ -79,8 +79,8 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
       const response = await Instance.put(`/education/${treatmentData._id}`, formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
+        dispatch(editTreatment(response.data))
         showSuccessMessage("Treatment Info Added successfully!");
-        console.log(response.data,"dfg")
         setTitle("");
         setDescription("");
         setContent("");

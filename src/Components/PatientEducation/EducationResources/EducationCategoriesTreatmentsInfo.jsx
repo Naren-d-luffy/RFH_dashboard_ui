@@ -13,7 +13,7 @@ import EditTreatmentsInfo from "./EditTreatmentsInfo";
 import { FiEye } from "react-icons/fi";
 import ViewTreatmentsInfo from "./ViewTreatmentsInfo";
 import { showDeleteMessage } from "../../../globalConstant";
-import { deleteTreatment, setTreatmentInfo } from "../../../Features/TreatmentInfoSlice";
+import { deleteTreatment, setTreatment, setTreatmentInfo } from "../../../Features/TreatmentInfoSlice";
 import { useDispatch,useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const EducationCategoriesTreatmentsInfo = () => {
@@ -29,7 +29,7 @@ const EducationCategoriesTreatmentsInfo = () => {
   const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
   const [isLoading,setIsLoading]=useState(false);
-
+  const treatmentData =useSelector((state) => state.treatments.treatments);
 const navigate=useNavigate()
 
   const itemsPerPage = 100; 
@@ -84,6 +84,7 @@ const handleDeleteTreatment = (_id) => {
           `/education/${_id}`
         );
         if (response.status === 200) {
+          dispatch(deleteTreatment(_id))
         }
       } catch (error) {
         console.error("Error deleting treatment:", error);
@@ -97,7 +98,7 @@ const handleDeleteTreatment = (_id) => {
       const response = await Instance.get(`/education`,{
         params: { page, limit: itemsPerPage },
       });
-      console.log("traetments",response.data.educations)
+      dispatch(setTreatment(response.data.educations))
       setTreatmentList(response.data.educations || []);
       setIsLoading(false)
     } catch (error) {
@@ -201,7 +202,7 @@ const handleDeleteTreatment = (_id) => {
 
         <div className="row mt-3">
           <Slider {...sliderSettings}>
-            {treatmentList.map((treatment) => renderImageCard(treatment))}
+            {treatmentData.map((treatment) => renderImageCard(treatment))}
           </Slider>
         </div>
       </div>
