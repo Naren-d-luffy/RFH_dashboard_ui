@@ -43,6 +43,7 @@ import ForgotPassword from "./Components/Auth/ForgotPassword";
 import OtpScreen from "./Components/Auth/OtpScreen";
 import ConfirmPassword from "./Components/Auth/ConfirmPassword";
 import DepartmentDetailsPage from "./Pages/DepartmentDetails/DepartmentPage";
+import TreatmentList from "./Components/PatientEducation/EducationResources/TreatmentsInfoTable";
 
 
 export const AppRouter = () => {
@@ -193,6 +194,8 @@ export const AppRouter = () => {
           <Route path="/community-post" element={<CommunityPostPage />} />
           <Route path="/health-package" element={<HealthPackagePage />} />
           <Route path="/department-details" element={<DepartmentDetailsPage />} />
+          <Route path="/view-all-treatments" element={<TreatmentList />} />
+
 
         </Route>
       </Routes>
