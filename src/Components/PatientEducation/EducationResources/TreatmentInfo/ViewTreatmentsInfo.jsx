@@ -1,8 +1,7 @@
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Modal } from "antd";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import Loader from "../../../Loader";
+import Loader from "../../../../Loader";
 
 const ViewTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
   const [isLoading, setIsLoading] = useState(false);
