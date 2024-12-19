@@ -44,6 +44,7 @@ import OtpScreen from "./Components/Auth/OtpScreen";
 import ConfirmPassword from "./Components/Auth/ConfirmPassword";
 import DepartmentDetailsPage from "./Pages/DepartmentDetails/DepartmentPage";
 import TreatmentList from "./Components/PatientEducation/EducationResources/TreatmentInfo/TreatmentsInfoTable";
+import GastroIllnessTable from "./Components/PatientEducation/EducationResources/GastroIllness/GastroIllnessTable";
 
 
 export const AppRouter = () => {
@@ -195,7 +196,7 @@ export const AppRouter = () => {
           <Route path="/health-package" element={<HealthPackagePage />} />
           <Route path="/department-details" element={<DepartmentDetailsPage />} />
           <Route path="/view-all-treatments" element={<TreatmentList />} />
-
+          <Route path="/view-all-gastro-illness" element={<GastroIllnessTable />} />
 
         </Route>
       </Routes>

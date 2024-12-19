@@ -12,27 +12,28 @@ import "slick-carousel/slick/slick-theme.css";
 import AddEventsGastroIllness from "./AddEventsGastroIllness";
 import EditEventsGastroIllness from "./EditEventsGastroIllness";
 import ViewEventsGastroIllness from "./ViewEventsGastroIllness";
-import { Instance } from "../../../AxiosConfig";
-import { showDeleteMessage } from "../../../globalConstant";
+import { Instance } from "../../../../AxiosConfig";
+import { showDeleteMessage } from "../../../../globalConstant";
 import {
   deleteGastroIllness,
   setGastroIllness,
-} from "../../../Features/GastroIllnessSlice";
+} from "../../../../Features/GastroIllnessSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useNavigate } from "react-router-dom";
 
 const EducationCategoriesGastroIllness = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [gastroIllnessList, setGastroIllnessList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const gastroEvents = useSelector(
     (state) => state.gastroIllness.gastroIllness || []
   );
-  console.log("gastroevents", gastroEvents);
   const itemsPerPage = 100;
 
   const showModal = () => setIsModalOpen(true);
@@ -95,6 +96,8 @@ const EducationCategoriesGastroIllness = () => {
       });
       console.log("gastroIllness:", response.data.gastros);
       dispatch(setGastroIllness(response.data.gastros || []));
+      setGastroIllnessList(response.data.gastros || []);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching gastro events:", error);
     } finally {
@@ -158,7 +161,7 @@ const EducationCategoriesGastroIllness = () => {
       </div>
     );
   };
-
+  
   const CustomNextArrow = (props) => {
     const { className, style, onClick } = props;
     return (
@@ -171,7 +174,7 @@ const EducationCategoriesGastroIllness = () => {
       </div>
     );
   };
-
+  
   const sliderSettings = {
     dots: false,
     infinite: true,
@@ -191,7 +194,7 @@ const EducationCategoriesGastroIllness = () => {
       },
     ],
   };
-
+  
   return (
     <div className="container mt-4">
       <div className="marketing-categories-section">
@@ -216,9 +219,17 @@ const EducationCategoriesGastroIllness = () => {
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Gastro Illness</h6>
-            <button className="rfh-basic-button" onClick={showModal}>
-              <GoPlus size={20} /> Add Events
-            </button>
+            <div className="d-flex gap-2">
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-gastro-illness")}
+              >
+                View all
+              </button>
+              <button className="rfh-basic-button" onClick={showModal}>
+                <GoPlus size={20} /> Add Events
+              </button>
+            </div>
           </div>
           <div className="mt-3">
             <Slider {...sliderSettings}>
@@ -232,12 +243,12 @@ const EducationCategoriesGastroIllness = () => {
       <EditEventsGastroIllness
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
-        eventData={selectedEvent}
+        EventData={selectedEvent}
       />
       <ViewEventsGastroIllness
         open={isViewModalOpen}
         handleCancel={handleViewCancel}
-        eventData={selectedEvent}
+        EventData={selectedEvent}
       />
     </div>
   );

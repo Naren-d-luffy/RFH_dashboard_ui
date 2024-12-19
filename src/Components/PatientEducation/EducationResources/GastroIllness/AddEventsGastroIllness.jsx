@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { ColorPicker } from "antd";
-import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage } from "../../../globalConstant";
+import { Instance } from "../../../../AxiosConfig";
+import { showSuccessMessage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
-import Loader from "../../../Loader";
-import { editGastroIllness } from "../../../Features/GastroIllnessSlice";
+import Loader from "../../../../Loader";
+import { addGastroIllness } from "../../../../Features/GastroIllnessSlice";
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -22,7 +21,7 @@ const modules = {
 
 const { TextArea } = Input;
 
-const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
+const AddEventsGastroIllness = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -46,15 +45,6 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
   const handleDeleteImage1 = () => {
     setThumbnailImage(null);
   };
-  useEffect(() => {
-    if (open && EventData) {
-      setTitle(EventData.title || "");
-      setDescription(EventData.description || "");
-      setContent(EventData.content || "");
-      setUploadedImage(EventData.headerImage || null);
-      setThumbnailImage(EventData.thumbnail || null);
-    }
-  }, [open, EventData]);
 
   const handleSave = async () => {
     if (
@@ -76,11 +66,12 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
       formData.append("headerImage", uploadedImage);
       formData.append("thumbnail", thumbnailImage);
 
-      const response = await Instance.put(`/gastro/${EventData._id}`, formData);
+      const response = await Instance.post("/gastro", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
-        showSuccessMessage("GastroIllness Info Added successfully!");
-        console.log(response.data, "dfg");
+
+        showSuccessMessage("GastroIllness Added successfully!");
+        dispatch(addGastroIllness(response.data));
         setTitle("");
         setDescription("");
         setContent("");
@@ -89,7 +80,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
       }
     } catch (error) {
       console.error(error);
-      message.error("Failed to update.");
+      message.error("Failed to add event.");
     } finally {
       setIsLoading(false);
     }
@@ -102,7 +93,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Edit GastroIllness Info{" "}
+            Add GastroIllness Info
           </span>
         }
         onCancel={handleCancel}
@@ -164,11 +155,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                 {uploadedImage && (
                   <div className="uploaded-image-preview d-flex gap-2">
                     <img
-                      src={
-                        uploadedImage instanceof File
-                          ? URL.createObjectURL(uploadedImage)
-                          : uploadedImage
-                      }
+                      src={URL.createObjectURL(uploadedImage)}
                       alt="Uploaded"
                       style={{
                         width: "200px",
@@ -213,12 +200,8 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                 {thumbnailImage && (
                   <div className="uploaded-image-preview d-flex gap-2">
                     <img
-                      src={
-                        thumbnailImage instanceof File
-                          ? URL.createObjectURL(thumbnailImage)
-                          : thumbnailImage
-                      }
-                      alt="Thumbnail"
+                      src={URL.createObjectURL(thumbnailImage)}
+                      alt="Uploaded"
                       style={{
                         width: "200px",
                         height: "auto",
@@ -246,6 +229,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               </Form.Item>
             </div>
           </div>
+
           <Form.Item>
             <ReactQuill
               theme="snow"
@@ -262,4 +246,4 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
     </>
   );
 };
-export default EditEventsGastroIllness;
+export default AddEventsGastroIllness;

@@ -200,26 +200,6 @@ export const MarketingCategories = () => {
     );
   };
 
-  const sliderSettings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    arrows: true,
-    prevArrow: <div>&#8592;</div>,
-    nextArrow: <div>&#8594;</div>,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
-
   const fetchVideoList = async () => {
     try {
       const response = await Instance.get("/videos");
@@ -233,6 +213,52 @@ export const MarketingCategories = () => {
   useEffect(() => {
     fetchVideoList();
   }, []);
+
+  const CustomPrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", zIndex: "1000" }}
+        onClick={onClick}
+      >
+        &#8592;
+      </div>
+    );
+  };
+
+  const CustomNextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", zIndex: "1000" }}
+        onClick={onClick}
+      >
+        &#8594;
+      </div>
+    );
+  };
+
+  const sliderSettings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    arrows: true,
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
 
   return (
     <div className="row mt-4">

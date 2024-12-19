@@ -9,41 +9,41 @@ import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
-import {
-  deleteTreatment,
-  setTreatment,
-} from "../../../../Features/TreatmentInfoSlice";
 import DOMPurify from "dompurify";
-import EditTreatmentsInfo from "./EditTreatmentsInfo";
-import ViewTreatmentsInfo from "./ViewTreatmentsInfo";
-import AddTreatmentsInfo from "./AddTreatmentsInfo";
+import AddEventsGastroIllness from "./AddEventsGastroIllness";
+import EditEventsGastroIllness from "./EditEventsGastroIllness";
+import ViewEventsGastroIllness from "./ViewEventsGastroIllness";
+import {
+  deleteGastroIllness,
+  setGastroIllness,
+} from "../../../../Features/GastroIllnessSlice";
 import { Navigate, useNavigate } from "react-router-dom";
 
-const TreatmentList = () => {
+const GastroIllnessTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [treatmentList, setTreatmentList] = useState([]);
+  const [EventList, setEventList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
-  const [selectedTreatment, setSelectedTreatment] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const treatmentData = useSelector((state) => state.treatments.treatments);
-
+  const EventData = useSelector((state) => state.gastroIllness.gastroIllness);
+  console.log(EventData, "Eventdata");
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
   const navigate = useNavigate();
-  const showEditModal = (treatment) => {
-    setSelectedTreatment(treatment);
+  const showEditModal = (Event) => {
+    setSelectedEvent(Event);
     setIsEditModalOpen(true);
   };
   const handleEditCancel = () => setIsEditModalOpen(false);
-  const showViewModal = (treatment) => {
-    setSelectedTreatment(treatment);
+  const showViewModal = (Event) => {
+    setSelectedEvent(Event);
     setIsViewModalOpen(true);
   };
   const handleViewCancel = () => setIsViewModalOpen(false);
@@ -66,30 +66,31 @@ const TreatmentList = () => {
         : textContent;
     return truncatedText;
   };
-  const handleDeleteTreatment = (_id) => {
+  const handleDeleteGastroIllness = (_id) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/education/${_id}`);
+          const response = await Instance.delete(`/gastro/${_id}`);
           if (response.status === 200) {
-            dispatch(deleteTreatment(_id));
+            dispatch(deleteGastroIllness(_id));
           }
         } catch (error) {
-          console.error("Error deleting treatment:", error);
+          console.error("Error deleting event:", error);
         }
       },
     });
   };
-  const fetchTreatmentsInfo = async (page) => {
+  const fetchGastroIllnessInfo = async (page) => {
     setIsLoading(true);
     try {
-      const response = await Instance.get(`/education`, {
+      const response = await Instance.get(`/gastro`, {
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setTreatment(response?.data?.educations));
-      setTreatmentList(response.data?.educations || []);
-      setTotalRows(response.data?.totalEducations || 0);
+      console.log(response.data);
+      dispatch(setGastroIllness(response?.data?.gastros));
+      setGastroIllness(response.data?.gastros || []);
+      setTotalRows(response.data?.totalGastros || 0);
     } catch (error) {
       console.error("Error fetching treatments:", error);
     } finally {
@@ -98,17 +99,17 @@ const TreatmentList = () => {
   };
 
   useEffect(() => {
-    fetchTreatmentsInfo(currentPage);
+    fetchGastroIllnessInfo(currentPage);
   }, [currentPage]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return treatmentData;
-    return treatmentData.filter((treatment) =>
-      `${treatment.title}{}${treatment.description}`
+    if (searchText.trim() === "") return EventData;
+    return EventData.filter((Event) =>
+      `${Event.title}{}${Event.description}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
-  }, [searchText, treatmentData]);
+  }, [searchText, EventData]);
 
   const columns = [
     {
@@ -156,7 +157,7 @@ const TreatmentList = () => {
           </div>
           <div
             className="campaign-performance-table-delete-icon"
-            onClick={() => handleDeleteTreatment(record._id)}
+            onClick={() => handleDeleteGastroIllness(record._id)}
           >
             <FiTrash2 />
           </div>
@@ -192,11 +193,11 @@ const TreatmentList = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : treatmentList.length > 0 ? (
+      ) : EventData.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>Treatment Info</h3>
+              <h3>GastroIllness Info</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -204,7 +205,7 @@ const TreatmentList = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add Treatment
+                Add Event
               </button>
             </div>
           </div>
@@ -248,7 +249,6 @@ const TreatmentList = () => {
               />
             </div>
           </div>
-
           <div className="d-flex justify-content-start mt-2">
             <button
               className="d-flex gap-2 align-items-center rfh-basic-button"
@@ -265,9 +265,9 @@ const TreatmentList = () => {
             <img src={Empty_survey_image} alt="" />
           </div>
           <div className="no-data-container-text d-flex flex-column justify-content-center">
-            <h4>No Treatments Found</h4>
+            <h4>No Events Found</h4>
             <p>
-              Currently, there are no treatments available to display.
+              Currently, there are no events available to display.
               <br /> Please check back later or contact support for further
               assistance if this is an error.
             </p>
@@ -279,19 +279,19 @@ const TreatmentList = () => {
           </div>
         </div>
       )}
-      <AddTreatmentsInfo open={isModalOpen} handleCancel={handleCancel} />
-      <EditTreatmentsInfo
+      <AddEventsGastroIllness open={isModalOpen} handleCancel={handleCancel} />
+      <EditEventsGastroIllness
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
-        treatmentData={selectedTreatment}
+        EventData={selectedEvent}
       />
-      <ViewTreatmentsInfo
+      <ViewEventsGastroIllness
         open={isViewModalOpen}
         handleCancel={handleViewCancel}
-        treatmentData={selectedTreatment}
+        EventData={selectedEvent}
       />
     </div>
   );
 };
 
-export default TreatmentList;
+export default GastroIllnessTable;
