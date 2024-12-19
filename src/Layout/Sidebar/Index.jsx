@@ -19,9 +19,6 @@ import {
   Settings,
 } from "lucide-react";
 import { SlGraduation } from "react-icons/sl";
-
-import {  IoVideocamOutline } from "react-icons/io5";
-
 import { IoMenu, IoNewspaperOutline, IoTelescopeOutline } from "react-icons/io5";
 import { BiCapsule } from "react-icons/bi";
 import { useDarkMode } from "../../DarkMode";

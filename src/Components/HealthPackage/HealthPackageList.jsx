@@ -1,15 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space, Input } from "antd";
+import { Table, Dropdown, Button, Space } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../Assets/Icons/Empty_survey_image.png";
-import { useNavigate } from "react-router-dom";
 import { showDeleteMessage } from "../../globalConstant";
-import { filterDropdown } from "../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../AxiosConfig";
-import { deleteNews, setNews } from "../../Features/NewsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import AddHealthPackage from "./AddHealthpackage";
 import {
@@ -21,9 +18,6 @@ import ViewHealthPackage from "./ViewHealthPackage";
 import Loader from "../../Loader";
 
 const HealthPackagelist = () => {
-  const [selectedValues, setSelectedValues] = useState([]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewNewsModalOpen, setIsViewNewsModalOpen] = useState(false);

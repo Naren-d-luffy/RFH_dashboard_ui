@@ -3,10 +3,10 @@ import { Button, Modal } from "antd";
 import { GrLocation } from "react-icons/gr";
 import DOMPurify from "dompurify";
 import { FaEye, FaInfoCircle } from "react-icons/fa";
-import ReactPlayer from "react-player"; 
-import Slider from "react-slick";  
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css"; 
+import ReactPlayer from "react-player";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   const [photo, setPhoto] = useState(null);
@@ -33,8 +33,10 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
 
   const renderVideoCard = (video, index) => (
     <div key={index} className="video-page">
-      <div className="video-card p-3"
-       style={{ border: "1px solid #ddd", borderRadius: "8px" }}>
+      <div
+        className="video-card p-3"
+        style={{ border: "1px solid #ddd", borderRadius: "8px" }}
+      >
         <div className="video-player-container">
           <ReactPlayer
             url={video.video_thumbnail_url}
@@ -46,7 +48,9 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
         </div>
         <div className="video-details mt-2">
           <h4>{video.title}</h4>
-          <FaEye style={{ marginRight: "5px" }} /> {`${video.views} Views`}
+          <span>
+            <FaEye style={{ marginRight: "5px" }} /> {`${video.views} Views`}
+          </span>
         </div>
       </div>
     </div>
@@ -88,12 +92,20 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
       ]}
     >
       <div className="news-modal-container">
-        <div className="department-modal-header align-items-center" style={{ background: `linear-gradient(#fbeee2, white)` }}>
+        <div
+          className="department-modal-header align-items-center"
+          style={{
+            background: `linear-gradient(var(--department-bg-color), white)`,
+          }}
+        >
           <div className="d-flex flex-column">
             <h2 className="department-heading">{title}</h2>
             <p className="department-subheading">{subtitle}</p>
           </div>
-          <div className="department-about" style={{ display: "flex", alignItems: "center" }}>
+          <div
+            className="department-about"
+            style={{ display: "flex", alignItems: "center" }}
+          >
             <FaInfoCircle style={{ marginRight: "8px", fontSize: "16px" }} />
             <div dangerouslySetInnerHTML={{ __html: description }} />
           </div>
@@ -112,7 +124,7 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
           </div>
           <div className="news-modal-image">
             {photo ? (
-              <img src={photo} alt="Specialist image" className="news-image" />
+              <img src={photo} alt="Specialist" className="news-image" />
             ) : (
               <div className="news-placeholder">No Images</div>
             )}

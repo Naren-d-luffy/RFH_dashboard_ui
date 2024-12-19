@@ -57,10 +57,15 @@ const ViewNews = ({ open, handleCancel, newsData }) => {
         <div className="news-modal-content">
           <h4 className="news-subheading">{subheading}</h4>
           <p className="news-about">{about}</p>
-          <div
+          {/* <div
             className="news-content"
             dangerouslySetInnerHTML={{ __html: content }}
-          />
+          /> */}
+          <div
+  className="news-content"
+  style={{ color: "var(--text-color)" }} // or replace with your desired color
+  dangerouslySetInnerHTML={{ __html: content }}
+/>
         </div>
       </div>
     </Modal>

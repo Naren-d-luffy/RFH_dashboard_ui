@@ -234,6 +234,7 @@ const EditNews = ({ open, handleCancel, newsData }) => {
               value={content}
               onChange={setContent}
               placeholder="Your text goes here"
+              className="news-content"
             />
             <span className="create-campaign-input-span">Content Points</span>
           </Form.Item>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { GoPlus } from "react-icons/go";
@@ -17,7 +17,6 @@ import { Instance } from "../../../AxiosConfig";
 import ReactPlayer from "react-player";
 import AddVideo from "./AddVideo";
 import EditVideo from "./EditVideo";
-import axios from "axios";
 import { showDeleteMessage } from "../../../globalConstant";
 import {
   deleteHelloDoctorVideos,
@@ -26,17 +25,16 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 export const MarketingCategories = () => {
-  const [playingVideo, setPlayingVideo] = useState(null);
+  const [playingVideo] = useState(null);
   const [modals, setModals] = useState({
     event: false,
     video: false,
     edit: false,
   });
-  const [videoList, setVideoList] = useState([]);
+  const [, setVideoList] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const dispatch = useDispatch();
   const videos = useSelector((state) => state.videos.videos);
-  const [searchText, setSearchText] = useState("");
   useEffect(() => {
     console.log("Videos updated:", videos);
   }, [videos]);
@@ -231,15 +229,6 @@ export const MarketingCategories = () => {
       console.error("Error fetching videos:", error);
     }
   };
-
-  const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return videos;
-    return videos.filter((videos) =>
-      `${videos.heading}{}${videos.subheading}`
-        .toLowerCase()
-        .includes(searchText.toLowerCase())
-    );
-  }, [searchText, videos]);
 
   useEffect(() => {
     fetchVideoList();
