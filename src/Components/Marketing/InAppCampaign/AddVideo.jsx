@@ -31,7 +31,6 @@ const AddVideo = ({ open, handleCancel, refreshList }) => {
         handleCancel();
         setTitle("");
         setUrl("");
-        // refreshList();
         dispatch(addHelloDoctorVideos(response.data));
       }
     } catch (error) {

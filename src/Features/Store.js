@@ -4,8 +4,8 @@ import hellodoctorSlice from "./HelloDoctorSlice"
 import postSlice from "./PostSlice"
 import healthPackageSlice from "./HealthPackageSlice"
 import departmentSlice from "./DepartmentSlice"
-
-
+import treatmentInfoSlice from "./TreatmentInfoSlice"
+import GastroIllnessSlice from "./GastroIllnessSlice"
 export default configureStore({
     reducer: {
         videos: hellodoctorSlice,
@@ -13,5 +13,7 @@ export default configureStore({
         news: newsSlice,
         healthPackage: healthPackageSlice,
         department: departmentSlice,
+        treatments:treatmentInfoSlice,
+        gastroIllness : GastroIllnessSlice,
     },
 });

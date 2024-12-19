@@ -91,9 +91,10 @@
 .video-details h4 {
   color: var(--black-color);
 }
-.ant-modal-root .ant-modal-wrap {
+/* .ant-modal-root .ant-modal-wrap {
   z-index: 9999;
-}
+} */
+
 .video-details span {
   color: var(--black-color);
 }

@@ -192,9 +192,9 @@ export const MarketingCategories = () => {
         </div>
         <div className="video-details mt-2">
           <h4>{video.title}</h4>
-          <p style={{color: 'var(--black-color)'}}>{`${video.likes} Likes | ${new Date(
-            video.createdAt
-          ).toLocaleDateString()}`}</p>
+          <p style={{ color: "var(--black-color)" }}>{`${
+            video.likes
+          } Likes | ${new Date(video.createdAt).toLocaleDateString()}`}</p>
         </div>
       </div>
     );
