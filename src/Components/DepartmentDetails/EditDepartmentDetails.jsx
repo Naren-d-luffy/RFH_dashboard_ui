@@ -168,7 +168,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
           />
         </Form.Item>
 
-        <h5>Specialist Details</h5>
+        <h5 className="specialist-heading-name">Specialist Details</h5>
         <Row gutter={16}>
           <Col span={8}>
             <Form.Item label="Name">
@@ -226,7 +226,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
         </Button>
         {successStories.map((story, index) => (
           <div key={index}>
-            <h5>Success Story {index + 1}</h5>
+            <h5 className="specialist-heading-name">Success Story {index + 1}</h5>
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item label="Title">
