@@ -6,6 +6,8 @@ import healthPackageSlice from "./HealthPackageSlice"
 import departmentSlice from "./DepartmentSlice"
 import treatmentInfoSlice from "./TreatmentInfoSlice"
 import GastroIllnessSlice from "./GastroIllnessSlice"
+import faqsSlice from "./FaqsSlice"
+
 export default configureStore({
     reducer: {
         videos: hellodoctorSlice,
@@ -15,5 +17,6 @@ export default configureStore({
         department: departmentSlice,
         treatments:treatmentInfoSlice,
         gastroIllness : GastroIllnessSlice,
+        faq: faqsSlice,
     },
 });
