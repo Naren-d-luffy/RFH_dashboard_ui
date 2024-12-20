@@ -165,12 +165,27 @@
   background-color: var(--white-color);
   font-weight: 600;
 }
+
 .campaign-performance-table-edit-icon {
   background-color: var(--icon-background-color);
 }
 
+.campaign-performance-table-edit-icon:hover {
+  color: var(--icon-background-color);
+  border: 1px solid var(--icon-background-color);
+  background-color: var(--white-color);
+  font-weight: 600;
+}
+
 .campaign-performance-table-delete-icon {
   background-color: var(--red-color);
+}
+
+.campaign-performance-table-delete-icon:hover {
+  color: var(--red-color);
+  border: 1px solid var(--red-color);
+  background-color: var(--white-color);
+  font-weight: 600;
 }
 
 .create-campaign-head {
@@ -388,9 +403,9 @@
 
 /* css by keerthi */
 .marketing-categories-section h4 {
-  font-size: 22px;
+  font-size: 13px;
   font-weight: 600;
-  line-height: 37.93px;
+  line-height: 20.93px;
   letter-spacing: -0.03em;
   text-align: left;
   margin-bottom: 0;
@@ -410,6 +425,7 @@
   border-radius: 12px;
   padding: 14px;
   background-color: var(--card-background-color);
+  height: 390px;
 }
 .upcoming-event-card img {
   width: 210px;
@@ -486,16 +502,24 @@
   color: var(--primary-green) !important;
 }
 .recommend-video-card {
-  /* background-image: url("../../Assets/Images/recommendVideo1.png"); */
   background-size: cover;
   background-position: center;
   border-radius: 12px;
-  height: 400px;
+  height: 200px;
   position: relative;
   overflow: hidden;
 }
 
-.recommend-video-card::before {
+.recommend-video-page {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  padding: 10px;
+  border-radius: 8px;
+  height: 400px;
+  background-color: var(--card-background-color);
+}
+
+/* .recommend-video-card::before {
   content: "";
   position: absolute;
   top: 0;
@@ -508,7 +532,7 @@
     rgba(0, 0, 0, 0.6) 99.86%
   );
   z-index: 1;
-}
+} */
 
 .recommend-video-card h4 {
   color: var(--text-white-color) !important;
@@ -516,7 +540,7 @@
   position: relative;
   z-index: 2;
   font-weight: 500;
-  line-height: 19.36px;
+  /* line-height: 19.36px; */
   text-align: left;
 }
 
@@ -530,7 +554,7 @@
   text-align: left;
 }
 
-.video-preview {
+/* .video-preview {
   position: absolute;
   top: 0;
   left: 0;
@@ -539,13 +563,13 @@
   object-fit: cover;
   z-index: 1;
   display: none;
-}
+} */
 
 .recommend-video-card:hover .video-preview {
   display: block;
 }
 
-.play-button-overlay {
+/* .play-button-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -557,14 +581,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2; /* Above the video */
+  z-index: 2; 
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .play-button-overlay:hover {
   transform: translate(-50%, -50%) scale(1.1);
   background-color: rgba(0, 0, 0, 0.8);
-}
+} */
 
 .feature-program-card {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -771,7 +795,7 @@
 
 /* ===========keerthi========= */
 
-.recommended-video-action-button{
+.recommended-video-action-button {
   position: relative;
   z-index: 2;
   color: var(--white-color);
@@ -779,13 +803,47 @@
   width: 100%;
   border: none;
 }
-.featured-program-icon-container{
+.featured-program-icon-container {
   z-index: 2;
   position: absolute;
   top: 15px;
 }
 
-.model-image-upload-delete-icon{
+.model-image-upload-delete-icon {
   color: var(--black-color);
   background-color: var(--white-color);
+}
+
+/* .video-player-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+} */
+
+/* .video-player-container {
+  position: relative;
+  width: 80%;
+  max-width: 800px;
+}
+
+.close-player-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+} */
+
+.image-upload-icon {
+  color: var(--black-color);
 }
