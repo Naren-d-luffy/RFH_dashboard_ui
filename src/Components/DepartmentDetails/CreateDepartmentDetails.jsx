@@ -6,11 +6,13 @@ import { showSuccessMessage } from "../../globalConstant";
 // import { IoCloudUploadOutline } from "react-icons/io5";
 import { Instance } from "../../AxiosConfig";
 import { addDepartment } from "../../Features/DepartmentSlice";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 const { TextArea } = Input;
 
 const CreateDepartmentDetails = ({ open, handleCancel }) => {
-  const [, setUploadedImage] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState(null);
+
   const [, setUploadedThumbnail] = useState(null);
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
@@ -40,7 +42,13 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
   const handleDeleteSuccessStory = (index) => {
     setSuccessStories(success_stories.filter((_, i) => i !== index));
   };
-
+  const handleUpload = (info) => {
+    const file = info.file.originFileObj;
+    setUploadedImage(file);
+  };
+  const handleDeleteImage = () => {
+    setUploadedImage(null);
+  };
   const handleSave = async () => {
     if (!title || !subtitle || !description) {
       message.error("Please fill in all required fields.");
@@ -54,13 +62,17 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
       specialist,
       success_stories: success_stories.map((story) => ({
         ...story,
-        views: Number(story.views), 
+        views: Number(story.views),
       })),
     };
     try {
       const response = await Instance.post("/department", departmentData);
 
-      if (response.status === 200 || response.status === 201 || response.status === 204) {
+      if (
+        response.status === 200 ||
+        response.status === 201 ||
+        response.status === 204
+      ) {
         showSuccessMessage("Department created successfully!");
         dispatch(addDepartment(departmentData));
         setTitle("");
@@ -179,15 +191,58 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
           </Col>
         </Row>
         <Form.Item label="Photo URL">
-          <Input
-            value={specialist.photo_url}
-            onChange={(e) =>
-              setSpecialist({ ...specialist, photo_url: e.target.value })
-            }
-            placeholder="Add image URL"
-            required
-          />
+          <Upload
+            listType="picture"
+            showUploadList={false}
+            beforeUpload={(file) => {
+              setUploadedImage(file);
+              setSpecialist({
+                ...specialist,
+                photo_url: URL.createObjectURL(file),
+              });
+              return false;
+            }}
+            className="upload-users-image"
+          >
+            <p className="create-campaign-ant-upload-text">
+              Drop files here or click to upload
+            </p>
+            <span className="create-campaign-ant-upload-drag-icon">
+              <IoCloudUploadOutline />{" "}
+              <span style={{ color: "#727880" }}>Upload Image</span>
+            </span>
+          </Upload>
+          {specialist.photo_url && (
+            <div className="uploaded-image-preview d-flex gap-2">
+              <img
+                src={specialist.photo_url}
+                alt="Uploaded"
+                style={{
+                  width: "200px",
+                  height: "auto",
+                  marginTop: "10px",
+                  borderRadius: "5px",
+                }}
+              />
+              <Button
+                onClick={() => {
+                  setSpecialist({ ...specialist, photo_url: "" });
+                  setUploadedImage(null);
+                }}
+                style={{
+                  marginTop: "10px",
+                  backgroundColor: "#e6f2ed",
+                  borderRadius: "50%",
+                  fontSize: "16px",
+                  padding: "4px 12px",
+                }}
+              >
+                <RiDeleteBin5Line className="model-image-upload-delete-icon" />
+              </Button>
+            </div>
+          )}
         </Form.Item>
+
         <Button
           onClick={handleAddSuccessStory}
           className="create-campaign-cancel-button"
@@ -197,7 +252,9 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
         </Button>
         {success_stories.map((story, index) => (
           <div key={index}>
-            <h5 className="specialist-heading-name">Success Story {index + 1}</h5>
+            <h5 className="specialist-heading-name">
+              Success Story {index + 1}
+            </h5>
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item label="Title">

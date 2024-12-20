@@ -257,7 +257,6 @@ const EducationCategoriesGastroIllness = () => {
 
   const dispatch = useDispatch();
   const gastroEvents = useSelector((state) => state.gastroIllness.gastroIllness || []);
-  console.log("gastroevents",gastroEvents)
   const itemsPerPage = 100;
 
   const showModal = () => setIsModalOpen(true);
@@ -274,7 +273,6 @@ const EducationCategoriesGastroIllness = () => {
       const response = await Instance.get("/gastro", {
         params: { page, limit: itemsPerPage },
       });
-      console.log("GastroIllness:", response.data.gastros);
       dispatch(setGastroIllness(response.data.gastros || [])); 
     } catch (error) {
       console.error("Error fetching gastro events:", error);
