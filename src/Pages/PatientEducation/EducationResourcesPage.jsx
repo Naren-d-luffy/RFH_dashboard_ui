@@ -5,7 +5,7 @@ import EducationCategoriesGastroIllness from "../../Components/PatientEducation/
 import EducationCategoriesTreatmentsInfo from "../../Components/PatientEducation/EducationResources/TreatmentInfo/EducationCategoriesTreatmentsInfo";
 import EducationCategoriesHealthTools from "../../Components/PatientEducation/EducationResources/EducationCategoriesHealthTools";
 import EducationCategoriesReadingMaterials from "../../Components/PatientEducation/EducationResources/EducationCategoriesReadingMaterials";
-import EducationCategoriesQuestions from "../../Components/PatientEducation/EducationResources/EducationCategoriesQuestions";
+import EducationCategoriesQuestions from "../../Components/PatientEducation/EducationResources/FaqsSection/EducationCategoriesQuestions";
 
 const EducationResourcesPage = () => {
   return (
