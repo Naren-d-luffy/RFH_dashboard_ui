@@ -282,6 +282,7 @@ const GastroIllnessTable = () => {
       <AddEventsGastroIllness open={isModalOpen} handleCancel={handleCancel} />
       <EditEventsGastroIllness
         open={isEditModalOpen}
+        
         handleCancel={handleEditCancel}
         EventData={selectedEvent}
       />
