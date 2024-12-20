@@ -182,7 +182,15 @@ font-weight: 700;
 .view-treatment-info-modal-content h5{
 font-size: 16px;
 font-weight: 700;
+color: var(--black-color);
 }
+
+.view-treatment-info-modal-content p{
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--black-color);
+  }
+
 .view-treatment-info-modal-content h6{
   font-size: 14px;
   color: var(--black-color);
