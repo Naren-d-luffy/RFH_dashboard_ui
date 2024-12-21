@@ -9,6 +9,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
+import { editFeature } from "../../../../Features/FeatureSlice";
 const { TextArea } = Input;
 const { Option } = Select;
 const modules = {
@@ -64,34 +65,33 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
   }, [featuresData]);
 
   const handleSave = async () => {
-    // Validate input
     if (!title || !description || features.length === 0) {
       message.error("Please fill in all required fields.");
       return;
     }
-
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("features", JSON.stringify(features));
-    formData.append("content", content);
-    if (uploadedImage) {
-      formData.append("thumbnail", uploadedImage);
-    }
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-
+    const payload = {
+        title: title,
+        description: description,
+        tags: JSON.stringify(features),
+        content:content,
+        thumbnail:uploadedImage 
+      };
+   
+    
+      console.log("payload",payload);
+  
     setIsLoading(true);
     try {
       const response = await Instance.put(
-        `/discover/review/${featuresData._id}`,
-        formData,
+        `/discover/featuredProgram/${featuresData._id}`,
+        payload,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
       if (response?.status === 200 || response?.status === 201) {
+        console.log(response)
+        dispatch(editFeature(response.data))
         handleCancel();
         showSuccessMessage("Feature added successfully!");
       }

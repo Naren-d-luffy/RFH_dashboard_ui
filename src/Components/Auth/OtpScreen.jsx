@@ -8,6 +8,7 @@ import login1 from "../../Assets/Images/login-1.png";
 import login2 from "../../Assets/Images/login-5.png";
 import login3 from "../../Assets/Images/login-2.png";
 import login4 from "../../Assets/Images/login-4.png";
+import { InputOTP } from "antd-input-otp";
 
 const CustomDot = ({ active }) => (
   <span className={`dot ${active ? "active" : ""}`}></span>
@@ -42,28 +43,6 @@ const OtpScreen = () => {
     },
   ];
 
-  const handleInputChange = (element, index) => {
-    const value = element.value.replace(/\D/g, ""); // Allow only numeric values
-    if (value) {
-      const updatedOtpCode = [...otpCode];
-      updatedOtpCode[index] = value;
-      setOtpCode(updatedOtpCode);
-
-      // Move to next input
-      if (index < otpCode.length - 1) {
-        document.getElementById(`otp-input-${index + 1}`).focus();
-      }
-    }
-  };
-
-  const handleKeyDown = (event, index) => {
-    if (event.key === "Backspace" && !otpCode[index]) {
-      if (index > 0) {
-        document.getElementById(`otp-input-${index - 1}`).focus();
-      }
-    }
-  };
-
   useEffect(() => {
     if (resendTimer > 0) {
       const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
@@ -86,7 +65,7 @@ const OtpScreen = () => {
     setTimeout(() => {
       setLoading(false);
       alert("OTP Verified!");
-      navigate("/confirm-password"); 
+      navigate("/confirm-password");
     }, 2000);
   };
 
@@ -105,25 +84,14 @@ const OtpScreen = () => {
                 Welcome to Institute of Gastro Sciences
               </p>
               <h1 className="signup-title">OTP Verification</h1>
+              <p>Enter Otp Code sent to abc@gmial.com</p>
             </center>
-
+             
             <Form layout="vertical">
-              <Form.Item>
-                <div className="otp-input-group">
-                  {otpCode.map((code, index) => (
-                    <input
-                      key={index}
-                      id={`otp-input-${index}`}
-                      type="text"
-                      maxLength={1}
-                      value={code}
-                      className="otp-input"
-                      onChange={(e) => handleInputChange(e.target, index)}
-                      onKeyDown={(e) => handleKeyDown(e, index)}
-                    />
-                  ))}
-                </div>
+              <Form.Item  name="otp">
+                <InputOTP className="otp-input-group" inputType="numeric" />
               </Form.Item>
+
               <div className="resend-info">
                 <p>
                   Didn’t get OTP?{" "}
