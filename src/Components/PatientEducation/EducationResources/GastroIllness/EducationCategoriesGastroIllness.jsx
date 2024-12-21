@@ -161,7 +161,7 @@ const EducationCategoriesGastroIllness = () => {
       </div>
     );
   };
-  
+
   const CustomNextArrow = (props) => {
     const { className, style, onClick } = props;
     return (
@@ -174,7 +174,7 @@ const EducationCategoriesGastroIllness = () => {
       </div>
     );
   };
-  
+
   const sliderSettings = {
     dots: false,
     infinite: true,
@@ -194,7 +194,7 @@ const EducationCategoriesGastroIllness = () => {
       },
     ],
   };
-  
+
   return (
     <div className="container mt-4">
       <div className="marketing-categories-section">

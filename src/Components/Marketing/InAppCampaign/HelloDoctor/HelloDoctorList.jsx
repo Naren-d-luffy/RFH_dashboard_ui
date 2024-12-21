@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
-import {  Dropdown, Menu } from "antd";
+import { Dropdown, Menu } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -33,7 +33,6 @@ export const HelloDoctorList = () => {
   const dispatch = useDispatch();
   const videos = useSelector((state) => state.videos.videos);
   useEffect(() => {
-    console.log("Videos updated:", videos);
   }, [videos]);
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
@@ -197,6 +196,32 @@ export const HelloDoctorList = () => {
     );
   };
 
+  const CustomPrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", zIndex: "1000" }}
+        onClick={onClick}
+      >
+        &#8592;
+      </div>
+    );
+  };
+
+  const CustomNextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", zIndex: "1000" }}
+        onClick={onClick}
+      >
+        &#8594;
+      </div>
+    );
+  };
+
   const sliderSettings = {
     dots: false,
     infinite: true,
@@ -204,8 +229,8 @@ export const HelloDoctorList = () => {
     slidesToShow: 3,
     slidesToScroll: 1,
     arrows: true,
-    prevArrow: <div>&#8592;</div>,
-    nextArrow: <div>&#8594;</div>,
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
     responsive: [
       {
         breakpoint: 768,
@@ -234,7 +259,6 @@ export const HelloDoctorList = () => {
   return (
     <div className="row mt-4">
       <div className="marketing-categories-section">
-       
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Hello Doctor</h6>

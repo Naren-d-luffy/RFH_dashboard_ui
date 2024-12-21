@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { FiSearch } from "react-icons/fi";
-import { VscSettings } from "react-icons/vsc";
 import { GoPlus } from "react-icons/go";
-import { Button, Dropdown, Menu, Space } from "antd";
+import { Dropdown, Menu } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import medicines from "../../../../Assets/Images/medicines.png";
-import fruits from "../../../../Assets/Images/fruits.png";
-import appointment from "../../../../Assets/Images/appointment.png";
-import UpcomingEvents from "./UpcomingEvents";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
+import { Instance } from "../../../../AxiosConfig";
+import { useDispatch, useSelector } from "react-redux";
+import { setEvent } from "../../../../Features/DiscoverEventsCard";
+import AddEventsList from "./AddEventsList";
+import EditEventsList from "./EditEventsList";
+import ViewEventList from "./ViewEventList";
+import { FiEye } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 export const UpcomingEventList = () => {
   const [modals, setModals] = useState({
@@ -20,56 +22,79 @@ export const UpcomingEventList = () => {
     video: false,
     edit: false,
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const handleViewCancel = () => setIsViewModalOpen(false);
+  const showViewModal = () => setIsViewModalOpen(true);
+  const showEditModal = () => setIsEditModalOpen(true);
+  const handleEditCancel = () => setIsEditModalOpen(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
+  const eventsData = useSelector((state) => state.discoverevent.events);
+
+  const fetchEvenInfo = async (page) => {
+    setIsLoading(true);
+    try {
+      const response = await Instance.get(`/discover/card`, {
+        params: { page, limit: itemsPerPage },
+      });
+      dispatch(setEvent(response.data));
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvenInfo();
+  }, []);
+
+  const itemsPerPage = 100;
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+
+  const truncateText = (text, wordLimit) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : text;
+  };
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
-  const items = [
-    { label: "Upcoming Events", key: "1" },
-    { label: "Recomended", key: "2" },
-    { label: "Featured Programs", key: "3" },
-    { label: "Latest Camps", key: "4" },
-    { label: "Outstation Clinic", key: "5" },
-  ];
-  const handleMenuClick = ({ key }) => {};
-
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
-
-
-  const eventData = [
-    {
-      img: medicines,
-      title: "Medicines",
-      date: "Nov 25",
-      description: "Order your medicines quickly and easily",
-      department: "Gastroscience Department",
-    },
-    {
-      img: appointment,
-      title: "Appointments",
-      date: "Nov 26",
-      description: "Book your appointments without hassle",
-      department: "Healthcare Services",
-    },
-    {
-      img: fruits,
-      title: "Fruits",
-      date: "Nov 27",
-      description: "Get fresh fruits delivered to your home",
-      department: "Nutrition Department",
-    },
-  ];
-
-  const filterMenu = (
+  const filterMenu = (event) => (
     <Menu>
-      <Menu.Item key="edit" className="filter-menu-item">
+      <Menu.Item
+        key="edit"
+        className="filter-menu-item"
+        onClick={() => {
+          setSelectedEvent(event);
+          showEditModal();
+        }}
+      >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
-      <Menu.Item key="delete" className="filter-menu-item">
+      <Menu.Item
+            key="view"
+            className="filter-menu-item"
+            onClick={() => {
+              setSelectedEvent(event); 
+              showViewModal(); 
+            }}
+          >
+            <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+            View
+          </Menu.Item>
+      <Menu.Item
+        key="delete"
+        className="filter-menu-item"
+        // onClick={() => handleDeleteEvent(event._id)}
+      >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
         />
@@ -78,28 +103,39 @@ export const UpcomingEventList = () => {
     </Menu>
   );
 
- const renderEventCard = (event) => (
-    <div className="col-lg-4" key={event.title}>
+  const renderEventCard = (event) => (
+    <div className="col-lg-4" key={event._id}>
       <div className="upcoming-event-card p-3">
         <div className="action-icon-container">
-          <Dropdown overlay={filterMenu} trigger={["click"]}>
+          <Dropdown overlay={() => filterMenu(event)} trigger={["click"]}>
             <button className="action-icon-button">
               <BsThreeDotsVertical />
             </button>
           </Dropdown>
         </div>
-
         <div className="d-flex justify-content-center align-items-center mb-3">
-          <img src={event.img} alt={event.title} />
+          <img
+            src={
+              event.imageUrl ||
+              "https://reliancehospital.s3.eu-north-1.amazonaws.com/education-images/thumbnail-1732792439746-image_246.png"
+            }
+            alt={event.title}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "https://via.placeholder.com/150";
+            }}
+          />
         </div>
         <div>
           <div className="d-flex justify-content-between mb-2">
             <h4>{event.title}</h4>
-            <span>{event.date}</span>
+            <span>{new Date(event.createdAt).toLocaleDateString("en-GB")}</span>
           </div>
           <p>{event.description}</p>
           <ul>
-            <li>{event.department}</li>
+            {event.tags.map((tag, index) => (
+              <li key={index}>{tag}</li>
+            ))}
           </ul>
         </div>
       </div>
@@ -128,50 +164,39 @@ export const UpcomingEventList = () => {
   return (
     <div className="row mt-4">
       <div className="marketing-categories-section">
-        <div className="d-flex flex-lg-row flex-xl-row flex-column justify-content-between align-items-center">
-          <h4>Marketing Categories</h4>
-          <div className="d-flex gap-3 align-items-center">
-            <div className="search-container">
-              <FiSearch className="search-icon" />
-              <input
-                type="text"
-                placeholder="Search anything here"
-                className="search-input-table"
-              />
-            </div>
-            <Dropdown menu={menuProps} overlayClassName="dropdown-hover-color">
-              <Button>
-                <Space>
-                  <VscSettings />
-                  Filter
-                </Space>
-              </Button>
-            </Dropdown>
-          </div>
-        </div>
-
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Upcoming Events</h6>
-            <button
-              className="rfh-basic-button"
-              onClick={() => toggleModal("event")}
-            >
-              <GoPlus size={20} /> Add Events
-            </button>
+            <div className="d-flex gap-2">
+              <button className="rfh-view-all-button" onClick={()=>navigate('/view-all-events')}>View all</button>
+              <button
+                className="rfh-basic-button"
+                onClick={() => toggleModal("event")}
+              >
+                <GoPlus size={20} /> Add Events
+              </button>
+            </div>
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {eventData.map((event) => renderEventCard(event))}
+              {eventsData.map((event) => renderEventCard(event))}
             </Slider>
           </div>
-          <UpcomingEvents
+          <AddEventsList
             open={modals.event}
             handleCancel={() => toggleModal("event")}
           />
+          <EditEventsList
+            open={isEditModalOpen}
+            handleCancel={handleEditCancel}
+            eventsData={selectedEvent}
+          />
+          <ViewEventList
+            open={isViewModalOpen}
+            handleCancel={handleViewCancel}
+            eventsData={selectedEvent}
+          />
         </div>
-
-        
       </div>
     </div>
   );

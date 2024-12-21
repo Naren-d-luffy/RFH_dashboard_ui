@@ -8,6 +8,9 @@ import treatmentInfoSlice from "./TreatmentInfoSlice"
 import GastroIllnessSlice from "./GastroIllnessSlice"
 import faqsSlice from "./FaqsSlice"
 import featuresSlice from "./FeatureSlice"
+import outstationClinicSlice from "./OutstationClinicSlice"
+import discovereventSlice from "./DiscoverEventsCard"
+
 
 export default configureStore({
     reducer: {
@@ -20,5 +23,7 @@ export default configureStore({
         gastroIllness : GastroIllnessSlice,
         faq: faqsSlice,
         features:featuresSlice,
+        clinics: outstationClinicSlice,
+        discoverevent: discovereventSlice,
     },
 });
