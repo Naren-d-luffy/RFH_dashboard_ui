@@ -33,7 +33,6 @@ export const HelloDoctorList = () => {
   const dispatch = useDispatch();
   const videos = useSelector((state) => state.videos.videos);
   useEffect(() => {
-    console.log("Videos updated:", videos);
   }, [videos]);
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));

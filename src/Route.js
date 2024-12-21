@@ -45,6 +45,8 @@ import ConfirmPassword from "./Components/Auth/ConfirmPassword";
 import DepartmentDetailsPage from "./Pages/DepartmentDetails/DepartmentPage";
 import TreatmentList from "./Components/PatientEducation/EducationResources/TreatmentInfo/TreatmentsInfoTable";
 import GastroIllnessTable from "./Components/PatientEducation/EducationResources/GastroIllness/GastroIllnessTable";
+import TableEventsList from "./Components/Marketing/InAppCampaign/UpcomingEvent/TableEventsList";
+
 
 export const AppRouter = () => {
   return (
@@ -202,6 +204,8 @@ export const AppRouter = () => {
             path="/view-all-gastro-illness"
             element={<GastroIllnessTable />}
           />
+          <Route path="/view-all-events" element={<TableEventsList />} />
+
         </Route>
       </Routes>
     </BrowserRouter>
