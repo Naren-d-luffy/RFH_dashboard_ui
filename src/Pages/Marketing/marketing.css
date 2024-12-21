@@ -847,3 +847,46 @@
 .image-upload-icon {
   color: var(--black-color);
 }
+
+.outstation-clinic-data p {
+  margin-bottom: 0px;
+}
+
+.outstation-clinic-upcoming-event-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 14px;
+  background-color: var(--card-background-color);
+  height: 450px;
+}
+.outstation-clinic-upcoming-event-card img {
+  width: 210px;
+  height: 210px;
+}
+.outstation-clinic-upcoming-event-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 17.11px;
+  text-align: left;
+  color: var(--black-color);
+}
+
+.outstation-clinic-upcoming-event-card p {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14.52px;
+  text-align: left;
+  color: var(--secondary-text-color);
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+.outstation-clinic-upcoming-event-card span{
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 14.52px;
+  text-align: left;
+  color: var(--black-color);
+  margin-top: 8px;
+  margin-bottom: 10px;
+}

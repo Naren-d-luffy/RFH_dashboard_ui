@@ -1,56 +1,114 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Button, Dropdown, Menu } from "antd";
+import { FiEye, FiSearch } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
+import { VscSettings } from "react-icons/vsc";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { BiEdit } from "react-icons/bi";
+import { RiDeleteBin7Line } from "react-icons/ri";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import clinic1 from "../../../../Assets/Images/clinic1.png";
-import clinic2 from "../../../../Assets/Images/clinic2.png";
-import { Rate, Dropdown, Menu } from "antd";
-import { FiMapPin } from "react-icons/fi";
-import { GiPathDistance } from "react-icons/gi";
-import { RiHospitalFill } from "react-icons/ri";
-import { BiEdit } from "react-icons/bi";
-import { RiDeleteBin7Line } from "react-icons/ri";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { Instance } from "../../../../AxiosConfig";
+import { showDeleteMessage } from "../../../../globalConstant";
+import {
+  setOutstationClinic,
+  deleteOutstationClinic,
+} from "../../../../Features/OutstationClinicSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { CiCalendarDate, CiLocationOn } from "react-icons/ci";
+import { IoMdTime } from "react-icons/io";
 import AddOutstationClinic from "./AddOutstationClinic";
-export const OutstationClinicList = () => {
-  const [modals, setModals] = useState({
-    program: false,
-    camp: false,
-    clinic: false,
-  });
-  const toggleModal = (modalType) =>
-    setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
+import EditOutstationClinic from "./EditOutstationClinic";
+import ViewOutstationClinic from "./ViewOutstationClinic";
 
-  const ClinicData = [
-    {
-      img: clinic1,
-      title: "Acidity Clinic",
-      rating: 5.0,
-      reviews: 128,
-      description: "Ongoing research is focusing on the gut microbiome's role",
-      location: "Mumbai, India",
-      distance: "2.5 km/40min",
-      category: "Hospital",
-    },
-    {
-      img: clinic2,
-      title: "Constipation Clinic",
-      rating: 4.9,
-      reviews: 58,
-      description: "Ongoing research is focusing on the gut microbiome's role",
-      location: "Mumbai, India",
-      distance: "2.5 km/40min",
-      category: "Hospital",
-    },
-  ];
-  const sortMenu = (
+const OutstationClinicList = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const handleViewCancel = () => setIsViewModalOpen(false);
+
+  const handleCancel = () => setIsModalOpen(false);
+  const handleEditCancel = () => setIsEditModalOpen(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const showEditModal = () => setIsEditModalOpen(true);
+  const showViewModal = () => setIsViewModalOpen(true);
+  const dispatch = useDispatch();
+  const showModal = () => setIsModalOpen(true);
+  const clinics = useSelector((state) => state.clinics.clinics || []);
+  const itemsPerPage = 100;
+  const truncateText = (text, wordLimit) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : text;
+  };
+
+  const fetchOutstationClinic = async (page) => {
+    setIsLoading(true);
+    try {
+      const response = await Instance.get("/discover/clinic", {
+        params: { page, limit: itemsPerPage },
+      });
+      dispatch(setOutstationClinic(response.data || []));
+    } catch (error) {
+      console.error("Error fetching clinics:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeleteClinic = (_id) => {
+    showDeleteMessage({
+      message: "",
+      onDelete: async () => {
+        try {
+          const response = await Instance.delete(`/discover/clinic/${_id}`);
+          if (response.status === 200) {
+            dispatch(deleteOutstationClinic(_id));
+          }
+        } catch (error) {
+          console.error("Error deleting clinic:", error);
+        }
+      },
+    });
+  };
+
+  useEffect(() => {
+    fetchOutstationClinic();
+  }, []);
+
+  const sortMenu = (clinic) => (
     <Menu>
-      <Menu.Item key="edit" className="filter-menu-item">
+      <Menu.Item
+        key="edit"
+        className="filter-menu-item"
+        onClick={() => {
+          setSelectedEvent(clinic);
+          showEditModal();
+        }}
+      >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
-      <Menu.Item key="delete" className="filter-menu-item">
+      <Menu.Item
+        key="view"
+        className="filter-menu-item"
+        onClick={() => {
+          setSelectedEvent(clinic);
+          showViewModal();
+        }}
+      >
+        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        View
+      </Menu.Item>
+      <Menu.Item
+        key="delete"
+        className="filter-menu-item"
+        onClick={() => handleDeleteClinic(clinic._id)}
+      >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
         />
@@ -58,50 +116,52 @@ export const OutstationClinicList = () => {
       </Menu.Item>
     </Menu>
   );
-  
-  const renderOutstationClinic = (clinic) => (
-    <div className="col-lg-4">
-      <div className="feature-program-card" key={clinic.title}>
-        <div className=" mb-3">
-          <img src={clinic.img} alt={clinic.title} />
-          <div className="featured-program-icon-container">
-          <Dropdown overlay={sortMenu} trigger={["click"]}>
+
+  const renderClinicCard = (clinic) => (
+    <div className="col-lg-4" key={clinic._id}>
+      <div
+        className="outstation-clinic-upcoming-event-card p-3"
+        style={{ position: "relative" }}
+      >
+        <div className="treatment-info-icon-container">
+          <Dropdown overlay={sortMenu(clinic)} trigger={["click"]}>
             <button className="action-icon-button">
-              <BsThreeDotsVertical style={{color:"#fff"}}/>
+              <BsThreeDotsVertical />
             </button>
           </Dropdown>
         </div>
+
+        <div className="d-flex justify-content-center align-items-center mb-3">
+          <img
+            src={clinic.thumbnail || "https://via.placeholder.com/150"}
+            alt={clinic.name}
+          />
         </div>
-        <div className="clinic-content p-3">
-          <div className="d-flex align-items-center justify-content-between">
-            <h4 className="clinic-title">{clinic.title}</h4>
-            <div className="clinic-category mt-2">
-              <h6 className="badge">
-                <RiHospitalFill style={{ width: "16px", height: "16px" }} />
-                {clinic.category}
-              </h6>
-            </div>
+
+        <div className="outstation-clinic-data">
+          <h4>{clinic.name}</h4>
+          <div className="d-flex justify-content-between">
+            <p>
+              {clinic.rating} ({clinic.reviews} reviews)
+            </p>
+            <p>{clinic.experience} years experience</p>
           </div>
-          <div className="clinic-rating d-flex align-items-center my-2 gap-2">
-            <h6 className="reviews">{clinic.rating}</h6>
-            <Rate
-              allowHalf
-              disabled
-              defaultValue={clinic.rating}
-              style={{ fontSize: "16px", paddingLeft: "0", color: "#FEB052" }}
-            />
-            <h6 className="reviews">({clinic.reviews} Reviews)</h6>
+          <p>{clinic.patients} Patients Treated</p>
+          <div>
+            <span>{truncateText(clinic.about, 20)}</span>
           </div>
-          <p className="clinic-description">{clinic.description}</p>
-          <div className="clinic-details d-flex gap-2 align-items-center mt-2">
-            <h6 className="location">
-              <FiMapPin /> {clinic.location}
-            </h6>
-            <div className="clinic-vertical-line"></div>
-            <h6 className="distance">
-              <GiPathDistance /> {clinic.distance}
-            </h6>
+          <div className="d-flex justify-content-between">
+            <p>
+              <CiCalendarDate />{" "}
+              {new Date(clinic.createdAt).toLocaleDateString()}
+            </p>
+            <p>
+              <IoMdTime /> {clinic.timing}
+            </p>
           </div>
+          <span>
+            <CiLocationOn /> {clinic.location}
+          </span>
         </div>
       </div>
     </div>
@@ -152,31 +212,36 @@ export const OutstationClinicList = () => {
       },
     ],
   };
-
   return (
-    <div className="row mt-4">
+    <div className="container mt-4">
       <div className="marketing-categories-section">
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Outstation Clinic</h6>
-            <button
-              className="rfh-basic-button"
-              onClick={() => toggleModal("clinic")}
-            >
+            <button className="rfh-basic-button" onClick={showModal}>
               <GoPlus size={20} /> Add Clinic
             </button>
           </div>
-          <div className="mt-4">
+          <div className="mt-3">
             <Slider {...sliderSettings}>
-              {ClinicData.map((clinic) => renderOutstationClinic(clinic))}
+              {clinics.map((clinic) => renderClinicCard(clinic))}
             </Slider>
           </div>
-          <AddOutstationClinic
-            open={modals.clinic}
-            handleCancel={() => toggleModal("clinic")}
-          />
         </div>
       </div>
+      <AddOutstationClinic open={isModalOpen} handleCancel={handleCancel} />
+      <EditOutstationClinic
+        open={isEditModalOpen}
+        handleCancel={handleEditCancel}
+        EventData={selectedEvent}
+      />
+      <ViewOutstationClinic
+        open={isViewModalOpen}
+        handleCancel={handleViewCancel}
+        EventData={selectedEvent}
+      />
     </div>
   );
 };
+
+export default OutstationClinicList;
