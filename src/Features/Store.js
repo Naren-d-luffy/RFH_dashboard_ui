@@ -7,6 +7,7 @@ import departmentSlice from "./DepartmentSlice"
 import treatmentInfoSlice from "./TreatmentInfoSlice"
 import GastroIllnessSlice from "./GastroIllnessSlice"
 import faqsSlice from "./FaqsSlice"
+import outstationClinicSlice from "./OutstationClinicSlice"
 
 export default configureStore({
     reducer: {
@@ -18,5 +19,6 @@ export default configureStore({
         treatments:treatmentInfoSlice,
         gastroIllness : GastroIllnessSlice,
         faq: faqsSlice,
+        clinics: outstationClinicSlice,
     },
 });

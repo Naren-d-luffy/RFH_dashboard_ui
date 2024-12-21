@@ -1,23 +1,12 @@
-import React, { useState } from "react";
-import {
-  Button,
-  Modal,
-  Form,
-  Input,
-  message,
-  Col,
-  Row,
-  DatePicker,
-} from "antd";
+import React, { useState, useEffect } from "react";
+import { Button, Modal, Form, Input, message, Col, Row, TextArea } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { editOutstationClinic } from "../../../../Features/OutstationClinicSlice";
 import Loader from "../../../../Loader";
-import { addOutstationClinic } from "../../../../Features/OutstationClinicSlice";
 
-const { TextArea } = Input;
-
-const AddOutstationClinic = ({ open, handleCancel }) => {
+const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
+  const { TextArea } = Input;
   const [clinicName, setClinicName] = useState("");
   const [address, setAddress] = useState("");
   const [rating, setRating] = useState("");
@@ -28,6 +17,19 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
   const [timing, setTiming] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (EventData) {
+      setClinicName(EventData.name || "");
+      setAddress(EventData.location || "");
+      setRating(EventData.rating?.toString() || "");
+      setReviews(EventData.reviews?.toString() || "");
+      setPatients(EventData.patients?.toString() || "");
+      setExperience(EventData.experience || "");
+      setDescription(EventData.about || "");
+      setTiming(EventData.timing || "");
+    }
+  }, [EventData]);
 
   const handleSave = async () => {
     if (
@@ -57,26 +59,24 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
         timing,
       };
 
-      console.log("Submitting Data: ", payload);
+      console.log("Submitting Edited Data: ", payload);
 
-      const response = await Instance.post("/discover/clinic", payload);
+      const response = await Instance.put(
+        `/discover/clinic/${EventData._id}`,
+        payload
+      );
 
-      if (response?.status === 200 || response?.status === 201) {
+      if (response?.status === 200) {
         handleCancel();
-        showSuccessMessage("Outstation Clinic added successfully!");
-        dispatch(addOutstationClinic(response.data));
-        setClinicName("");
-        setAddress("");
-        setRating("");
-        setReviews("");
-        setPatients("");
-        setExperience("");
-        setDescription("");
-        setTiming("");
+        message.success("Outstation Clinic details updated successfully!");
+        dispatch(editOutstationClinic(response.data));
       }
     } catch (error) {
-      console.error("Error while submitting: ", error?.response?.data || error);
-      message.error("Failed to add outstation clinic. Please try again.");
+      console.error(
+        "Error while updating clinic: ",
+        error?.response?.data || error
+      );
+      message.error("Failed to update outstation clinic. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -89,7 +89,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Add Outstation Clinic
+            Edit Outstation Clinic
           </span>
         }
         onCancel={handleCancel}
@@ -108,7 +108,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
             className="create-campaign-save-button"
             loading={isLoading}
           >
-            Save
+            Update
           </Button>,
         ]}
       >
@@ -117,7 +117,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
             <Input
               value={clinicName}
               onChange={(e) => setClinicName(e.target.value)}
-              placeholder="Add Clinic Name"
+              placeholder="Edit Clinic Name"
               required
             />
             <span className="create-campaign-input-span">Clinic Name</span>
@@ -174,7 +174,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
             <TextArea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Description"
+              placeholder="Edit Description"
               required
             />
             <span className="create-campaign-input-span">About</span>
@@ -207,4 +207,4 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
   );
 };
 
-export default AddOutstationClinic;
+export default EditOutstationClinic;
