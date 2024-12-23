@@ -9,6 +9,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
+import { editFeature } from "../../../../Features/FeatureSlice";
 const { TextArea } = Input;
 const { Option } = Select;
 const modules = {
@@ -27,6 +28,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
   const [content, setContent] = useState("");
   const [features, setFeatures] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [imageUrl,setImageUrl]=useState("")
   const dispatch = useDispatch();
 
   const handleAddFeatures = () => {
@@ -58,40 +60,36 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
       setTitle(featuresData.title || "");
       setDescription(featuresData.description || "");
       setContent(DOMPurify.sanitize(featuresData.content || ""));
-      setUploadedImage(featuresData.thumbnail || null);
+      // setUploadedImage(featuresData.thumbnail || null);
       setFeatures(featuresData.tags || []);
+      setImageUrl(featuresData.thumbnail || null);
     }
   }, [featuresData]);
 
   const handleSave = async () => {
-    // Validate input
     if (!title || !description || features.length === 0) {
       message.error("Please fill in all required fields.");
       return;
     }
-
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("features", JSON.stringify(features));
-    formData.append("content", content);
-    if (uploadedImage) {
-      formData.append("thumbnail", uploadedImage);
-    }
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-
+    const payload = {
+        title: title,
+        description: description,
+        tags: features,
+        content:content,
+        thumbnail:imageUrl 
+      };
     setIsLoading(true);
     try {
       const response = await Instance.put(
-        `/discover/review/${featuresData._id}`,
-        formData,
+        `/discover/featuredProgram/${featuresData._id}`,
+        payload,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+            headers: { "Content-Type": "application/json" }
         }
       );
       if (response?.status === 200 || response?.status === 201) {
+        console.log(response)
+        dispatch(editFeature(response.data))
         handleCancel();
         showSuccessMessage("Feature added successfully!");
       }
@@ -108,7 +106,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
       visible={open}
       title={
         <span className="create-campaign-modal-title">
-          Create Health Package
+          Edit Feature Program
         </span>
       }
       onCancel={handleCancel}
@@ -132,7 +130,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
       ]}
     >
       <Form layout="vertical" className="mt-4">
-        <Form.Item>
+        {/* <Form.Item>
           <Upload
             listType="picture"
             showUploadList={false}
@@ -178,6 +176,9 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
             </div>
           )}
           <span className="create-campaign-input-span">Image</span>
+        </Form.Item> */}
+        <Form.Item label="Image url">
+            <Input placeholder="enter url" value={imageUrl} onChange={(e)=>setImageUrl(e.target.value)}/>
         </Form.Item>
         <Form.Item label="Feature Title">
           <Input

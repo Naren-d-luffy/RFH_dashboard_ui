@@ -275,7 +275,16 @@ input {
 .ant-carousel .slick-list .slick-slide.slick-active {
   padding: 0;
 }
-.otp-input-group {
+.otp-input-group.input-otp__field{
+  height: 50px;
+}
+.otp-input-group.ant-input-outlined:hover{
+  background-color: transparent;
+}
+.otp-input-group.ant-input-outlined:focus-within {
+  background-color: transparent;
+}
+/* .otp-input-group {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
@@ -296,7 +305,7 @@ input {
 
 .otp-input:focus {
   outline: none;
-}
+} */
 .resend-info {
   text-align: center;
 }

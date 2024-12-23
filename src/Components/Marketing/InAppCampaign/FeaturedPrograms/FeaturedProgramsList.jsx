@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { FiEye } from "react-icons/fi";
 import { showDeleteMessage } from "../../../../globalConstant";
 import EditFeaturesModal from "./EditFetauredProgram";
+import { deleteFeature, setFeature } from "../../../../Features/FeatureSlice";
+import ViewFeaturedModal from "./ViewFeaturedProgram";
 
 export const FeaturedProgramsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,7 +30,8 @@ export const FeaturedProgramsList = () => {
   const [featureList,setFeatureList]=useState([])
   const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
-  const treatmentData = useSelector((state) => state.treatments.treatments);
+  const FeaturesData = useSelector((state) => state.features.features);
+  console.log("features",FeaturesData)
   const navigate = useNavigate();
 
   const itemsPerPage = 100;
@@ -83,12 +86,13 @@ export const FeaturedProgramsList = () => {
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/education/${_id}`);
+          const response = await Instance.delete(`/discover/featuredProgram/${_id}`);
           if (response.status === 200) {
-            //   dispatch(deleteTreatment(_id))
+              dispatch(deleteFeature(_id))
+            console.log(response)
           }
         } catch (error) {
-          console.error("Error deleting treatment:", error);
+          console.error("Error deleting feature:", error);
         }
       },
     });
@@ -99,12 +103,11 @@ export const FeaturedProgramsList = () => {
       const response = await Instance.get(`/discover/featuredProgram`, {
         params: { page, limit: itemsPerPage },
       });
-      console.log(response.data)
-      //   dispatch(setTreatment(response.data.educations))
+        dispatch(setFeature(response.data))
       setFeatureList(response.data || []);
       setIsLoading(false);
     } catch (error) {
-      console.error("Error fetching treatments:", error);
+      console.error("Error fetching Features:", error);
     } finally {
       setIsLoading(false);
     }
@@ -191,16 +194,19 @@ export const FeaturedProgramsList = () => {
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Featured Programs</h6>
+            <div className="d-flex gap-2">
+            <button className="rfh-view-all-button" onClick={()=>navigate('/view-all-features')}>View all</button>
             <button
               className="rfh-basic-button"
               onClick={showModal}
             >
               <GoPlus size={20} /> Add Program
             </button>
+            </div>
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {featureList.map((feature) => renderFeatureCard(feature))}
+              {FeaturesData.map((feature) => renderFeatureCard(feature))}
             </Slider>
           </div>
           <AddFeaturesModal open={isModalOpen} handleCancel={handleCancel} />
@@ -208,6 +214,11 @@ export const FeaturedProgramsList = () => {
         <EditFeaturesModal
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
+        featuresData={selectedFeature}
+      />
+      <ViewFeaturedModal
+        open={isViewModalOpen}
+        handleCancel={handleViewCancel}
         featuresData={selectedFeature}
       />
       </div>

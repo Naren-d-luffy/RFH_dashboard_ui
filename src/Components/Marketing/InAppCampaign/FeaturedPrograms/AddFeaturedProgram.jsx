@@ -8,6 +8,7 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { addFeature } from "../../../../Features/FeatureSlice";
 const { TextArea } = Input;
 const { Option } = Select;
 const modules = {
@@ -25,7 +26,7 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
   const [description,setDescription]=useState("")
   const [content, setContent] = useState("");
   const [features,setFeatures]=useState([]);
-  
+  const [imageUrl,setImageUrl]=useState("")
 
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -53,53 +54,42 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
   };
 
   const handleSave = async () => {
-    // Validate input
-    if (!title || !description || features.length === 0) {
-      message.error("Please fill in all required fields.");
-      return;
+    if (!title || !description || !content || features.length === 0 || !imageUrl) {
+        message.error("Please fill in all required fields.");
+        return;
     }
-  
-    const formData = new FormData(); 
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("features", JSON.stringify(features));
-    formData.append("content", content);
-    if (uploadedImage) {
-      formData.append("thumbnail", uploadedImage);
-    }
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-    
+
+    const payload = {
+      title: title,
+      description: description,
+      tags: features,
+      content:content,
+      thumbnail:imageUrl 
+    };
+ 
     setIsLoading(true);
     try {
-      const response = await Instance.post(
-        "/discover/featuredProgram",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
+        const response = await Instance.post("/discover/featuredProgram", payload);
+        if (response?.status === 200 || response?.status === 201) {
+            handleCancel();
+            showSuccessMessage("Feature added successfully!");
+            dispatch(addFeature(response.data))
         }
-      );
-      if (response?.status === 200 || response?.status === 201) {
-        handleCancel();
-        showSuccessMessage("Feature added successfully!");
-      }
     } catch (error) {
-      console.error(error);
-      message.error("Failed to create feature.");
+        console.error(error);
+        message.error("Failed to create feature.");
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
-  };
+};
+
   
-
-
   return (
     <Modal
       visible={open}
       title={
         <span className="create-campaign-modal-title">
-          Create Health Package
+          Create Feature Program
         </span>
       }
       onCancel={handleCancel}
@@ -123,7 +113,7 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
       ]}
     >
       <Form layout="vertical" className="mt-4">
-        <Form.Item>
+        {/* <Form.Item>
           <Upload
             listType="picture"
             showUploadList={false}
@@ -165,6 +155,9 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
             </div>
           )}
           <span className="create-campaign-input-span">Image</span>
+        </Form.Item> */}
+        <Form.Item label="Image url">
+            <Input placeholder="enter url" value={imageUrl} onChange={(e)=>setImageUrl(e.target.value)}/>
         </Form.Item>
         <Form.Item label="Feature Title">
           <Input
