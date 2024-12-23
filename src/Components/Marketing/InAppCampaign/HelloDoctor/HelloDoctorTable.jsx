@@ -65,7 +65,7 @@ const HelloDoctorTable = () => {
       onDelete: async () => {
         try {
           const response = await Instance.delete(`/videos/${_id}`);
-          if (response.status === 200) {
+          if (response.status === 200 || response.status === 204) {
             dispatch(deleteHelloDoctorVideos(_id));
           }
         } catch (error) {
@@ -148,6 +148,28 @@ const HelloDoctorTable = () => {
     },
   ];
 
+  const items = [
+    {
+      label: "Last Day",
+      key: "1",
+    },
+    {
+      label: "Last week",
+      key: "2",
+    },
+    {
+      label: "Last Month",
+      key: "3",
+    },
+  ];
+
+  const handleMenuClick = ({ key }) => {};
+
+  const menuProps = {
+    items,
+    onClick: handleMenuClick,
+  };
+
   return (
     <div className="container mt-1">
       {isLoading ? (
@@ -156,7 +178,7 @@ const HelloDoctorTable = () => {
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>OutstationClinic Info</h3>
+              <h3>Hello Doctor Info</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -164,7 +186,7 @@ const HelloDoctorTable = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add Clinic
+                Add Video
               </button>
             </div>
           </div>
@@ -182,7 +204,7 @@ const HelloDoctorTable = () => {
               </div>
 
               <div className="d-flex gap-2">
-                <Dropdown>
+                <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
                       Sort By
