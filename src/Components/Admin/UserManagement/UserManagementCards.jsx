@@ -34,7 +34,7 @@ const UserManagementCards = () => {
   };
   const cardData = [
     {
-      heading: "Total Patients",
+      heading: "Total Users",
       value: "12,640",
       percentage: (
         <span style={{ color: "var(--primary-green)" }}>
@@ -56,10 +56,10 @@ const UserManagementCards = () => {
       boxShadowColor: "#59B29F",
     },
     {
-      heading: "Total Doctors",
+      heading: "Total Active Users",
       value: "4,800",
       percentage: <span style={{ color: "var(--primary-green)" }}>+4</span>,
-      description: "Doctores",
+      description: "Active Users",
       icon: (
         <img
           src={doctor}
@@ -75,7 +75,7 @@ const UserManagementCards = () => {
     {
       heading: (
         <span className="d-flex align-items-center gap-2">
-          OPD Patients
+         InActive Users
           <CgDanger />
         </span>
       ),

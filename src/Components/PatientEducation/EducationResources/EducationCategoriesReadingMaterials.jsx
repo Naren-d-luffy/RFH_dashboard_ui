@@ -11,6 +11,7 @@ import {  Dropdown, Menu } from "antd";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import image1 from "../../../Assets/Images/comingsoon.png"
 const EducationCategoriesReadingMaterials = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -129,21 +130,28 @@ const EducationCategoriesReadingMaterials = () => {
 
   return (
     <div className="container ">
-      <div className="row mt-4 marketing-categories-section">
+      <div className="row mt-4 mb-4 marketing-categories-section">
         <div className="d-flex justify-content-between ">
           <h6>Reading Materials</h6>
-          <button className="rfh-basic-button" onClick={showModal}>
+          {/* <button className="rfh-basic-button" onClick={showModal}>
             <GoPlus size={20} /> Add
-          </button>
+          </button> */}
         </div>
 
-        <div className="row mt-3">
+        {/* <div className="row mt-3">
           <Slider {...sliderSettings}>
             {imageData.map((image) => renderImageCard(image))}
           </Slider>
+        </div> */}
+        <div className="d-flex  justify-content-center readig-material-coming-soon">
+               <img src={image1} alt="" />
+               
+        </div>
+        <div className="readig-material-coming-soon">
+        <h4>Coming Soon....</h4>
         </div>
       </div>
-      <AddReadingMaterials open={isModalOpen} handleCancel={handleCancel} />
+      {/* <AddReadingMaterials open={isModalOpen} handleCancel={handleCancel} /> */}
     </div>
   );
 };

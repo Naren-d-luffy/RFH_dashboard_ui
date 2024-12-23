@@ -9,7 +9,7 @@ const EducationOverviewPage = () => {
     <>
       <EducationOverviewCards />
       <EducationOverviewGraph />
-      <EducationOverviewTable />
+      {/* <EducationOverviewTable /> */}
     </>
   );
 };
