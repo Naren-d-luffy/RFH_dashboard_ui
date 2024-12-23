@@ -28,6 +28,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
   const [content, setContent] = useState("");
   const [features, setFeatures] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [imageUrl,setImageUrl]=useState("")
   const dispatch = useDispatch();
 
   const handleAddFeatures = () => {
@@ -59,8 +60,9 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
       setTitle(featuresData.title || "");
       setDescription(featuresData.description || "");
       setContent(DOMPurify.sanitize(featuresData.content || ""));
-      setUploadedImage(featuresData.thumbnail || null);
+      // setUploadedImage(featuresData.thumbnail || null);
       setFeatures(featuresData.tags || []);
+      setImageUrl(featuresData.thumbnail || null);
     }
   }, [featuresData]);
 
@@ -72,21 +74,17 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
     const payload = {
         title: title,
         description: description,
-        tags: JSON.stringify(features),
+        tags: features,
         content:content,
-        thumbnail:uploadedImage 
+        thumbnail:imageUrl 
       };
-   
-    
-      console.log("payload",payload);
-  
     setIsLoading(true);
     try {
       const response = await Instance.put(
         `/discover/featuredProgram/${featuresData._id}`,
         payload,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+            headers: { "Content-Type": "application/json" }
         }
       );
       if (response?.status === 200 || response?.status === 201) {
@@ -108,7 +106,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
       visible={open}
       title={
         <span className="create-campaign-modal-title">
-          Create Health Package
+          Edit Feature Program
         </span>
       }
       onCancel={handleCancel}
@@ -132,7 +130,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
       ]}
     >
       <Form layout="vertical" className="mt-4">
-        <Form.Item>
+        {/* <Form.Item>
           <Upload
             listType="picture"
             showUploadList={false}
@@ -178,6 +176,9 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
             </div>
           )}
           <span className="create-campaign-input-span">Image</span>
+        </Form.Item> */}
+        <Form.Item label="Image url">
+            <Input placeholder="enter url" value={imageUrl} onChange={(e)=>setImageUrl(e.target.value)}/>
         </Form.Item>
         <Form.Item label="Feature Title">
           <Input
