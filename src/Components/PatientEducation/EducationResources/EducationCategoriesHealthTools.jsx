@@ -20,7 +20,7 @@ const EducationCategoriesHealthTools = () => {
 
   const eventData = [
     {
-      img: Healthtool1,
+      img: Healthtool3,
       title: "Symptoms Checker",
       date: "Nov 25",
       description:
