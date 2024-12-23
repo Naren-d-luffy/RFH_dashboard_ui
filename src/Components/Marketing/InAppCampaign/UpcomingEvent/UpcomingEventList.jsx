@@ -9,12 +9,13 @@ import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
-import { setEvent } from "../../../../Features/DiscoverEventsCard";
+import { deleteEvent, setEvent } from "../../../../Features/DiscoverEventsCard";
 import AddEventsList from "./AddEventsList";
 import EditEventsList from "./EditEventsList";
 import ViewEventList from "./ViewEventList";
 import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { showDeleteMessage } from "../../../../globalConstant";
 
 export const UpcomingEventList = () => {
   const [modals, setModals] = useState({
@@ -39,6 +40,7 @@ export const UpcomingEventList = () => {
       const response = await Instance.get(`/discover/card`, {
         params: { page, limit: itemsPerPage },
       });
+      console.log("Fetched events:", response.data);
       dispatch(setEvent(response.data));
       setIsLoading(false);
     } catch (error) {
@@ -54,7 +56,7 @@ export const UpcomingEventList = () => {
 
   const itemsPerPage = 100;
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const truncateText = (text, wordLimit) => {
     if (!text) return "";
@@ -65,6 +67,22 @@ export const UpcomingEventList = () => {
   };
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
+
+  const handleDeleteEvent = (_id) => {
+    showDeleteMessage({
+      message: "",
+      onDelete: async () => {
+        try {
+          const response = await Instance.delete(`/discover/card/${_id}`);
+          if (response.status === 200) {
+            dispatch(deleteEvent(_id));
+          }
+        } catch (error) {
+          console.error("Error deleting event:", error);
+        }
+      },
+    });
+  };
 
   const filterMenu = (event) => (
     <Menu>
@@ -80,20 +98,20 @@ export const UpcomingEventList = () => {
         Edit
       </Menu.Item>
       <Menu.Item
-            key="view"
-            className="filter-menu-item"
-            onClick={() => {
-              setSelectedEvent(event); 
-              showViewModal(); 
-            }}
-          >
-            <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-            View
-          </Menu.Item>
+        key="view"
+        className="filter-menu-item"
+        onClick={() => {
+          setSelectedEvent(event);
+          showViewModal();
+        }}
+      >
+        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        View
+      </Menu.Item>
       <Menu.Item
         key="delete"
         className="filter-menu-item"
-        // onClick={() => handleDeleteEvent(event._id)}
+        onClick={() => handleDeleteEvent(event._id)}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -131,16 +149,37 @@ export const UpcomingEventList = () => {
             <h4>{event.title}</h4>
             <span>{new Date(event.createdAt).toLocaleDateString("en-GB")}</span>
           </div>
-          <p>{event.description}</p>
-          <ul>
-            {event.tags.map((tag, index) => (
-              <li key={index}>{tag}</li>
-            ))}
-          </ul>
+          <p>{truncateText(event.description, 20)}</p>
         </div>
       </div>
     </div>
   );
+
+  const CustomPrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", zIndex: "1000" }}
+        onClick={onClick}
+      >
+        &#8592;
+      </div>
+    );
+  };
+
+  const CustomNextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", zIndex: "1000" }}
+        onClick={onClick}
+      >
+        &#8594;
+      </div>
+    );
+  };
 
   const sliderSettings = {
     dots: false,
@@ -149,8 +188,8 @@ export const UpcomingEventList = () => {
     slidesToShow: 3,
     slidesToScroll: 1,
     arrows: true,
-    prevArrow: <div>&#8592;</div>,
-    nextArrow: <div>&#8594;</div>,
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
     responsive: [
       {
         breakpoint: 768,
@@ -161,6 +200,7 @@ export const UpcomingEventList = () => {
       },
     ],
   };
+
   return (
     <div className="row mt-4">
       <div className="marketing-categories-section">
@@ -168,7 +208,12 @@ export const UpcomingEventList = () => {
           <div className="d-flex justify-content-between">
             <h6>Upcoming Events</h6>
             <div className="d-flex gap-2">
-              <button className="rfh-view-all-button" onClick={()=>navigate('/view-all-events')}>View all</button>
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-events")}
+              >
+                View all
+              </button>
               <button
                 className="rfh-basic-button"
                 onClick={() => toggleModal("event")}

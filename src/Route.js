@@ -46,6 +46,7 @@ import DepartmentDetailsPage from "./Pages/DepartmentDetails/DepartmentPage";
 import TreatmentList from "./Components/PatientEducation/EducationResources/TreatmentInfo/TreatmentsInfoTable";
 import GastroIllnessTable from "./Components/PatientEducation/EducationResources/GastroIllness/GastroIllnessTable";
 import TableEventsList from "./Components/Marketing/InAppCampaign/UpcomingEvent/TableEventsList";
+import OutstationClinicTable from "./Components/Marketing/InAppCampaign/OutstationClinic/OutstationClinicTable";
 
 
 export const AppRouter = () => {
@@ -205,6 +206,12 @@ export const AppRouter = () => {
             element={<GastroIllnessTable />}
           />
           <Route path="/view-all-events" element={<TableEventsList />} />
+
+          <Route
+            path="/view-all-outstation-clinic"
+            element={<OutstationClinicTable />}
+          />
+
 
         </Route>
       </Routes>
