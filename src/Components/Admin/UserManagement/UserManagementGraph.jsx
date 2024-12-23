@@ -95,7 +95,7 @@ const UserManagementGraph = () => {
           <div className="userManaggement-card flex-column flex-sm-row gap-4 align-items-center">
             <div className="d-flex align-items-center justify-content-between">
               <div className="">
-                <h2 className="card-title text-start mb-3">Patient Type</h2>
+                <h2 className="card-title text-start mb-3">User Type</h2>
               </div>
 
               <div className="d-flex align-items-center gap-2">
@@ -104,14 +104,14 @@ const UserManagementGraph = () => {
                     className="legend-dot"
                     style={{ backgroundColor: COLORS.opdPatients }}
                   ></div>
-                  <h2 className="mb-0 card-title">OPD Patients</h2>
+                  <h2 className="mb-0 card-title">Active</h2>
                 </div>
                 <div className="d-flex align-items-center gap-1">
                   <div
                     className="legend-dot"
                     style={{ backgroundColor: COLORS.ipdPatients }}
                   ></div>
-                  <h2 className="mb-0 card-title">IPD Patients</h2>
+                  <h2 className="mb-0 card-title">InActive</h2>
                 </div>
               </div>
             </div>
@@ -154,9 +154,9 @@ const UserManagementGraph = () => {
                             width: "10px",
                             height: "10px",
                             backgroundColor:
-                              name === "OPD Patients"
+                              name === "Active"
                                 ? COLORS.opdPatients
-                                : name === "IPD Patients"
+                                : name === "InActive"
                                 ? COLORS.ipdPatients
                                 : "#fff", // Conditional check for OPD and IPD patients
                             borderRadius: "50%",
@@ -175,13 +175,13 @@ const UserManagementGraph = () => {
                   />
                   <Bar
                     dataKey="opdPatients"
-                    name="OPD Patients"
+                    name="Active"
                     fill="#00963F"
                     radius={[5, 5, 5, 5]}
                   />
                   <Bar
                     dataKey="ipdPatients"
-                    name="IPD Patients"
+                    name="InActive"
                     fill="#191F2F"
                     radius={[5, 5, 5, 5]}
                   />

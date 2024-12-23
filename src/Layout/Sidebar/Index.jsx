@@ -130,7 +130,7 @@ function SidebarAdmin() {
       subMenu: [
         // { label: "Campaign Performance", to: "/marketing/campaign-performance" },
         { label: "InApp Campaign", to: "/marketing/in-app-campaign" },
-        { label: "Patient Acquisition", to: "/marketing/patient-acquisition" },
+        // { label: "Patient Acquisition", to: "/marketing/patient-acquisition" },
       ],
     },
     // {
@@ -166,13 +166,13 @@ function SidebarAdmin() {
           Teleconsultation
         </span>
       ),
-      to: "/teleconsultation/virtual-management",
+      to: "/teleconsultation/appointment-status",
       icon: <IoTelescopeOutline className="sidebar-icon" />,
       subMenu: [
-        {
-          label: "Virtual Management",
-          to: "/teleconsultation/virtual-management",
-        },
+        // {
+        //   label: "Virtual Management",
+        //   to: "/teleconsultation/virtual-management",
+        // },
         {
           label: "Appointment Status",
           to: "/teleconsultation/appointment-status",
@@ -197,27 +197,27 @@ function SidebarAdmin() {
         { label: "Patient Survey", to: "/feedback/patient-surveys" },
       ],
     },
-    {
-      id: "operational",
-      label: (
-        <span
-        onClick={() => navigate("/operational/appointment-reports")}
-          style={{ cursor: "pointer" }}
-        >
-          Operational
-        </span>
-      ),
-      to: "/operational/appointment-reports",
-      icon: <Handshake className="sidebar-icon" size={14} />,
-      subMenu: [
-        { label: "Appointment Reports", to: "/operational/appointment-reports" },
-        { label: "Service Utilization", to: "/operational/service-utilization" },
-        {
-          label: "Financial Performance",
-          to: "/operational/financial-performance",
-        },
-      ],
-    },
+    // {
+    //   id: "operational",
+    //   label: (
+    //     <span
+    //     onClick={() => navigate("/operational/appointment-reports")}
+    //       style={{ cursor: "pointer" }}
+    //     >
+    //       Operational
+    //     </span>
+    //   ),
+    //   to: "/operational/appointment-reports",
+    //   icon: <Handshake className="sidebar-icon" size={14} />,
+    //   subMenu: [
+    //     { label: "Appointment Reports", to: "/operational/appointment-reports" },
+    //     { label: "Service Utilization", to: "/operational/service-utilization" },
+    //     {
+    //       label: "Financial Performance",
+    //       to: "/operational/financial-performance",
+    //     },
+    //   ],
+    // },
     {
       id: "news",
       label: "News",
@@ -230,12 +230,12 @@ function SidebarAdmin() {
       icon: <HiOutlineUserGroup className="sidebar-icon" size={14} />,
       to: "/community-post",
     },
-   {
-      id: "healthPackage",
-      label: "Health Package",
-      icon: <FiActivity className="sidebar-icon" size={14} />,
-      to: "/health-package",
-    },
+  //  {
+  //     id: "healthPackage",
+  //     label: "Health Package",
+  //     icon: <FiActivity className="sidebar-icon" size={14} />,
+  //     to: "/health-package",
+  //   },
     {
       id: "technical",
       label: (
@@ -249,9 +249,9 @@ function SidebarAdmin() {
       to: "/",
       icon: <MemoryStick className="sidebar-icon" size={14} />,
       subMenu: [
-        { label: "User Acquisition & Retention", to: "/" },
-        { label: "User Engagement", to: "/" },
-        { label: "User Feedback", to: "/" },
+        { label: "Raise TIcket", to: "/" },
+        // { label: "User Engagement", to: "/" },
+        // { label: "User Feedback", to: "/" },
       ],
     },
     {
