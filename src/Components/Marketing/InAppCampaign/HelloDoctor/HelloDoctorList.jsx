@@ -20,6 +20,7 @@ import {
   setHelloDoctorVideos,
 } from "../../../../Features/HelloDoctorSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export const HelloDoctorList = () => {
   const [playingVideo] = useState(null);
@@ -31,9 +32,9 @@ export const HelloDoctorList = () => {
   const [, setVideoList] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const videos = useSelector((state) => state.videos.videos);
-  useEffect(() => {
-  }, [videos]);
+  useEffect(() => {}, [videos]);
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
@@ -262,12 +263,20 @@ export const HelloDoctorList = () => {
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Hello Doctor</h6>
-            <button
-              className="rfh-basic-button"
-              onClick={() => toggleModal("video")}
-            >
-              <GoPlus size={20} /> Add Video
-            </button>
+            <div className="d-flex gap-2">
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-hello-doctor")}
+              >
+                View all
+              </button>
+              <button
+                className="rfh-basic-button"
+                onClick={() => toggleModal("video")}
+              >
+                <GoPlus size={20} /> Add Video
+              </button>
+            </div>
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
