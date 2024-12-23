@@ -21,6 +21,7 @@ import { IoMdTime } from "react-icons/io";
 import AddOutstationClinic from "./AddOutstationClinic";
 import EditOutstationClinic from "./EditOutstationClinic";
 import ViewOutstationClinic from "./ViewOutstationClinic";
+import { useNavigate } from "react-router-dom";
 
 const OutstationClinicList = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +35,7 @@ const OutstationClinicList = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const showEditModal = () => setIsEditModalOpen(true);
   const showViewModal = () => setIsViewModalOpen(true);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const showModal = () => setIsModalOpen(true);
   const clinics = useSelector((state) => state.clinics.clinics || []);
@@ -218,9 +220,17 @@ const OutstationClinicList = () => {
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Outstation Clinic</h6>
-            <button className="rfh-basic-button" onClick={showModal}>
-              <GoPlus size={20} /> Add Clinic
-            </button>
+            <div className="d-flex gap-2">
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-outstation-clinic")}
+              >
+                View all
+              </button>
+              <button className="rfh-basic-button" onClick={showModal}>
+                <GoPlus size={20} /> Add Clinic
+              </button>
+            </div>
           </div>
           <div className="mt-3">
             <Slider {...sliderSettings}>

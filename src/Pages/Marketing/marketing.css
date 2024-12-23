@@ -890,3 +890,7 @@
   margin-top: 8px;
   margin-bottom: 10px;
 }
+
+.view-treatment-info-modal-content p{
+  color: var(--black-color);
+}
