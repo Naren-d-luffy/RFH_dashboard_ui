@@ -15,6 +15,7 @@ import { FiEye } from "react-icons/fi";
 import { showDeleteMessage } from "../../../../globalConstant";
 import EditFeaturesModal from "./EditFetauredProgram";
 import { deleteFeature, setFeature } from "../../../../Features/FeatureSlice";
+import ViewFeaturedModal from "./ViewFeaturedProgram";
 
 export const FeaturedProgramsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -102,7 +103,6 @@ export const FeaturedProgramsList = () => {
       const response = await Instance.get(`/discover/featuredProgram`, {
         params: { page, limit: itemsPerPage },
       });
-      console.log(response.data)
         dispatch(setFeature(response.data))
       setFeatureList(response.data || []);
       setIsLoading(false);
@@ -194,12 +194,15 @@ export const FeaturedProgramsList = () => {
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Featured Programs</h6>
+            <div className="d-flex gap-2">
+            <button className="rfh-view-all-button" onClick={()=>navigate('/view-all-features')}>View all</button>
             <button
               className="rfh-basic-button"
               onClick={showModal}
             >
               <GoPlus size={20} /> Add Program
             </button>
+            </div>
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
@@ -211,6 +214,11 @@ export const FeaturedProgramsList = () => {
         <EditFeaturesModal
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
+        featuresData={selectedFeature}
+      />
+      <ViewFeaturedModal
+        open={isViewModalOpen}
+        handleCancel={handleViewCancel}
         featuresData={selectedFeature}
       />
       </div>
