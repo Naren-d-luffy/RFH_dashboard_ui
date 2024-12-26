@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../layout.css";
 import lightLogo from "../../Assets/Images/logo.png";
 import darkLogo from "../../Assets/Images/darkLogo.png"
-import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FiActivity, FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineDashboard } from "react-icons/md";
 import { GoShieldCheck } from "react-icons/go";
@@ -12,128 +12,18 @@ import {
   Bell,
   Handshake,
   LogOut,
+  LucideHouse,
   MemoryStick,
   MessageCircleCode,
   MessageSquareMore,
   Settings,
 } from "lucide-react";
 import { SlGraduation } from "react-icons/sl";
-import { IoMenu, IoTelescopeOutline } from "react-icons/io5";
+import { IoMenu, IoNewspaperOutline, IoTelescopeOutline } from "react-icons/io5";
 import { BiCapsule } from "react-icons/bi";
 import { useDarkMode } from "../../DarkMode";
+import { HiOutlineUserGroup } from "react-icons/hi";
 
-const menuConfig = [
-  {
-    id: "userDashboards",
-    label: "User Dashboards",
-    icon: <MdOutlineDashboard className="sidebar-icon" />,
-    subMenu: [
-      { label: "User Acquisition & Retention", to: "/" },
-      { label: "User Engagement", to: "/user-dashboards/user-engagement" },
-    ],
-  },
-  {
-    id: "admin",
-    label: "Admin",
-    icon: <GoShieldCheck className="sidebar-icon" />,
-    subMenu: [{ label: "User Management", to: "/admin/user-management" }],
-  },
-  {
-    id: "marketing",
-    label: "Marketing",
-    icon: <TbCirclePercentage className="sidebar-icon" />,
-    subMenu: [
-      { label: "Campaign Performance", to: "/marketing/campaign-performance" },
-      { label: "InApp Campaign", to: "/marketing/in-app-campaign" },
-      { label: "Patient Acquisition", to: "/marketing/patient-acquisition" },
-    ],
-  },
-  {
-    id: "education",
-    label: "Patient Education",
-    icon: <SlGraduation className="sidebar-icon" />,
-    subMenu: [
-      { label: "Education Overview", to: "/patient-education/overview" },
-      { label: "Education Resources", to: "/patient-education/resources" },
-    ],
-  },
-  {
-    id: "teleconsultation",
-    label: "Teleconsultation",
-    icon: <IoTelescopeOutline className="sidebar-icon" />,
-    subMenu: [
-      {
-        label: "Virtual Management",
-        to: "/teleconsultation/virtual-management",
-      },
-      {
-        label: "Appointment Status",
-        to: "/teleconsultation/appointment-status",
-      },
-      { label: "Technical Support", to: "/teleconsultation/technical-support" },
-    ],
-  },
-  {
-    id: "feedback",
-    label: "Feedback",
-    icon: <MessageCircleCode className="sidebar-icon" size={14} />,
-    subMenu: [
-      { label: "Create Survey", to: "/feedback/create-survey" },
-      { label: "Patient Survey", to: "/feedback/patient-surveys" },
-    ],
-  },
-  {
-    id: "operational",
-    label: "Operational",
-    icon: <Handshake className="sidebar-icon" size={14} />,
-    subMenu: [
-      { label: "Appointment Reports", to: "/operational/appointment-reports" },
-      { label: "Service Utilization", to: "/operational/service-utilization" },
-      {
-        label: "Financial Performance",
-        to: "/operational/financial-performance",
-      },
-    ],
-  },
-  {
-    id: "technical",
-    label: "Technical",
-    icon: <MemoryStick className="sidebar-icon" size={14} />,
-    subMenu: [
-      { label: "User Acquisition & Retention", to: "/" },
-      { label: "User Engagement", to: "/" },
-      { label: "User Feedback", to: "/" },
-    ],
-  },
-  {
-    id: "medication",
-    label: "Medication Tracker",
-    icon: <BiCapsule className="sidebar-icon" />,
-    to: "/medication-tracker",
-  },
-  {
-    id: "chat",
-    label: "Chat",
-    icon: <MessageSquareMore className="sidebar-icon" size={14} />,
-    to: "/chat",
-  },
-  {
-    label: "Notification",
-    icon: <Bell className="sidebar-icon" size={14} />,
-    to: "/sidebar/notification",
-  },
-  {
-    label: "Settings",
-    icon: <Settings className="sidebar-icon" size={14} />,
-    to: "/dashboard/settings",
-  },
-  {
-    id: "logout",
-    label: "LogOut",
-    icon: <LogOut size={14} className="sidebar-icon" />,
-    to: "/logout",
-  },
-];
 
 function SidebarAdmin() {
   const navigate = useNavigate();
@@ -148,16 +38,24 @@ function SidebarAdmin() {
 
   useEffect(() => {
     const pathToMenuMap = {
-      "/": "userDashboards",
+      "/user-dashboards/user-aquisition": "userDashboards",
       "/user-dashboards/user-engagement": "userDashboards",
       "/admin/user-management": "admin",
       "/marketing/campaign-performance": "marketing",
       "/marketing/patient-acquisition": "marketing",
+      "/hello-doctor": "hello doctor",
       "/marketing/in-app-campaign": "marketing",
+      "/view-all-hello-doctor": "marketing",
+      "/view-all-features": "marketing",
+      "/view-all-events": "marketing",
+      "/view-all-outstation-clinic": "marketing",
       "/marketing/patient-acquisition/patient-detail": "marketing",
       "/dashboard/settings": "",
       "/patient-education/overview": "education",
       "/patient-education/resources": "education",
+      "/view-all-gastro-illness": "education",
+      "/view-all-treatments": "education",
+      "/view-all-treatments": "education",
       "/feedback/create-survey": "feedback",
       "/feedback/create-survey-page": "feedback",
       "/education-resources/reading-materials": "education",
@@ -172,10 +70,13 @@ function SidebarAdmin() {
       "/operational/appointment-reports": "operational",
       "/operational/service-utilization": "operational",
       "/operational/financial-performance": "operational",
+      "/community-post": "community post",
       "/teleconsultation/appointment-feedback": "teleconsultation",
       "/teleconsultation/virtual-management": "teleconsultation",
       "/teleconsultation/view-doctor-detail": "teleconsultation",
       "/medication-tracker": "medicationtracker",
+      "/medication-tracker/add-patient-detail": "medicationtracker",
+      "/medication-tracker/patient-detail": "medicationtracker",
       "/sidebar/notification": "",
       "/logout": "logout",
     };
@@ -188,7 +89,213 @@ function SidebarAdmin() {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
+  const menuConfig = [
+  
+    {
+      id: "userDashboards",
+      label: (
+        <span
+        onClick={() => navigate("/user-dashboards/user-aquisition")}
+          style={{ cursor: "pointer" }}
+        >
+          User Dashboards
+        </span>
+      ),
+      to: "/user-dashboards/user-aquisition",
+      icon: <MdOutlineDashboard className="sidebar-icon" />,
+      subMenu: [
+        { label: "User Acquisition & Retention", to: "/user-dashboards/user-aquisition" },
+        { label: "User Engagement", to: "/user-dashboards/user-engagement" },
+      ],
+    },
+    {
+      id: "admin",
+      label: (
+        <span
+        onClick={() => navigate("/admin/user-management")}
+          style={{ cursor: "pointer" }}
+        >
+          Admin
+        </span>
+      ),
+      to: "/admin/user-management",
+      icon: <GoShieldCheck className="sidebar-icon" />,
+      subMenu: [{ label: "User Management", to: "/admin/user-management" }],
+    },
+    {
+      id: "marketing",
+      label: (
+        <span
+        onClick={() => navigate("/marketing/in-app-campaign")}
+          style={{ cursor: "pointer" }}
+        >
+          Marketing
+        </span>
+      ),
+      to: "/marketing/in-app-campaign",
+      icon: <TbCirclePercentage className="sidebar-icon" />,
+      subMenu: [
+        // { label: "Campaign Performance", to: "/marketing/campaign-performance" },
+        { label: "InApp Campaign", to: "/marketing/in-app-campaign" },
+        // { label: "Patient Acquisition", to: "/marketing/patient-acquisition" },
+      ],
+    },
+    // {
+    //   id: "hello doctor",
+    //   label: "Hello Doctor",
+    //   icon: <IoVideocamOutline className="sidebar-icon" />,
+    //   subMenu: [{ label: "Hello Doctor", to: "/hello-doctor" }],
+    // },
+    {
+      id: "education",
+      label: (
+        <span
+        onClick={() => navigate("/patient-education/overview")}
+          style={{ cursor: "pointer" }}
+        >
+          Patient Education
+        </span>
+      ),
+      to: "/patient-education/overview",
+      icon: <SlGraduation className="sidebar-icon" />,
+      subMenu: [
+        { label: "Education Overview", to: "/patient-education/overview" },
+        { label: "Education Resources", to: "/patient-education/resources" },
+      ],
+    },
+    {
+      id: "teleconsultation",
+      label: (
+        <span
+        onClick={() => navigate("/teleconsultation/virtual-management")}
+          style={{ cursor: "pointer" }}
+        >
+          Teleconsultation
+        </span>
+      ),
+      to: "/teleconsultation/appointment-status",
+      icon: <IoTelescopeOutline className="sidebar-icon" />,
+      subMenu: [
+        // {
+        //   label: "Virtual Management",
+        //   to: "/teleconsultation/virtual-management",
+        // },
+        // {
+        //   label: "Appointment Status",
+        //   to: "/teleconsultation/appointment-status",
+        // },
+        { label: "Technical Support", to: "/teleconsultation/technical-support" },
+      ],
+    },
+    {
+      id: "feedback",
+      label: (
+        <span
+        onClick={() => navigate("/feedback/create-survey")}
+          style={{ cursor: "pointer" }}
+        >
+          Feedback
+        </span>
+      ),
+      to: "/feedback/create-survey",
+      icon: <MessageCircleCode className="sidebar-icon" size={14} />,
+      subMenu: [
+        { label: "Create Survey", to: "/feedback/create-survey" },
+        { label: "Patient Survey", to: "/feedback/patient-surveys" },
+      ],
+    },
+    // {
+    //   id: "operational",
+    //   label: (
+    //     <span
+    //     onClick={() => navigate("/operational/appointment-reports")}
+    //       style={{ cursor: "pointer" }}
+    //     >
+    //       Operational
+    //     </span>
+    //   ),
+    //   to: "/operational/appointment-reports",
+    //   icon: <Handshake className="sidebar-icon" size={14} />,
+    //   subMenu: [
+    //     { label: "Appointment Reports", to: "/operational/appointment-reports" },
+    //     { label: "Service Utilization", to: "/operational/service-utilization" },
+    //     {
+    //       label: "Financial Performance",
+    //       to: "/operational/financial-performance",
+    //     },
+    //   ],
+    // },
+    {
+      id: "news",
+      label: "News",
+      icon: <IoNewspaperOutline className="sidebar-icon" size={14} />,
+      to: "/news",
+    },
+    {
+      id: "community post",
+      label: "Community Post",
+      icon: <HiOutlineUserGroup className="sidebar-icon" size={14} />,
+      to: "/community-post",
+    },
+  //  {
+  //     id: "healthPackage",
+  //     label: "Health Package",
+  //     icon: <FiActivity className="sidebar-icon" size={14} />,
+  //     to: "/health-package",
+  //   },
+    {
+      id: "technical",
+      label: (
+        <span
+        onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
+        >
+          Technical
+        </span>
+      ),
+      to: "/",
+      icon: <MemoryStick className="sidebar-icon" size={14} />,
+      subMenu: [
+        { label: "Raise TIcket", to: "/" },
+        // { label: "User Engagement", to: "/" },
+        // { label: "User Feedback", to: "/" },
+      ],
+    },
+    {
+      id: "medication",
+      label: "Medication Tracker",
+      icon: <BiCapsule className="sidebar-icon" />,
+      to: "/medication-tracker",
+    },
+    {
+      id: "chat",
+      label: "Chat",
+      icon: <MessageSquareMore className="sidebar-icon" size={14} />,
+      to: "/chat",
+    },
+    {
+      label: "Notification",
+      icon: <Bell className="sidebar-icon" size={14} />,
+      to: "/sidebar/notification",
+    },
+    {
+      label: "Department Details",
+      icon: <LucideHouse className="sidebar-icon" size={14} />,
+      to: "/department-details",
+    },
+    {
+      label: "Settings",
+      icon: <Settings className="sidebar-icon" size={14} />,
+      to: "/dashboard/settings",
+    },
+    {
+      id: "logout",
+      label: "LogOut",
+      icon: <LogOut size={14} className="sidebar-icon" />,
+      to: "/logout",
+    },
+  ];
+  
   return (
     <>
       <button

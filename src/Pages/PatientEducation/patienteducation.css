@@ -76,11 +76,13 @@
 
 .education-categories-faq-menu {
   position: relative;
+  color: var(--primary-green);
 }
 
 .education-categories-menu-options {
   position: absolute;
-  top: 25px;
+  top: 32px;
+  z-index: 10;
   right: 0;
   background-color: var(--white-color);
   border: 1px solid var(--border-color);
@@ -125,4 +127,82 @@
   z-index: 2;
   top: 15px;
   right: 10px;
+}
+.health-package-modal-header{
+  background: linear-gradient(var(--primary-green),#fff);
+  /* height: 200px; */
+
+}
+.view-health-package-modal .ant-modal-content{
+  padding: 0 0 20px 0 !important;
+}
+.health-package-modal-header{
+  padding: 40px;
+}
+.health-package-modal-header img{
+  height: 200px;
+  width: 200px;
+}
+.health-package-modal-header h4{
+  font-size: 24px;
+  color: var(--black-color);
+  font-weight: 700;
+}
+.health-package-modal-content{
+  padding: 20px;
+}
+.health-package-modal-content h5{
+font-size: 16px;
+font-weight: 700;
+}
+.health-package-modal-content h6{
+  font-size: 14px;
+  color: var(--black-color);
+}
+
+.view-treatment-info-modal-header{
+  background: linear-gradient(var(--primary-green),#fff);
+}
+.view-treatment-info-modal .ant-modal-content{
+  padding: 0 0 20px 0 !important;
+}
+.view-treatment-info-modal-header{
+  padding: 40px;
+}
+.view-treatment-info-modal-header img{
+  height: 200px;
+  width: 200px;
+}
+.view-treatment-info-modal-header h4{
+  font-size: 24px;
+  color: var(--black-color);
+  font-weight: 700;
+}
+.view-treatment-info-modal-content{
+  padding: 20px;
+}
+.view-treatment-info-modal-content h5{
+font-size: 16px;
+font-weight: 700;
+color: var(--black-color);
+}
+.view-treatment-info-modal-content h6{
+  font-size: 14px;
+  color: var(--black-color);
+}
+
+.rfh-view-all-button{
+  background-color: transparent;
+  border: none;
+  color: var(--primary-green);
+  text-decoration: underline;
+}
+.readig-material-coming-soon img{
+  width: 200px;
+  height: 200px;
+}
+.readig-material-coming-soon h4{
+  font-size: 20px;
+  color: var(--primary-green) !important;
+  text-align: center;
 }
