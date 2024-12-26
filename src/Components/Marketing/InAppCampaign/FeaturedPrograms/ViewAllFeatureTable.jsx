@@ -3,7 +3,7 @@ import { Table, Dropdown, Button, Space } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
-import Empty_survey_image from "../../../../Assets/Icons/Notification.png";
+import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import { showDeleteMessage } from "../../../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
@@ -161,7 +161,7 @@ const FeaturesTable = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : dataSource.length > 0 ? (
+      ) : FeaturesData.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <h3>Feature Programs</h3>
@@ -224,13 +224,23 @@ const FeaturesTable = () => {
           </div>
         </>
       ) : (
-        <div className="no-data-container">
-          <img src={Empty_survey_image} alt="No events" />
-          <h4>No Events Found</h4>
-          <p>Try adding an event or check back later.</p>
-          <Button onClick={showModal}>
-            <FaPlus /> Add Event
-          </Button>
+        <div className="container">
+          <div className="no-data-container">
+            <img src={Empty_survey_image} alt="" />
+          </div>
+          <div className="no-data-container-text d-flex flex-column justify-content-center">
+            <h4>No Events Found</h4>
+            <p>
+              Currently, there are no Events available to display.
+              <br /> Please check back later or contact support for further
+              assistance if this is an error.
+            </p>
+            <div className="d-flex justify-content-center">
+              <button className="rfh-basic-button" onClick={showModal}>
+                <FaPlus /> Create Event
+              </button>
+            </div>
+          </div>
         </div>
       )}
       <AddFeaturesModal open={isModalOpen} handleCancel={handleCancel} />
