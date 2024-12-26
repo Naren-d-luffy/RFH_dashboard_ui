@@ -14,7 +14,7 @@ import DOMPurify from "dompurify";
 import AddEventsList from "./AddEventsList";
 import EditEventsList from "./EditEventsList";
 import ViewEventList from "./ViewEventList";
-import { setEvent } from "../../../../Features/DiscoverEventsCard";
+import { deleteEvent, setEvent } from "../../../../Features/DiscoverEventsCard";
 import { useNavigate } from "react-router-dom";
 
 const TableEventsList = () => {
@@ -28,6 +28,7 @@ const TableEventsList = () => {
 
   const eventsData = useSelector((state) => state.discoverevent.events);
   const [searchText, setSearchText] = useState("");
+  const [totalRows, setTotalRows] = useState(0);
   const dispatch = useDispatch();
   const itemsPerPage = 10;
 
@@ -50,6 +51,22 @@ const TableEventsList = () => {
     return words.length > wordLimit
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
+  };
+
+  const handleDeleteEvent = (_id) => {
+    showDeleteMessage({
+      message: "",
+      onDelete: async () => {
+        try {
+          const response = await Instance.delete(`/discover/card/${_id}`);
+          if (response.status === 200) {
+            dispatch(deleteEvent(_id));
+          }
+        } catch (error) {
+          console.error("Error deleting event:", error);
+        }
+      },
+    });
   };
 
   const fetchEventInfo = async (page) => {
@@ -119,7 +136,7 @@ const TableEventsList = () => {
 
           <div
             className="campaign-performance-table-delete-icon"
-            // onClick={() => handleDeleteNews(record._id)}
+            onClick={() => handleDeleteEvent(record._id)}
           >
             <FiTrash2 />
           </div>
@@ -152,7 +169,7 @@ const TableEventsList = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : dataSource.length > 0 ? (
+      ) : eventsData.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <h3>Event List</h3>
@@ -197,9 +214,12 @@ const TableEventsList = () => {
                 pagination={{
                   current: currentPage,
                   pageSize: itemsPerPage,
-                  total: eventsData.length,
-                  onChange: setCurrentPage,
+                  total: totalRows,
+                  onChange: (page) => setCurrentPage(page),
+                  showSizeChanger: false,
                 }}
+                className="campaign-performance-table overflow-y-auto"
+                bordered={false}
               />
             </div>
           </div>
@@ -214,13 +234,23 @@ const TableEventsList = () => {
           </div>
         </>
       ) : (
-        <div className="no-data-container">
-          <img src={Empty_survey_image} alt="No events" />
-          <h4>No Events Found</h4>
-          <p>Try adding an event or check back later.</p>
-          <Button onClick={showModal}>
-            <FaPlus /> Add Event
-          </Button>
+        <div className="container">
+          <div className="no-data-container">
+            <img src={Empty_survey_image} alt="" />
+          </div>
+          <div className="no-data-container-text d-flex flex-column justify-content-center">
+            <h4>No Events Found</h4>
+            <p>
+              Currently, there are no Events available to display.
+              <br /> Please check back later or contact support for further
+              assistance if this is an error.
+            </p>
+            <div className="d-flex justify-content-center">
+              <button className="rfh-basic-button" onClick={showModal}>
+                <FaPlus /> Create Event
+              </button>
+            </div>
+          </div>
         </div>
       )}
       <AddEventsList open={isModalOpen} handleCancel={handleCancel} />

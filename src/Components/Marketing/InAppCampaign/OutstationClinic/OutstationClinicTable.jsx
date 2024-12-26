@@ -290,15 +290,15 @@ const OutstationClinicTable = () => {
             <img src={Empty_survey_image} alt="" />
           </div>
           <div className="no-data-container-text d-flex flex-column justify-content-center">
-            <h4>No Events Found</h4>
+            <h4>No Clinics Found</h4>
             <p>
-              Currently, there are no events available to display.
+              Currently, there are no Clinics available to display.
               <br /> Please check back later or contact support for further
               assistance if this is an error.
             </p>
             <div className="d-flex justify-content-center">
               <button className="rfh-basic-button" onClick={showModal}>
-                <FaPlus /> Create News
+                <FaPlus /> Create Clinic
               </button>
             </div>
           </div>
