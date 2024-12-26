@@ -10,7 +10,7 @@ const UserEngagementPage = () => {
         <div className="container">
           <UserEngagementCards />
           <UserEngagementChart />
-          <UserEngagementList />
+          {/* <UserEngagementList /> */}
         </div>
     </>
   );

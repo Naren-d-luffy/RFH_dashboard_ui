@@ -6,7 +6,7 @@ import { editHelloDoctorVideos } from "../../../../Features/HelloDoctorSlice";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 
-const EditVideo = ({ open, handleCancel, videoData, refreshList }) => {
+const EditVideo = ({ open, handleCancel, videoData }) => {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);

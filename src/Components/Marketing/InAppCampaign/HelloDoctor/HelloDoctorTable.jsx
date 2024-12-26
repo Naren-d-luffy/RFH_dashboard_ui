@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Table, Dropdown, Button, Space } from "antd";
-import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
@@ -10,43 +10,36 @@ import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
 import DOMPurify from "dompurify";
-import { Navigate, useNavigate } from "react-router-dom";
-import AddOutstationClinic from "./AddOutstationClinic";
-import EditOutstationClinic from "./EditOutstationClinic";
-import ViewOutstationClinic from "./ViewOutstationClinic";
+import { useNavigate } from "react-router-dom";
 import {
-  deleteOutstationClinic,
-  setOutstationClinic,
-} from "../../../../Features/OutstationClinicSlice";
+  deleteHelloDoctorVideos,
+  setHelloDoctorVideos,
+} from "../../../../Features/HelloDoctorSlice";
+import AddVideo from "./AddVideo";
+import EditVideo from "./EditVideo";
 
-const OutstationClinicTable = () => {
+const HelloDoctorTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [EventList, setEventList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
-  const EventData = useSelector((state) => state.clinics.clinics);
-  console.log(EventData, "Eventdata");
+  const EventData = useSelector((state) => state.videos.videos);
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
+  const navigate = useNavigate();
+
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
-  const navigate = useNavigate();
-  const showEditModal = (Event) => {
-    setSelectedEvent(Event);
+
+  const showEditModal = (video) => {
+    setSelectedVideo(video);
     setIsEditModalOpen(true);
   };
   const handleEditCancel = () => setIsEditModalOpen(false);
-  const showViewModal = (Event) => {
-    setSelectedEvent(Event);
-    setIsViewModalOpen(true);
-  };
-  const handleViewCancel = () => setIsViewModalOpen(false);
 
   const truncateText = (text, wordLimit = 15) => {
     if (!text) return "";
@@ -55,57 +48,56 @@ const OutstationClinicTable = () => {
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
   };
+
   const truncateHTML = (htmlContent, wordLimit) => {
     if (!htmlContent) return "";
     const sanitizedContent = DOMPurify.sanitize(htmlContent);
     const textContent = sanitizedContent.replace(/<[^>]*>/g, "");
     const words = textContent.split(" ");
-    const truncatedText =
-      words.length > wordLimit
-        ? words.slice(0, wordLimit).join(" ") + "..."
-        : textContent;
-    return truncatedText;
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : textContent;
   };
-  const handleDeleteOutstationClinic = (_id) => {
+
+  const handleDeleteHelloDoctorVideo = (_id) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/discover/clinic/${_id}`);
-          if (response.status === 200) {
-            dispatch(deleteOutstationClinic(_id));
+          const response = await Instance.delete(`/videos/${_id}`);
+          if (response.status === 200 || response.status === 204) {
+            dispatch(deleteHelloDoctorVideos(_id));
           }
         } catch (error) {
-          console.error("Error deleting event:", error);
+          console.error("Error deleting video:", error);
         }
       },
     });
   };
-  const fetchOutstationClinicInfo = async (page) => {
+
+  const fetchHelloDoctorVideoInfo = async (page) => {
     setIsLoading(true);
     try {
-      const response = await Instance.get(`/discover/clinic`, {
+      const response = await Instance.get(`/videos`, {
         params: { page, limit: itemsPerPage },
       });
-      console.log(response.data);
-      dispatch(setOutstationClinic(response.data));
-      setOutstationClinic(response.data || []);
-      setTotalRows(response.data || 0);
+      dispatch(setHelloDoctorVideos(response.data));
+      setTotalRows(response.data.total || 0);
     } catch (error) {
-      console.error("Error fetching clinic:", error);
+      console.error("Error fetching videos:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchOutstationClinicInfo(currentPage);
+    fetchHelloDoctorVideoInfo(currentPage);
   }, [currentPage]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return EventData;
-    return EventData.filter((Event) =>
-      `${Event.title}{}${Event.description}`
+    return EventData.filter((video) =>
+      `${video.title} ${video.description}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
@@ -113,54 +105,24 @@ const OutstationClinicTable = () => {
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "Title",
+      dataIndex: "title",
       className: "campaign-performance-table-column",
+      render: (text) => truncateText(text),
     },
-    // {
-    //   title: "About",
-    //   dataIndex: "about",
-    //   className: "campaign-performance-table-column",
-    //   render: (text) => truncateText(text),
-    //   render: (content) => {
-    //     const truncatedHTML = truncateHTML(content, 15);
-    //     return (
-    //       <div
-    //         dangerouslySetInnerHTML={{
-    //           __html: DOMPurify.sanitize(truncatedHTML),
-    //         }}
-    //       />
-    //     );
-    //   },
-    // },
     {
-      title: "Rating",
-      dataIndex: "rating",
+      title: "URL",
+      dataIndex: "url",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Reviews",
-      dataIndex: "reviews",
+      title: "Likes",
+      dataIndex: "likes",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Location",
-      dataIndex: "location",
-      className: "campaign-performance-table-column",
-    },
-    {
-      title: "Patients",
-      dataIndex: "patients",
-      className: "campaign-performance-table-column",
-    },
-    {
-      title: "Experience",
-      dataIndex: "experience",
-      className: "campaign-performance-table-column",
-    },
-    {
-      title: "Timing",
-      dataIndex: "timing",
+      title: "Created At",
+      dataIndex: "createdAt",
       className: "campaign-performance-table-column",
     },
     {
@@ -169,12 +131,6 @@ const OutstationClinicTable = () => {
       render: (_, record) => (
         <div className="campaign-performance-table-action-icons">
           <div
-            className="campaign-performance-table-eye-icon"
-            onClick={() => showViewModal(record)}
-          >
-            <FiEye />
-          </div>
-          <div
             className="campaign-performance-table-edit-icon"
             onClick={() => showEditModal(record)}
           >
@@ -182,7 +138,7 @@ const OutstationClinicTable = () => {
           </div>
           <div
             className="campaign-performance-table-delete-icon"
-            onClick={() => handleDeleteOutstationClinic(record._id)}
+            onClick={() => handleDeleteHelloDoctorVideo(record._id)}
           >
             <FiTrash2 />
           </div>
@@ -222,7 +178,7 @@ const OutstationClinicTable = () => {
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>OutstationClinic Info</h3>
+              <h3>Hello Doctor Info</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -230,7 +186,7 @@ const OutstationClinicTable = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add Clinic
+                Add Video
               </button>
             </div>
           </div>
@@ -290,33 +246,28 @@ const OutstationClinicTable = () => {
             <img src={Empty_survey_image} alt="" />
           </div>
           <div className="no-data-container-text d-flex flex-column justify-content-center">
-            <h4>No Clinics Found</h4>
+            <h4>No Events Found</h4>
             <p>
-              Currently, there are no Clinics available to display.
+              Currently, there are no events available to display.
               <br /> Please check back later or contact support for further
               assistance if this is an error.
             </p>
             <div className="d-flex justify-content-center">
               <button className="rfh-basic-button" onClick={showModal}>
-                <FaPlus /> Create Clinic
+                <FaPlus /> Create News
               </button>
             </div>
           </div>
         </div>
       )}
-      <AddOutstationClinic open={isModalOpen} handleCancel={handleCancel} />
-      <EditOutstationClinic
+      <AddVideo open={isModalOpen} handleCancel={handleCancel} />
+      <EditVideo
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
-        EventData={selectedEvent}
-      />
-      <ViewOutstationClinic
-        open={isViewModalOpen}
-        handleCancel={handleViewCancel}
-        EventData={selectedEvent}
+        videoData={selectedVideo}
       />
     </div>
   );
 };
 
-export default OutstationClinicTable;
+export default HelloDoctorTable;
