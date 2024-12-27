@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, DatePicker } from "antd";
+import { Button, Modal, Form, Input, message, Select, Upload } from "antd";
+import { Instance } from "../../../../AxiosConfig";
+import { showSuccessMessage } from "../../../../globalConstant";
+import { useDispatch } from "react-redux";
+import { FaTrash } from "react-icons/fa6";
+import { IoCloudUploadOutline } from "react-icons/io5";
+import { RiDeleteBin5Line } from "react-icons/ri";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { Upload } from "antd";
-import { IoCloudUploadOutline } from "react-icons/io5";
-import { showSuccessMessage } from "../../../../globalConstant";
-import { RiDeleteBin5Line } from "react-icons/ri";
-
+import { addFeature } from "../../../../Features/FeatureSlice";
+const { TextArea } = Input;
+const { Option } = Select;
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -16,29 +20,77 @@ const modules = {
     ["clean"],
   ],
 };
-
-const handleClick = () => {
-  showSuccessMessage("Successfully Created", "");
-};
 const AddFeaturesModal = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
-  const handleUpload = (info) => {
+  const[title,setTitle]=useState("");
+  const [description,setDescription]=useState("")
+  const [content, setContent] = useState("");
+  const [features,setFeatures]=useState([]);
+  const [imageUrl,setImageUrl]=useState("")
+
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleAddFeatures = () => {
+    setFeatures([...features, ""]);
+  };
+   const handleUpload = (info) => {
     const file = info.file.originFileObj;
-    const reader = new FileReader();
-    reader.onload = () => {
-      setUploadedImage(reader.result);
-    };
-    reader.readAsDataURL(file);
+    setUploadedImage(file);
   };
 
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
+  const handleFeaturesChange = (e, index) => {
+    const newTags = [...features];
+    newTags[index] = e.target.value;
+    setFeatures(newTags);
+  };
+
+  const handleRemoveFeatures = (index) => {
+    const newTags = features.filter((_, idx) => idx !== index);
+    setFeatures(newTags);
+  };
+
+  const handleSave = async () => {
+    if (!title || !description || !content || features.length === 0 || !imageUrl) {
+        message.error("Please fill in all required fields.");
+        return;
+    }
+
+    const payload = {
+      title: title,
+      description: description,
+      tags: features,
+      content:content,
+      thumbnail:imageUrl 
+    };
+ 
+    setIsLoading(true);
+    try {
+        const response = await Instance.post("/discover/featuredProgram", payload);
+        if (response?.status === 200 || response?.status === 201) {
+            handleCancel();
+            showSuccessMessage("Feature added successfully!");
+            dispatch(addFeature(response.data))
+        }
+    } catch (error) {
+        console.error(error);
+        message.error("Failed to create feature.");
+    } finally {
+        setIsLoading(false);
+    }
+};
+
+  
   return (
     <Modal
-      open={open}
+      visible={open}
       title={
-        <span className="create-campaign-modal-title">Featured programs</span>
+        <span className="create-campaign-modal-title">
+          Create Feature Program
+        </span>
       }
       onCancel={handleCancel}
       width={680}
@@ -52,15 +104,16 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
         </Button>,
         <Button
           key="save"
-          onClick={handleClick}
+          onClick={handleSave}
           className="create-campaign-save-button"
+          loading={isLoading}
         >
           Save
         </Button>,
       ]}
     >
       <Form layout="vertical" className="mt-4">
-        <Form.Item label="Upload image">
+        {/* <Form.Item>
           <Upload
             listType="picture"
             showUploadList={false}
@@ -78,7 +131,7 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
           {uploadedImage && (
             <div className="uploaded-image-preview d-flex gap-2">
               <img
-                src={uploadedImage}
+                src={URL.createObjectURL(uploadedImage)}
                 alt="Uploaded"
                 style={{
                   width: "200px",
@@ -101,45 +154,69 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
               </Button>
             </div>
           )}
+          <span className="create-campaign-input-span">Image</span>
+        </Form.Item> */}
+        <Form.Item label="Image url">
+            <Input placeholder="enter url" value={imageUrl} onChange={(e)=>setImageUrl(e.target.value)}/>
+        </Form.Item>
+        <Form.Item label="Feature Title">
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title"
+            required
+          />
         </Form.Item>
 
-        <Form.Item>
-          <Input
-            className="settings-input"
-            placeholder="Medicines"
-            defaultValue="Medicines"
+        <Form.Item label="Description ">
+          <TextArea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Description "
+            required
           />
-          <span className="settings-input-span">Event Title</span>
         </Form.Item>
-        <div className="row">
-          <div className="col-md-6 mt-2">
-            <Form.Item>
-              <Input
-                className="settings-input"
-                placeholder="Department"
-                defaultValue="Gastroscience Department"
-              />
-              <span className="settings-input-span">Department</span>
-            </Form.Item>
-          </div>
-          <div className="col-md-6 mt-2">
-            <Form.Item>
-              <DatePicker
-                className="settings-input w-100"
-                placeholder="Select Date"
-                format="DD-MM-YYYY"
-              />
-              <span className="settings-input-span">Event Date</span>
-            </Form.Item>
+
+        <h6 style={{ color: "var(--black-color)" }}>Features</h6>
+        <div className="row mb-4">
+          <div className="d-flex flex-column gap-2 mt-3">
+            <button
+              type="button"
+              className="health-package-add-feature d-flex gap-2 align-items-center mb-2"
+              onClick={handleAddFeatures}
+            >
+              Add +
+            </button>
+            {features.map((tag, index) => (
+              <div key={index} className="d-flex align-items-center gap-2">
+                <Form.Item className="mb-0">
+                  <input
+                    className="health-package-input "
+                    type="text"
+                    value={tag}
+                    onChange={(e) => handleFeaturesChange(e, index)}
+                    placeholder="Add tag"
+                    style={{ marginBottom: "0px" }}
+                  />
+                </Form.Item>
+                <FaTrash
+                  className="trash-icon-health-package"
+                  onClick={() => handleRemoveFeatures(index)}
+                />
+              </div>
+            ))}
           </div>
         </div>
         <Form.Item>
           <ReactQuill
             theme="snow"
             modules={modules}
+            value={content}
+            onChange={setContent}
             placeholder="Your text goes here"
+            required
           />
-          <span className="settings-input-span">Description </span>
+          <span className="create-campaign-input-span">Content</span>
         </Form.Item>
       </Form>
     </Modal>

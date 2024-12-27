@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Table, Dropdown, Button, Space } from "antd";
-import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
@@ -10,40 +10,36 @@ import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
 import DOMPurify from "dompurify";
-
-import AddEventsList from "./AddEventsList";
-import EditEventsList from "./EditEventsList";
-import ViewEventList from "./ViewEventList";
-import { deleteEvent, setEvent } from "../../../../Features/DiscoverEventsCard";
 import { useNavigate } from "react-router-dom";
+import {
+  deleteHelloDoctorVideos,
+  setHelloDoctorVideos,
+} from "../../../../Features/HelloDoctorSlice";
+import AddVideo from "./AddVideo";
+import EditVideo from "./EditVideo";
 
-const TableEventsList = () => {
+const HelloDoctorTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const navigate = useNavigate();
-
-  const eventsData = useSelector((state) => state.discoverevent.events);
-  const [searchText, setSearchText] = useState("");
   const [totalRows, setTotalRows] = useState(0);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+
+  const EventData = useSelector((state) => state.videos.videos);
+  const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
+  const navigate = useNavigate();
 
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
-  const showEditModal = (event) => {
-    setSelectedEvent(event);
+
+  const showEditModal = (video) => {
+    setSelectedVideo(video);
     setIsEditModalOpen(true);
   };
   const handleEditCancel = () => setIsEditModalOpen(false);
-  const showViewModal = (event) => {
-    setSelectedEvent(event);
-    setIsViewModalOpen(true);
-  };
-  const handleViewCancel = () => setIsViewModalOpen(false);
 
   const truncateText = (text, wordLimit = 15) => {
     if (!text) return "";
@@ -53,68 +49,81 @@ const TableEventsList = () => {
       : text;
   };
 
-  const handleDeleteEvent = (_id) => {
+  const truncateHTML = (htmlContent, wordLimit) => {
+    if (!htmlContent) return "";
+    const sanitizedContent = DOMPurify.sanitize(htmlContent);
+    const textContent = sanitizedContent.replace(/<[^>]*>/g, "");
+    const words = textContent.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : textContent;
+  };
+
+  const handleDeleteHelloDoctorVideo = (_id) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/discover/card/${_id}`);
-          if (response.status === 200) {
-            dispatch(deleteEvent(_id));
+          const response = await Instance.delete(`/videos/${_id}`);
+          if (response.status === 200 || response.status === 204) {
+            dispatch(deleteHelloDoctorVideos(_id));
           }
         } catch (error) {
-          console.error("Error deleting event:", error);
+          console.error("Error deleting video:", error);
         }
       },
     });
   };
 
-  const fetchEventInfo = async (page) => {
+  const fetchHelloDoctorVideoInfo = async (page) => {
     setIsLoading(true);
     try {
-      const response = await Instance.get(`/discover/card`, {
+      const response = await Instance.get(`/videos`, {
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setEvent(response.data));
+      dispatch(setHelloDoctorVideos(response.data));
+      setTotalRows(response.data.total || 0);
     } catch (error) {
-      console.error("Error fetching events:", error);
+      console.error("Error fetching videos:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchEventInfo(currentPage);
+    fetchHelloDoctorVideoInfo(currentPage);
   }, [currentPage]);
 
   const dataSource = useMemo(() => {
-    if (!searchText.trim())
-      return eventsData.map((event, index) => ({ ...event, key: index }));
-    return eventsData
-      .filter((event) =>
-        `${event.title} ${event.description}`
-          .toLowerCase()
-          .includes(searchText.toLowerCase())
-      )
-      .map((event, index) => ({ ...event, key: index }));
-  }, [searchText, eventsData]);
+    if (searchText.trim() === "") return EventData;
+    return EventData.filter((video) =>
+      `${video.title} ${video.description}`
+        .toLowerCase()
+        .includes(searchText.toLowerCase())
+    );
+  }, [searchText, EventData]);
 
   const columns = [
     {
       title: "Title",
       dataIndex: "title",
-      key: "title",
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
+      className: "campaign-performance-table-column",
       render: (text) => truncateText(text),
     },
     {
-      title: "Order",
-      dataIndex: "order",
-      key: "order",
+      title: "URL",
+      dataIndex: "url",
+      className: "campaign-performance-table-column",
+    },
+    {
+      title: "Likes",
+      dataIndex: "likes",
+      className: "campaign-performance-table-column",
+    },
+    {
+      title: "Created At",
+      dataIndex: "createdAt",
+      className: "campaign-performance-table-column",
     },
     {
       title: "Action",
@@ -122,21 +131,14 @@ const TableEventsList = () => {
       render: (_, record) => (
         <div className="campaign-performance-table-action-icons">
           <div
-            className="campaign-performance-table-eye-icon"
-            onClick={() => showViewModal(record)}
-          >
-            <FiEye />
-          </div>
-          <div
             className="campaign-performance-table-edit-icon"
             onClick={() => showEditModal(record)}
           >
             <FiEdit />
           </div>
-
           <div
             className="campaign-performance-table-delete-icon"
-            onClick={() => handleDeleteEvent(record._id)}
+            onClick={() => handleDeleteHelloDoctorVideo(record._id)}
           >
             <FiTrash2 />
           </div>
@@ -145,6 +147,7 @@ const TableEventsList = () => {
       className: "campaign-performance-table-column",
     },
   ];
+
   const items = [
     {
       label: "Last Day",
@@ -161,26 +164,29 @@ const TableEventsList = () => {
   ];
 
   const handleMenuClick = ({ key }) => {};
+
   const menuProps = {
     items,
     onClick: handleMenuClick,
   };
+
   return (
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : eventsData.length > 0 ? (
+      ) : EventData.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
-            <h3>Event List</h3>
-
+            <div className="user-engagement-header">
+              <h3>Hello Doctor Info</h3>
+            </div>
             <div className="d-flex align-items-center gap-3">
               <button
                 className="d-flex gap-2 align-items-center rfh-basic-button"
                 onClick={showModal}
               >
                 <GoPlus />
-                Add Event
+                Add Video
               </button>
             </div>
           </div>
@@ -196,6 +202,7 @@ const TableEventsList = () => {
                   onChange={(e) => setSearchText(e.target.value)}
                 />
               </div>
+
               <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
@@ -241,31 +248,26 @@ const TableEventsList = () => {
           <div className="no-data-container-text d-flex flex-column justify-content-center">
             <h4>No Events Found</h4>
             <p>
-              Currently, there are no Events available to display.
+              Currently, there are no events available to display.
               <br /> Please check back later or contact support for further
               assistance if this is an error.
             </p>
             <div className="d-flex justify-content-center">
               <button className="rfh-basic-button" onClick={showModal}>
-                <FaPlus /> Create Event
+                <FaPlus /> Create News
               </button>
             </div>
           </div>
         </div>
       )}
-      <AddEventsList open={isModalOpen} handleCancel={handleCancel} />
-      <EditEventsList
+      <AddVideo open={isModalOpen} handleCancel={handleCancel} />
+      <EditVideo
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
-        eventsData={selectedEvent}
-      />
-      <ViewEventList
-        open={isViewModalOpen}
-        handleCancel={handleViewCancel}
-        eventsData={selectedEvent}
+        videoData={selectedVideo}
       />
     </div>
   );
 };
 
-export default TableEventsList;
+export default HelloDoctorTable;

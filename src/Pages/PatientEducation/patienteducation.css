@@ -184,6 +184,7 @@ font-weight: 700;
 .view-treatment-info-modal-content h5{
 font-size: 16px;
 font-weight: 700;
+color: var(--black-color);
 }
 .view-treatment-info-modal-content h6{
   font-size: 14px;
@@ -195,4 +196,13 @@ font-weight: 700;
   border: none;
   color: var(--primary-green);
   text-decoration: underline;
+}
+.readig-material-coming-soon img{
+  width: 200px;
+  height: 200px;
+}
+.readig-material-coming-soon h4{
+  font-size: 20px;
+  color: var(--primary-green) !important;
+  text-align: center;
 }

@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
-import {  Dropdown, Menu } from "antd";
+import { Dropdown, Menu } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import medicines from "../../../../Assets/Images/medicines.png";
-import fruits from "../../../../Assets/Images/fruits.png";
-import appointment from "../../../../Assets/Images/appointment.png";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
@@ -20,6 +17,7 @@ import {
   setHelloDoctorVideos,
 } from "../../../../Features/HelloDoctorSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export const HelloDoctorList = () => {
   const [playingVideo] = useState(null);
@@ -31,9 +29,9 @@ export const HelloDoctorList = () => {
   const [, setVideoList] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const videos = useSelector((state) => state.videos.videos);
-  useEffect(() => {
-  }, [videos]);
+  useEffect(() => {}, [videos]);
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
@@ -44,12 +42,6 @@ export const HelloDoctorList = () => {
     { label: "Latest Camps", key: "4" },
     { label: "Outstation Clinic", key: "5" },
   ];
-  const handleMenuClick = ({ key }) => {};
-
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
 
   const handleEditClick = (video) => {
     setSelectedVideo(video);
@@ -71,30 +63,6 @@ export const HelloDoctorList = () => {
       },
     });
   };
-
-  const eventData = [
-    {
-      img: medicines,
-      title: "Medicines",
-      date: "Nov 25",
-      description: "Order your medicines quickly and easily",
-      department: "Gastroscience Department",
-    },
-    {
-      img: appointment,
-      title: "Appointments",
-      date: "Nov 26",
-      description: "Book your appointments without hassle",
-      department: "Healthcare Services",
-    },
-    {
-      img: fruits,
-      title: "Fruits",
-      date: "Nov 27",
-      description: "Get fresh fruits delivered to your home",
-      department: "Nutrition Department",
-    },
-  ];
 
   const filterMenu = (
     <Menu>
@@ -134,34 +102,6 @@ export const HelloDoctorList = () => {
     </Menu>
   );
 
-  const renderEventCard = (event) => (
-    <div className="col-lg-4" key={event.title}>
-      <div className="upcoming-event-card p-3">
-        <div className="action-icon-container">
-          <Dropdown overlay={filterMenu} trigger={["click"]}>
-            <button className="action-icon-button">
-              <BsThreeDotsVertical />
-            </button>
-          </Dropdown>
-        </div>
-
-        <div className="d-flex justify-content-center align-items-center mb-3">
-          <img src={event.img} alt={event.title} />
-        </div>
-        <div>
-          <div className="d-flex justify-content-between mb-2">
-            <h4>{event.title}</h4>
-            <span>{event.date}</span>
-          </div>
-          <p>{event.description}</p>
-          <ul>
-            <li>{event.department}</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-
   const renderRecommendVideo = (video) => {
     const isPlaying = playingVideo === video._id;
 
@@ -196,6 +136,32 @@ export const HelloDoctorList = () => {
     );
   };
 
+  const CustomPrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", zIndex: "1000" }}
+        onClick={onClick}
+      >
+        &#8592;
+      </div>
+    );
+  };
+
+  const CustomNextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", zIndex: "1000" }}
+        onClick={onClick}
+      >
+        &#8594;
+      </div>
+    );
+  };
+
   const sliderSettings = {
     dots: false,
     infinite: true,
@@ -203,8 +169,8 @@ export const HelloDoctorList = () => {
     slidesToShow: 3,
     slidesToScroll: 1,
     arrows: true,
-    prevArrow: <div>&#8592;</div>,
-    nextArrow: <div>&#8594;</div>,
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
     responsive: [
       {
         breakpoint: 768,
@@ -233,16 +199,23 @@ export const HelloDoctorList = () => {
   return (
     <div className="row mt-4">
       <div className="marketing-categories-section">
-       
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Hello Doctor</h6>
-            <button
-              className="rfh-basic-button"
-              onClick={() => toggleModal("video")}
-            >
-              <GoPlus size={20} /> Add Video
-            </button>
+            <div className="d-flex gap-2">
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-hello-doctor")}
+              >
+                View all
+              </button>
+              <button
+                className="rfh-basic-button"
+                onClick={() => toggleModal("video")}
+              >
+                <GoPlus size={20} /> Add Video
+              </button>
+            </div>
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
