@@ -135,7 +135,7 @@ const OutstationClinicList = () => {
 
         <div className="d-flex justify-content-center align-items-center mb-3">
           <img
-            src={clinic.thumbnail || "https://via.placeholder.com/150"}
+            src={clinic.image || "https://via.placeholder.com/150"}
             alt={clinic.name}
           />
         </div>
