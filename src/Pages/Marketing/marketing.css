@@ -898,3 +898,34 @@
 .view-treatment-info-modal-content ul {
   color: var(--black-color);
 }
+.recommended-latest-camp{
+  background-color: var(--);
+}
+.recommended-latest-camp-map{
+  height: 250px;
+  position: relative;
+}
+.recommended-latest-camp{
+  background-color: var(--white-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  height: 420px;
+
+}
+.recommend-latest-camp-content h4{
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--black-color);
+}
+.recommend-latest-camp-content p{
+  font-size: 14px;
+  color: var(--black-color);
+margin-bottom: 2px;
+}
+
+.latest-camp-icon-container {
+  position: absolute;
+  top: 10px; /* Adjust as needed */
+  right: 10px; /* Adjust as needed */
+  z-index: 10; /* Ensure it's above the iframe */
+}

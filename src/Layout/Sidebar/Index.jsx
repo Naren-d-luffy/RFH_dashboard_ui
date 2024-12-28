@@ -167,7 +167,7 @@ function SidebarAdmin() {
       id: "teleconsultation",
       label: (
         <span
-        onClick={() => navigate("/teleconsultation/virtual-management")}
+        onClick={() => navigate("/teleconsultation/doctors-list")}
           style={{ cursor: "pointer" }}
         >
           Teleconsultation
@@ -184,6 +184,10 @@ function SidebarAdmin() {
         //   label: "Appointment Status",
         //   to: "/teleconsultation/appointment-status",
         // },
+        {
+          label: "Doctors List",
+          to: "/teleconsultation/doctors-list",
+        },
         { label: "Technical Support", to: "/teleconsultation/technical-support" },
       ],
     },

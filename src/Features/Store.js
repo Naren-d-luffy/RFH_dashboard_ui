@@ -10,7 +10,7 @@ import faqsSlice from "./FaqsSlice"
 import featuresSlice from "./FeatureSlice"
 import outstationClinicSlice from "./OutstationClinicSlice"
 import discovereventSlice from "./DiscoverEventsCard"
-
+import campSlice from "./CampSlice"
 
 export default configureStore({
     reducer: {
@@ -25,5 +25,6 @@ export default configureStore({
         features:featuresSlice,
         clinics: outstationClinicSlice,
         discoverevent: discovereventSlice,
+        camps:campSlice
     },
 });
