@@ -49,6 +49,7 @@ import TableEventsList from "./Components/Marketing/InAppCampaign/UpcomingEvent/
 import OutstationClinicTable from "./Components/Marketing/InAppCampaign/OutstationClinic/OutstationClinicTable";
 import FeaturesTable from "./Components/Marketing/InAppCampaign/FeaturedPrograms/ViewAllFeatureTable";
 import HelloDoctorTable from "./Components/Marketing/InAppCampaign/HelloDoctor/HelloDoctorTable";
+import DoctorsTableView from "./Components/Teleconsultation/DoctorsList/DoctorsTableView";
 
 export const AppRouter = () => {
   return (
@@ -215,6 +216,8 @@ export const AppRouter = () => {
           />
 
           <Route path="/view-all-hello-doctor" element={<HelloDoctorTable />} />
+          <Route path="/teleconsultation/doctors-list" element={<DoctorsTableView />} />
+
         </Route>
       </Routes>
     </BrowserRouter>
