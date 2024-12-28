@@ -1,78 +1,72 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Modal,
-  Form,
-  Input,
-  message,
-  Col,
-  Row,
-  DatePicker,
-} from "antd";
+import { Button, Modal, Form, Input, message, Col, Row, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
 import { showSuccessMessage } from "../../../../globalConstant";
 import Loader from "../../../../Loader";
 import { addOutstationClinic } from "../../../../Features/OutstationClinicSlice";
+import { IoCloudUploadOutline } from "react-icons/io5";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const { TextArea } = Input;
 
 const AddOutstationClinic = ({ open, handleCancel }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState(null);
   const [clinicName, setClinicName] = useState("");
-  const [address, setAddress] = useState("");
   const [rating, setRating] = useState("");
   const [reviews, setReviews] = useState("");
   const [patients, setPatients] = useState("");
   const [experience, setExperience] = useState("");
   const [description, setDescription] = useState("");
   const [timing, setTiming] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [address, setAddress] = useState("");
   const dispatch = useDispatch();
 
+  const handleUpload = (info) => {
+    const file = info.file.originFileObj;
+    setUploadedImage(file);
+  };
+  const handleDeleteImage = () => {
+    setUploadedImage(null);
+  };
+
   const handleSave = async () => {
-    if (
-      !clinicName ||
-      !address ||
-      !rating ||
-      !reviews ||
-      !patients ||
-      !experience ||
-      !description ||
-      !timing
-    ) {
-      message.error("Please fill in all required fields.");
-      return;
-    }
-
-    setIsLoading(true);
     try {
-      const payload = {
-        name: clinicName,
-        location: address,
-        rating: parseFloat(rating),
-        reviews: parseInt(reviews, 10),
-        patients: parseInt(patients, 10),
-        experience: experience.toString(),
-        about: description,
-        timing,
-      };
+      const formData = new FormData();
+      formData.append("name", clinicName);
+      formData.append("location", address);
+      formData.append("rating", parseFloat(rating));
+      formData.append("reviews", parseInt(reviews, 10));
+      formData.append("patients", parseInt(patients, 10));
+      formData.append("experience", experience);
+      formData.append("about", description);
+      formData.append("timing", timing);
 
-      console.log("Submitting Data: ", payload);
+      if (uploadedImage) {
+        formData.append("image", uploadedImage);
+      }
 
-      const response = await Instance.post("/discover/clinic", payload);
+      setIsLoading(true);
+      const response = await Instance.post("/discover/clinic", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("Outstation Clinic added successfully!");
         dispatch(addOutstationClinic(response.data));
         setClinicName("");
-        setAddress("");
         setRating("");
         setReviews("");
         setPatients("");
         setExperience("");
         setDescription("");
         setTiming("");
+        setAddress("");
+        setUploadedImage(null);
       }
     } catch (error) {
       console.error("Error while submitting: ", error?.response?.data || error);
@@ -97,15 +91,15 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
         footer={[
           <Button
             key="back"
-            onClick={handleCancel}
             className="create-campaign-cancel-button"
+            onClick={handleCancel}
           >
             Cancel
           </Button>,
           <Button
             key="save"
-            onClick={handleSave}
             className="create-campaign-save-button"
+            onClick={handleSave}
             loading={isLoading}
           >
             Save
@@ -200,6 +194,49 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               required
             />
             <span className="create-campaign-input-span">Address</span>
+          </Form.Item>
+          <Form.Item>
+            <Upload
+              listType="picture"
+              showUploadList={false}
+              onChange={handleUpload}
+              className="create-campaign-upload"
+            >
+              <p className="create-campaign-ant-upload-text">
+                Drop files here or click to upload
+              </p>
+              <span className="create-campaign-ant-upload-drag-icon">
+                <IoCloudUploadOutline />{" "}
+                <span style={{ color: "#727880" }}>Upload Image</span>
+              </span>
+            </Upload>
+            {uploadedImage && (
+              <div className="uploaded-image-preview d-flex gap-2">
+                <img
+                  src={URL.createObjectURL(uploadedImage)}
+                  alt="Uploaded"
+                  style={{
+                    width: "200px",
+                    height: "auto",
+                    marginTop: "10px",
+                    borderRadius: "5px",
+                  }}
+                />
+                <Button
+                  onClick={handleDeleteImage}
+                  style={{
+                    marginTop: "10px",
+                    backgroundColor: "#e6f2ed",
+                    borderRadius: "50%",
+                    fontSize: "16px",
+                    padding: "4px 12px",
+                  }}
+                >
+                  <RiDeleteBin5Line className="model-image-upload-delete-icon" />
+                </Button>
+              </div>
+            )}
+            <span className="create-campaign-input-span">Image</span>
           </Form.Item>
         </Form>
       </Modal>

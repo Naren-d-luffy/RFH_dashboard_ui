@@ -3,7 +3,6 @@ import { Button, Modal, Form, Input, message, Row, Col, Upload } from "antd";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { showSuccessMessage } from "../../globalConstant";
-// import { IoCloudUploadOutline } from "react-icons/io5";
 import { Instance } from "../../AxiosConfig";
 import { addDepartment } from "../../Features/DepartmentSlice";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -12,8 +11,6 @@ const { TextArea } = Input;
 
 const CreateDepartmentDetails = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
-
-  const [, setUploadedThumbnail] = useState(null);
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
@@ -42,13 +39,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
   const handleDeleteSuccessStory = (index) => {
     setSuccessStories(success_stories.filter((_, i) => i !== index));
   };
-  const handleUpload = (info) => {
-    const file = info.file.originFileObj;
-    setUploadedImage(file);
-  };
-  const handleDeleteImage = () => {
-    setUploadedImage(null);
-  };
+
   const handleSave = async () => {
     if (!title || !subtitle || !description) {
       message.error("Please fill in all required fields.");
@@ -59,14 +50,38 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
       title,
       subtitle,
       description,
-      specialist,
+      thumbnail: uploadedImage ,
+      specialist: {
+        name: specialist.name,
+        designation: specialist.designation,
+        location: specialist.location,
+        photo_url: specialist.photo_url
+         
+      },
       success_stories: success_stories.map((story) => ({
         ...story,
         views: Number(story.views),
       })),
     };
+    console.log("departmentData", departmentData);
+
     try {
-      const response = await Instance.post("/department", departmentData);
+      const formData = new FormData();
+
+      if (uploadedImage) {
+        formData.append("thumbnail", uploadedImage);
+      }
+   
+      if (specialist.photo_url) {
+        formData.append("photoUrl", specialist.photo_url);
+      }
+      formData.append("data", JSON.stringify(departmentData));
+
+      const response = await Instance.post("/department/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (
         response.status === 200 ||
@@ -74,7 +89,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
         response.status === 204
       ) {
         showSuccessMessage("Department created successfully!");
-        dispatch(addDepartment(departmentData));
+        dispatch(addDepartment(departmentData)); // Dispatch the plain object
         setTitle("");
         setSubtitle("");
         setDescription("");
@@ -86,7 +101,6 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
         });
         setSuccessStories([]);
         setUploadedImage(null);
-        setUploadedThumbnail(null);
         handleCancel();
       } else {
         message.error("Failed to create department.");
@@ -150,6 +164,56 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
             required
           />
         </Form.Item>
+        <Form.Item label="Thumbnail">
+          <Upload
+            listType="picture"
+            showUploadList={false}
+            beforeUpload={(file) => {
+              // Ensure the file is valid before creating a preview
+              if (file && file instanceof File) {
+                setUploadedImage(file); // Save the file object for uploading
+              } else {
+                console.error("Invalid file:", file);
+              }
+              return false; // Prevent automatic upload
+            }}
+            className="upload-users-image"
+          >
+            <p className="create-campaign-ant-upload-text">
+              Drop files here or click to upload
+            </p>
+            <span className="create-campaign-ant-upload-drag-icon">
+              <IoCloudUploadOutline />
+              <span style={{ color: "#727880" }}>Upload Image</span>
+            </span>
+          </Upload>
+          {uploadedImage && (
+            <div className="uploaded-image-preview d-flex gap-2">
+              <img
+                src={URL.createObjectURL(uploadedImage)} // Create preview safely
+                alt="Thumbnail Preview"
+                style={{
+                  width: "200px",
+                  height: "auto",
+                  marginTop: "10px",
+                  borderRadius: "5px",
+                }}
+              />
+              <Button
+                onClick={() => setUploadedImage(null)}
+                style={{
+                  marginTop: "10px",
+                  backgroundColor: "#e6f2ed",
+                  borderRadius: "50%",
+                  fontSize: "16px",
+                  padding: "4px 12px",
+                }}
+              >
+                <RiDeleteBin5Line className="model-image-upload-delete-icon" />
+              </Button>
+            </div>
+          )}
+        </Form.Item>
 
         <h5 className="specialist-heading-name">Specialist Details</h5>
         <Row gutter={16}>
@@ -190,17 +254,16 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item label="Photo URL">
+
+        <Form.Item label="Photo Upload">
           <Upload
             listType="picture"
             showUploadList={false}
             beforeUpload={(file) => {
-              setUploadedImage(file);
-              setSpecialist({
-                ...specialist,
-                photo_url: URL.createObjectURL(file),
-              });
-              return false;
+              if (file) {
+                setSpecialist({ ...specialist, photo_url: file });
+              }
+              return false; // Prevent automatic upload
             }}
             className="upload-users-image"
           >
@@ -208,15 +271,15 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
               Drop files here or click to upload
             </p>
             <span className="create-campaign-ant-upload-drag-icon">
-              <IoCloudUploadOutline />{" "}
+              <IoCloudUploadOutline />
               <span style={{ color: "#727880" }}>Upload Image</span>
             </span>
           </Upload>
           {specialist.photo_url && (
             <div className="uploaded-image-preview d-flex gap-2">
               <img
-                src={specialist.photo_url}
-                alt="Uploaded"
+                src={URL.createObjectURL(specialist.photo_url)} // Safe for preview only
+                alt="Specialist Preview"
                 style={{
                   width: "200px",
                   height: "auto",
@@ -225,10 +288,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
                 }}
               />
               <Button
-                onClick={() => {
-                  setSpecialist({ ...specialist, photo_url: "" });
-                  setUploadedImage(null);
-                }}
+                onClick={() => setSpecialist({ ...specialist, photo_url: "" })}
                 style={{
                   marginTop: "10px",
                   backgroundColor: "#e6f2ed",
@@ -282,7 +342,6 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
                 </Form.Item>
               </Col>
             </Row>
-
             <Form.Item label="Thumbnail URL">
               <Input
                 value={story.video_thumbnail_url}
@@ -297,7 +356,6 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
                 required
               />
             </Form.Item>
-
             <Button
               icon={<RiDeleteBin5Line />}
               className="settings-delete-account"
