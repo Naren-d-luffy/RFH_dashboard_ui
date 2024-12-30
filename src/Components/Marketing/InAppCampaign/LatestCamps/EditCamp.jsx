@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, Input, DatePicker, TimePicker, message } from "antd";
 import "react-quill/dist/quill.snow.css";
 import { EnvironmentOutlined } from "@ant-design/icons";
 import { showSuccessMessage } from "../../../../globalConstant";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
-import { addCamp } from "../../../../Features/CampSlice";
+import dayjs from "dayjs"
+import { editCamp } from "../../../../Features/CampSlice";
 const { TextArea } = Input;
 
-const AddLatestCamps = ({ open, handleCancel }) => {
+const EditCamps = ({ open, handleCancel, campDataa }) => {
+    const dispatch=useDispatch();
   const [formData, setFormData] = useState({
     campName: "",
     date: null,
@@ -20,34 +22,49 @@ const AddLatestCamps = ({ open, handleCancel }) => {
     pinCode: "",
   });
 
+  useEffect(() => {
+    if (campDataa) {
+      setFormData({
+        campName: campDataa.campName || "",
+        date: campDataa.date ? dayjs(campDataa.date, "YYYY-MM-DD") : null,
+        time: campDataa.time ? dayjs(campDataa.time, "HH:mm A") : null,
+        description: campDataa.description || "",
+        hospitalName: campDataa.hospitalName || "",
+        location: campDataa.location || "",
+        address: campDataa.address || "",
+        pinCode: campDataa.pinCode || "",
+      });
+    }
+  }, [campDataa]);
+
   const handleInputChange = (key, value) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
-  const dispatch=useDispatch()
+
   const handleSave = async () => {
     const formattedData = {
       ...formData,
-      date: formData.date?.format("YYYY-MM-DD"), // Format date
-      time: formData.time?.format("hh:mm A"),   // Format time
+      date: formData.date?.format("YYYY-MM-DD"), 
+      time: formData.time?.format("hh:mm A"),  
     };
 
     try {
-      const response = await Instance.post("/camp", formattedData);
+      const response = await Instance.put(`/camp/${campDataa._id}`, formattedData);
       if (response?.status === 200 || response?.status === 201) {
-        dispatch(addCamp(response.data))
-        showSuccessMessage("Successfully Created", "");
+        dispatch(editCamp(response.data))
+        showSuccessMessage("Successfully Updated", "");
         handleCancel();
       }
     } catch (error) {
       console.error(error);
-      message.error("Failed to create Camp.");
+      message.error("Failed to update Camp.");
     }
   };
 
   return (
     <Modal
       open={open}
-      title={<span className="create-campaign-modal-title">Latest Camps</span>}
+      title={<span className="create-campaign-modal-title">Edit Camp</span>}
       onCancel={handleCancel}
       width={680}
       footer={[
@@ -69,7 +86,7 @@ const AddLatestCamps = ({ open, handleCancel }) => {
                 value={formData.campName}
                 onChange={(e) => handleInputChange("campName", e.target.value)}
               />
-              <span className="settings-input-span">Camp name</span>
+              <span className="settings-input-span">Camp Name</span>
             </Form.Item>
           </div>
           <div className="col-md-3 mt-2">
@@ -161,4 +178,4 @@ const AddLatestCamps = ({ open, handleCancel }) => {
   );
 };
 
-export default AddLatestCamps;
+export default EditCamps;
