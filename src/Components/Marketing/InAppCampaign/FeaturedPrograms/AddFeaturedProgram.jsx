@@ -22,11 +22,10 @@ const modules = {
 };
 const AddFeaturesModal = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
-  const[title,setTitle]=useState("");
-  const [description,setDescription]=useState("")
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
-  const [features,setFeatures]=useState([]);
-  const [imageUrl,setImageUrl]=useState("")
+  const [features, setFeatures] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -34,7 +33,7 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
   const handleAddFeatures = () => {
     setFeatures([...features, ""]);
   };
-   const handleUpload = (info) => {
+  const handleUpload = (info) => {
     const file = info.file.originFileObj;
     setUploadedImage(file);
   };
@@ -54,36 +53,54 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
   };
 
   const handleSave = async () => {
-    if (!title || !description || !content || features.length === 0 || !imageUrl) {
-        message.error("Please fill in all required fields.");
-        return;
+    if (
+      !title ||
+      !description ||
+      !content ||
+      features.length === 0 ||
+      !uploadedImage
+    ) {
+      message.error("Please fill in all required fields.");
+      return;
     }
 
     const payload = {
       title: title,
       description: description,
       tags: features,
-      content:content,
-      thumbnail:imageUrl 
+      content: content,
+      thumbnail: uploadedImage,
     };
- 
+    console.log(payload);
     setIsLoading(true);
     try {
-        const response = await Instance.post("/discover/featuredProgram", payload);
-        if (response?.status === 200 || response?.status === 201) {
-            handleCancel();
-            showSuccessMessage("Feature added successfully!");
-            dispatch(addFeature(response.data))
+      const response = await Instance.post(
+        "/discover/featuredProgram",
+        payload,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
+      );
+      if (response?.status === 200 || response?.status === 201) {
+        handleCancel();
+        showSuccessMessage("Feature added successfully!");
+        dispatch(addFeature(response.data));
+        setTitle("");
+        setDescription("");
+        setFeatures([]);
+        setContent("");
+        setUploadedImage(null);
+      }
     } catch (error) {
-        console.error(error);
-        message.error("Failed to create feature.");
+      console.error(error);
+      message.error("Failed to create feature.");
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
-};
+  };
 
-  
   return (
     <Modal
       visible={open}
@@ -113,7 +130,7 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
       ]}
     >
       <Form layout="vertical" className="mt-4">
-        {/* <Form.Item>
+        <Form.Item>
           <Upload
             listType="picture"
             showUploadList={false}
@@ -155,9 +172,6 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
             </div>
           )}
           <span className="create-campaign-input-span">Image</span>
-        </Form.Item> */}
-        <Form.Item label="Image url">
-            <Input placeholder="enter url" value={imageUrl} onChange={(e)=>setImageUrl(e.target.value)}/>
         </Form.Item>
         <Form.Item label="Feature Title">
           <Input

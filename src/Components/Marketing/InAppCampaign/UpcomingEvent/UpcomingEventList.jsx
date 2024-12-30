@@ -26,13 +26,13 @@ export const UpcomingEventList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const handleViewCancel = () => setIsViewModalOpen(false);
-  const showViewModal = () => setIsViewModalOpen(true);
-  const showEditModal = () => setIsEditModalOpen(true);
-  const handleEditCancel = () => setIsEditModalOpen(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const eventsData = useSelector((state) => state.discoverevent.events);
+
+  const itemsPerPage = 100;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const fetchEvenInfo = async (page) => {
     setIsLoading(true);
@@ -42,7 +42,6 @@ export const UpcomingEventList = () => {
       });
       console.log("Fetched events:", response.data);
       dispatch(setEvent(response.data));
-      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching events:", error);
     } finally {
@@ -54,10 +53,6 @@ export const UpcomingEventList = () => {
     fetchEvenInfo();
   }, []);
 
-  const itemsPerPage = 100;
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const truncateText = (text, wordLimit) => {
     if (!text) return "";
     const words = text.split(" ");
@@ -65,6 +60,7 @@ export const UpcomingEventList = () => {
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
   };
+
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
@@ -74,7 +70,7 @@ export const UpcomingEventList = () => {
       onDelete: async () => {
         try {
           const response = await Instance.delete(`/discover/card/${_id}`);
-          if (response.status === 200) {
+          if (response.status === 200 || response.status === 204) {
             dispatch(deleteEvent(_id));
           }
         } catch (error) {
@@ -91,7 +87,7 @@ export const UpcomingEventList = () => {
         className="filter-menu-item"
         onClick={() => {
           setSelectedEvent(event);
-          showEditModal();
+          setIsEditModalOpen(true);
         }}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
@@ -102,7 +98,7 @@ export const UpcomingEventList = () => {
         className="filter-menu-item"
         onClick={() => {
           setSelectedEvent(event);
-          showViewModal();
+          setIsViewModalOpen(true);
         }}
       >
         <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
@@ -131,19 +127,14 @@ export const UpcomingEventList = () => {
             </button>
           </Dropdown>
         </div>
+
         <div className="d-flex justify-content-center align-items-center mb-3">
           <img
-            src={
-              event.imageUrl ||
-              "https://reliancehospital.s3.eu-north-1.amazonaws.com/education-images/thumbnail-1732792439746-image_246.png"
-            }
+            src={event.image }
             alt={event.title}
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = "https://via.placeholder.com/150";
-            }}
           />
         </div>
+
         <div>
           <div className="d-flex justify-content-between mb-2">
             <h4>{event.title}</h4>
@@ -233,12 +224,12 @@ export const UpcomingEventList = () => {
           />
           <EditEventsList
             open={isEditModalOpen}
-            handleCancel={handleEditCancel}
+            handleCancel={() => setIsEditModalOpen(false)}
             eventsData={selectedEvent}
           />
           <ViewEventList
             open={isViewModalOpen}
-            handleCancel={handleViewCancel}
+            handleCancel={() => setIsViewModalOpen(false)}
             eventsData={selectedEvent}
           />
         </div>
@@ -248,3 +239,12 @@ export const UpcomingEventList = () => {
 };
 
 export default UpcomingEventList;
+
+
+
+
+
+
+
+
+
