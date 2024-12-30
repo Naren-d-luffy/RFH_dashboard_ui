@@ -297,6 +297,7 @@
 .sub-menu {
   padding-left: 30px;
   display: none;
+  margin-left: 20px;
 }
 
 .sub-menu.active {

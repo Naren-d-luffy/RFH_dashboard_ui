@@ -27,11 +27,13 @@ const AddEventsList = ({ open, handleCancel }) => {
   const handleAddFeatures = () => {
     setFeatures([...features, ""]);
   };
+  
   const handleFeaturesChange = (e, index) => {
     const newTags = [...features];
     newTags[index] = e.target.value;
     setFeatures(newTags);
   };
+
   const handleRemoveFeatures = (index) => {
     const newTags = features.filter((_, idx) => idx !== index);
     setFeatures(newTags);
@@ -70,10 +72,23 @@ const AddEventsList = ({ open, handleCancel }) => {
     formData.append("link", link.trim());
     formData.append("order", parseInt(order, 10));
     formData.append("isActive", isActive);
-    formData.append("tags", JSON.stringify(features));
+    formData.append("tags", features.trim());
     formData.append("image", uploadedImage);
 
     setIsLoading(true);
+
+
+    // const formData = {
+    //   title: title,
+    //   description: description,
+    //   link: link,
+    //   order: order,
+    //   isActive: isActive,
+    //   tags: features,
+    //   image: uploadedImage,
+    // };
+    // console.log(formData);
+    // setIsLoading(true);
 
     try {
       const response = await Instance.post("/discover/card", formData, {
