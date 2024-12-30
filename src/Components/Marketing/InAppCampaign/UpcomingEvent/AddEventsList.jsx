@@ -27,7 +27,7 @@ const AddEventsList = ({ open, handleCancel }) => {
   const handleAddFeatures = () => {
     setFeatures([...features, ""]);
   };
-  
+
   const handleFeaturesChange = (e, index) => {
     const newTags = [...features];
     newTags[index] = e.target.value;
@@ -72,24 +72,11 @@ const AddEventsList = ({ open, handleCancel }) => {
     formData.append("link", link.trim());
     formData.append("order", parseInt(order, 10));
     formData.append("isActive", isActive);
-    formData.append("tags", features.trim());
+    formData.append("tags", JSON.stringify(features));
     formData.append("image", uploadedImage);
 
     setIsLoading(true);
-
-
-    // const formData = {
-    //   title: title,
-    //   description: description,
-    //   link: link,
-    //   order: order,
-    //   isActive: isActive,
-    //   tags: features,
-    //   image: uploadedImage,
-    // };
-    // console.log(formData);
-    // setIsLoading(true);
-
+    
     try {
       const response = await Instance.post("/discover/card", formData, {
         headers: {
@@ -98,6 +85,7 @@ const AddEventsList = ({ open, handleCancel }) => {
       });
 
       if (response?.status === 200 || response?.status === 201) {
+        console.log("add", response.data);
         handleCancel();
         dispatch(addEvent(response.data));
         showSuccessMessage("Event card added successfully!");
@@ -252,7 +240,7 @@ const AddEventsList = ({ open, handleCancel }) => {
                 <div key={index} className="d-flex align-items-center gap-2">
                   <Form.Item className="mb-0">
                     <input
-                      className="health-package-input"
+                      className="health-package-input "
                       type="text"
                       value={tag}
                       onChange={(e) => handleFeaturesChange(e, index)}

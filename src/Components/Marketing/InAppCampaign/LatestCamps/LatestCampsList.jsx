@@ -13,61 +13,87 @@ import { CiCalendarDate, CiLocationOn } from "react-icons/ci";
 import { IoMdTime } from "react-icons/io";
 import EditCamps from "./EditCamp";
 import { showDeleteMessage } from "../../../../globalConstant";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { deleteCamp, setCamps } from "../../../../Features/CampSlice";
+import { FiEye } from "react-icons/fi";
+import ViewLatestCamp from "./ViewLatestCamp";
+import { useNavigate } from "react-router-dom";
 export const LatestCampsList = () => {
   const [modals, setModals] = useState({
     program: false,
     camp: false,
     clinic: false,
   });
-  const [campData, setCampData] = useState([]); 
+  const [campData, setCampData] = useState([]);
+  const navigate = useNavigate();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [selectedCamp, setSelectedCamp] = useState([]);
-    const dispatch=useDispatch();
-     const camps = useSelector((state) => state.camps.camps);
-   
-    const showEditModal = (camp) => {
-      setSelectedCamp(camp);
-      setIsEditModalOpen(true);
-    };
-    
-    const handleCancelEditModal = () => {
-      setSelectedCamp(null);
-      setIsEditModalOpen(false);
-    };
-    
-    const filterMenu = (camp) => (
-      <Menu>
-        <Menu.Item
-          key="edit"
-          className="filter-menu-item"
-          onClick={() => {
-            setSelectedCamp(camp);
-            showEditModal(camp);
-          }}
-        >
-          <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-          Edit
-        </Menu.Item>
-        <Menu.Item
-          key="delete"
-          className="filter-menu-item"
-          onClick={() => {
-            handleDeleteCamp(camp._id);
-          }}
-        >
-          <RiDeleteBin7Line
-            style={{ color: "var(--red-color)", marginRight: "4px" }}
-          />
-          Delete
-        </Menu.Item>
-      </Menu>
-    );
-    
-    useEffect(() => {
-      fetchCampList();
-    }, []);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [selectedCamp, setSelectedCamp] = useState([]);
+  const dispatch = useDispatch();
+  const camps = useSelector((state) => state.camps.camps);
+
+  const showEditModal = (camp) => {
+    setSelectedCamp(camp);
+    setIsEditModalOpen(true);
+  };
+
+  const showViewtModal = (camp) => {
+    setSelectedCamp(camp);
+    setIsViewModalOpen(true);
+  };
+
+  const handleCancelEditModal = () => {
+    setSelectedCamp(null);
+    setIsEditModalOpen(false);
+  };
+
+  const handleCancelViewModal = () => {
+    setSelectedCamp(null);
+    setIsViewModalOpen(false);
+  };
+
+  const filterMenu = (camp) => (
+    <Menu>
+      <Menu.Item
+        key="edit"
+        className="filter-menu-item"
+        onClick={() => {
+          setSelectedCamp(camp);
+          showEditModal(camp);
+        }}
+      >
+        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        Edit
+      </Menu.Item>
+      <Menu.Item
+        key="view"
+        className="filter-menu-item"
+        onClick={() => {
+          setSelectedCamp(camp);
+          showViewtModal(camp);
+        }}
+      >
+        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        View
+      </Menu.Item>
+      <Menu.Item
+        key="delete"
+        className="filter-menu-item"
+        onClick={() => {
+          handleDeleteCamp(camp._id);
+        }}
+      >
+        <RiDeleteBin7Line
+          style={{ color: "var(--red-color)", marginRight: "4px" }}
+        />
+        Delete
+      </Menu.Item>
+    </Menu>
+  );
+
+  useEffect(() => {
+    fetchCampList();
+  }, []);
 
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
@@ -76,8 +102,8 @@ export const LatestCampsList = () => {
     try {
       const response = await Instance.get(`/camp`);
       if (response.status === 200 || response.status === 201) {
-        setCampData(response.data); 
-        dispatch(setCamps(response.data))
+        setCampData(response.data);
+        dispatch(setCamps(response.data));
       }
     } catch (error) {
       console.error("Error fetching camp:", error);
@@ -89,21 +115,21 @@ export const LatestCampsList = () => {
   }, []);
 
   const handleDeleteCamp = (_id) => {
-      showDeleteMessage({
-        message: "",
-        onDelete: async () => {
-          try {
-            const response = await Instance.delete(`/camp/${_id}`);
-            if (response.status === 200) {
-                dispatch(deleteCamp(_id))
-              console.log(response)
-            }
-          } catch (error) {
-            console.error("Error deleting Camp:", error);
+    showDeleteMessage({
+      message: "",
+      onDelete: async () => {
+        try {
+          const response = await Instance.delete(`/camp/${_id}`);
+          if (response.status === 200) {
+            dispatch(deleteCamp(_id));
+            console.log(response);
           }
-        },
-      });
-    };
+        } catch (error) {
+          console.error("Error deleting Camp:", error);
+        }
+      },
+    });
+  };
 
   const truncateText = (text, wordLimit) => {
     if (!text) return "";
@@ -112,8 +138,6 @@ export const LatestCampsList = () => {
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
   };
-
-  
 
   const renderLatestCamps = (camp) => {
     const [lat, lng] = camp.location.split(",");
@@ -207,12 +231,21 @@ export const LatestCampsList = () => {
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
             <h6>Latest Camps</h6>
-            <button
+
+            <div className="d-flex gap-2">
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-camp-table")}
+              >
+                View all
+              </button>
+              <button
               className="rfh-basic-button"
               onClick={() => toggleModal("camp")}
             >
               <GoPlus size={20} /> Add Camp
             </button>
+            </div>
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
@@ -224,10 +257,15 @@ export const LatestCampsList = () => {
             handleCancel={() => toggleModal("camp")}
           />
           <EditCamps
-        open={isEditModalOpen}
-        handleCancel={handleCancelEditModal}
-        campDataa={selectedCamp}
-      />
+            open={isEditModalOpen}
+            handleCancel={handleCancelEditModal}
+            campDataa={selectedCamp}
+          />
+          <ViewLatestCamp
+            open={isViewModalOpen}
+            handleCancel={handleCancelViewModal}
+            campDataa={selectedCamp}
+          />
         </div>
       </div>
     </div>

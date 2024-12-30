@@ -44,3 +44,7 @@ const ViewEventList = ({ open, handleCancel, eventsData }) => {
 };
 
 export default ViewEventList;
+
+
+
+

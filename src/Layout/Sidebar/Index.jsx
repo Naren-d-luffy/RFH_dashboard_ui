@@ -49,6 +49,7 @@ function SidebarAdmin() {
       "/view-all-features": "marketing",
       "/view-all-events": "marketing",
       "/view-all-outstation-clinic": "marketing",
+      "/view-all-camp-table": "marketing",
       "/marketing/patient-acquisition/patient-detail": "marketing",
       "/dashboard/settings": "",
       "/patient-education/overview": "education",
