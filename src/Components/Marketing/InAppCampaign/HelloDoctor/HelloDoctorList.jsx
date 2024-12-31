@@ -128,7 +128,7 @@ export const HelloDoctorList = () => {
         </div>
         <div className="video-details mt-2">
           <h4>{video.title}</h4>
-          <p style={{ color: "var(--black-color)" }}>{`${
+          <p style={{ color: "var(--black-color)", fontSize:'13px'}}>{`${
             video.likes
           } Likes | ${new Date(video.createdAt).toLocaleDateString()}`}</p>
         </div>

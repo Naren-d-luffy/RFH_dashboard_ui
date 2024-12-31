@@ -13,12 +13,14 @@
   font-size: 18px;
   font-weight: 600;
   text-align: center;
+  color: var(--black-color);
 }
 
 .no-data-container-text p {
   font-size: 16px;
   font-weight: 400;
   text-align: center;
+  color: var(--black-color);
 }
 
 .createSurvey-banner-div {

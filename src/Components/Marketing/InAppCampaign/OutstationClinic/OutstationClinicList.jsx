@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Button, Dropdown, Menu } from "antd";
-import { FiEye, FiSearch } from "react-icons/fi";
+import {Dropdown, Menu } from "antd";
+import { FiEye } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
-import { VscSettings } from "react-icons/vsc";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
@@ -150,7 +149,7 @@ const OutstationClinicList = () => {
           </div>
           <p>{clinic.patients} Patients Treated</p>
           <div>
-            <span>{truncateText(clinic.about, 20)}</span>
+            <span>{truncateText(clinic.about, 8)}</span>
           </div>
           <div className="d-flex justify-content-between">
             <p>
