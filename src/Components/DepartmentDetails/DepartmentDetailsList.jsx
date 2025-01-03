@@ -28,8 +28,10 @@ const DepartmentDetailsList = () => {
   const [selectedDepartment, setSelectedDepartment] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const departments = useSelector((state) => state.department.departments);
+  console.log("khkkj", departments);
+
   const [searchText, setSearchText] = useState("");
-  const [isLoading,setIsLoading]=useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
   const itemsPerPage = 5;
@@ -78,20 +80,18 @@ const DepartmentDetailsList = () => {
   };
 
   const fetchDepartmentList = async (page) => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
-      const response = await Instance.get(`/department`, {
-        params: { page, limit: itemsPerPage },
-      });
+      const response = await Instance.get(`/department`, {});
       setDepartmentList(response.data.departments || []);
       console.log(response.data);
       setTotalRows(response.data.totalDepartments);
       dispatch(setDepartment(response.data));
     } catch (error) {
       console.error("Error fetching department list:", error);
-    } finally{
-      setIsLoading(false)
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -123,9 +123,8 @@ const DepartmentDetailsList = () => {
     },
     {
       title: "Specialist Name",
-      key: "specialist",
-      render: (_, record) =>
-        record.specialist ? record.specialist.name : "N/A",
+      dataIndex: "specialistName",
+      key: "specialistName",
       className: "campaign-performance-table-column",
     },
     {
@@ -181,9 +180,9 @@ const DepartmentDetailsList = () => {
 
   return (
     <div className="container mt-1">
-          {isLoading ? (
-            <Loader />
-          ) : departmentList.length > 0 ? (
+      {isLoading ? (
+        <Loader />
+      ) : departmentList.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
