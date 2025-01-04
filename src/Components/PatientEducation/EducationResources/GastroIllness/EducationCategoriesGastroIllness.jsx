@@ -13,7 +13,10 @@ import AddEventsGastroIllness from "./AddEventsGastroIllness";
 import EditEventsGastroIllness from "./EditEventsGastroIllness";
 import ViewEventsGastroIllness from "./ViewEventsGastroIllness";
 import { Instance } from "../../../../AxiosConfig";
-import { showDeleteMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import {
   deleteGastroIllness,
   setGastroIllness,
@@ -112,6 +115,7 @@ const EducationCategoriesGastroIllness = () => {
         try {
           const response = await Instance.delete(`/gastro/${_id}`);
           if (response.status === 200) {
+            showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteGastroIllness(_id));
           }
         } catch (error) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Dropdown, Menu } from "antd";
+import { Dropdown, Menu } from "antd";
 import { FiEye } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -9,7 +9,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Instance } from "../../../../AxiosConfig";
-import { showDeleteMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import {
   setOutstationClinic,
   deleteOutstationClinic,
@@ -68,6 +71,7 @@ const OutstationClinicList = () => {
         try {
           const response = await Instance.delete(`/discover/clinic/${_id}`);
           if (response.status === 200) {
+            showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteOutstationClinic(_id));
           }
         } catch (error) {
