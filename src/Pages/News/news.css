@@ -90,6 +90,7 @@
 }
 .video-details h4 {
   color: var(--black-color);
+  font-size: 16px;
 }
 /* .ant-modal-root .ant-modal-wrap {
   z-index: 9999;
