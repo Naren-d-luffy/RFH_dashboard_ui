@@ -11,7 +11,10 @@ import { Instance } from "../../../../AxiosConfig";
 import ReactPlayer from "react-player";
 import AddVideo from "./AddVideo";
 import EditVideo from "./EditVideo";
-import { showDeleteMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import {
   deleteHelloDoctorVideos,
   setHelloDoctorVideos,
@@ -55,6 +58,7 @@ export const HelloDoctorList = () => {
         try {
           const response = await Instance.delete(`/videos/${_id}`);
           if (response.status === 200 || response.status === 204) {
+            showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteHelloDoctorVideos(_id));
           }
         } catch (error) {
@@ -128,7 +132,7 @@ export const HelloDoctorList = () => {
         </div>
         <div className="video-details mt-2">
           <h4>{video.title}</h4>
-          <p style={{ color: "var(--black-color)", fontSize:'13px'}}>{`${
+          <p style={{ color: "var(--black-color)", fontSize: "13px" }}>{`${
             video.likes
           } Likes | ${new Date(video.createdAt).toLocaleDateString()}`}</p>
         </div>

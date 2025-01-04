@@ -12,7 +12,10 @@ import { Instance } from "../../../../AxiosConfig";
 import { CiCalendarDate, CiLocationOn } from "react-icons/ci";
 import { IoMdTime } from "react-icons/io";
 import EditCamps from "./EditCamp";
-import { showDeleteMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteCamp, setCamps } from "../../../../Features/CampSlice";
 import { FiEye } from "react-icons/fi";
@@ -121,6 +124,7 @@ export const LatestCampsList = () => {
         try {
           const response = await Instance.delete(`/camp/${_id}`);
           if (response.status === 200) {
+            showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteCamp(_id));
             console.log(response);
           }
@@ -240,11 +244,11 @@ export const LatestCampsList = () => {
                 View all
               </button>
               <button
-              className="rfh-basic-button"
-              onClick={() => toggleModal("camp")}
-            >
-              <GoPlus size={20} /> Add Camp
-            </button>
+                className="rfh-basic-button"
+                onClick={() => toggleModal("camp")}
+              >
+                <GoPlus size={20} /> Add Camp
+              </button>
             </div>
           </div>
           <div className="mt-4">

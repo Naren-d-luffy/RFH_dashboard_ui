@@ -4,7 +4,7 @@ import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage } from "../../globalConstant";
+import { showDeleteMessage, showSuccessMessage } from "../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../AxiosConfig";
 import {
@@ -67,6 +67,7 @@ const DepartmentDetailsList = () => {
         try {
           const response = await Instance.delete(`/department/${_id}`);
           if (response.status === 200) {
+            showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteDepartment(_id));
             setDepartmentList((prev) =>
               prev.filter((dept) => dept._id !== _id)

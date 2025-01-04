@@ -4,7 +4,10 @@ import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +30,7 @@ const FeaturesTable = () => {
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
   const showEditModal = (event) => {
@@ -77,6 +80,7 @@ const FeaturesTable = () => {
             `/discover/featuredProgram/${_id}`
           );
           if (response.status === 200) {
+            showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteFeature(_id));
             console.log(response);
           }
