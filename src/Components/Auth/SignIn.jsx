@@ -5,12 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { message, Spin, Carousel } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { loginInstance } from "../../AxiosConfig";
+import { Instance, loginInstance } from "../../AxiosConfig";
 import login1 from "../../Assets/Images/login-1.png";
 import login2 from "../../Assets/Images/login-5.png";
 import login3 from "../../Assets/Images/login-2.png";
 import login4 from "../../Assets/Images/login-4.png";
-import { showSuccessMessage } from "../../globalConstant";
+import { showErrorMessage, showSuccessMessage } from "../../globalConstant";
 
 const CustomDot = ({ active }) => (
   <span className={`dot ${active ? "active" : ""}`}></span>
@@ -54,56 +54,35 @@ const SignIn = () => {
   const loginUser = async (email, password) => {
     try {
       setLoading(true);
-      const response = await loginInstance.post("/auth/login", {
+      const response = await Instance.post("/admin/login", {
         email,
         password,
       });
       console.log("Server response:", response);
-
-      if (response.status === 200 && response.data && response.data.jwt_token) {
-        localStorage.setItem("token", response.data.jwt_token);
+      if (response.status === 200 && response.data && response.data.accessToken) {
+        localStorage.setItem("token", response.data.accessToken);
         const userInfo = {
-          name: response.data.name,
-          email: response.data.email,
-          uid: response.data.uid,
+          name: response.data.admin.name,
+          email: response.data.admin.email,
+          uid: response.data.admin._id,
         };
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
-        // message.success(`Welcome, ${response.data.name}!`);
         showSuccessMessage(
-            `Welcome, ${response.data.name}!`,
+            `Welcome, ${response.data.admin.name}!`,
             "You have successfully logged in."
           );
         navigate("/user-dashboards/user-aquisition");
       } else {
-        console.error("Unexpected response structure:", response);
-        message.error("Login failed. Unexpected response structure.");
+        showErrorMessage(response.data.error);
       }
     } catch (error) {
       console.error(
         "Login error:",
         error.response ? error.response.data : error
       );
-      if (error.response) {
-        switch (error.response.status) {
-          case 401:
-            message.error("Invalid email or password. Please try again.");
-            break;
-          case 404:
-            message.error("User not found. Please check your email.");
-            break;
-          default:
-            message.error(
-              `Login failed: ${error.response.data.message || "Unknown error"}`
-            );
-        }
-      } else if (error.request) {
-        message.error(
-          "No response from server. Please check your internet connection."
-        );
-      } else {
-        message.error("An unexpected error occurred. Please try again.");
-      }
+      showErrorMessage(error.response.data.error);
+      
     } finally {
       setLoading(false);
     }
@@ -197,7 +176,7 @@ const SignIn = () => {
               )}
             </button>
             <p className="login-link">
-              Do not have an account? <Link to="/sign-up">Sign Up</Link>
+              Do not have an account? <Link to="/register">Sign Up</Link>
             </p>
             <p className="terms">
               By Continuing you agree to Reliance Terms of Service and Privacy

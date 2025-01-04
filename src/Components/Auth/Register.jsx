@@ -2,25 +2,26 @@
 import React, { useEffect, useState } from "react";
 import "./auth.css";
 import logo from "../../Assets/Images/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import {  Link, useNavigate } from "react-router-dom";
 import { message, Spin, Carousel } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import login1 from "../../Assets/Images/login-1.png";
 import login2 from "../../Assets/Images/login-5.png";
 import login3 from "../../Assets/Images/login-2.png";
 import login4 from "../../Assets/Images/login-4.png";
-import { showErrorMessage, showSuccessMessage } from "../../globalConstant";
 import { Instance } from "../../AxiosConfig";
+import { showErrorMessage } from "../../globalConstant";
 
 const CustomDot = ({ active }) => (
   <span className={`dot ${active ? "active" : ""}`}></span>
 );
 
-const ForgotPassword = () => {
+const Register = () => {
      
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+    const [email, setEmail] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [responseMessage, setResponseMessage] = useState("");
+    const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const sliderItems = [
@@ -47,26 +48,21 @@ const ForgotPassword = () => {
     },
   ];
 
-  useEffect(() => {
-    const rememberedEmail = localStorage.getItem("rememberedEmail");
-    if (rememberedEmail) {
-      setEmail(rememberedEmail);
-      setRememberMe(true);
-    }
-  }, []);
   const handleContinue = async () => {
     if (!email) {
+      setEmailError("Please enter your email address.");
       showErrorMessage("Please enter your email address.");
       return;
     } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError("Please enter a valid email address.");
       showErrorMessage("Please enter a valid email address.");
       return;
     }
     setLoading(true);
     try {
-      const response = await Instance.post("/admin/sendForgotPasswordOtp", { email });
-      message.success("otp sent to mail")
-      navigate("/otp-verification", { state: { email } });
+      const response = await Instance.post("admin/sendotp", { email });
+      setResponseMessage(response.data);
+      navigate("/signup-otp", { state: { email } });
     } catch (error) {
       console.error("Error during form submission:", error);
       if (error.response && error.response.data) {
@@ -78,6 +74,7 @@ const ForgotPassword = () => {
       setLoading(false);
     }
   };
+  
   return (
     <div className="login-container">
       <div className="container-fluid">
@@ -91,7 +88,6 @@ const ForgotPassword = () => {
               />
             </center>
             <p className="login--p">Welcome to Institute of Gastro sciences</p>
-            <h1 className="signup-title">Forgot password</h1>
             <div className="form-group">
               <label htmlFor="email">Email*</label>
               <input
@@ -117,12 +113,9 @@ const ForgotPassword = () => {
               )}
             </button>
             <p className="login-link">
-              Do not have an account? <Link to="/sign-up">Sign Up</Link>
+              Already have an account? <Link to="/">Login In</Link>
             </p>
-            <p className="terms">
-              By Continuing you agree to Reliance Terms of Service and Privacy
-              Policy
-            </p>
+           
           </div>
           <div className="col-lg-6 col-sm-0 col-md-0 login-image">
             <Carousel
@@ -149,4 +142,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default Register;
