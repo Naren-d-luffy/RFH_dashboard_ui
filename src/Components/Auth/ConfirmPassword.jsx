@@ -9,20 +9,23 @@ import login1 from "../../Assets/Images/login-1.png";
 import login2 from "../../Assets/Images/login-5.png";
 import login3 from "../../Assets/Images/login-2.png";
 import login4 from "../../Assets/Images/login-4.png";
-import { showSuccessMessage } from "../../globalConstant";
+import { showErrorMessage, showSuccessMessage } from "../../globalConstant";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-
+import { useLocation } from "react-router-dom";
+import { Instance } from "../../AxiosConfig";
 const CustomDot = ({ active }) => (
   <span className={`dot ${active ? "active" : ""}`}></span>
 );
 
 const ConfirmPassword = () => {
-     
-  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const email = location.state?.email;
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const sliderItems = [
     {
       image: login1,
@@ -47,18 +50,43 @@ const ConfirmPassword = () => {
     },
   ];
 
-  useEffect(() => {
-    const rememberedEmail = localStorage.getItem("rememberedEmail");
-    if (rememberedEmail) {
-      setEmail(rememberedEmail);
-      setRememberMe(true);
-    }
-  }, []);
+
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const handleSave = async () => {
+    if (!password || !confirmPassword) {
+      showErrorMessage("Both fields are required!");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      showErrorMessage("Passwords do not match!");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await Instance.post("/admin/forgotpassword", {
+        email,
+        newPassword: password,
+      });
+      if (response.status === 200) {
+       showSuccessMessage("Password reset successful!");
+        navigate("/");
+      }
+    } catch (error) {
+     showErrorMessage(
+        error.response?.data?.error || "Failed to reset password."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="login-container">
       <div className="container-fluid">
@@ -73,39 +101,43 @@ const ConfirmPassword = () => {
             </center>
             <p className="login--p">Welcome to Institute of Gastro sciences</p>
             <h1 className="signup-title">Create New Password</h1>
+             <div className="form-group">
+              <label htmlFor="password">Password*</label>
+              <div className="password-input">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  placeholder="Enter your Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  className="password-toggle"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <FiEye /> : <FiEyeOff />}
+                </button>
+              </div>
+            </div>
             <div className="form-group">
-			<label htmlFor="password">Password*</label>
+              <label htmlFor="confirmPassword">Confirm Password*</label>
               <div className="password-input">
                 <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  placeholder="Enter your Password"
+                  type={showConfirmPassword ? "text" : "password"}
+                  id="confirmPassword"
+                  placeholder="Confirm your Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
                 <button
                   className="password-toggle"
-                  onClick={togglePasswordVisibility}
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
-                  {showPassword ? <FiEye /> : <FiEyeOff />}
+                  {showConfirmPassword ? <FiEye /> : <FiEyeOff />}
                 </button>
               </div>
             </div>
-			<div className="form-group">
-			<label htmlFor="password">Confirm Password*</label>
-              <div className="password-input">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  placeholder="Enter your Password"
-                />
-                <button
-                  className="password-toggle"
-                  onClick={togglePasswordVisibility}
-                >
-                  {showPassword ? <FiEye /> : <FiEyeOff />}
-                </button>
-              </div>
-            </div>
-            <button className="login-button" onClick={()=>navigate("/")}>
+            <button className="login-button" onClick={handleSave}>
               {loading ? (
                 <Spin
                   indicator={
