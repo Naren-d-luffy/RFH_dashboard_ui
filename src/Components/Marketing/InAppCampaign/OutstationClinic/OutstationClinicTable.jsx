@@ -4,12 +4,15 @@ import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AddOutstationClinic from "./AddOutstationClinic";
 import EditOutstationClinic from "./EditOutstationClinic";
 import ViewOutstationClinic from "./ViewOutstationClinic";
@@ -53,6 +56,7 @@ const OutstationClinicTable = () => {
         try {
           const response = await Instance.delete(`/discover/clinic/${_id}`);
           if (response.status === 200) {
+            showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteOutstationClinic(_id));
           }
         } catch (error) {

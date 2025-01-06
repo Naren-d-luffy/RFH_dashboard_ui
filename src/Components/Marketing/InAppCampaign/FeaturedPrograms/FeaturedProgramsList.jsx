@@ -12,7 +12,10 @@ import { useNavigate } from "react-router-dom";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { FiEye } from "react-icons/fi";
-import { showDeleteMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import EditFeaturesModal from "./EditFetauredProgram";
 import { deleteFeature, setFeature } from "../../../../Features/FeatureSlice";
 import ViewFeaturedModal from "./ViewFeaturedProgram";
@@ -27,11 +30,11 @@ export const FeaturedProgramsList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [featureList,setFeatureList]=useState([])
+  const [featureList, setFeatureList] = useState([]);
   const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
   const FeaturesData = useSelector((state) => state.features.features);
-  console.log("features",FeaturesData)
+  console.log("features", FeaturesData);
   const navigate = useNavigate();
 
   const itemsPerPage = 100;
@@ -86,10 +89,13 @@ export const FeaturedProgramsList = () => {
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/discover/featuredProgram/${_id}`);
+          const response = await Instance.delete(
+            `/discover/featuredProgram/${_id}`
+          );
           if (response.status === 200) {
-              dispatch(deleteFeature(_id))
-            console.log(response)
+            showSuccessMessage("Deleted successfully", "Details deleted");
+            dispatch(deleteFeature(_id));
+            console.log(response);
           }
         } catch (error) {
           console.error("Error deleting feature:", error);
@@ -103,7 +109,7 @@ export const FeaturedProgramsList = () => {
       const response = await Instance.get(`/discover/featuredProgram`, {
         params: { page, limit: itemsPerPage },
       });
-        dispatch(setFeature(response.data))
+      dispatch(setFeature(response.data));
       setFeatureList(response.data || []);
       setIsLoading(false);
     } catch (error) {
@@ -120,8 +126,7 @@ export const FeaturedProgramsList = () => {
   const renderFeatureCard = (feature) => (
     <div className="col-lg-4" key={feature._id}>
       <div className="upcoming-event-card p-3" style={{ position: "relative" }}>
-
-      <div className="treatment-info-icon-container">
+        <div className="treatment-info-icon-container">
           <Dropdown overlay={sortMenu(feature)} trigger={["click"]}>
             <button className="action-icon-button">
               <BsThreeDotsVertical />
@@ -195,13 +200,15 @@ export const FeaturedProgramsList = () => {
           <div className="d-flex justify-content-between">
             <h6>Featured Programs</h6>
             <div className="d-flex gap-2">
-            <button className="rfh-view-all-button" onClick={()=>navigate('/view-all-features')}>View all</button>
-            <button
-              className="rfh-basic-button"
-              onClick={showModal}
-            >
-              <GoPlus size={20} /> Add Program
-            </button>
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-features")}
+              >
+                View all
+              </button>
+              <button className="rfh-basic-button" onClick={showModal}>
+                <GoPlus size={20} /> Add Program
+              </button>
             </div>
           </div>
           <div className="mt-4">
@@ -212,15 +219,15 @@ export const FeaturedProgramsList = () => {
           <AddFeaturesModal open={isModalOpen} handleCancel={handleCancel} />
         </div>
         <EditFeaturesModal
-        open={isEditModalOpen}
-        handleCancel={handleEditCancel}
-        featuresData={selectedFeature}
-      />
-      <ViewFeaturedModal
-        open={isViewModalOpen}
-        handleCancel={handleViewCancel}
-        featuresData={selectedFeature}
-      />
+          open={isEditModalOpen}
+          handleCancel={handleEditCancel}
+          featuresData={selectedFeature}
+        />
+        <ViewFeaturedModal
+          open={isViewModalOpen}
+          handleCancel={handleViewCancel}
+          featuresData={selectedFeature}
+        />
       </div>
     </div>
   );
