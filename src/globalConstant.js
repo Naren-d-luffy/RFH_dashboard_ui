@@ -94,7 +94,7 @@ export const showDeleteMessage = ({
 							if (onDelete && typeof onDelete === "function") {
 								onDelete();
 							}
-							showSuccessMessage("Deleted successfully", "Details deleted");
+							
 							Modal.destroyAll();
 						}}
 					>

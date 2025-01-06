@@ -72,9 +72,8 @@ const AddEventsList = ({ open, handleCancel }) => {
     formData.append("link", link.trim());
     formData.append("order", parseInt(order, 10));
     formData.append("isActive", isActive);
-    formData.append("tags", JSON.stringify(features));
+    formData.append("tags", features);
     formData.append("image", uploadedImage);
-
     setIsLoading(true);
     
     try {
