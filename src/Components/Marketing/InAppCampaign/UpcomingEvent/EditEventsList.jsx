@@ -23,7 +23,6 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
 
   const dispatch = useDispatch();
-
   const handleAddFeatures = () => {
     setFeatures([...features, ""]);
   };
@@ -63,8 +62,9 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
       setLink(eventsData?.link || "");
       setOrder(eventsData?.order || "");
       setIsActive(eventsData?.isActive ?? null);
-      setFeatures(eventsData?.tags || []);
-      setUploadedImage(eventsData?.imageUrl || null); 
+      const parsedTags = eventsData?.tags[0]?.split(",") || [];
+      setFeatures(parsedTags);
+      setUploadedImage(eventsData?.image || null); 
     } else {
       
       setTitle("");
@@ -89,9 +89,8 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
     formData.append("link", link.trim());
     formData.append("order", parseInt(order, 10));
     formData.append("isActive", isActive);
-    formData.append("tags", JSON.stringify(features));
+    formData.append("tags", features.join(","));
     formData.append("image", uploadedImage);
-
     setIsLoading(true);
 
     try {

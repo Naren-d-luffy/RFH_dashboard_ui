@@ -32,9 +32,11 @@ const ViewEventList = ({ open, handleCancel, eventsData }) => {
           <div className="view-treatment-info-modal-content">
             <h5>{eventsData?.description || "N/A"}</h5>
             <ul>
-              {eventsData?.tags?.map((tag, index) => (
-                <li key={index}>{tag}</li>
-              ))}
+              {eventsData?.tags
+                ?.flatMap((tag) => tag.split(",")) 
+                .map((individualTag, index) => (
+                  <li key={index}>{individualTag.trim()}</li> 
+                ))}
             </ul>
           </div>
         </div>
@@ -44,7 +46,3 @@ const ViewEventList = ({ open, handleCancel, eventsData }) => {
 };
 
 export default ViewEventList;
-
-
-
-
