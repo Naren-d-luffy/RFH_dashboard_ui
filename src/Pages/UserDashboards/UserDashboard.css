@@ -231,9 +231,15 @@
   height: 12px;
   border-radius: 6px;
 }
-.userAquisition-model h3,
+
 .userAquisition-model p {
   text-align: center;
+  color: var(--secondary-text-color);
+}
+
+.userAquisition-model h3 {
+  text-align: center;
+  color: var(--black-color);
 }
 
 /* ==============css by keerthi============ */
@@ -394,8 +400,12 @@
   height: auto;
   left: 65%;
 }
-@media (max-width: 768px){
-  .userAquisition-color-dot-div{
-    /* padding-left: 30px !important; */
-  } 
+.anticon{
+  color: var(--black-color);
 }
+
+/* @media (max-width: 768px){
+  .userAquisition-color-dot-div{
+    
+  } 
+} */

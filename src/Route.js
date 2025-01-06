@@ -32,15 +32,45 @@ import ServiceUtilizationPage from "./Pages/Operational/ServiceUtilizationPage";
 import FinancialPerformancePage from "./Pages/Operational/FinancialPerformancePage";
 import ChatPage from "./Pages/Teleconsultation/ChatPage";
 import ChattingPage from "./Pages/Chat/chatPage";
-
 import Layout from "./Pages";
+import SignIn from "./Components/Auth/SignIn";
+import HelloDoctorPage from "./Pages/HelloDoctor/HelloDoctorPage";
+import NewsPage from "./Pages/News/NewsPage";
+import CommunityPostPage from "./Pages/CommunityPost/CommunityPostPage";
+import { HealthPackagePage } from "./Pages/HealthPackage/HealthPackagePage";
+import SignUp from "./Components/Auth/SignUp";
+import ForgotPassword from "./Components/Auth/ForgotPassword";
+import OtpScreen from "./Components/Auth/OtpScreen";
+import ConfirmPassword from "./Components/Auth/ConfirmPassword";
+import DepartmentDetailsPage from "./Pages/DepartmentDetails/DepartmentPage";
+import TreatmentList from "./Components/PatientEducation/EducationResources/TreatmentInfo/TreatmentsInfoTable";
+import GastroIllnessTable from "./Components/PatientEducation/EducationResources/GastroIllness/GastroIllnessTable";
+import TableEventsList from "./Components/Marketing/InAppCampaign/UpcomingEvent/TableEventsList";
+import OutstationClinicTable from "./Components/Marketing/InAppCampaign/OutstationClinic/OutstationClinicTable";
+import FeaturesTable from "./Components/Marketing/InAppCampaign/FeaturedPrograms/ViewAllFeatureTable";
+import HelloDoctorTable from "./Components/Marketing/InAppCampaign/HelloDoctor/HelloDoctorTable";
+import DoctorsTableView from "./Components/Teleconsultation/DoctorsList/DoctorsTableView";
+import ViewAllCampTable from "./Components/Marketing/InAppCampaign/LatestCamps/ViewAllCampTable";
+import Register from "./Components/Auth/Register";
+import SignUpOtpScreen from "./Components/Auth/SignUpOtp";
 
 export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/otp-verification" element={<OtpScreen />} />
+        <Route path="/signup-otp" element={<SignUpOtpScreen />} />
+        <Route path="/confirm-password" element={<ConfirmPassword />} />
+
         <Route element={<Layout />}>
-          <Route path="/" element={<UserAquisitionPage />} />
+          <Route
+            path="/user-dashboards/user-aquisition"
+            element={<UserAquisitionPage />}
+          />
           <Route
             path="/user-dashboards/user-engagement"
             element={<UserEngagementPage />}
@@ -61,6 +91,9 @@ export const AppRouter = () => {
             path="/marketing/patient-acquisition/patient-detail"
             element={<PatientDetailPage />}
           />
+
+          <Route path="/hello-doctor" element={<HelloDoctorPage />} />
+
           <Route path="/dashboard/settings" element={<SettingsPage />} />
 
           <Route path="/user-engagement" element={<UserEngagementPage />} />
@@ -129,7 +162,11 @@ export const AppRouter = () => {
             element={<DoctorDetailPage />}
           />
           <Route
-            path="/teleconsultation/view-doctor-detail"
+            path="/teleconsultation/doctor-detail/:id"
+            element={<DoctorDetailPage />}
+          />
+          <Route
+            path="/teleconsultation/view-doctor-detail/:id"
             element={<ViewDoctorDetailPage />}
           />
           <Route
@@ -162,6 +199,33 @@ export const AppRouter = () => {
             element={<ChatPage />}
           />
           <Route path="/chat" element={<ChattingPage />} />
+          <Route path="/news" element={<NewsPage />} />
+
+          <Route path="/community-post" element={<CommunityPostPage />} />
+          <Route path="/health-package" element={<HealthPackagePage />} />
+          <Route
+            path="/department-details"
+            element={<DepartmentDetailsPage />}
+          />
+          <Route path="/view-all-treatments" element={<TreatmentList />} />
+          <Route
+            path="/view-all-gastro-illness"
+            element={<GastroIllnessTable />}
+          />
+          <Route path="/view-all-events" element={<TableEventsList />} />
+          <Route path="/view-all-features" element={<FeaturesTable />} />
+
+          <Route
+            path="/view-all-outstation-clinic"
+            element={<OutstationClinicTable />}
+          />
+
+          <Route path="/view-all-hello-doctor" element={<HelloDoctorTable />} />
+          <Route path="/teleconsultation/doctors-list" element={<DoctorsTableView />} />
+
+          <Route path="/view-all-camp-table" element={<ViewAllCampTable />} />
+
+
         </Route>
       </Routes>
     </BrowserRouter>

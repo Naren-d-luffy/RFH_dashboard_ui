@@ -2,8 +2,8 @@
   --primary-green: #00963f;
   --page-background-color: #fff;
   --dark-green: #36693e;
-  --table-head-bg-color:  #fafafa;
-  --table-data-bg-color: #fafafa;
+  --table-head-bg-color:  #e7f7e0;
+  --table-data-bg-color: #fff;
   --graph-text-color: #666;
   --secondary-text-color: #6c7278;
   --card-background-color:#fff;
@@ -49,6 +49,12 @@
   --swal-color: #1A1C1E;
   --table-border: #133E58;
   --rfh-button-text-color: #fff;
+  --text-white-color: #fff;
+  --text-black-color: #333;
+  --model-background-color: #fff;
+  --graph-field-color: #252525;
+  --department-bg-color: #eda665;
+
 }
 
 .dark-mode{
@@ -66,5 +72,11 @@
   --graph-text-color: #fafafa;
   --faq-ans-color:#c9c7c7;
   --bg-gray-color: #b5b2b2;
+  --text-white-color: #fff;
+  --text-black-color: #333;
+  --model-background-color: #333;
+  --graph-field-color: #5e5d5d;
+  --dark-blue: #251736;
+
 }
 

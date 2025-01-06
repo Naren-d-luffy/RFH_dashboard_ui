@@ -35,7 +35,7 @@
   padding: 8px 32px;
   background: transparent;
   border-radius: 8px;
-  color: var(--text-semi-color);
+  color: var(--secondary-text-color);
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.5px;
@@ -297,6 +297,7 @@
 .sub-menu {
   padding-left: 30px;
   display: none;
+  margin-left: 20px;
 }
 
 .sub-menu.active {
@@ -341,7 +342,7 @@
   padding: 16px;
   margin-left: 280px;
   background: var(--page-background-color);
-  min-height: 80vh;
+  min-height: 89vh;
   height: 100%;
 }
 .custom-swal-image {
@@ -472,4 +473,42 @@
   .menu-close-button-response {
     display: none;
   }
+}
+.custom-switch.ant-switch .ant-switch-handle::before {
+    background: url("../Assets/Icons/sunicon.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.custom-switch.ant-switch-dark .ant-switch-handle::before {
+    background: url("../Assets/Icons/moonicon.png"); 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.custom-switch.ant-switch .ant-switch-inner {
+    padding-inline-start: 0px;
+    padding-inline-end: 0px;
+}
+
+.custom-switch.ant-switch .ant-switch-inner-unchecked {
+    background: url("../Assets/Icons/lightmode.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.custom-switch.ant-switch .ant-switch-inner-checked {
+    background: url("../Assets/Icons/darkmode.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.custom-switch.ant-switch{
+    min-width: 55px;
+}
+.notification-icon{
+    color: var(--black-color);
 }

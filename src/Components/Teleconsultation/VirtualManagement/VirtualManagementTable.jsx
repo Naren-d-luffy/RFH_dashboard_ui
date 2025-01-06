@@ -1,36 +1,82 @@
-import React, { useState } from "react";
-import { Table, Dropdown, Button, Input } from "antd";
+import React, { useState, useEffect } from "react";
+import {Instance} from "../../../AxiosConfig";
+import { Table, Dropdown, Button } from "antd";
 import { FiSearch, FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
-import image from "../../../Assets/Images/image.png";
 import { showDeleteMessage } from "../../../globalConstant";
-import { filterDropdown } from "../../../globalConstant"
+import { filterDropdown } from "../../../globalConstant";
 
 const VirtualManagementTable = () => {
-  const [selectedValues, setSelectedValues] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  const handleDelete = (name) => {
-    showDeleteMessage({ message: name });
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const response = await Instance.get("/doctor");
+        setDoctors(response.data.doctor); // Adjust response.data if the API structure is different
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
+
+
+  const handleDelete = (id, name) => {
+    if (!id || !name) {
+      console.warn("Invalid parameters provided for deletion.");
+      return;
+    }
+  
+    showDeleteMessage({
+      message: `Deleting doctor: ${name}`,
+      onDelete: async () => {
+        try {
+          const response = await Instance.delete(`/doctor/${id}`);
+          if (response.status === 200) {
+            setDoctors((prevDoctors) =>
+              prevDoctors.filter((doctor) => doctor._id !== id)
+            );
+            // showDeleteMessage({ message: `Doctor "${name}" has been successfully deleted.` });
+          } else {
+            console.error(`Unexpected response status: ${response.status}`);
+            showDeleteMessage({
+              message: `Failed to delete doctor "${name}". Please try again.`,
+            });
+          }
+        } catch (error) {
+          console.error(`Error deleting doctor with ID: ${id}`, error);
+          showDeleteMessage({
+            message: `An error occurred while deleting doctor "${name}".`,
+          });
+        }
+      },
+    });
   };
 
   const columns = [
     {
       title: "Doctor ID",
-      dataIndex: "doctorId",
-      key: "doctorId",
+      dataIndex: "_id", // Assuming the API provides a unique ID
+      key: "_id",
       className: "campaign-performance-table-column",
     },
     {
       title: "Doctor Name",
-      dataIndex: "doctorName",
-      key: "doctorName",
+      dataIndex: "name",
+      key: "name",
       render: (text, record) => (
         <div className="d-flex align-items-center gap-2">
           <img
-            src={image}
+            src={record.image || "default-image.png"} // Fallback to default image if not provided
             alt="Doctor"
             style={{
               width: "30px",
@@ -46,8 +92,8 @@ const VirtualManagementTable = () => {
     },
     {
       title: "Specialization",
-      dataIndex: "specialization",
-      key: "specialization",
+      dataIndex: "specialty",
+      key: "specialty",
       className: "campaign-performance-table-column",
     },
     {
@@ -57,16 +103,17 @@ const VirtualManagementTable = () => {
       className: "campaign-performance-table-column",
     },
     {
-      title: "Appointment Completed",
-      dataIndex: "appointments",
-      key: "appointments",
+      title: "Patients Treated",
+      dataIndex: "patients",
+      key: "patients",
       className: "campaign-performance-table-column",
     },
     {
       title: "Ratings",
-      dataIndex: "ratings",
-      key: "ratings",
+      dataIndex: "rating",
+      key: "rating",
       className: "campaign-performance-table-column",
+      render: (rating) => `${rating}/5`,
     },
     {
       title: "Status",
@@ -85,17 +132,20 @@ const VirtualManagementTable = () => {
         <div className="campaign-performance-table-action-icons">
           <div
             className="campaign-performance-table-eye-icon"
-            onClick={() => navigate(`/teleconsultation/view-doctor-detail`)}
+            onClick={() => navigate(`/teleconsultation/view-doctor-detail/${record._id}`, { state: record })}
             style={{ cursor: "pointer" }}
           >
             <FiEye />
           </div>
-          <div className="campaign-performance-table-edit-icon">
+          <div 
+          className="campaign-performance-table-edit-icon"
+          onClick={() => navigate(`/teleconsultation/doctor-detail/${record._id}`, { state: record })}
+          >
             <FiEdit />
           </div>
           <div
             className="campaign-performance-table-delete-icon"
-            onClick={() => handleDelete(record.doctorName)}
+            onClick={() => handleDelete(record._id, record.name)}
           >
             <FiTrash2 />
           </div>
@@ -105,136 +155,39 @@ const VirtualManagementTable = () => {
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      doctorId: "1001",
-      doctorName: "Saikiran K",
-      specialization: "Cardiology",
-      gender: "Male",
-      appointments: "300",
-      ratings: "4.6/5",
-      status: "Active",
-    },
-    {
-      key: "2",
-      doctorId: "390",
-      doctorName: "Chandan P",
-      specialization: "General Medicine",
-      gender: "Male",
-      appointments: "200",
-      ratings: "4.8/5",
-      status: "Inactive",
-    },
-    {
-      key: "3",
-      doctorId: "250",
-      doctorName: "Shravya V",
-      specialization: "Gastric",
-      gender: "Male",
-      appointments: "178",
-      ratings: "4.3/5",
-      status: "Active",
-    },
-    {
-      key: "4",
-      doctorId: "100",
-      doctorName: "Harish D",
-      specialization: "Gastric",
-      gender: "Female",
-      appointments: "342",
-      ratings: "4.4/5",
-      status: "Active",
-    },
-    {
-      key: "5",
-      doctorId: "50",
-      doctorName: "Mahesh G",
-      specialization: "Gastric",
-      gender: "Male",
-      appointments: "123",
-      ratings: "4.8/5",
-      status: "Active",
-    },
-  ];
-
-  const handleCheckboxChange = (value, checked) => {
-    if (checked) {
-      setSelectedValues((prev) => [...prev, value]);
-    } else {
-      setSelectedValues((prev) => prev.filter((item) => item !== value));
-    }
-  };
-
-  const handleApply = () => {
-    console.log('Applied Filters:', selectedValues);
-    setIsDropdownOpen(false);
-  };
-  const handleReset = () => {
-    setSelectedValues([]);
-  };
-  const options = [
-    {
-      label: 'Type',
-      options: [
-        { label: 'All', value: 'all' },
-        { label: 'OPD', value: 'opd' },
-        { label: 'IPD', value: 'ipd' },
-      ],
-    },
-    {
-      label: 'Last Visit',
-      options: [
-        { label: 'Last 7 days', value: 'last7days' },
-        { label: 'Last 30 days', value: 'last30days' },
-      ],
-    },
-    {
-      label: 'All Users',
-      options: [
-        { label: 'Active Users', value: 'activeusers' },
-        { label: 'Inactive Users', value: 'inactiveusers' },
-      ],
-    },
-  ];
-
   return (
-    <div className=" mt-4">
+    <div className="mt-4">
       <div className="campaign-performance-table-head">
         <div className="d-flex justify-content-between flex-lg-row flex-xl-row flex-column align-items-center">
           <h6>Doctor List</h6>
-          <div className="d-flex gap-3 align-items-center flex-lg-row flex-xl-row flex-column align-items-center">
-            <div
-              className="d-flex align-items-center px-3"
-              style={{
-                border: "1px solid var(--border-color)",
-                borderRadius: "8px",
-                height: "33px",
-              }}
-            >
-              <FiSearch style={{ color: "#888", marginRight: "10px" }} />
-              <Input
+          <div className="d-flex gap-3 align-items-center">
+            <div className="search-container">
+              <FiSearch className="search-icon" />
+              <input
                 type="text"
                 placeholder="Search anything here"
-                style={{
-                  border: "none",
-                  outline: "none",
-                }}
+                className="search-input-table"
               />
             </div>
             <div className="d-flex gap-3 align-items-center">
-            <Dropdown
-                  overlay={filterDropdown(options, selectedValues, handleCheckboxChange, handleApply, handleReset)}
-                  trigger={['click']}
-                  open={isDropdownOpen}
-                  onOpenChange={setIsDropdownOpen}
-                  placement="bottomLeft"
-                >
-                  <Button style={{ width: 160 }}>
-                    <VscSettings />
-                    Filters
-                  </Button>
-                </Dropdown>
+              <Dropdown
+                overlay={filterDropdown(
+                  [],
+                  [],
+                  () => {},
+                  () => {},
+                  () => {}
+                )}
+                trigger={["click"]}
+                open={isDropdownOpen}
+                onOpenChange={setIsDropdownOpen}
+                placement="bottomLeft"
+              >
+                <Button style={{ width: 160 }}>
+                  <VscSettings />
+                  Filters
+                </Button>
+              </Dropdown>
               <button
                 className="rfh-basic-button"
                 onClick={() => navigate(`/teleconsultation/doctor-detail`)}
@@ -247,8 +200,9 @@ const VirtualManagementTable = () => {
         <div className="mt-3">
           <Table
             columns={columns}
-            dataSource={data}
-            pagination={false}
+            dataSource={doctors}
+            loading={loading}
+            rowKey="_id" // Ensure a unique key for rows
             className="campaign-performance-table overflow-y-auto"
             bordered={false}
           />

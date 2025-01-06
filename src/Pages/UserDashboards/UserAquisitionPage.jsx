@@ -8,7 +8,7 @@ const UserAquisitionPage = () => {
   return (
     <>
         <UserAquisitionCards />
-        <UserAquisitionGraphs />
+        {/* <UserAquisitionGraphs /> */}
         <UserAquisitionSecondGraphs />
     </>
   );

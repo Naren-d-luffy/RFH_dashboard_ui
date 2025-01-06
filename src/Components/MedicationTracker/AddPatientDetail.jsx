@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Form,
   Input,
@@ -15,11 +15,26 @@ import "react-quill/dist/quill.snow.css";
 import { Upload } from "antd";
 import { useNavigate } from "react-router-dom";
 import { showSuccessMessage } from "../../globalConstant";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const AddPatientDetail = () => {
   const navigate = useNavigate();
   const handleClick = () => {
     showSuccessMessage("Successfully Added Medication", "");
+  };
+
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const handleUpload = (info) => {
+    const file = info.file.originFileObj;
+    const reader = new FileReader();
+    reader.onload = () => {
+      setUploadedImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDeleteImage = () => {
+    setUploadedImage(null);
   };
 
   return (
@@ -232,49 +247,77 @@ const AddPatientDetail = () => {
               </Col>
             </Row>
             <div>
-            <Row gutter={24}>
-              <Col span={12}>
-                <Form.Item>
-                  <DatePicker
-                    className="add-events-datepicker"
-                    placeholder="12/12/2024"
-                    style={{ width: "100%" }}
-                    format="DD/MM/YYYY"
-                  />
-                  <span className="create-campaign-input-span">
-                    Next Dose Schedule
-                  </span>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item>
-                  <TimePicker
-                    className="add-events-datepicker"
-                    placeholder="12:00 PM"
-                    style={{ width: "100%" }}
-                  />
-                  <span className="create-campaign-input-span">Time</span>
-                </Form.Item>
-              </Col>
-            </Row>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <Form.Item>
+                    <DatePicker
+                      className="add-events-datepicker"
+                      placeholder="12/12/2024"
+                      style={{ width: "100%" }}
+                      format="DD/MM/YYYY"
+                    />
+                    <span className="create-campaign-input-span">
+                      Next Dose Schedule
+                    </span>
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item>
+                    <TimePicker
+                      className="add-events-datepicker"
+                      placeholder="12:00 PM"
+                      style={{ width: "100%" }}
+                    />
+                    <span className="create-campaign-input-span">Time</span>
+                  </Form.Item>
+                </Col>
+              </Row>
             </div>
             <Row gutter={24}>
               <Col span={24}>
                 <Form.Item>
-                  <Upload listType="picture" className="create-campaign-upload">
+                  <Upload
+                    listType="picture"
+                    showUploadList={false}
+                    onChange={handleUpload}
+                    className="create-campaign-upload"
+                  >
                     <p className="create-campaign-ant-upload-text">
-                      Drop image here
+                      Drop files here or click to upload
                     </p>
                     <span className="create-campaign-ant-upload-drag-icon">
-                      <IoCloudUploadOutline
-                        color="var(--red-color)"
-                        size={20}
-                      />{" "}
+                      <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                       <span className="create-campaign-input-span">
-                        Upload Medicine Photo (Optional)
+                        Upload Image
                       </span>
                     </span>
                   </Upload>
+                  {uploadedImage && (
+                    <div className="uploaded-image-preview d-flex gap-2">
+                      <img
+                        src={uploadedImage}
+                        alt="Uploaded"
+                        style={{
+                          width: "200px",
+                          height: "auto",
+                          marginTop: "10px",
+                          borderRadius: "5px",
+                        }}
+                      />
+                      <Button
+                        onClick={handleDeleteImage}
+                        style={{
+                          marginTop: "10px",
+                          backgroundColor: "#e6f2ed",
+                          borderRadius: "50%",
+                          fontSize: "16px",
+                          padding: "4px 12px",
+                        }}
+                      >
+                        <RiDeleteBin5Line className="model-image-upload-delete-icon"/>
+                      </Button>
+                    </div>
+                  )}
                 </Form.Item>
               </Col>
             </Row>
