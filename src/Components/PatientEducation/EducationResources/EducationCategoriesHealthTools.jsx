@@ -114,7 +114,7 @@ const EducationCategoriesHealthTools = () => {
           </div>
           <div className="mt-3">
             <Slider {...sliderSettings}>
-              {eventData.map((event, index) => renderEventCard(event, index))}
+              {Object.values(eventData).map((event, index) => renderEventCard(event, index))}
             </Slider>
           </div>
         </div>
