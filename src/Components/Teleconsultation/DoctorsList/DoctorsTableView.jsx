@@ -1,54 +1,65 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space, Avatar } from "antd";
-import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
-import { FaPlus } from "react-icons/fa6";
+import { Table, Avatar } from "antd";
+import { FiEdit, FiSearch } from "react-icons/fi";
 import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png";
-import { GoPlus } from "react-icons/go";
 import Loader from "../../../Loader";
 import axios from "axios";
 import image1 from "../../../Assets/Images/singleuser.png";
-
+import UploadProfileModal from "./UploadProfileModal";
+import { Instance } from "../../../AxiosConfig";
+import { useSelector,useDispatch } from 'react-redux';
+import { getProfiles } from "../../../Features/DoctorProfileSlice";
 const DoctorsTableView = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isViewNewsModalOpen, setIsViewNewsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [doctorDetails, setDoctorDetails] = useState([]);
+  const [doctorProfiles, setDoctorProfiles] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedNews, setSelectedNews] = useState({ content: [] });
   const [totalRows, setTotalRows] = useState(0);
   const [searchText, setSearchText] = useState("");
-
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [doctorIds, setDoctorIds] = useState({}); 
   const itemsPerPage = 10;
+  const doctorProfile= useSelector((state) => state.doctorProfiles.profiles);
+const dispatch=useDispatch()
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-  const showEditModal = (news) => {
-    setSelectedNews(news);
+  const showEditModal = (doctor) => {
+    const doctorWithProfile = {
+      ...doctor,
+      profileImage: doctorProfile[doctor.doctorId] || null,
+      _id: doctorIds[doctor.doctorId]
+    };
+    setSelectedDoctor(doctorWithProfile);
     setIsEditModalOpen(true);
   };
   const handleCancelEditModal = () => {
-    setSelectedNews(null);
     setIsEditModalOpen(false);
   };
 
-  const ShowNewsModal = (news) => {
-    setSelectedNews(news);
-    setIsViewNewsModalOpen(true);
-  };
-  const handleCancelNewsModal = () => {
-    setSelectedNews(null);
-    setIsViewNewsModalOpen(false);
+  const fetchDoctorListMyApi = async () => {
+    try {
+      const response = await Instance.get("/doctorProfile");
+      const profileMapping = {};
+      const idMapping = {};
+      
+      response.data.forEach(doctor => {
+        profileMapping[doctor.doctorId] = doctor.profileImage;
+        idMapping[doctor.doctorId] = doctor._id;
+      });
+
+      setDoctorProfiles(profileMapping);
+      dispatch(getProfiles({ profiles: profileMapping }));
+      setDoctorIds(idMapping);
+    } catch (error) {
+      console.error("Error fetching doctor profiles:", error);
+    }
   };
 
+
   const fetchDoctorList = async () => {
+    setIsLoading(true)
     try {
-      // Step 1: Fetch Bearer Token
+      // Your existing token fetching logic
       const tokenResponse = await axios.post(
         "https://apigwrfhppd.ril.com/oauth/1.0.0/oauth2/token",
         {
@@ -64,9 +75,7 @@ const DoctorsTableView = () => {
       );
 
       const gwToken = tokenResponse.data.access_token;
-      console.log("gw Token:", gwToken);
 
-      // Step 2: Use Bearer Token to Get gw-token
       const gwTokenResponse = await axios.post(
         "https://apigwrfhppd.ril.com/MAT/1.0.0/API/Employee/userValidate",
         { loginSource: "external" },
@@ -79,9 +88,7 @@ const DoctorsTableView = () => {
       );
 
       const token = gwTokenResponse.data.token;
-      console.log("GW Token:", token);
 
-      // Step 3: Pass Both Tokens to the Final API
       const finalResponse = await axios.get(
         "https://apigwrfhppd.ril.com/RFH_SPECIALIZATION_DEPT_MHC/1.0.0/API/Specialization/GetPatientPortalDisplayWeb/12/44",
         {
@@ -92,31 +99,36 @@ const DoctorsTableView = () => {
           },
         }
       );
+
       const gastroenterologyDetails = finalResponse.data.data.filter(
         (item) => item.specialityName === "GASTROENTEROLOGY"
       );
 
-      console.log("Gastroenterology Details:", gastroenterologyDetails);
-      const doctorDetails = gastroenterologyDetails.flatMap((specialty) =>
+      const doctors = gastroenterologyDetails.flatMap((specialty) =>
         specialty.doctors_in_speciality.map((doctor) => ({
           doctorId: doctor.doctorId,
           doctorName: doctor.doctorName,
           designation: doctor.designation,
-          profile: doctor.profileImage,
           email: doctor.amEmployeeEmailId,
           mobile: doctor.amEmployeeMobileNo,
         }))
       );
 
-      console.log("Doctor Details:", doctorDetails);
-      setDoctorDetails(doctorDetails);
+      setDoctorDetails(doctors);
+      setIsLoading(false)
     } catch (error) {
       console.error("Error in the workflow:", error);
+      setIsLoading(false)
+    }finally{
+      setIsLoading(false)
     }
   };
+
   useEffect(() => {
     fetchDoctorList();
+    fetchDoctorListMyApi();
   }, []);
+
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return doctorDetails;
     return doctorDetails.filter((doctorDetail) =>
@@ -142,10 +154,23 @@ const DoctorsTableView = () => {
       className: "campaign-performance-table-column",
       render: (_, record) => (
         <div className="d-flex align-items-center gap-2">
-          <Avatar size="large" src={record.profile || image1} />
+          <Avatar 
+            size="large" 
+            src={doctorProfile[record.doctorId] || image1} 
+          />
           <span>{record.doctorName}</span>
         </div>
       ),
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      className: "campaign-performance-table-column",
+    },
+    {
+      title: "Mobile Number",
+      dataIndex: "mobile",
+      className: "campaign-performance-table-column",
     },
     {
       title: "Designation",
@@ -168,28 +193,6 @@ const DoctorsTableView = () => {
       className: "campaign-performance-table-column",
     },
   ];
-
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
-
-  const handleMenuClick = ({ key }) => {};
-
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
 
   return (
     <div className="container mt-1">
@@ -244,12 +247,11 @@ const DoctorsTableView = () => {
           </div>
         </div>
       )}
-      {/* <CreateNews open={isModalOpen} handleCancel={handleCancel} />
-      <EditNews
+      <UploadProfileModal
         open={isEditModalOpen}
         handleCancel={handleCancelEditModal}
-        newsData={selectedNews}
-      /> */}
+        doctorData={selectedDoctor}
+      />
     </div>
   );
 };

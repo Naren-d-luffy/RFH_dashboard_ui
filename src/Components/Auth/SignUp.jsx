@@ -7,6 +7,8 @@ import { message, Spin } from "antd";
 // import {loginInstance} from "../AxiosConfig";
 import signup from "../../Assets/Images/SignUp.png";
 import { LoadingOutlined } from "@ant-design/icons";
+import { Instance } from "../../AxiosConfig";
+import { showSuccessMessage } from "../../globalConstant";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -16,51 +18,49 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  // const handleSignUp = async () => {
-  //     if (!name || !email || !phoneNumber || !password) {
-  //         message.error("Please fill in all required fields.");
-  //         return;
-  //     }
+  const handleSignUp = async () => {
+      if (!name || !email || !phoneNumber || !password) {
+          message.error("Please fill in all required fields.");
+          return;
+      }
 
-  //     if (!emailRegex.test(email)) {
-  //         message.error("Please enter a valid email address.");
-  //         return;
-  //     }
+      if (!emailRegex.test(email)) {
+          message.error("Please enter a valid email address.");
+          return;
+      }
 
-  //     if (password.length < 8) {
-  //         message.error("Password must be at least 8 characters long.");
-  //         return;
-  //     }
+      if (password.length < 8) {
+          message.error("Password must be at least 8 characters long.");
+          return;
+      }
 
-  //     try {
-  //         setLoading(true);
-  //         const response = await loginInstance.post("/auth/register", {
-  //             name,
-  //             email,
-  //             phoneNumber,
-  //             password
-  //         });
-  //         console.log(response.data);
-
-  //         message.success("Sign up successful. Please log in.");
-
-  //         navigate('/');
-  //     } catch (error) {
-  //         console.error("Sign up failed:", error);
-  //         if (error.response && error.response.data && error.response.data.message) {
-  //             message.error(error.response.data.message);
-  //         } else if (error.response && error.response.status === 409) {
-  //             message.error("This email is already in use. Please use a different email or try logging in.");
-  //         } else {
-  //             message.error("Sign up failed. Please try again.");
-  //         }
-  //     } finally {
-  //         setLoading(false);
-  //     }
-  // };
+      try {
+          setLoading(true);
+          const response = await Instance.post("/admin/signup", {
+              name,
+              email,
+              phoneNumber,
+              password
+          });
+          console.log(response);
+          showSuccessMessage("Account created Successfully")
+          // message.success("Sign up successful. Please log in.");
+          navigate('/');
+      } catch (error) {
+          console.error("Sign up failed:", error);
+          if (error.response && error.response.data && error.response.data.message) {
+              message.error(error.response.data.message);
+          } else if (error.response && error.response.status === 409) {
+              message.error("This email is already in use. Please use a different email or try logging in.");
+          } else {
+              message.error("Sign up failed. Please try again.");
+          }
+      } finally {
+          setLoading(false);
+      }
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -131,7 +131,7 @@ const SignUp = () => {
               </div>
               <p className="password-hint">Must be at least 8 characters.</p>
             </div>
-            <button className="signup-button" onClick={() => navigate("/")}>
+            <button className="signup-button" onClick={handleSignUp}>
               {loading ? (
                 <Spin
                   indicator={
@@ -145,9 +145,7 @@ const SignUp = () => {
                 " Create account"
               )}
             </button>
-            <p className="login-link">
-              Already have an account? <Link to="/">Login In</Link>
-            </p>
+            
             <p className="terms">
               By Continuing you agree to Reliance. Terms of Service and Privacy
               Policy

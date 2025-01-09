@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Button, Dropdown, Menu } from "antd";
-import { FiEye, FiSearch } from "react-icons/fi";
+import { Dropdown, Menu } from "antd";
+import { FiEye } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
-import { VscSettings } from "react-icons/vsc";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
@@ -10,7 +9,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Instance } from "../../../../AxiosConfig";
-import { showDeleteMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import {
   setOutstationClinic,
   deleteOutstationClinic,
@@ -69,6 +71,7 @@ const OutstationClinicList = () => {
         try {
           const response = await Instance.delete(`/discover/clinic/${_id}`);
           if (response.status === 200) {
+            showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteOutstationClinic(_id));
           }
         } catch (error) {
@@ -150,7 +153,7 @@ const OutstationClinicList = () => {
           </div>
           <p>{clinic.patients} Patients Treated</p>
           <div>
-            <span>{truncateText(clinic.about, 20)}</span>
+            <span>{truncateText(clinic.about, 8)}</span>
           </div>
           <div className="d-flex justify-content-between">
             <p>

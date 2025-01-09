@@ -50,6 +50,9 @@ import OutstationClinicTable from "./Components/Marketing/InAppCampaign/Outstati
 import FeaturesTable from "./Components/Marketing/InAppCampaign/FeaturedPrograms/ViewAllFeatureTable";
 import HelloDoctorTable from "./Components/Marketing/InAppCampaign/HelloDoctor/HelloDoctorTable";
 import DoctorsTableView from "./Components/Teleconsultation/DoctorsList/DoctorsTableView";
+import ViewAllCampTable from "./Components/Marketing/InAppCampaign/LatestCamps/ViewAllCampTable";
+import Register from "./Components/Auth/Register";
+import SignUpOtpScreen from "./Components/Auth/SignUpOtp";
 
 export const AppRouter = () => {
   return (
@@ -57,8 +60,10 @@ export const AppRouter = () => {
       <Routes>
         <Route path="/" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/otp-verification" element={<OtpScreen />} />
+        <Route path="/signup-otp" element={<SignUpOtpScreen />} />
         <Route path="/confirm-password" element={<ConfirmPassword />} />
 
         <Route element={<Layout />}>
@@ -217,6 +222,9 @@ export const AppRouter = () => {
 
           <Route path="/view-all-hello-doctor" element={<HelloDoctorTable />} />
           <Route path="/teleconsultation/doctors-list" element={<DoctorsTableView />} />
+
+          <Route path="/view-all-camp-table" element={<ViewAllCampTable />} />
+
 
         </Route>
       </Routes>

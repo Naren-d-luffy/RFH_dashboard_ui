@@ -13,9 +13,9 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
-  const [designation, setDesignation] = useState("");
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
+  const [specialistDesignation, setSpecialistDesignation] = useState("");
+  const [specialistName, setSpecialistName] = useState("");
+  const [specialistLocation, setSpecialistLocation] = useState("");
   const [videoList, setVideoList] = useState([]);
 
   useEffect(() => {
@@ -23,11 +23,22 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
       setTitle(departmentData.title || "");
       setSubtitle(departmentData.subtitle || "");
       setDescription(DOMPurify.sanitize(departmentData.description || ""));
-      setDesignation(departmentData?.specialist?.designation || "");
-      setName(departmentData?.specialist?.name || "");
-      setLocation(departmentData?.specialist?.location || "");
-      setPhoto(departmentData?.specialist?.photo_url || "");
-      setVideoList(departmentData?.success_stories || []);
+      setSpecialistDesignation(departmentData.specialistDesignation || "");
+      setSpecialistName(departmentData.specialistName || "");
+      setSpecialistLocation(departmentData.specialistLocation || "");
+      setPhoto(departmentData.photo_url || "");
+
+      const uniqueVideos = departmentData.success_stories
+        ? Array.from(
+            new Map(
+              departmentData.success_stories.map((video) => [
+                video.video_thumbnail_url,
+                video,
+              ])
+            ).values()
+          )
+        : [];
+      setVideoList(uniqueVideos);
     }
   }, [departmentData]);
 
@@ -47,9 +58,10 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
           />
         </div>
         <div className="video-details mt-2">
-          <h4>{video.title}</h4>
+          <h4>{video.title || "Untitled Video"}</h4>
           <span>
-            <FaEye style={{ marginRight: "5px" }} /> {`${video.views} Views`}
+            <FaEye style={{ marginRight: "5px" }} />{" "}
+            {`${video.views || 0} Views`}
           </span>
         </div>
       </div>
@@ -58,7 +70,7 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 2,
     slidesToScroll: 1,
@@ -116,10 +128,10 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
         <h2 className="specialist-heading-name">Specialist</h2>
         <div className="specialist-modal-content d-flex justify-content-between">
           <div>
-            <h4 className="specialist-subheading">{designation}</h4>
-            <h3 className="specialist-name">{name}</h3>
+            <h4 className="specialist-subheading">{specialistDesignation}</h4>
+            <h3 className="specialist-name">{specialistName}</h3>
             <h5 className="specialist-location">
-              <GrLocation /> {location}
+              <GrLocation /> {specialistLocation}
             </h5>
           </div>
           <div className="news-modal-image">
@@ -139,7 +151,9 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
             {videoList.length > 0 ? (
               videoList.map((video, index) => renderVideoCard(video, index))
             ) : (
-              <p>No success stories available</p>
+              <div style={{ padding: "20px", textAlign: "center" }}>
+                <p>No success stories available</p>
+              </div>
             )}
           </Slider>
         </div>

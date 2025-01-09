@@ -9,20 +9,22 @@ import login2 from "../../Assets/Images/login-5.png";
 import login3 from "../../Assets/Images/login-2.png";
 import login4 from "../../Assets/Images/login-4.png";
 import { InputOTP } from "antd-input-otp";
+import { useLocation } from "react-router-dom";
 import { Instance } from "../../AxiosConfig";
 import { showErrorMessage, showSuccessMessage } from "../../globalConstant";
-import { useLocation } from "react-router-dom";
 const CustomDot = ({ active }) => (
   <span className={`dot ${active ? "active" : ""}`}></span>
 );
 
-const OtpScreen = () => {
+const SignUpOtpScreen = () => {
   const [otpCode, setOtpCode] = useState(new Array(6).fill(""));
   const [loading, setLoading] = useState(false);
-  const [resendTimer, setResendTimer] = useState(30);
+  const [resendTimer, setResendTimer] = useState(60);
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email;
+  const [emailError, setEmailError] = useState("");
+  const [responseMessage, setResponseMessage] = useState("");
   const sliderItems = [
     {
       image: login1,
@@ -45,7 +47,9 @@ const OtpScreen = () => {
       text: "Stay updated with RFH Hospital by regularly checking their website and social media for the latest news and announcements. Subscribe to their newsletter for direct updates, and explore health news websites for additional information.",
     },
   ];
-
+  const handleOtpChange = (value) => {
+    setOtpCode(value);
+  };
   useEffect(() => {
     if (resendTimer > 0) {
       const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
@@ -53,14 +57,14 @@ const OtpScreen = () => {
     }
   }, [resendTimer]);
 
-  const handleOtpChange = (value) => {
-    setOtpCode(value);
-  };
-
-  const handleResend = async () => {
+//   const handleResend = () => {
+//     setResendTimer(30);
+//     console.log("Resending OTP...");
+//   };
+ const handleResend = async () => {
     setLoading(true);
     try {
-      const response = await Instance.post("/admin/sendForgotPasswordOtp", { email });
+      const response = await Instance.post("admin/sendotp", { email });
         if(response.status===200|| response.status===201){
             message.success("otp has been sent to your registered email")
         }
@@ -83,12 +87,11 @@ const OtpScreen = () => {
         email,
       });
       showSuccessMessage(response.data.message)
-      navigate("/confirm-password", { state: { email } });
+      navigate("/sign-up", { state: { email } });
     } catch (error) {
       if (error.response && error.response.data) {
-        console.log("error",error.response)
         showErrorMessage(
-          error.response || "An error occurred. Please try again."
+          error.response.data.error || "An error occurred. Please try again."
         );
       } else {
         showErrorMessage(
@@ -98,7 +101,6 @@ const OtpScreen = () => {
     }
     setLoading(false);
   };
-
   return (
     <div className="login-container">
       <div className="container-fluid">
@@ -114,13 +116,17 @@ const OtpScreen = () => {
                 Welcome to Institute of Gastro Sciences
               </p>
               <h1 className="signup-title">OTP Verification</h1>
-              <p>Enter Otp Code sent to abc@gmial.com</p>
+              <p>Enter Otp Code sent to {email}</p>
             </center>
-             
+
             <Form layout="vertical">
-              <Form.Item  name="otp">
-                <InputOTP className="otp-input-group" inputType="numeric"   value={otpCode}
-                  onChange={handleOtpChange} />
+              <Form.Item name="otp">
+                <InputOTP
+                  className="otp-input-group"
+                  inputType="numeric"
+                  value={otpCode}
+                  onChange={handleOtpChange}
+                />
               </Form.Item>
 
               <div className="resend-info">
@@ -180,4 +186,4 @@ const OtpScreen = () => {
   );
 };
 
-export default OtpScreen;
+export default SignUpOtpScreen;

@@ -15,7 +15,7 @@ import EditEventsList from "./EditEventsList";
 import ViewEventList from "./ViewEventList";
 import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { showDeleteMessage } from "../../../../globalConstant";
+import { showDeleteMessage, showSuccessMessage } from "../../../../globalConstant";
 
 export const UpcomingEventList = () => {
   const [modals, setModals] = useState({
@@ -71,6 +71,7 @@ export const UpcomingEventList = () => {
         try {
           const response = await Instance.delete(`/discover/card/${_id}`);
           if (response.status === 200 || response.status === 204) {
+            showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteEvent(_id));
           }
         } catch (error) {

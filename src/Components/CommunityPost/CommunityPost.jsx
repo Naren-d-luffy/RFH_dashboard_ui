@@ -4,7 +4,7 @@ import { FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { Instance } from "../../AxiosConfig";
 import { deletePost, setPost } from "../../Features/PostSlice";
-import { showDeleteMessage } from "../../globalConstant";
+import { showDeleteMessage, showSuccessMessage } from "../../globalConstant";
 import ViewPost from "./ViewPost";
 import Loader from "../../Loader";
 import { FaPlus } from "react-icons/fa6";
@@ -62,6 +62,7 @@ const CommunityPost = () => {
         try {
           const response = await Instance.delete(`/post/${_id}`);
           if (response.status === 200) {
+            showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deletePost(_id));
           }
         } catch (error) {

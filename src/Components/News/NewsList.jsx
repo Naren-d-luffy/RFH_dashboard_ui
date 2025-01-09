@@ -4,7 +4,7 @@ import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage } from "../../globalConstant";
+import { showDeleteMessage, showSuccessMessage } from "../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../AxiosConfig";
 import CreateNews from "./CreateNews";
@@ -60,6 +60,7 @@ const NewsList = () => {
         try {
           const response = await Instance.delete(`/cards/${_id}`);
           if (response.status === 200) {
+            showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteNews(_id));
           }
         } catch (error) {
