@@ -213,7 +213,7 @@ export const FeaturedProgramsList = () => {
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {FeaturesData.map((feature) => renderFeatureCard(feature))}
+              {Object.values(FeaturesData).map((feature) => renderFeatureCard(feature))}
             </Slider>
           </div>
           <AddFeaturesModal open={isModalOpen} handleCancel={handleCancel} />

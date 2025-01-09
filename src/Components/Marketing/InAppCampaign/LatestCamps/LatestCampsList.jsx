@@ -144,7 +144,8 @@ export const LatestCampsList = () => {
   };
 
   const renderLatestCamps = (camp) => {
-    const [lat, lng] = camp.location.split(",");
+    const location = camp.location ? camp.location.split(",") : [];
+    const [lat, lng] = location;
     return (
       <div className="col-lg-4" key={camp._id}>
         <div className="recommended-latest-camp">
@@ -253,7 +254,7 @@ export const LatestCampsList = () => {
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {camps.map((camp) => renderLatestCamps(camp))}
+              {Object.values(camps).map((camp) => renderLatestCamps(camp))}
             </Slider>
           </div>
           <AddLatestCamps
