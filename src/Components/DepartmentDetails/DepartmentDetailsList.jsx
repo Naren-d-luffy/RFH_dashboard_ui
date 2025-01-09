@@ -4,7 +4,7 @@ import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage } from "../../globalConstant";
+import { showDeleteMessage, showSuccessMessage } from "../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../AxiosConfig";
 import {
@@ -28,8 +28,10 @@ const DepartmentDetailsList = () => {
   const [selectedDepartment, setSelectedDepartment] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const departments = useSelector((state) => state.department.departments);
+  console.log("khkkj", departments);
+
   const [searchText, setSearchText] = useState("");
-  const [isLoading,setIsLoading]=useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
   const itemsPerPage = 5;
@@ -65,6 +67,7 @@ const DepartmentDetailsList = () => {
         try {
           const response = await Instance.delete(`/department/${_id}`);
           if (response.status === 200) {
+            showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteDepartment(_id));
             setDepartmentList((prev) =>
               prev.filter((dept) => dept._id !== _id)
@@ -78,20 +81,18 @@ const DepartmentDetailsList = () => {
   };
 
   const fetchDepartmentList = async (page) => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
-      const response = await Instance.get(`/department`, {
-        params: { page, limit: itemsPerPage },
-      });
+      const response = await Instance.get(`/department`, {});
       setDepartmentList(response.data.departments || []);
       console.log(response.data);
       setTotalRows(response.data.totalDepartments);
       dispatch(setDepartment(response.data));
     } catch (error) {
       console.error("Error fetching department list:", error);
-    } finally{
-      setIsLoading(false)
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -123,9 +124,8 @@ const DepartmentDetailsList = () => {
     },
     {
       title: "Specialist Name",
-      key: "specialist",
-      render: (_, record) =>
-        record.specialist ? record.specialist.name : "N/A",
+      dataIndex: "specialistName",
+      key: "specialistName",
       className: "campaign-performance-table-column",
     },
     {
@@ -181,9 +181,9 @@ const DepartmentDetailsList = () => {
 
   return (
     <div className="container mt-1">
-          {isLoading ? (
-            <Loader />
-          ) : departmentList.length > 0 ? (
+      {isLoading ? (
+        <Loader />
+      ) : departmentList.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">

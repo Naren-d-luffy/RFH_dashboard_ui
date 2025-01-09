@@ -7,7 +7,10 @@ import AddAskedQuestions from "./AddAskedQuestions";
 import { deleteFaqs, setFaqs } from "../../../../Features/FaqsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Instance } from "../../../../AxiosConfig";
-import { showDeleteMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import EditAskedQuestions from "./EditAskedQuestions";
 
 const EducationCategoriesQuestions = () => {
@@ -47,6 +50,7 @@ const EducationCategoriesQuestions = () => {
         try {
           const response = await Instance.delete(`/faq/${_id}`);
           if (response.status === 200) {
+            showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteFaqs(_id));
             setFaqsList((prev) => prev.filter((faq) => faq._id !== _id));
           }
@@ -107,7 +111,7 @@ const EducationCategoriesQuestions = () => {
               <div className="d-flex gap-2 align-items-center">
                 <div
                   className="education-categories-faq-toggle"
-                  onClick={() => toggleAnswer(faq._id)} 
+                  onClick={() => toggleAnswer(faq._id)}
                   role="button"
                   aria-label={`Toggle answer for question ${faq._id}`}
                 >

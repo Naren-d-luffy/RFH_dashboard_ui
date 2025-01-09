@@ -1011,3 +1011,6 @@
   font-size: 12px;
   color: var(--secondary-text-color);
 }
+.disabled-input.ant-input-outlined.ant-input-disabled,.ant-input-outlined[disabled] {
+  background-color:var(--white-color);
+}

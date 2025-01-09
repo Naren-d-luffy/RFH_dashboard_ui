@@ -26,15 +26,17 @@ const ViewEventList = ({ open, handleCancel, eventsData }) => {
         <div className="view-treatment-info-modal-container">
           <div className="view-treatment-info-modal-header d-flex justify-content-between align-items-center">
             <h4>{eventsData?.title || "N/A"}</h4>
-            <img src={eventsData?.headerImage} alt="Event Image" />
+            <img src={eventsData?.image} alt="Event Image" />
           </div>
 
           <div className="view-treatment-info-modal-content">
             <h5>{eventsData?.description || "N/A"}</h5>
             <ul>
-              {eventsData?.tags?.map((tag, index) => (
-                <li key={index}>{tag}</li>
-              ))}
+              {eventsData?.tags
+                ?.flatMap((tag) => tag.split(",")) 
+                .map((individualTag, index) => (
+                  <li key={index}>{individualTag.trim()}</li> 
+                ))}
             </ul>
           </div>
         </div>

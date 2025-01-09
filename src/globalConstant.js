@@ -33,12 +33,20 @@ export const showSuccessMessage = (message, extraContent = "") => {
 
 export const showErrorMessage = (message) => {
 	Swal.fire({
-		icon: "error",
-		title: "Error",
-		text: message,
+		imageUrl: deleteIcon,
+		imageWidth: 100,
+		imageHeight: 100,
+		padding: "10px",
+		html: `
+			<p style='color: var(--black-color); font-size: 20px; font-weight: 600; margin-bottom: 0; text-align: center; margin-top: -25px;'>
+				${message}
+			</p>
+			
+		`,
+	
 		confirmButtonText: "Ok",
-		iconColor: "var(--danger-color)",
-		confirmButtonColor: "var(--gradient-start-color)",
+		iconColor: "var(--red-color)",
+		confirmButtonColor: "var(--primary-green)",
 	});
 };
 export const showDeleteMessage = ({
@@ -86,7 +94,7 @@ export const showDeleteMessage = ({
 							if (onDelete && typeof onDelete === "function") {
 								onDelete();
 							}
-							showSuccessMessage("Deleted successfully", "Details deleted");
+							
 							Modal.destroyAll();
 						}}
 					>

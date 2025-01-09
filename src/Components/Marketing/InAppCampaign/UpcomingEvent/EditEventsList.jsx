@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, message, Select } from "antd";
-import "react-quill/dist/quill.snow.css";
+import { Button, Modal, Form, Input, message, Select, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { showSuccessMessage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
-import Loader from "../../../../Loader";
 import { editEvent } from "../../../../Features/DiscoverEventsCard";
 import { FaTrash } from "react-icons/fa6";
+import { IoCloudUploadOutline } from "react-icons/io5";
+import { RiDeleteBin5Line } from "react-icons/ri";
+import Loader from "../../../../Loader";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -18,11 +19,10 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   const [description, setDescription] = useState("");
   const [isActive, setIsActive] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
   const [features, setFeatures] = useState([]);
+  const [uploadedImage, setUploadedImage] = useState(null);
 
   const dispatch = useDispatch();
-
   const handleAddFeatures = () => {
     setFeatures([...features, ""]);
   };
@@ -38,58 +38,80 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
     setFeatures(newFeatures);
   };
 
+
+  const handleUpload = (info) => {
+    const file = info.file.originFileObj;
+    const isImage = file.type.startsWith("image/");
+    if (!isImage) {
+      message.error("You can only upload image files!");
+      return;
+    }
+    setUploadedImage(file);
+  };
+
+
+  const handleDeleteImage = () => {
+    setUploadedImage(null);
+  };
+
+ 
   useEffect(() => {
     if (open && eventsData) {
-      setTitle(eventsData.title || "");
-      setDescription(eventsData.description || "");
-      setLink(eventsData.link || "");
-      setOrder(eventsData.order || "");
-      setIsActive(eventsData.isActive || null);
-      setImageUrl(eventsData.imageUrl || "");
-      setFeatures(eventsData.tags || []);
+      setTitle(eventsData?.title || "");
+      setDescription(eventsData?.description || "");
+      setLink(eventsData?.link || "");
+      setOrder(eventsData?.order || "");
+      setIsActive(eventsData?.isActive ?? null);
+      const parsedTags = eventsData?.tags[0]?.split(",") || [];
+      setFeatures(parsedTags);
+      setUploadedImage(eventsData?.image || null); 
+    } else {
+      
+      setTitle("");
+      setDescription("");
+      setLink("");
+      setOrder("");
+      setIsActive(null);
+      setFeatures([]);
+      setUploadedImage(null);
     }
   }, [open, eventsData]);
 
   const handleUpdate = async () => {
-    if (
-      !title.trim() ||
-      !description.trim() ||
-      !link.trim() ||
-      !order ||
-      isNaN(order) ||
-      !imageUrl.trim() ||
-      features.length === 0
-    ) {
+    if (!title.trim() || !description.trim() || !link.trim() || !order || isNaN(order) || !uploadedImage || features.length === 0) {
       message.error("Please fill in all required fields.");
       return;
     }
 
-    const payload = {
-      title: title.trim(),
-      description: description.trim(),
-      imageUrl: imageUrl.trim(),
-      link: link.trim(),
-      isActive,
-      order: parseInt(order, 10),
-      tags: features,
-    };
-
+    const formData = new FormData();
+    formData.append("title", title.trim());
+    formData.append("description", description.trim());
+    formData.append("link", link.trim());
+    formData.append("order", parseInt(order, 10));
+    formData.append("isActive", isActive);
+    formData.append("tags", features.join(","));
+    formData.append("image", uploadedImage);
     setIsLoading(true);
 
     try {
-      const response = await Instance.put(`/discover/card/${eventsData._id}`, payload);
+      const response = await Instance.put(`/discover/card/${eventsData?._id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response?.status === 200 || response?.status === 201) {
-        handleCancel();
+        handleCancel(); 
         dispatch(editEvent(response.data));
         showSuccessMessage("Event updated successfully!");
+   
         setTitle("");
         setDescription("");
         setLink("");
         setOrder("");
-        setImageUrl("");
         setIsActive(true);
         setFeatures([]);
+        setUploadedImage(null);
       }
     } catch (error) {
       console.error("Error updating event card:", error);
@@ -108,68 +130,73 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
         onCancel={handleCancel}
         width={680}
         footer={[
-          <Button
-            key="back"
-            onClick={handleCancel}
-            className="create-campaign-cancel-button"
-          >
+          <Button key="back" onClick={handleCancel} className="create-campaign-cancel-button">
             Cancel
           </Button>,
-          <Button
-            key="save"
-            onClick={handleUpdate}
-            className="create-campaign-save-button"
-            loading={isLoading}
-          >
+          <Button key="save" onClick={handleUpdate} className="create-campaign-save-button" loading={isLoading}>
             Update
           </Button>,
         ]}
       >
         <Form layout="vertical" className="mt-4">
           <Form.Item>
-            <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter Event Title"
-              required
-            />
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter Event Title" required />
             <span className="create-campaign-input-span">Title</span>
           </Form.Item>
           <Form.Item>
-            <Input
-              value={link}
-              onChange={(e) => setLink(e.target.value)}
-              placeholder="Enter Event Link"
-              required
-            />
+            <Input value={link} onChange={(e) => setLink(e.target.value)} placeholder="Enter Event Link" required />
             <span className="create-campaign-input-span">Link</span>
           </Form.Item>
           <Form.Item>
-            <Input
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="Enter Image URL"
-              required
-            />
-            <span className="create-campaign-input-span">Image URL</span>
+            <Upload
+              listType="picture"
+              showUploadList={false}
+              onChange={handleUpload}
+              className="create-campaign-upload"
+            >
+              <p className="create-campaign-ant-upload-text">Drop files here or click to upload</p>
+              <span className="create-campaign-ant-upload-drag-icon">
+                <IoCloudUploadOutline /> <span style={{ color: "#727880" }}>Upload Image</span>
+              </span>
+            </Upload>
+            {uploadedImage && (
+              <div className="uploaded-image-preview d-flex gap-2">
+                <img
+                  src={
+                    typeof uploadedImage === "string"
+                      ? uploadedImage 
+                      : URL.createObjectURL(uploadedImage) 
+                  }
+                  alt="Uploaded"
+                  style={{
+                    width: "200px",
+                    height: "auto",
+                    marginTop: "10px",
+                    borderRadius: "5px",
+                  }}
+                />
+                <Button
+                  onClick={handleDeleteImage}
+                  style={{
+                    marginTop: "10px",
+                    backgroundColor: "#e6f2ed",
+                    borderRadius: "50%",
+                    fontSize: "16px",
+                    padding: "4px 12px",
+                  }}
+                >
+                  <RiDeleteBin5Line className="model-image-upload-delete-icon" />
+                </Button>
+              </div>
+            )}
+            <span className="create-campaign-input-span">Image</span>
           </Form.Item>
           <Form.Item>
-            <Input
-              type="number"
-              value={order}
-              onChange={(e) => setOrder(e.target.value)}
-              placeholder="Enter Display Order"
-              required
-            />
+            <Input type="number" value={order} onChange={(e) => setOrder(e.target.value)} placeholder="Enter Display Order" required />
             <span className="create-campaign-input-span">Order</span>
           </Form.Item>
           <Form.Item>
-            <Select
-              value={isActive}
-              onChange={(value) => setIsActive(value)}
-              placeholder="Select Event Status"
-              required
-            >
+            <Select value={isActive} onChange={(value) => setIsActive(value)} placeholder="Select Event Status" required>
               <Option value={true}>Active</Option>
               <Option value={false}>Inactive</Option>
             </Select>
@@ -206,10 +233,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
                       style={{ marginBottom: "0px" }}
                     />
                   </Form.Item>
-                  <FaTrash
-                    className="trash-icon-health-package"
-                    onClick={() => handleRemoveFeatures(index)}
-                  />
+                  <FaTrash className="trash-icon-health-package" onClick={() => handleRemoveFeatures(index)} />
                 </div>
               ))}
             </div>
@@ -221,3 +245,9 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
 };
 
 export default EditEventsList;
+
+
+
+
+
+
