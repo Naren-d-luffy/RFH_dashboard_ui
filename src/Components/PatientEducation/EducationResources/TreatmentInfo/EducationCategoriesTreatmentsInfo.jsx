@@ -108,6 +108,7 @@ const EducationCategoriesTreatmentsInfo = () => {
       const response = await Instance.get(`/education`, {
         params: { page, limit: itemsPerPage },
       });
+      console.log(response.data,"treatment")
       dispatch(setTreatment(response.data.educations));
       setTreatmentList(response.data.educations || []);
       setIsLoading(false);
