@@ -216,7 +216,7 @@ export const UpcomingEventList = () => {
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {eventsData.map((event) => renderEventCard(event))}
+              {Object.values(eventsData).map((event) => renderEventCard(event))}
             </Slider>
           </div>
           <AddEventsList
