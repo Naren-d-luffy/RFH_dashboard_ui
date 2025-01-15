@@ -17,8 +17,8 @@
 }
 
 .login--p {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 600;
   letter-spacing: -0.1px;
   line-height: normal;
   color: #000;
@@ -32,13 +32,20 @@ label {
   display: block;
   margin-bottom: 5px;
   color: #333;
+  font-size: 14px;
 }
 
 input {
   width: 100%;
-  padding: 5px;
-  border: 1px solid #ccc;
+  padding: 8px;
+  border: 1px solid #ccc !important;
   border-radius: 8px;
+  font-size: 14px;
+}
+
+input:focus {
+  outline: none;
+  border: none;
 }
 
 .password-input {
@@ -62,8 +69,9 @@ input {
   color: #424242;
   text-decoration: none;
   font-weight: 500;
+  font-size: 14px;
 }
-.forgot-password:hover{
+.forgot-password:hover {
   color: var(--primary-green);
 }
 .login-button {
@@ -74,13 +82,15 @@ input {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .terms {
   font-size: 14px;
   color: #373737;
   /* margin-top: 12px; */
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .login-image {
@@ -196,7 +206,6 @@ input {
   letter-spacing: 0.1px;
   margin-top: 4px;
   margin-bottom: 0;
-
 }
 
 .login-link {
@@ -275,10 +284,10 @@ input {
 .ant-carousel .slick-list .slick-slide.slick-active {
   padding: 0;
 }
-.otp-input-group.input-otp__field{
+.otp-input-group.input-otp__field {
   height: 50px;
 }
-.otp-input-group.ant-input-outlined:hover{
+.otp-input-group.ant-input-outlined:hover {
   background-color: transparent;
 }
 .otp-input-group.ant-input-outlined:focus-within {

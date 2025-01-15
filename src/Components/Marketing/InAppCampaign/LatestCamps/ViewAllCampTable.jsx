@@ -12,37 +12,32 @@ import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
-import DOMPurify from "dompurify";
-import AddFeaturesModal from "./AddFeaturedProgram";
-import EditFeaturesModal from "./EditFetauredProgram";
-import ViewFeaturedModal from "./ViewFeaturedProgram";
 import { deleteFeature, setFeature } from "../../../../Features/FeatureSlice";
 import { useNavigate } from "react-router-dom";
-const FeaturesTable = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+import ViewLatestCamp from "./ViewLatestCamp";
+import EditCamps from "./EditCamp";
+import AddLatestCamps from "./AddLatestCamp";
+
+const ViewAllCampTable = () => {
+  const [modals, setModals] = useState({
+    addCamp: false,
+    editCamp: false,
+    viewCamp: false,
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedCamp, setSelectedCamp] = useState(null);
   const [totalRows, setTotalRows] = useState(0);
-  const FeaturesData = useSelector((state) => state.features.features);
   const [searchText, setSearchText] = useState("");
+  const FeaturesData = useSelector((state) => state.features.features);
   const dispatch = useDispatch();
   const itemsPerPage = 10;
   const navigate = useNavigate();
-  const showModal = () => setIsModalOpen(true);
-  const handleCancel = () => setIsModalOpen(false);
-  const showEditModal = (event) => {
-    setSelectedEvent(event);
-    setIsEditModalOpen(true);
+
+  const toggleModal = (modalType, camp = null) => {
+    setSelectedCamp(camp);
+    setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
   };
-  const handleEditCancel = () => setIsEditModalOpen(false);
-  const showViewModal = (event) => {
-    setSelectedEvent(event);
-    setIsViewModalOpen(true);
-  };
-  const handleViewCancel = () => setIsViewModalOpen(false);
 
   const truncateText = (text, wordLimit = 15) => {
     if (!text) return "";
@@ -52,10 +47,19 @@ const FeaturesTable = () => {
       : text;
   };
 
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "N/A";
+    const dateObj = new Date(dateStr);
+    const day = dateObj.getDate().toString().padStart(2, "0");
+    const month = (dateObj.getMonth() + 1).toString().padStart(2, "0");
+    const year = dateObj.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
   const fetchFeatureInfo = async (page) => {
     setIsLoading(true);
     try {
-      const response = await Instance.get(`/discover/featuredProgram`, {
+      const response = await Instance.get(`/camp`, {
         params: { page, limit: itemsPerPage },
       });
       setTotalRows(response.data?.length || 0);
@@ -76,9 +80,7 @@ const FeaturesTable = () => {
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(
-            `/discover/featuredProgram/${_id}`
-          );
+          const response = await Instance.delete(`/camp/${_id}`);
           if (response.status === 200) {
             showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteFeature(_id));
@@ -93,8 +95,8 @@ const FeaturesTable = () => {
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return FeaturesData;
-    return FeaturesData.filter((feature) =>
-      `${feature.title}{}${feature.description}`
+    return FeaturesData.filter((camp) =>
+      `${camp.title} ${camp.description}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
@@ -102,15 +104,36 @@ const FeaturesTable = () => {
 
   const columns = [
     {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
+      title: "Camp Name",
+      dataIndex: "campName",
+      key: "campName",
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
+      title: "Hospital Name",
+      dataIndex: "hospitalName",
+      key: "hospitalName",
+    },
+    {
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
       render: (text) => truncateText(text),
+    },
+    {
+      title: "Pincode",
+      dataIndex: "pinCode",
+      key: "pinCode",
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      render: (text) => formatDate(text),
+    },
+    {
+      title: "Time",
+      dataIndex: "time",
+      key: "time",
     },
     {
       title: "Action",
@@ -119,17 +142,16 @@ const FeaturesTable = () => {
         <div className="campaign-performance-table-action-icons">
           <div
             className="campaign-performance-table-eye-icon"
-            onClick={() => showViewModal(record)}
+            onClick={() => toggleModal("viewCamp", record)}
           >
             <FiEye />
           </div>
           <div
             className="campaign-performance-table-edit-icon"
-            onClick={() => showEditModal(record)}
+            onClick={() => toggleModal("editCamp", record)}
           >
             <FiEdit />
           </div>
-
           <div
             className="campaign-performance-table-delete-icon"
             onClick={() => handleDeleteFeature(record._id)}
@@ -138,29 +160,9 @@ const FeaturesTable = () => {
           </div>
         </div>
       ),
-      className: "campaign-performance-table-column",
-    },
-  ];
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
     },
   ];
 
-  const handleMenuClick = ({ key }) => {};
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
   return (
     <div className="container mt-1">
       {isLoading ? (
@@ -168,17 +170,14 @@ const FeaturesTable = () => {
       ) : FeaturesData.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
-            <h3>Feature Programs</h3>
-
-            <div className="d-flex align-items-center gap-3">
-              <button
-                className="d-flex gap-2 align-items-center rfh-basic-button"
-                onClick={showModal}
-              >
-                <GoPlus />
-                Add Feature
-              </button>
-            </div>
+            <h3>Latest Camps</h3>
+            <button
+              className="d-flex gap-2 align-items-center rfh-basic-button"
+              onClick={() => toggleModal("addCamp")}
+            >
+              <GoPlus />
+              Add Camp
+            </button>
           </div>
           <div className="campaign-performance-table-head mt-4">
             <div className="d-flex flex-column flex-md-row gap-3 align-items-center justify-content-end">
@@ -193,7 +192,7 @@ const FeaturesTable = () => {
                 />
               </div>
               <div className="d-flex gap-2">
-                <Dropdown menu={menuProps}>
+                <Dropdown>
                   <Button>
                     <Space>
                       Sort By
@@ -216,15 +215,13 @@ const FeaturesTable = () => {
                 }}
               />
             </div>
-            <div className="d-flex justify-content-start mt-2">
-              <button
-                className="d-flex gap-2 align-items-center rfh-basic-button"
-                onClick={() => navigate("/marketing/in-app-campaign")}
-              >
-                <FaAngleLeft />
-                Back
-              </button>
-            </div>
+            <button
+              className="d-flex gap-2 align-items-center rfh-basic-button mt-2"
+              onClick={() => navigate("/marketing/in-app-campaign")}
+            >
+              <FaAngleLeft />
+              Back
+            </button>
           </div>
         </>
       ) : (
@@ -233,33 +230,37 @@ const FeaturesTable = () => {
             <img src={Empty_survey_image} alt="" />
           </div>
           <div className="no-data-container-text d-flex flex-column justify-content-center">
-            <h4>No Events Found</h4>
+            <h4>No Camps Found</h4>
             <p>
-              Currently, there are no Events available to display.
+              Currently, there are no Camps available to display.
               <br /> Please check back later or contact support for further
               assistance if this is an error.
             </p>
-            <div className="d-flex justify-content-center">
-              <button className="rfh-basic-button" onClick={showModal}>
-                <FaPlus /> Create Event
-              </button>
-            </div>
+            <button
+              className="rfh-basic-button"
+              onClick={() => toggleModal("addCamp")}
+            >
+              <FaPlus /> Create Camp
+            </button>
           </div>
         </div>
       )}
-      <AddFeaturesModal open={isModalOpen} handleCancel={handleCancel} />
-      <EditFeaturesModal
-        open={isEditModalOpen}
-        handleCancel={handleEditCancel}
-        featuresData={selectedEvent}
+      <AddLatestCamps
+        open={modals.addCamp}
+        handleCancel={() => toggleModal("addCamp")}
       />
-      <ViewFeaturedModal
-        open={isViewModalOpen}
-        handleCancel={handleViewCancel}
-        featuresData={selectedEvent}
+      <EditCamps
+        open={modals.editCamp}
+        handleCancel={() => toggleModal("editCamp")}
+        campDataa={selectedCamp}
+      />
+      <ViewLatestCamp
+        open={modals.viewCamp}
+        handleCancel={() => toggleModal("viewCamp")}
+        campDataa={selectedCamp}
       />
     </div>
   );
 };
 
-export default FeaturesTable;
+export default ViewAllCampTable;
