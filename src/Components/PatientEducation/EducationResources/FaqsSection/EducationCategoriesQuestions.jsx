@@ -104,7 +104,7 @@ const EducationCategoriesQuestions = () => {
           </button>
         </div>
 
-        {faqData.map((faq) => (
+          {Object.values(faqData).map((faq, index) => (
           <div key={faq.id} className="education-categories-faq-item">
             <div className="education-categories-faq-question d-flex justify-content-between mt-4 align-items-center">
               <span>{faq.question}</span>
