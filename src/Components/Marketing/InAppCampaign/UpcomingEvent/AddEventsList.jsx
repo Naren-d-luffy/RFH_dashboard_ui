@@ -75,7 +75,7 @@ const AddEventsList = ({ open, handleCancel }) => {
     formData.append("tags", features);
     formData.append("image", uploadedImage);
     setIsLoading(true);
-    
+
     try {
       const response = await Instance.post("/discover/card", formData, {
         headers: {
@@ -84,9 +84,11 @@ const AddEventsList = ({ open, handleCancel }) => {
       });
 
       if (response?.status === 200 || response?.status === 201) {
-        console.log("add", response.data);
+        console.log("add", response);
         handleCancel();
-        dispatch(addEvent(response.data));
+        console.log("Dispatching addEvent with payload:", response.data._doc);
+        dispatch(addEvent(response.data._doc));
+
         showSuccessMessage("Event card added successfully!");
         setTitle("");
         setDescription("");
@@ -98,7 +100,7 @@ const AddEventsList = ({ open, handleCancel }) => {
       }
     } catch (error) {
       console.error("Error adding event card:", error);
-      message.error("Failed to add event card.");
+      // message.error("Failed to add event card.");
     } finally {
       setIsLoading(false);
     }
@@ -262,3 +264,26 @@ const AddEventsList = ({ open, handleCancel }) => {
 };
 
 export default AddEventsList;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
