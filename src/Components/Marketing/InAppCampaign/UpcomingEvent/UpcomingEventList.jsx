@@ -29,6 +29,7 @@ export const UpcomingEventList = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const eventsData = useSelector((state) => state.discoverevent.events);
+  console.log(eventsData,"aaaaa");
 
   const itemsPerPage = 100;
   const dispatch = useDispatch();
@@ -216,7 +217,7 @@ export const UpcomingEventList = () => {
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {eventsData.map((event) => renderEventCard(event))}
+              {Object.values(eventsData).map((event) => renderEventCard(event))}
             </Slider>
           </div>
           <AddEventsList

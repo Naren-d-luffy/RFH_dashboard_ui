@@ -24,3 +24,15 @@ const discovereventSlice = createSlice({
 
 export const { setEvent, addEvent, editEvent, deleteEvent } = discovereventSlice.actions;
 export default discovereventSlice.reducer;
+
+
+
+
+
+
+
+
+
+
+
+

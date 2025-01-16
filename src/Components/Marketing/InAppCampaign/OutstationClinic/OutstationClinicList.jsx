@@ -237,7 +237,7 @@ const OutstationClinicList = () => {
           </div>
           <div className="mt-3">
             <Slider {...sliderSettings}>
-              {clinics.map((clinic) => renderClinicCard(clinic))}
+              {Object.values(clinics).map((clinic) => renderClinicCard(clinic))}
             </Slider>
           </div>
         </div>
