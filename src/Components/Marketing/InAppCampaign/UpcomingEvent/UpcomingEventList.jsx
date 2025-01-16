@@ -29,6 +29,7 @@ export const UpcomingEventList = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const eventsData = useSelector((state) => state.discoverevent.events);
+  console.log(eventsData,"aaaaa");
 
   const itemsPerPage = 100;
   const dispatch = useDispatch();

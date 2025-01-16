@@ -237,7 +237,8 @@ const EducationCategoriesGastroIllness = () => {
           </div>
           <div className="mt-3">
             <Slider {...sliderSettings}>
-              {gastroEvents.map((event) => renderEventCard(event))}
+              {/* {gastroEvents.map((event) => renderEventCard(event))} */}
+              {Object.values(gastroEvents).map((event, index) => renderEventCard(event, index))}
             </Slider>
           </div>
         </div>

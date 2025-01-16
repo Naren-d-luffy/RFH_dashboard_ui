@@ -8,7 +8,7 @@ const loginInstance = axios.create({
 
 // Instance for Other Requests
 const Instance = axios.create({
-  baseURL: "https://relience-test-backend.onrender.com/api/v1/",
+  baseURL: "http://20.197.35.214:9000/api/v1/",
 });
 
 // Instance for LocalHost
