@@ -3,20 +3,20 @@ import { Table, Dropdown, Button, Space } from "antd";
 import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
-import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage } from "../../../../globalConstant";
+import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png";
+import { showDeleteMessage } from "../../../globalConstant";
 import { GoPlus } from "react-icons/go";
-import { Instance } from "../../../../AxiosConfig";
+import { Instance } from "../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../../../../Loader";
+import Loader from "../../../Loader";
 import DOMPurify from "dompurify";
 import { useNavigate } from "react-router-dom";
-import {
-  deleteHelloDoctorVideos,
-  setHelloDoctorVideos,
-} from "../../../../Features/HelloDoctorSlice";
-import AddVideo from "./AddVideo";
-import EditVideo from "./EditVideo";
+// import {
+//   deleteHelloDoctorVideos,
+//   setHelloDoctorVideos,
+// } from "../../../../Features/HelloDoctorSlice";
+import AddFacility from "./AddFacility";
+import EditFacility from "./EditFacility";
 
 const FacilityTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,8 +25,7 @@ const FacilityTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
   const [selectedVideo, setSelectedVideo] = useState(null);
-
-  const EventData = useSelector((state) => state.videos.videos);
+    const facilities = useSelector((state) => state.facility.facilities);
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
@@ -66,7 +65,7 @@ const FacilityTable = () => {
         try {
           const response = await Instance.delete(`/videos/${_id}`);
           if (response.status === 200 || response.status === 204) {
-            dispatch(deleteHelloDoctorVideos(_id));
+            // dispatch(deleteHelloDoctorVideos(_id));
           }
         } catch (error) {
           console.error("Error deleting video:", error);
@@ -81,7 +80,7 @@ const FacilityTable = () => {
       const response = await Instance.get(`/videos`, {
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setHelloDoctorVideos(response.data));
+      // dispatch(setHelloDoctorVideos(response.data));
       setTotalRows(response.data.total || 0);
     } catch (error) {
       console.error("Error fetching videos:", error);
@@ -95,29 +94,29 @@ const FacilityTable = () => {
   }, [currentPage]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return Object.values(EventData);
-    return Object.values(EventData).filter((video) =>
+    if (searchText.trim() === "") return (facilities);
+    return (facilities).filter((video) =>
       `${video.title} ${video.description}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
-  }, [searchText, EventData]);
+  }, [searchText, facilities]);
 
   const columns = [
     {
       title: "Title",
-      dataIndex: "title",
+      dataIndex: "heading",
       className: "campaign-performance-table-column",
       render: (text) => truncateText(text),
     },
     {
       title: "URL",
-      dataIndex: "url",
+      dataIndex: "video",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Likes",
-      dataIndex: "likes",
+      title: "Content",
+      dataIndex: "content",
       className: "campaign-performance-table-column",
     },
     {
@@ -174,11 +173,11 @@ const FacilityTable = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : Object.values(EventData).length > 0 ? (
+      ) : (facilities).length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>Hello Doctor Info</h3>
+              <h3>Department Facility</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -186,7 +185,7 @@ const FacilityTable = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add Video
+                Add Facility
               </button>
             </div>
           </div>
@@ -260,8 +259,8 @@ const FacilityTable = () => {
           </div>
         </div>
       )}
-      <AddVideo open={isModalOpen} handleCancel={handleCancel} />
-      <EditVideo
+      <AddFacility open={isModalOpen} handleCancel={handleCancel} />
+      <EditFacility
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
         videoData={selectedVideo}
