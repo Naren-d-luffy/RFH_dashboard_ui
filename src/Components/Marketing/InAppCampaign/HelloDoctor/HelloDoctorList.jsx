@@ -167,7 +167,7 @@ export const HelloDoctorList = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -189,7 +189,7 @@ export const HelloDoctorList = () => {
     try {
       const response = await Instance.get("/videos");
       setVideoList(response.data);
-      dispatch(setHelloDoctorVideos(response.data));
+      dispatch(setHelloDoctorVideos(response.data.data));
     } catch (error) {
       console.error("Error fetching videos:", error);
     }

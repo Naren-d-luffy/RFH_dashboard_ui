@@ -1,32 +1,31 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Table, Dropdown, Button, Space } from "antd";
-import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
-import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage } from "../../../../globalConstant";
+import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png";
+import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
 import { GoPlus } from "react-icons/go";
-import { Instance } from "../../../../AxiosConfig";
+import { Instance } from "../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../../../../Loader";
-import DOMPurify from "dompurify";
+import Loader from "../../../Loader";
 import { useNavigate } from "react-router-dom";
-import {
-  deleteHelloDoctorVideos,
-  setHelloDoctorVideos,
-} from "../../../../Features/HelloDoctorSlice";
-import AddVideo from "./AddVideo";
-import EditVideo from "./EditVideo";
+import AddConditionWeTreat from "./AddConditionWeTreat";
+import EditConditionWeTreat from "./EditConditionWeTreat";
+import ViewConditionWeTreat from "./ViewConditionWeTreat";
+import { deleteConditionWeTreat, setConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
 
-const HelloDoctorTable = () => {
+const ConditionWeTreatTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
-  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedFacility, setSelectedFacility] = useState(null);
+  const [selectedReadingMaterial, setSelectedReadingMaterial] = useState(null);
 
-  const EventData = useSelector((state) => state.videos.videos);
+  const conditionwetreatList = useSelector((state) => state.conditionwetreat.conditionwetreats);
+
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
@@ -34,12 +33,18 @@ const HelloDoctorTable = () => {
 
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
-  const showEditModal = (video) => {
-    setSelectedVideo(video);
+  const showEditModal = (condition) => {
+    setSelectedFacility(condition);
     setIsEditModalOpen(true);
   };
+  const showViewModal = (condition) => {
+    setSelectedReadingMaterial(condition);
+    setIsViewModalOpen(true);
+  };
   const handleEditCancel = () => setIsEditModalOpen(false);
+  const handleViewCancel = () => setIsViewModalOpen(false);
 
   const truncateText = (text, wordLimit = 15) => {
     if (!text) return "";
@@ -49,77 +54,70 @@ const HelloDoctorTable = () => {
       : text;
   };
 
-  const truncateHTML = (htmlContent, wordLimit) => {
-    if (!htmlContent) return "";
-    const sanitizedContent = DOMPurify.sanitize(htmlContent);
-    const textContent = sanitizedContent.replace(/<[^>]*>/g, "");
-    const words = textContent.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : textContent;
-  };
-
-  const handleDeleteHelloDoctorVideo = (_id) => {
+  const handleDeleteFacility = (_id) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/videos/${_id}`);
+          const response = await Instance.delete(`/depcat/treat/${_id}`);
           if (response.status === 200 || response.status === 204) {
-            dispatch(deleteHelloDoctorVideos(_id));
+            showSuccessMessage("Deleted successfully", "Details deleted");
+            dispatch(deleteConditionWeTreat(_id));
           }
         } catch (error) {
-          console.error("Error deleting video:", error);
+          console.error("Error deleting condition we treat:", error);
         }
       },
     });
   };
 
-  const fetchHelloDoctorVideoInfo = async (page) => {
+  const fetchTechnologyList = async (page) => {
     setIsLoading(true);
     try {
-      const response = await Instance.get(`/videos`, {
+      const response = await Instance.get(`/depcat/treat`, {
+        
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setHelloDoctorVideos(response.data.data));
+      dispatch(setConditionWeTreat(response.data));
       setTotalRows(response.data.total || 0);
     } catch (error) {
-      console.error("Error fetching videos:", error);
+      console.error("Error fetching condition list:", error);
+
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchHelloDoctorVideoInfo(currentPage);
+    fetchTechnologyList(currentPage);
   }, [currentPage]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return Object.values(EventData);
-    return Object.values(EventData).filter((video) =>
-      `${video.title} ${video.description}`
+    if (searchText.trim() === "") return conditionwetreatList;
+    return conditionwetreatList.filter((condition) =>
+      `${condition.heading} ${condition.subHeading}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
-  }, [searchText, EventData]);
+  }, [searchText, conditionwetreatList]);
 
   const columns = [
     {
       title: "Title",
-      dataIndex: "title",
+      dataIndex: "heading",
       className: "campaign-performance-table-column",
       render: (text) => truncateText(text),
     },
     {
-      title: "URL",
-      dataIndex: "url",
+      title: "Sub Heading",
+      dataIndex: "subHeading",
       className: "campaign-performance-table-column",
     },
-    {
-      title: "Likes",
-      dataIndex: "likes",
-      className: "campaign-performance-table-column",
-    },
+    // {
+    //   title: "Video Heading",
+    //   dataIndex: "video_heading",
+    //   className: "campaign-performance-table-column",
+    // },
     {
       title: "Created At",
       dataIndex: "createdAt",
@@ -131,6 +129,12 @@ const HelloDoctorTable = () => {
       render: (_, record) => (
         <div className="campaign-performance-table-action-icons">
           <div
+            className="campaign-performance-table-eye-icon"
+            onClick={() => showViewModal(record)}
+          >
+            <FiEye />
+          </div>
+          <div
             className="campaign-performance-table-edit-icon"
             onClick={() => showEditModal(record)}
           >
@@ -138,7 +142,7 @@ const HelloDoctorTable = () => {
           </div>
           <div
             className="campaign-performance-table-delete-icon"
-            onClick={() => handleDeleteHelloDoctorVideo(record._id)}
+            onClick={() => handleDeleteFacility(record._id)}
           >
             <FiTrash2 />
           </div>
@@ -174,11 +178,11 @@ const HelloDoctorTable = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : Object.values(EventData).length > 0 ? (
+      ) : conditionwetreatList.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>Hello Doctor Info</h3>
+              <h3>Department Conditon We Treat</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -186,7 +190,7 @@ const HelloDoctorTable = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add Video
+                Add Condition
               </button>
             </div>
           </div>
@@ -233,7 +237,7 @@ const HelloDoctorTable = () => {
           <div className="d-flex justify-content-start mt-2">
             <button
               className="d-flex gap-2 align-items-center rfh-basic-button"
-              onClick={() => navigate("/marketing/in-app-campaign")}
+              onClick={() => navigate("/department-details")}
             >
               <FaAngleLeft />
               Back
@@ -260,14 +264,19 @@ const HelloDoctorTable = () => {
           </div>
         </div>
       )}
-      <AddVideo open={isModalOpen} handleCancel={handleCancel} />
-      <EditVideo
+      <AddConditionWeTreat open={isModalOpen} handleCancel={handleCancel} />
+      <EditConditionWeTreat
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
-        videoData={selectedVideo}
+        conditionData={selectedFacility}
+      />
+      <ViewConditionWeTreat
+        open={isViewModalOpen}
+        handleCancel={handleViewCancel}
+        conditionData={selectedReadingMaterial}
       />
     </div>
   );
 };
 
-export default HelloDoctorTable;
+export default ConditionWeTreatTable;

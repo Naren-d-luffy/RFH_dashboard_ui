@@ -7,88 +7,60 @@ import "slick-carousel/slick/slick-theme.css";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
-import { Instance } from "../../../../AxiosConfig";
+import { Instance } from "../../../AxiosConfig";
+import AddConditionWeTreat from "./AddConditionWeTreat";
+import EditConditionWeTreat from "./EditConditionWeTreat";
+import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteEvent, setEvent } from "../../../../Features/DiscoverEventsCard";
-import AddEventsList from "./AddEventsList";
-import EditEventsList from "./EditEventsList";
-import ViewEventList from "./ViewEventList";
-import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { showDeleteMessage, showSuccessMessage } from "../../../../globalConstant";
+import { FiEye } from "react-icons/fi";
+import ViewConditionWeTreat from "./ViewConditionWeTreat";
+import { deleteConditionWeTreat, setConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
 
-export const UpcomingEventList = () => {
+export const ConditionWeTreatList = () => {
   const [modals, setModals] = useState({
     event: false,
-    video: false,
+    condition: false,
     edit: false,
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-
-  const eventsData = useSelector((state) => state.discoverevent.events);  
-  const itemsPerPage = 100;
+  const [selectedTechnology, setSelectedTechnology] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
-  const fetchEvenInfo = async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get(`/discover/card`, {
-        
-        params: { page, limit: itemsPerPage },
-      });      
-      dispatch(setEvent(response.data.data));
-    } catch (error) {
-      console.error("Error fetching events:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchEvenInfo();
-  }, []);
-
-  const truncateText = (text, wordLimit) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
+  const conditionwetreatList = useSelector((state) => state.conditionwetreat.conditionwetreats);
 
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
-  const handleDeleteEvent = (_id) => {
+  const handleEditClick = (condition) => {
+    setSelectedTechnology(condition);
+    toggleModal("edit");
+  };
+
+  const handleDeleteClick = (_id) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/discover/card/${_id}`);
+          const response = await Instance.delete(`/depcat/treat/${_id}`);
           if (response.status === 200 || response.status === 204) {
             showSuccessMessage("Deleted successfully", "Details deleted");
-            dispatch(deleteEvent(_id));
+            dispatch(deleteConditionWeTreat(_id));
           }
         } catch (error) {
-          console.error("Error deleting event:", error);
+          console.error("Error deleting condition we treat:", error);
         }
       },
     });
   };
 
-  const filterMenu = (event) => (
+  const sortMenu = (condition) => (
     <Menu>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => {
-          setSelectedEvent(event);
-          setIsEditModalOpen(true);
-        }}
+        onClick={() => handleEditClick(condition)}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
@@ -97,7 +69,7 @@ export const UpcomingEventList = () => {
         key="view"
         className="filter-menu-item"
         onClick={() => {
-          setSelectedEvent(event);
+          setSelectedTechnology(condition);
           setIsViewModalOpen(true);
         }}
       >
@@ -107,7 +79,7 @@ export const UpcomingEventList = () => {
       <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteEvent(event._id)}
+        onClick={() => handleDeleteClick(condition._id)}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -117,11 +89,11 @@ export const UpcomingEventList = () => {
     </Menu>
   );
 
-  const renderEventCard = (event) => (
-    <div className="col-lg-4" key={event._id}>
+  const renderConditionCard = (condition) => (
+    <div className="col-lg-4" key={condition._id}>
       <div className="upcoming-event-card p-3">
         <div className="action-icon-container">
-          <Dropdown overlay={() => filterMenu(event)} trigger={["click"]}>
+          <Dropdown overlay={() => sortMenu(condition)} trigger={["click"]}>
             <button className="action-icon-button">
               <BsThreeDotsVertical />
             </button>
@@ -129,18 +101,17 @@ export const UpcomingEventList = () => {
         </div>
 
         <div className="d-flex justify-content-center align-items-center mb-3">
-          <img
-            src={event.image }
-            alt={event.title}
-          />
+          <img src={condition.thumbnail} alt={condition.heading} />
         </div>
 
         <div>
           <div className="d-flex justify-content-between mb-2">
-            <h4>{event.title}</h4>
-            <span>{new Date(event.createdAt).toLocaleDateString("en-GB")}</span>
+            <h4>{condition.heading}</h4>
+            <span>
+              {new Date(condition.createdAt).toLocaleDateString("en-GB")}
+            </span>
           </div>
-          <p>{truncateText(event.description, 20)}</p>
+          <p>{condition.subHeading}</p>
         </div>
       </div>
     </div>
@@ -174,7 +145,7 @@ export const UpcomingEventList = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -192,45 +163,64 @@ export const UpcomingEventList = () => {
     ],
   };
 
+  const fetchTechnologyList = async () => {
+    try {
+      const response = await Instance.get("/depcat/treat");
+      dispatch(setConditionWeTreat(response.data));
+    } catch (error) {
+      console.error("Error fetching condition list:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTechnologyList();
+  }, []);
+
   return (
     <div className="row mt-4">
       <div className="marketing-categories-section">
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
-            <h6>Upcoming Events</h6>
+            <h6>Condition We Treat List</h6>
             <div className="d-flex gap-2">
               <button
                 className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-events")}
+                onClick={() => navigate("/view-all-condition-we-treat-list")}
               >
                 View all
               </button>
               <button
                 className="rfh-basic-button"
-                onClick={() => toggleModal("event")}
+                onClick={() => toggleModal("condition")}
               >
-                <GoPlus size={20} /> Add Events
+                <GoPlus size={20} /> Add We Treat
               </button>
             </div>
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {Object.values(eventsData).map((event) => renderEventCard(event))}
+              {conditionwetreatList && Object.keys(conditionwetreatList).length > 0 ? (
+                Object.entries(conditionwetreatList)
+                  .filter(([key]) => key !== "status")
+                  .map(([key, condition]) => renderConditionCard(condition))
+              ) : (
+                <p>No data available</p>
+              )}
             </Slider>
           </div>
-          <AddEventsList
-            open={modals.event}
-            handleCancel={() => toggleModal("event")}
+          <AddConditionWeTreat
+            open={modals.condition}
+            handleCancel={() => toggleModal("condition")}
           />
-          <EditEventsList
-            open={isEditModalOpen}
-            handleCancel={() => setIsEditModalOpen(false)}
-            eventsData={selectedEvent}
+          <EditConditionWeTreat
+            open={modals.edit}
+            handleCancel={() => toggleModal("edit")}
+            conditionData={selectedTechnology}
           />
-          <ViewEventList
+          <ViewConditionWeTreat
             open={isViewModalOpen}
             handleCancel={() => setIsViewModalOpen(false)}
-            eventsData={selectedEvent}
+            conditionData={selectedTechnology}
           />
         </div>
       </div>
@@ -238,13 +228,4 @@ export const UpcomingEventList = () => {
   );
 };
 
-export default UpcomingEventList;
-
-
-
-
-
-
-
-
-
+export default ConditionWeTreatList;

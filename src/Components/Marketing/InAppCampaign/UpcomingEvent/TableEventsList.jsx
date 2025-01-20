@@ -79,7 +79,7 @@ const TableEventsList = () => {
       const response = await Instance.get(`/discover/card`, {
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setEvent(response.data));
+      dispatch(setEvent(response.data.data));
     } catch (error) {
       console.error("Error fetching events:", error);
     } finally {
