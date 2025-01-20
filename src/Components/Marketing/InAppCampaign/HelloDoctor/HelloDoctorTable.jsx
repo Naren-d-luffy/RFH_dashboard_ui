@@ -81,7 +81,7 @@ const HelloDoctorTable = () => {
       const response = await Instance.get(`/videos`, {
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setHelloDoctorVideos(response.data));
+      dispatch(setHelloDoctorVideos(response.data.data));
       setTotalRows(response.data.total || 0);
     } catch (error) {
       console.error("Error fetching videos:", error);
