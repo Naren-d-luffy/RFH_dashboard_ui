@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Modal, Form, Input, message, Col, Row, Upload } from "antd";
+import React, { useState, useEffect } from "react";
+import { Button, Modal, Form, Input, message, Col, Row, Upload, Radio } from "antd"; 
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
 import { showSuccessMessage } from "../../../../globalConstant";
@@ -21,17 +21,39 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
   const [description, setDescription] = useState("");
   const [timing, setTiming] = useState("");
   const [address, setAddress] = useState("");
+  const [clinicType, setClinicType] = useState("");
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!open) {
+      setClinicName("");
+      setRating("");
+      setReviews("");
+      setPatients("");
+      setExperience("");
+      setDescription("");
+      setTiming("");
+      setAddress("");
+      setClinicType(""); 
+      setUploadedImage(null);
+    }
+  }, [open]);
 
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
     setUploadedImage(file);
   };
+
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
 
   const handleSave = async () => {
+    if (!clinicName || !rating || !reviews || !patients || !experience || !description || !timing || !address || !clinicType) {
+      message.error("Please fill in all required fields.");
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append("name", clinicName);
@@ -42,6 +64,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
       formData.append("experience", experience);
       formData.append("about", description);
       formData.append("timing", timing);
+      formData.append("type", clinicType);
 
       if (uploadedImage) {
         formData.append("image", uploadedImage);
@@ -58,15 +81,6 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
         handleCancel();
         showSuccessMessage("Outstation Clinic added successfully!");
         dispatch(addOutstationClinic(response.data));
-        setClinicName("");
-        setRating("");
-        setReviews("");
-        setPatients("");
-        setExperience("");
-        setDescription("");
-        setTiming("");
-        setAddress("");
-        setUploadedImage(null);
       }
     } catch (error) {
       console.error("Error while submitting: ", error?.response?.data || error);
@@ -185,6 +199,19 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                 <span className="create-campaign-input-span">Timing</span>
               </Form.Item>
             </Col>
+            <Col span={12}>
+              <Form.Item label="Clinic Type">
+                <div className="radio-group-container">
+                  <Radio.Group
+                    onChange={(e) => setClinicType(e.target.value)}
+                    value={clinicType}
+                  >
+                    <Radio value="outstation">Outstation</Radio>
+                    <Radio value="speciality">Speciality</Radio>
+                  </Radio.Group>
+                </div>
+              </Form.Item>
+            </Col>
           </Row>
           <Form.Item>
             <Input
@@ -245,3 +272,6 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
 };
 
 export default AddOutstationClinic;
+
+
+

@@ -13,6 +13,8 @@ import discovereventSlice from "./DiscoverEventsCard"
 import campSlice from "./CampSlice"
 import doctorProfileSlice from "./DoctorProfileSlice"
 import readingMaterialsSlice from "./ReadingMaterialsSlice"
+import recommendedVideosSlice from "./RecommendedVideosSlice"
+
 import facilitySlice from "./FacilitySlice"
 import technologySlice from "./TechnologySlice"
 import blogSlice from "./BlogSlice"
@@ -35,6 +37,7 @@ export default configureStore({
         camps:campSlice,
         doctorProfiles:doctorProfileSlice,
         readingmaterials:readingMaterialsSlice,
+        recommendedvideos: recommendedVideosSlice,
         facility:facilitySlice,
         blog:blogSlice,
         service:serviceSlice,
