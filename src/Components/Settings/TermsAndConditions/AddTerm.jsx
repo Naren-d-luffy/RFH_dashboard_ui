@@ -3,23 +3,24 @@ import { Modal, Button, Form, Input } from "antd";
 import Loader from "../../../Loader";
 import { Instance } from "../../../AxiosConfig";
 import { showErrorMessage, showSuccessMessage } from "../../../globalConstant";
-
+import { useDispatch } from "react-redux";
+import { addTerm } from "../../../Features/TermsSlice";
 const AddTermsModal = ({ visible, onClose }) => {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
-
+    const dispatch=useDispatch();
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
       const payload = {
         title: values.title,
-        content: values.content, // Added content to the payload
+        content: values.content,
       };
 
       setIsLoading(true);
-      const response = await Instance.post("/terms/67879866307e0dc54d1b828d", payload);
-      console.log("response", response);
+      const response = await Instance.post("/terms", payload);
       showSuccessMessage("Terms and conditions added successfully!");
+      dispatch(addTerm(response.data))
       onClose();
       form.resetFields();
     } catch (error) {

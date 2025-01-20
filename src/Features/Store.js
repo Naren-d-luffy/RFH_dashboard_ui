@@ -17,6 +17,7 @@ import facilitySlice from "./FacilitySlice"
 import technologySlice from "./TechnologySlice"
 import blogSlice from "./BlogSlice"
 import serviceSlice from "./ServiceSlice"
+import termsSlice from "./TermsSlice"
 import conditionWeTreatSlice from "./ConditionWeTreatSlice"
 export default configureStore({
     reducer: {
@@ -31,13 +32,15 @@ export default configureStore({
         features: featuresSlice,
         clinics: outstationClinicSlice,
         discoverevent: discovereventSlice,
-        camps: campSlice,
-        doctorProfiles: doctorProfileSlice,
-        readingmaterials: readingMaterialsSlice,
-        facility: facilitySlice,
-        blog: blogSlice,
-        service: serviceSlice,
-        technology: technologySlice,
+        camps:campSlice,
+        doctorProfiles:doctorProfileSlice,
+        readingmaterials:readingMaterialsSlice,
+        facility:facilitySlice,
+        blog:blogSlice,
+        service:serviceSlice,
+        technology:technologySlice,
+        term:termsSlice,
+
         conditionwetreat: conditionWeTreatSlice,
     },
 });
