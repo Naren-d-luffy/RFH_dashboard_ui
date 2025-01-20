@@ -55,6 +55,8 @@ import Register from "./Components/Auth/Register";
 import SignUpOtpScreen from "./Components/Auth/SignUpOtp";
 import ReadingMaterialsList from "./Components/PatientEducation/EducationResources/ReadingMaterials/ReadingMaterialsTable";
 import FacilityTable from "./Components/DepartmentDetails/Facility/FacilityTable";
+import BlogsTable from "./Components/Marketing/InAppCampaign/Blogs/BlogListTables";
+import ServiceTable from "./Components/DepartmentDetails/DepartmentService/ServiceTable";
 
 export const AppRouter = () => {
   return (
@@ -210,6 +212,9 @@ export const AppRouter = () => {
             element={<DepartmentDetailsPage />}
           />
           <Route path="/view-all-treatments" element={<TreatmentList />} />
+          <Route path="/view-all-blog-lists" element={<BlogsTable />} />
+          <Route path="/view-all-service-lists" element={<ServiceTable />} />
+
           <Route
             path="/view-all-gastro-illness"
             element={<GastroIllnessTable />}

@@ -20,6 +20,7 @@ import AddBlogs from "./AddBlogs";
 import { deleteBlog, setBlogs } from "../../../../Features/BlogSlice";
 import DOMPurify from "dompurify";
 import EditBlogs from "./EditBlog";
+import ViewBlog from "./ViewBlog";
 
 const BlogsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -231,7 +232,7 @@ const BlogsList = () => {
             <div className="d-flex gap-2">
               <button
                 className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-gastro-illness")}
+                onClick={() => navigate("/view-all-blog-lists")}
               >
                 View all
               </button>
@@ -255,11 +256,11 @@ const BlogsList = () => {
         handleCancel={handleEditCancel}
         blogData={selectedBlog}
       />
-      {/* <ViewEventsGastroIllness
+      <ViewBlog
         open={isViewModalOpen}
         handleCancel={handleViewCancel}
-        EventData={selectedEvent}
-      /> */}
+        blogData={selectedBlog}
+      />
     </div>
   );
 };
