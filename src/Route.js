@@ -58,6 +58,7 @@ import FacilityTable from "./Components/DepartmentDetails/Facility/FacilityTable
 import BlogsTable from "./Components/Marketing/InAppCampaign/Blogs/BlogListTables";
 import ServiceTable from "./Components/DepartmentDetails/DepartmentService/ServiceTable";
 import TechnologyTable from "./Components/DepartmentDetails/Technology/TechnologyTable";
+import ConditionWeTreatTable from "./Components/DepartmentDetails/ConditionWeTreat/ConditionWeTreatTable";
 
 export const AppRouter = () => {
   return (
@@ -236,6 +237,7 @@ export const AppRouter = () => {
           <Route path="/view-all-readingmaterials" element={<ReadingMaterialsList />} />
           <Route path="/view-all-facility-list" element={<FacilityTable />} />
           <Route path="/view-all-technology-list" element={<TechnologyTable />} />
+          <Route path="/view-all-condition-we-treat-list" element={<ConditionWeTreatTable />} />
 
 
         </Route>

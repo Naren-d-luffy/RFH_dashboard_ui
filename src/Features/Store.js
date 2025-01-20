@@ -17,6 +17,7 @@ import facilitySlice from "./FacilitySlice"
 import technologySlice from "./TechnologySlice"
 import blogSlice from "./BlogSlice"
 import serviceSlice from "./ServiceSlice"
+import conditionWeTreatSlice from "./ConditionWeTreatSlice"
 export default configureStore({
     reducer: {
         videos: hellodoctorSlice,
@@ -24,18 +25,19 @@ export default configureStore({
         news: newsSlice,
         healthPackage: healthPackageSlice,
         department: departmentSlice,
-        treatments:treatmentInfoSlice,
-        gastroIllness : GastroIllnessSlice,
+        treatments: treatmentInfoSlice,
+        gastroIllness: GastroIllnessSlice,
         faq: faqsSlice,
-        features:featuresSlice,
+        features: featuresSlice,
         clinics: outstationClinicSlice,
         discoverevent: discovereventSlice,
-        camps:campSlice,
-        doctorProfiles:doctorProfileSlice,
-        readingmaterials:readingMaterialsSlice,
-        facility:facilitySlice,
-        blog:blogSlice,
-        service:serviceSlice,
-        technology:technologySlice,
+        camps: campSlice,
+        doctorProfiles: doctorProfileSlice,
+        readingmaterials: readingMaterialsSlice,
+        facility: facilitySlice,
+        blog: blogSlice,
+        service: serviceSlice,
+        technology: technologySlice,
+        conditionwetreat: conditionWeTreatSlice,
     },
 });

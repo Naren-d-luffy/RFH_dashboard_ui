@@ -3,6 +3,7 @@ import DepartmentDetailsList from "../../Components/DepartmentDetails/Department
 import FacilityList from "../../Components/DepartmentDetails/Facility/FacilityList";
 import TechnologyList from "../../Components/DepartmentDetails/Technology/TechnologyList";
 import ServiceList from "../../Components/DepartmentDetails/DepartmentService/ServiceList";
+import ConditionWeTreatList from "../../Components/DepartmentDetails/ConditionWeTreat/ConditionWeTreatList";
 
 const DepartmentDetailsPage = () => {
   return (
@@ -11,6 +12,7 @@ const DepartmentDetailsPage = () => {
         <ServiceList/>
         <FacilityList/>
         <TechnologyList/>
+        <ConditionWeTreatList/>
         <DepartmentDetailsList/>
       </div>
     </>
