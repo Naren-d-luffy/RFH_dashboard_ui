@@ -10,13 +10,12 @@ import { RiDeleteBin7Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
 import AddFacility from "./AddFacility";
 import EditFacility from "./EditFacility";
-import {
-  showDeleteMessage,
-  showSuccessMessage,
-} from "../../../globalConstant";
+import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setFacility } from "../../../Features/FacilitySlice";
+import { deleteFacility, setFacility } from "../../../Features/FacilitySlice";
+import { FiEye } from "react-icons/fi";
+import ViewFacity from "./ViewFacility";
 
 export const FacilityList = () => {
   const [modals, setModals] = useState({
@@ -27,6 +26,7 @@ export const FacilityList = () => {
   const [selectedFacility, setSelectedFacility] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const facilities = useSelector((state) => state.facility.facilities);
 
   console.log("facilities", facilities);
@@ -41,13 +41,6 @@ export const FacilityList = () => {
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
-  const items = [
-    { label: "Upcoming Events", key: "1" },
-    { label: "Recomended", key: "2" },
-    { label: "Featured Programs", key: "3" },
-    { label: "Latest Camps", key: "4" },
-    { label: "Outstation Clinic", key: "5" },
-  ];
 
   const handleEditClick = (facility) => {
     setSelectedFacility(facility);
@@ -59,9 +52,10 @@ export const FacilityList = () => {
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/facilities/${_id}`);
+          const response = await Instance.delete(`/depcat/facility/${_id}`);
           if (response.status === 200 || response.status === 204) {
             showSuccessMessage("Deleted successfully", "Details deleted");
+            dispatch(deleteFacility(_id));
           }
         } catch (error) {
           console.error("Error deleting facility:", error);
@@ -79,6 +73,17 @@ export const FacilityList = () => {
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
+      </Menu.Item>
+      <Menu.Item
+        key="view"
+        className="filter-menu-item"
+        onClick={() => {
+          setSelectedFacility(facility);
+          setIsViewModalOpen(true);
+        }}
+      >
+        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        View
       </Menu.Item>
       <Menu.Item
         key="delete"
@@ -105,18 +110,17 @@ export const FacilityList = () => {
         </div>
 
         <div className="d-flex justify-content-center align-items-center mb-3">
-          <img
-            src={facility.thumbnail}
-            alt={facility.heading}
-          />
+          <img src={facility.thumbnail} alt={facility.heading} />
         </div>
 
         <div>
           <div className="d-flex justify-content-between mb-2">
-            <h4>{facility.subHeading}</h4>
-            <span>{new Date(facility.createdAt).toLocaleDateString("en-GB")}</span>
+            <h4>{facility.heading}</h4>
+            <span>
+              {new Date(facility.createdAt).toLocaleDateString("en-GB")}
+            </span>
           </div>
-          <p>{truncateText(facility.content, 20)}</p>
+          <p>{facility.subHeading}</p>
         </div>
       </div>
     </div>
@@ -216,13 +220,16 @@ export const FacilityList = () => {
           <AddFacility
             open={modals.facility}
             handleCancel={() => toggleModal("facility")}
-            refreshList={fetchFacilityList}
           />
           <EditFacility
             open={modals.edit}
             handleCancel={() => toggleModal("edit")}
             facilityData={selectedFacility}
-            refreshList={fetchFacilityList}
+          />
+          <ViewFacity
+            open={isViewModalOpen}
+            handleCancel={() => setIsViewModalOpen(false)}
+            facilityData={selectedFacility}
           />
         </div>
       </div>
