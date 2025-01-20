@@ -8,8 +8,8 @@ const VirtualManagementPage = () => {
   return (
     <>
        <div className="container">
-       <VirtualManagementCards />
-        <VirtualManagementGraph />
+       {/* <VirtualManagementCards />
+        <VirtualManagementGraph /> */}
         <VirtualManagementTable />
       </div>
     </>
