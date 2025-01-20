@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Instance } from "../../../AxiosConfig";
 import AddTermsModal from "./AddTerm";
-import { Button, message } from "antd";
-import { MdDelete, MdEdit } from "react-icons/md";
+import {  MdEdit } from "react-icons/md";
 import { FaTrash } from "react-icons/fa6";
 import EditTermsModal from "./EditTerms";
 import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
 import Loader from "../../../Loader";
-
+import { useSelector,useDispatch } from "react-redux";
+import { deleteTerm, setTerms } from "../../../Features/TermsSlice";
 export const TermsAndConditionsList = () => {
   const [termsList, setTermsList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,16 +19,16 @@ export const TermsAndConditionsList = () => {
     setSelectedClause(clause);
     setShowEditModal(true);
   };
+  const dispatch=useDispatch();
+  const TermsList = useSelector((state) => state.term.terms || []);
   useEffect(() => {
     const fetchTerms = async () => {
       setLoading(true);
       try {
         const response = await Instance.get("/terms");
-        console.log("response", response);
-        const data = Array.isArray(response.data)
-          ? response.data
-          : [response.data];
-        setTermsList(data);
+        // console.log("response", response);
+        dispatch(setTerms(response.data))
+        setTermsList(response.data);
         setError(null);
       } catch (err) {
         setError(
@@ -38,37 +38,35 @@ export const TermsAndConditionsList = () => {
         setLoading(false);
       }
     };
-
     fetchTerms();
   }, []);
- const handleDeleteClause = (clauseId) => {
+
+  const handleDeleteClause = (clauseId) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-            setLoading(true);
-            const response = await Instance.delete(`/terms/${clauseId}`);
-            console.log(response);
-            if (response.status === 201 || response.status) {
-              showSuccessMessage("Clause deleted successfully.");
-            }
-          } catch (err) {
-            setError("Failed to delete clause. Please try again later.");
-          } finally {
-            setLoading(false);
+          setLoading(true);
+          const response = await Instance.delete(`/terms/${clauseId}`);
+          console.log(response);
+          if (response.status === 201 || response.status) {
+            dispatch(deleteTerm(clauseId))
+            showSuccessMessage("Clause deleted successfully.");
           }
+        } catch (err) {
+          setError("Failed to delete clause. Please try again later.");
+        } finally {
+          setLoading(false);
+        }
       },
     });
   };
 
-  
   if (loading) {
-    return (
-     <Loader/>
-    );
+    return <Loader />;
   }
 
-  if (!termsList.length) {
+  if (!TermsList.length) {
     return (
       <div className="no-terms-message">
         <p>No terms and conditions available at the moment.</p>
@@ -89,45 +87,33 @@ export const TermsAndConditionsList = () => {
           </button>
         </div>
         <hr />
-        {termsList.map((terms) => (
-          <div key={terms._id} className="terms-content">
-            <div className="terms-title">
-              <h5>{terms.title}</h5>
-            </div>
-            <div className="terms-metadata">
-              <p>
-                Status: <span className="status">{terms.status}</span>
-              </p>
-            </div>
-            <div className="clauses-section">
-              {terms.clauses.map((clause) => (
-                <div
-                  key={clause._id}
-                  className="clause d-flex justify-content-between align-items-center"
-                >
-                  <div>
-                    <h6>{clause.title}</h6>
-                    <p>{clause.content}</p>
-                  </div>
-                  <div className="d-flex gap-2">
-                  <MdEdit
-                      className="trash-icon-health-package"
-                      onClick={() => handleEditClause(clause)}
-                    />
-                  <FaTrash
-                    className="trash-icon-health-package"
-                    onClick={() => handleDeleteClause(clause._id)}
-                  />
-                  </div>
-                </div>
-              ))}
+        {TermsList.map((terms) => (
+          <div key={terms._id} >
+            <div className="clause d-flex justify-content-between align-items-center">
+              <div>
+                <h6>{terms.title}</h6>
+                <p>{terms.content}</p>
+              </div>
+              <div className="d-flex gap-2">
+                <MdEdit
+                  className="trash-icon-health-package"
+                  onClick={() => handleEditClause(terms)}
+                />
+                <FaTrash
+                  className="trash-icon-health-package"
+                  onClick={() => handleDeleteClause(terms._id)}
+                />
+              </div>
             </div>
           </div>
         ))}
       </div>
       <AddTermsModal visible={showModal} onClose={() => setShowModal(false)} />
-      <EditTermsModal visible={showEditModal} onClose={() => setShowEditModal(false)}  clause={selectedClause}/>
-
+      <EditTermsModal
+        visible={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        clause={selectedClause}
+      />
     </div>
   );
 };

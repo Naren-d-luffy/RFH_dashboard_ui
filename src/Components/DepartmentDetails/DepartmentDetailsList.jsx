@@ -29,7 +29,13 @@ const DepartmentDetailsList = () => {
   const [totalRows, setTotalRows] = useState(0);
   const departments = useSelector((state) => state.department.departments);
   console.log("khkkj", departments);
-
+  const truncateText = (text, wordLimit = 15) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : text;
+  };
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -86,7 +92,7 @@ const DepartmentDetailsList = () => {
     try {
       const response = await Instance.get(`/department`, {});
       setDepartmentList(response.data.departments || []);
-      console.log(response.data);
+      console.log(response.data,"department");
       setTotalRows(response.data.totalDepartments);
       dispatch(setDepartment(response.data));
     } catch (error) {
@@ -123,10 +129,12 @@ const DepartmentDetailsList = () => {
       className: "campaign-performance-table-column",
     },
     {
-      title: "Specialist Name",
-      dataIndex: "specialistName",
-      key: "specialistName",
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
       className: "campaign-performance-table-column",
+      render: (text) => truncateText(text),
+
     },
     {
       title: "Action",
@@ -180,10 +188,10 @@ const DepartmentDetailsList = () => {
   };
 
   return (
-    <div className="container mt-1">
+    <div className="container mt-5">
       {isLoading ? (
         <Loader />
-      ) : departmentList.length > 0 ? (
+      ) : departments.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">

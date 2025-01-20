@@ -59,7 +59,7 @@ const FeaturesTable = () => {
         params: { page, limit: itemsPerPage },
       });
       setTotalRows(response.data?.length || 0);
-      dispatch(setFeature(response.data));
+      dispatch(setFeature(response.data.data));
     } catch (error) {
       console.error("Error fetching events:", error);
     } finally {
@@ -92,8 +92,8 @@ const FeaturesTable = () => {
   };
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return Object.values(FeaturesData);
-    return Object.values(FeaturesData).filter((feature) =>
+    if (searchText.trim() === "") return (FeaturesData);
+    return (FeaturesData).filter((feature) =>
       `${feature.title}{}${feature.description}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
@@ -165,7 +165,7 @@ const FeaturesTable = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : Object.values(FeaturesData).length > 0 ? (
+      ) :(FeaturesData).length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <h3>Feature Programs</h3>

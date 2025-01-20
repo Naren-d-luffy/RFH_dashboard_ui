@@ -108,7 +108,7 @@ export const FeaturedProgramsList = () => {
       const response = await Instance.get(`/discover/featuredProgram`, {
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setFeature(response.data));
+      dispatch(setFeature(response.data.data));
       setFeatureList(response.data || []);
       setIsLoading(false);
     } catch (error) {

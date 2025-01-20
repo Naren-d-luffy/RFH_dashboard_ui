@@ -54,6 +54,12 @@ import ViewAllCampTable from "./Components/Marketing/InAppCampaign/LatestCamps/V
 import Register from "./Components/Auth/Register";
 import SignUpOtpScreen from "./Components/Auth/SignUpOtp";
 import ReadingMaterialsList from "./Components/PatientEducation/EducationResources/ReadingMaterials/ReadingMaterialsTable";
+import FacilityTable from "./Components/DepartmentDetails/Facility/FacilityTable";
+import BlogsTable from "./Components/Marketing/InAppCampaign/Blogs/BlogListTables";
+import ServiceTable from "./Components/DepartmentDetails/DepartmentService/ServiceTable";
+import TechnologyTable from "./Components/DepartmentDetails/Technology/TechnologyTable";
+import ConditionWeTreatTable from "./Components/DepartmentDetails/ConditionWeTreat/ConditionWeTreatTable";
+
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -208,6 +214,9 @@ export const AppRouter = () => {
             element={<DepartmentDetailsPage />}
           />
           <Route path="/view-all-treatments" element={<TreatmentList />} />
+          <Route path="/view-all-blog-lists" element={<BlogsTable />} />
+          <Route path="/view-all-service-lists" element={<ServiceTable />} />
+
           <Route
             path="/view-all-gastro-illness"
             element={<GastroIllnessTable />}
@@ -226,6 +235,10 @@ export const AppRouter = () => {
           <Route path="/view-all-camp-table" element={<ViewAllCampTable />} />
 
           <Route path="/view-all-readingmaterials" element={<ReadingMaterialsList />} />
+          <Route path="/view-all-facility-list" element={<FacilityTable />} />
+          <Route path="/view-all-technology-list" element={<TechnologyTable />} />
+          <Route path="/view-all-condition-we-treat-list" element={<ConditionWeTreatTable />} />
+
 
         </Route>
       </Routes>

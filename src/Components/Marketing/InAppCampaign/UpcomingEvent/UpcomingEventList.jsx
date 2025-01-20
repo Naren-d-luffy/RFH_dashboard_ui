@@ -39,10 +39,8 @@ export const UpcomingEventList = () => {
       const response = await Instance.get(`/discover/card`, {
         
         params: { page, limit: itemsPerPage },
-      });
-        console.log("eventsDaa",response)
-      
-      dispatch(setEvent(response.data));
+      });      
+      dispatch(setEvent(response.data.data));
     } catch (error) {
       console.error("Error fetching events:", error);
     } finally {
