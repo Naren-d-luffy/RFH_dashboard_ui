@@ -94,8 +94,8 @@ const ViewAllCampTable = () => {
   };
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return FeaturesData;
-    return FeaturesData.filter((camp) =>
+    if (searchText.trim() === "") return Object.values(FeaturesData);
+    return Object.values(FeaturesData).filter((camp) =>
       `${camp.title} ${camp.description}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
@@ -167,7 +167,7 @@ const ViewAllCampTable = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : FeaturesData.length > 0 ? (
+      ) : Object.values(FeaturesData).length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <h3>Latest Camps</h3>

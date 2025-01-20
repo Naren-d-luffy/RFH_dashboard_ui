@@ -65,6 +65,7 @@ function SidebarAdmin() {
       "/feedback/patient-surveys": "feedback",
       "/feedback/view-feedback": "feedback",
       "/feedback/negative-feedback": "feedback",
+      "/teleconsultation/doctors-list":"teleconsultation",
       "/teleconsultation/appointment-status": "teleconsultation",
       "/teleconsultation/doctor-detail": "teleconsultation",
       "/teleconsultation/technical-support": "teleconsultation",
@@ -177,10 +178,10 @@ function SidebarAdmin() {
       to: "/teleconsultation/appointment-status",
       icon: <IoTelescopeOutline className="sidebar-icon" />,
       subMenu: [
-        // {
-        //   label: "Virtual Management",
-        //   to: "/teleconsultation/virtual-management",
-        // },
+        {
+          label: "Virtual Management",
+          to: "/teleconsultation/virtual-management",
+        },
         // {
         //   label: "Appointment Status",
         //   to: "/teleconsultation/appointment-status",

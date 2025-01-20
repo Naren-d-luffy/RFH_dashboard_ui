@@ -28,9 +28,7 @@ export const UpcomingEventList = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const eventsData = useSelector((state) => state.discoverevent.events);
-  console.log("eventsData",eventsData);
-  
+  const eventsData = useSelector((state) => state.discoverevent.events);  
   const itemsPerPage = 100;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,9 +40,9 @@ export const UpcomingEventList = () => {
         
         params: { page, limit: itemsPerPage },
       });
-      console.log("response  response",response.data.data);
-
-      dispatch(setEvent(response.data.data));
+        console.log("eventsDaa",response)
+      
+      dispatch(setEvent(response.data));
     } catch (error) {
       console.error("Error fetching events:", error);
     } finally {

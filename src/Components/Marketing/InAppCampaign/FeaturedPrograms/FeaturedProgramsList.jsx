@@ -34,7 +34,6 @@ export const FeaturedProgramsList = () => {
   const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
   const FeaturesData = useSelector((state) => state.features.features);
-  console.log("features", FeaturesData);
   const navigate = useNavigate();
 
   const itemsPerPage = 100;
