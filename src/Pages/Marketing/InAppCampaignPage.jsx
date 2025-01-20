@@ -6,6 +6,7 @@ import UpcomingEventList from "../../Components/Marketing/InAppCampaign/Upcoming
 import { FeaturedProgramsList } from "../../Components/Marketing/InAppCampaign/FeaturedPrograms/FeaturedProgramsList";
 import { LatestCampsList } from "../../Components/Marketing/InAppCampaign/LatestCamps/LatestCampsList";
 import OutstationClinicList from "../../Components/Marketing/InAppCampaign/OutstationClinic/OutstationClinicList";
+import BlogsList from "../../Components/Marketing/InAppCampaign/Blogs/BlogList";
 
 const InAppCampaignPage = () => {
   return (
@@ -17,7 +18,7 @@ const InAppCampaignPage = () => {
         <FeaturedProgramsList/>
         <LatestCampsList/>
         <OutstationClinicList/>
-        
+        <BlogsList/>
       </div>
     </>
   );
