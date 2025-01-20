@@ -8,32 +8,36 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import ReactPlayer from "react-player";
 import AddFacility from "./AddFacility";
 import EditFacility from "./EditFacility";
 import {
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../globalConstant";
-// import {
-//   deleteHelloDoctorVideos,
-//   setHelloDoctorVideos,
-// } from "../../../../Features/HelloDoctorSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setFacility } from "../../../Features/FacilitySlice";
 
 export const FacilityList = () => {
-  const [playingVideo] = useState(null);
   const [modals, setModals] = useState({
     event: false,
-    video: false,
+    facility: false,
     edit: false,
   });
-  const [, setVideoList] = useState([]);
-  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedFacility, setSelectedFacility] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const videos = useSelector((state) => state.videos.videos);
+  const facilities = useSelector((state) => state.facility.facilities);
+
+  console.log("facilities", facilities);
+
+  const truncateText = (text, wordLimit) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : text;
+  };
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
@@ -45,8 +49,8 @@ export const FacilityList = () => {
     { label: "Outstation Clinic", key: "5" },
   ];
 
-  const handleEditClick = (video) => {
-    setSelectedVideo(video);
+  const handleEditClick = (facility) => {
+    setSelectedFacility(facility);
     toggleModal("edit");
   };
 
@@ -55,39 +59,23 @@ export const FacilityList = () => {
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/videos/${_id}`);
+          const response = await Instance.delete(`/facilities/${_id}`);
           if (response.status === 200 || response.status === 204) {
             showSuccessMessage("Deleted successfully", "Details deleted");
-            // dispatch(deleteHelloDoctorVideos(_id));
           }
         } catch (error) {
-          console.error("Error deleting video:", error);
+          console.error("Error deleting facility:", error);
         }
       },
     });
   };
 
-  const filterMenu = (
-    <Menu>
-      <Menu.Item key="edit" className="filter-menu-item">
-        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        Edit
-      </Menu.Item>
-      <Menu.Item key="delete" className="filter-menu-item">
-        <RiDeleteBin7Line
-          style={{ color: "var(--red-color)", marginRight: "4px" }}
-        />
-        Delete
-      </Menu.Item>
-    </Menu>
-  );
-
-  const sortMenu = (video) => (
+  const sortMenu = (facility) => (
     <Menu>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => handleEditClick(video)}
+        onClick={() => handleEditClick(facility)}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
@@ -95,7 +83,7 @@ export const FacilityList = () => {
       <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteClick(video._id)}
+        onClick={() => handleDeleteClick(facility._id)}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -105,39 +93,34 @@ export const FacilityList = () => {
     </Menu>
   );
 
-  const renderRecommendVideo = (video) => {
-    const isPlaying = playingVideo === video._id;
-
-    return (
-      <div className="col-lg-4 recommend-video-page" key={video._id}>
+  const renderFacilityCard = (facility) => (
+    <div className="col-lg-4" key={facility._id}>
+      <div className="upcoming-event-card p-3">
         <div className="action-icon-container">
-          <Dropdown overlay={sortMenu(video)} trigger={["click"]}>
+          <Dropdown overlay={() => sortMenu(facility)} trigger={["click"]}>
             <button className="action-icon-button">
-              <BsThreeDotsVertical
-                className="recommended-video-action-button"
-                color="var(--black-color)"
-              />
+              <BsThreeDotsVertical />
             </button>
           </Dropdown>
         </div>
-        <div className=" p-1">
-          <ReactPlayer
-            url={video.url}
-            controls={true}
-            playing={isPlaying}
-            width="100%"
-            height="200px"
+
+        <div className="d-flex justify-content-center align-items-center mb-3">
+          <img
+            src={facility.thumbnail}
+            alt={facility.heading}
           />
         </div>
-        <div className="video-details mt-2">
-          <h4>{video.title}</h4>
-          <p style={{ color: "var(--black-color)", fontSize: "13px" }}>{`${
-            video.likes
-          } Likes | ${new Date(video.createdAt).toLocaleDateString()}`}</p>
+
+        <div>
+          <div className="d-flex justify-content-between mb-2">
+            <h4>{facility.subHeading}</h4>
+            <span>{new Date(facility.createdAt).toLocaleDateString("en-GB")}</span>
+          </div>
+          <p>{truncateText(facility.content, 20)}</p>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
 
   const CustomPrevArrow = (props) => {
     const { className, style, onClick } = props;
@@ -167,7 +150,7 @@ export const FacilityList = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -185,18 +168,17 @@ export const FacilityList = () => {
     ],
   };
 
-  const fetchVideoList = async () => {
+  const fetchFacilityList = async () => {
     try {
-      const response = await Instance.get("/videos");
-      setVideoList(response.data);
-      // dispatch(setHelloDoctorVideos(response.data));
+      const response = await Instance.get("/depcat/facility");
+      dispatch(setFacility(response.data));
     } catch (error) {
-      console.error("Error fetching videos:", error);
+      console.error("Error fetching facilities:", error);
     }
   };
 
   useEffect(() => {
-    fetchVideoList();
+    fetchFacilityList();
   }, []);
 
   return (
@@ -208,13 +190,13 @@ export const FacilityList = () => {
             <div className="d-flex gap-2">
               <button
                 className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-hello-doctor")}
+                onClick={() => navigate("/view-all-facility-list")}
               >
                 View all
               </button>
               <button
                 className="rfh-basic-button"
-                onClick={() => toggleModal("video")}
+                onClick={() => toggleModal("facility")}
               >
                 <GoPlus size={20} /> Add Facilities
               </button>
@@ -222,28 +204,25 @@ export const FacilityList = () => {
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {videos && Object.keys(videos).length > 0 ? (
-                Object.entries(videos)
+              {facilities && Object.keys(facilities).length > 0 ? (
+                Object.entries(facilities)
                   .filter(([key]) => key !== "status")
-                  .map(([key, video]) => renderRecommendVideo(video))
+                  .map(([key, facility]) => renderFacilityCard(facility))
               ) : (
-                <p>No videos available</p>
+                <p>No data available</p>
               )}
             </Slider>
-            {/* <Slider {...sliderSettings}>
-              {Object.values(videos).map((video) => renderRecommendVideo(video))}
-            </Slider> */}
           </div>
           <AddFacility
-            open={modals.video}
-            handleCancel={() => toggleModal("video")}
-            refreshList={fetchVideoList}
+            open={modals.facility}
+            handleCancel={() => toggleModal("facility")}
+            refreshList={fetchFacilityList}
           />
           <EditFacility
             open={modals.edit}
             handleCancel={() => toggleModal("edit")}
-            videoData={selectedVideo}
-            refreshList={fetchVideoList}
+            facilityData={selectedFacility}
+            refreshList={fetchFacilityList}
           />
         </div>
       </div>
