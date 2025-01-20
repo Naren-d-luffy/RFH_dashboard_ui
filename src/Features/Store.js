@@ -13,7 +13,7 @@ import discovereventSlice from "./DiscoverEventsCard"
 import campSlice from "./CampSlice"
 import doctorProfileSlice from "./DoctorProfileSlice"
 import readingMaterialsSlice from "./ReadingMaterialsSlice"
-
+import facilitySlice from "./FacilitySlice"
 export default configureStore({
     reducer: {
         videos: hellodoctorSlice,
@@ -29,7 +29,7 @@ export default configureStore({
         discoverevent: discovereventSlice,
         camps:campSlice,
         doctorProfiles:doctorProfileSlice,
-        readingmaterials:readingMaterialsSlice
-
+        readingmaterials:readingMaterialsSlice,
+        facility:facilitySlice,
     },
 });

@@ -1,41 +1,97 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, message } from "antd";
+import { Button, Modal, Form, Input, Upload, message } from "antd";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { IoCloudUploadOutline } from "react-icons/io5";
+import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
 import { showSuccessMessage } from "../../../globalConstant";
-// import { addHelloDoctorVideos } from "../../../../Features/HelloDoctorSlice";
 import { useDispatch } from "react-redux";
 import Loader from "../../../Loader";
+import { addFacility } from "../../../Features/FacilitySlice";
 
-const AddFacility = ({ open, handleCancel, refreshList }) => {
+const modules = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["bold", "italic"],
+    ["link", "image"],
+    ["clean"],
+  ],
+};
+
+const { TextArea } = Input;
+
+const AddFacility = ({ open, handleCancel }) => {
   const [title, setTitle] = useState("");
-  const [url, setUrl] = useState("");
+  const [description, setDescription] = useState("");
+  const [content, setContent] = useState("");
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [thumbnailImage, setThumbnailImage] = useState(null);
+  const [videoHeading, setVideoHeading] = useState("");
+  const [videoSubHeading, setVideoSubHeading] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
+  const handleUpload = (info) => {
+    const file = info.file.originFileObj;
+    setUploadedImage(file);
+  };
+
+  const handleDeleteImage = () => {
+    setUploadedImage(null);
+  };
+
+  const handleUploadThumbnail = (info) => {
+    const file = info.file.originFileObj;
+    setThumbnailImage(file);
+  };
+
+  const handleDeleteThumbnail = () => {
+    setThumbnailImage(null);
+  };
+
   const handleSave = async () => {
-    if (!title || !url) {
+    if (
+      !title ||
+      !description ||
+      !content ||
+      !uploadedImage ||
+      !thumbnailImage ||
+      !videoHeading ||
+      !videoSubHeading
+    ) {
       message.error("Please fill in all required fields.");
       return;
     }
-
     setIsLoading(true);
     try {
-      const payload = {
-        title,
-        url,
-      };
+      const formData = new FormData();
+      formData.append("heading", title);
+      formData.append("subHeading", description);
+      formData.append("thumbnail", thumbnailImage);
+      formData.append("content", content);
+      formData.append("video_heading", videoHeading);
+      formData.append("video", uploadedImage);
+      formData.append("video_subHeading", videoSubHeading);
 
-      const response = await Instance.post("/videos", payload);
+      const response = await Instance.post("/depcat/facility", formData);
       if (response?.status === 200 || response?.status === 201) {
-        showSuccessMessage("Video added successfully!");
         handleCancel();
+
+        showSuccessMessage("Facility added successfully!");
+        dispatch(addFacility(response.data));
         setTitle("");
-        setUrl("");
-        // dispatch(addHelloDoctorVideos(response.data));
+        setDescription("");
+        setContent("");
+        setUploadedImage(null);
+        setThumbnailImage(null);
+        setVideoHeading("");
+        setVideoSubHeading("");
       }
     } catch (error) {
-      console.error("Failed to add video:", error);
-      message.error("Failed to add video.");
+      console.error(error);
+      message.error("Failed to add facility.");
     } finally {
       setIsLoading(false);
     }
@@ -46,7 +102,7 @@ const AddFacility = ({ open, handleCancel, refreshList }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Add Video</span>}
+        title="Add Department Facility"
         onCancel={handleCancel}
         width={680}
         footer={[
@@ -72,19 +128,120 @@ const AddFacility = ({ open, handleCancel, refreshList }) => {
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter Title"
+              placeholder="Add Title"
               required
             />
-            <span className="create-campaign-input-span">Video Title</span>
+            <span className="create-campaign-input-span">Title</span>
+          </Form.Item>
+          <Form.Item>
+            <TextArea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Description"
+              required
+            />
+            <span className="create-campaign-input-span">Description</span>
+          </Form.Item>
+          <div className="row">
+            <div className="col-lg-6">
+              <Form.Item>
+                <Upload
+                  listType="picture"
+                  showUploadList={false}
+                  onChange={handleUploadThumbnail}
+                  className="create-campaign-upload"
+                >
+                  <p className="create-campaign-ant-upload-text">
+                    Drop files here or click to upload
+                  </p>
+                  <IoCloudUploadOutline />{" "}
+                  <span style={{ color: "#727880" }}>Upload Thumbnail</span>
+                </Upload>
+                {thumbnailImage && (
+                  <div className="uploaded-image-preview">
+                    <img
+                      src={URL.createObjectURL(thumbnailImage)}
+                      alt="Thumbnail"
+                      style={{
+                        width: "200px",
+                        height: "auto",
+                        marginTop: "10px",
+                      }}
+                    />
+                    <Button
+                      onClick={handleDeleteThumbnail}
+                      className="model-image-upload-delete-icon"
+                    >
+                      <RiDeleteBin5Line />
+                    </Button>
+                  </div>
+                )}
+              </Form.Item>
+            </div>
+            <div className="col-lg-6">
+              <Form.Item>
+                <Upload
+                  listType="picture"
+                  showUploadList={false}
+                  onChange={handleUpload}
+                  className="create-campaign-upload"
+                >
+                  <p className="create-campaign-ant-upload-text">
+                    Drop files here or click to upload
+                  </p>
+                  <IoCloudUploadOutline />{" "}
+                  <span style={{ color: "#727880" }}>Upload Video</span>
+                </Upload>
+                {uploadedImage && (
+                  <div className="uploaded-image-preview">
+                    <img
+                      src={URL.createObjectURL(uploadedImage)}
+                      alt="Video"
+                      style={{
+                        width: "200px",
+                        height: "auto",
+                        marginTop: "10px",
+                      }}
+                    />
+                    <Button
+                      onClick={handleDeleteImage}
+                      className="model-image-upload-delete-icon"
+                    >
+                      <RiDeleteBin5Line />
+                    </Button>
+                  </div>
+                )}
+              </Form.Item>
+            </div>
+          </div>
+          <Form.Item>
+            <ReactQuill
+              theme="snow"
+              modules={modules}
+              value={content}
+              onChange={setContent}
+              placeholder="Your text goes here"
+              required
+            />
+            <span className="create-campaign-input-span">Content</span>
           </Form.Item>
           <Form.Item>
             <Input
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="Enter URL"
+              value={videoHeading}
+              onChange={(e) => setVideoHeading(e.target.value)}
+              placeholder="Video Heading"
               required
             />
-            <span className="create-campaign-input-span">Video URL</span>
+            <span className="create-campaign-input-span">Video Heading</span>
+          </Form.Item>
+          <Form.Item>
+            <Input
+              value={videoSubHeading}
+              onChange={(e) => setVideoSubHeading(e.target.value)}
+              placeholder="Video Subheading"
+              required
+            />
+            <span className="create-campaign-input-span">Video Subheading</span>
           </Form.Item>
         </Form>
       </Modal>
