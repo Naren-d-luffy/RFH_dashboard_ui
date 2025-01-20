@@ -14,6 +14,8 @@ import campSlice from "./CampSlice"
 import doctorProfileSlice from "./DoctorProfileSlice"
 import readingMaterialsSlice from "./ReadingMaterialsSlice"
 import facilitySlice from "./FacilitySlice"
+import blogSlice from "./BlogSlice"
+
 export default configureStore({
     reducer: {
         videos: hellodoctorSlice,
@@ -31,5 +33,6 @@ export default configureStore({
         doctorProfiles:doctorProfileSlice,
         readingmaterials:readingMaterialsSlice,
         facility:facilitySlice,
+        blog:blogSlice
     },
 });
