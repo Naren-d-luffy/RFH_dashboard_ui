@@ -34,7 +34,6 @@ export const FeaturedProgramsList = () => {
   const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
   const FeaturesData = useSelector((state) => state.features.features);
-  console.log("features", FeaturesData);
   const navigate = useNavigate();
 
   const itemsPerPage = 100;
@@ -213,7 +212,7 @@ export const FeaturedProgramsList = () => {
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {FeaturesData.map((feature) => renderFeatureCard(feature))}
+              {Object.values(FeaturesData).map((feature) => renderFeatureCard(feature))}
             </Slider>
           </div>
           <AddFeaturesModal open={isModalOpen} handleCancel={handleCancel} />

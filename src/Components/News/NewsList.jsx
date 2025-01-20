@@ -24,6 +24,7 @@ const NewsList = () => {
   const [selectedNews, setSelectedNews] = useState({ content: [] });
   const [totalRows, setTotalRows] = useState(0);
   const news = useSelector((state) => state.news.news);
+  console.log("redux news",news)
   const [searchText, setSearchText] = useState("");
 
   const dispatch = useDispatch();
@@ -76,6 +77,7 @@ const NewsList = () => {
       const response = await Instance.get(`/cards`, {
         params: { page, limit: itemsPerPage },
       });
+      console.log(response,"news")
       setNewsList(response.data || []);
       setTotalRows(response.data.length);
       dispatch(setNews(response.data));
@@ -88,13 +90,14 @@ const NewsList = () => {
   };
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return news;
-    return news.filter((news) =>
-      `${news.heading}{}${news.subheading}`
+    if (searchText.trim() === "") return Object.values(news); // Convert to array
+    return Object.values(news).filter((newsItem) =>
+      `${newsItem.heading} ${newsItem.subheading}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, news]);
+  
 
   useEffect(() => {
     fetchNewsList(currentPage);
@@ -176,7 +179,7 @@ const NewsList = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : newsList.length > 0 ? (
+      ) : Object.values(news).length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">

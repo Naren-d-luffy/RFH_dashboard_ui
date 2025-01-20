@@ -69,7 +69,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
       const response = await Instance.post("/education", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
-        dispatch(addTreatment(response.data))
+        dispatch(addTreatment(response.data._doc))
         showSuccessMessage("Treatment Info Added successfully!");
         setTitle("");
         setDescription("");

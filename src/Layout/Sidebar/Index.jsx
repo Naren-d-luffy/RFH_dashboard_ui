@@ -65,6 +65,7 @@ function SidebarAdmin() {
       "/feedback/patient-surveys": "feedback",
       "/feedback/view-feedback": "feedback",
       "/feedback/negative-feedback": "feedback",
+      "/teleconsultation/doctors-list":"teleconsultation",
       "/teleconsultation/appointment-status": "teleconsultation",
       "/teleconsultation/doctor-detail": "teleconsultation",
       "/teleconsultation/technical-support": "teleconsultation",
@@ -80,6 +81,7 @@ function SidebarAdmin() {
       "/medication-tracker/patient-detail": "medicationtracker",
       "/sidebar/notification": "",
       "/logout": "logout",
+      "/department-details":"department",
     };
 
     const currentPath = location.pathname;
@@ -148,6 +150,11 @@ function SidebarAdmin() {
     //   subMenu: [{ label: "Hello Doctor", to: "/hello-doctor" }],
     // },
     {
+      label: "Department Details",
+      icon: <LucideHouse className="sidebar-icon" size={14} />,
+      to: "/department-details",
+    },
+    {
       id: "education",
       label: (
         <span
@@ -177,10 +184,10 @@ function SidebarAdmin() {
       to: "/teleconsultation/appointment-status",
       icon: <IoTelescopeOutline className="sidebar-icon" />,
       subMenu: [
-        // {
-        //   label: "Virtual Management",
-        //   to: "/teleconsultation/virtual-management",
-        // },
+        {
+          label: "Virtual Management",
+          to: "/teleconsultation/virtual-management",
+        },
         // {
         //   label: "Appointment Status",
         //   to: "/teleconsultation/appointment-status",
@@ -283,11 +290,28 @@ function SidebarAdmin() {
       icon: <Bell className="sidebar-icon" size={14} />,
       to: "/sidebar/notification",
     },
-    {
-      label: "Department Details",
-      icon: <LucideHouse className="sidebar-icon" size={14} />,
-      to: "/department-details",
-    },
+ 
+    // {
+    //   id: "department",
+    //   label: (
+    //     <span
+    //     onClick={() => navigate("/department-details")}
+    //       style={{ cursor: "pointer" }}
+    //     >
+    //       Department Details
+    //     </span>
+    //   ),
+    //   to: "",
+    //   icon: <LucideHouse className="sidebar-icon" size={14} />,
+    //   subMenu: [
+    //     { label: "Details", to: "/department-details" },
+    //     { label: "Technology", to: "/department-technology" },
+    //     { label: "Facility", to: "/department-facility" },
+    //     { label: "Services", to: "/department-services" },
+    //     { label: "Condition We Treat", to: "/department-conditions" },
+
+    //   ],
+    // },
     {
       label: "Settings",
       icon: <Settings className="sidebar-icon" size={14} />,

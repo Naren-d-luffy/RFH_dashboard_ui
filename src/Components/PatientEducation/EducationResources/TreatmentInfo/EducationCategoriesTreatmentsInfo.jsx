@@ -37,6 +37,8 @@ const EducationCategoriesTreatmentsInfo = () => {
   const handleViewCancel = () => setIsViewModalOpen(false);
   const [isLoading, setIsLoading] = useState(false);
   const treatmentData = useSelector((state) => state.treatments.treatments);
+  console.log("treatmentData",treatmentData);
+  
   const navigate = useNavigate();
 
   const itemsPerPage = 100;
@@ -108,7 +110,7 @@ const EducationCategoriesTreatmentsInfo = () => {
       const response = await Instance.get(`/education`, {
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setTreatment(response.data.educations));
+      dispatch(setTreatment(response.data.data.educations));
       setTreatmentList(response.data.educations || []);
       setIsLoading(false);
     } catch (error) {

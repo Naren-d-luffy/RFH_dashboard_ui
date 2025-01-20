@@ -66,9 +66,12 @@ const EducationResourcesCards = () => {
         {cardsData.map((card, index) => (
           <div className="col-lg-3 col-md-6 col-sm-12 mt-2" key={index}>
             <div
-              className="campaign-performance-card"
+              className="campaign-performance-card position-relative"
               style={{ borderRightColor: card.borderColor }}
             >
+              <div className="campaign-card-overlay">
+                <span>Coming Soon</span>
+              </div>
               <div className="d-flex justify-content-between align-items-center">
                 <p>{card.title}</p>
                 <span

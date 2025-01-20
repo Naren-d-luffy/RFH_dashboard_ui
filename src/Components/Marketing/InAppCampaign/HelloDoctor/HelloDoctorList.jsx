@@ -34,7 +34,6 @@ export const HelloDoctorList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const videos = useSelector((state) => state.videos.videos);
-  useEffect(() => {}, [videos]);
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
@@ -223,12 +222,17 @@ export const HelloDoctorList = () => {
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {videos.length > 0 ? (
-                videos.map((video) => renderRecommendVideo(video))
+              {videos && Object.keys(videos).length > 0 ? (
+                Object.entries(videos)
+                  .filter(([key]) => key !== "status")
+                  .map(([key, video]) => renderRecommendVideo(video))
               ) : (
                 <p>No videos available</p>
               )}
             </Slider>
+            {/* <Slider {...sliderSettings}>
+              {Object.values(videos).map((video) => renderRecommendVideo(video))}
+            </Slider> */}
           </div>
           <AddVideo
             open={modals.video}

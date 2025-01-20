@@ -34,8 +34,6 @@ const EducationCategoriesQuestions = () => {
   };
 
   const faqData = useSelector((state) => state.faq.faqs);
-  console.log("FAQs Data:", faqData);
-
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
 
@@ -104,7 +102,7 @@ const EducationCategoriesQuestions = () => {
           </button>
         </div>
 
-        {faqData.map((faq) => (
+          {Object.values(faqData).map((faq, index) => (
           <div key={faq.id} className="education-categories-faq-item">
             <div className="education-categories-faq-question d-flex justify-content-between mt-4 align-items-center">
               <span>{faq.question}</span>

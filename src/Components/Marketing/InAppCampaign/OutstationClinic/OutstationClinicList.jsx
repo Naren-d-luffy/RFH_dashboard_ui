@@ -222,7 +222,7 @@ const OutstationClinicList = () => {
       <div className="marketing-categories-section">
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
-            <h6>Outstation Clinic</h6>
+            <h6>Outstation/Speciality Clinic</h6>
             <div className="d-flex gap-2">
               <button
                 className="rfh-view-all-button"
@@ -237,7 +237,7 @@ const OutstationClinicList = () => {
           </div>
           <div className="mt-3">
             <Slider {...sliderSettings}>
-              {clinics.map((clinic) => renderClinicCard(clinic))}
+              {Object.values(clinics).map((clinic) => renderClinicCard(clinic))}
             </Slider>
           </div>
         </div>

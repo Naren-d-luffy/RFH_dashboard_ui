@@ -197,6 +197,11 @@ color: var(--black-color);
   color: var(--primary-green);
   text-decoration: underline;
 }
+.rfh-view-all-button:hover{
+  border: none;
+  color: var(--yellow-color);
+  text-decoration: underline;
+}
 .readig-material-coming-soon img{
   width: 200px;
   height: 200px;
