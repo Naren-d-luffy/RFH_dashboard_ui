@@ -230,6 +230,9 @@ export const HelloDoctorList = () => {
                 <p>No videos available</p>
               )}
             </Slider>
+            {/* <Slider {...sliderSettings}>
+              {Object.values(videos).map((video) => renderRecommendVideo(video))}
+            </Slider> */}
           </div>
           <AddVideo
             open={modals.video}
