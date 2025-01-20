@@ -1,0 +1,254 @@
+import React, { useEffect, useState } from "react";
+import { GoPlus } from "react-icons/go";
+import { Dropdown, Menu } from "antd";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { BiEdit } from "react-icons/bi";
+import { RiDeleteBin7Line } from "react-icons/ri";
+import { Instance } from "../../../AxiosConfig";
+import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { deleteService, setService } from "../../../Features/ServiceSlice";
+import EditService from "./EditService";
+import AddService from "./AddService";
+import DOMPurify from "dompurify";
+import ViewService from "./ViewService";
+import { FiEye } from "react-icons/fi";
+
+const ServiceList = () => {
+  const [modals, setModals] = useState({
+    event: false,
+    service: false,
+    edit: false,
+    view:false
+  });
+  const [selectedService, setSelectedService] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const sanitizeContent = (content) => {
+    return DOMPurify.sanitize(content);
+  };
+  const servicesList = useSelector((state) => state.service.services);
+  // const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  // const showViewModal = (service) => {
+  //   setSelectedService(service);
+  //   setIsViewModalOpen(true);
+  // };
+  // const handleViewCancel = () => setIsViewModalOpen(false);
+  // // console.log("servicesList", servicesList);
+
+  const truncateText = (text, wordLimit) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : text;
+  };
+  const toggleModal = (modalType) =>
+    setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
+
+  const handleEditClick = (service) => {
+    setSelectedService(service);
+    toggleModal("edit");
+  };
+
+  const handleViewClick = (service) => {
+    setSelectedService(service);
+    toggleModal("view");
+  };
+
+  const handleDeleteClick = (_id) => {
+    showDeleteMessage({
+      message: "",
+      onDelete: async () => {
+        try {
+          const response = await Instance.delete(`/depcat/service/${_id}`);
+          if (response.status === 200 || response.status === 204) {
+            dispatch(deleteService(_id));
+            showSuccessMessage("Deleted successfully");
+          }
+        } catch (error) {
+          console.error("Error deleting service:", error);
+        }
+      },
+    });
+  };
+
+  const sortMenu = (service) => (
+    <Menu>
+      <Menu.Item
+        key="edit"
+        className="filter-menu-item"
+        onClick={() => handleEditClick(service)}
+      >
+        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        Edit
+      </Menu.Item>
+      <Menu.Item
+        key="view"
+        className="filter-menu-item"
+        onClick={() => handleViewClick(service)}
+      >
+        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+        View
+      </Menu.Item>
+      <Menu.Item
+        key="delete"
+        className="filter-menu-item"
+        onClick={() => handleDeleteClick(service._id)}
+      >
+        <RiDeleteBin7Line
+          style={{ color: "var(--red-color)", marginRight: "4px" }}
+        />
+        Delete
+      </Menu.Item>
+    </Menu>
+  );
+
+  const renderServiceCard = (service) => (
+    <div className="col-lg-4" key={service._id}>
+      <div className="upcoming-event-card p-3">
+        <div className="action-icon-container">
+          <Dropdown overlay={() => sortMenu(service)} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical />
+            </button>
+          </Dropdown>
+        </div>
+
+        <div className="d-flex justify-content-center align-items-center mb-3">
+          <img src={service.thumbnail} alt={service.heading} />
+        </div>
+        <div>
+          <div className="d-flex justify-content-between mb-2">
+            <h4>{service.heading}</h4>
+          </div>
+          <p>{service.subHeading}</p>
+          <p>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: sanitizeContent(truncateText(service.content, 20)),
+              }}
+            ></span>
+          </p>{" "}
+        </div>
+      </div>
+    </div>
+  );
+
+  const CustomPrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", zIndex: "1000" }}
+        onClick={onClick}
+      >
+        &#8592;
+      </div>
+    );
+  };
+
+  const CustomNextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", zIndex: "1000" }}
+        onClick={onClick}
+      >
+        &#8594;
+      </div>
+    );
+  };
+
+  const sliderSettings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    arrows: true,
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
+  const fetchFacilityList = async () => {
+    try {
+      const response = await Instance.get("depcat/service");
+      dispatch(setService(response.data));
+    } catch (error) {
+      console.error("Error fetching facilities:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchFacilityList();
+  }, []);
+
+  return (
+    <div className="row mt-4">
+      <div className="marketing-categories-section">
+        <div className="row mt-4">
+          <div className="d-flex justify-content-between">
+            <h6>Department Services</h6>
+            <div className="d-flex gap-2">
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-service-lists")}
+              >
+                View all
+              </button>
+              <button
+                className="rfh-basic-button"
+                onClick={() => toggleModal("service")}
+              >
+                <GoPlus size={20} /> Add Services
+              </button>
+            </div>
+          </div>
+          <div className="mt-4">
+            <Slider {...sliderSettings}>
+              {servicesList && servicesList.length > 0 ? (
+                servicesList.map((service, index) =>
+                  renderServiceCard(service, index)
+                )
+              ) : (
+                <p>No data available</p>
+              )}
+            </Slider>
+          </div>
+          <AddService
+            open={modals.service}
+            handleCancel={() => toggleModal("service")}
+            serviceData={selectedService}
+          />
+          <EditService
+            open={modals.edit}
+            handleCancel={() => toggleModal("edit")}
+            serviceData={selectedService}
+          />
+          <ViewService
+            open={modals.view}
+            handleCancel={() => toggleModal("view")}
+            serviceData={selectedService}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ServiceList;

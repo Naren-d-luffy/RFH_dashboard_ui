@@ -9,40 +9,31 @@ import { addDepartment } from "../../Features/DepartmentSlice";
 import { showSuccessMessage } from "../../globalConstant";
 
 const { TextArea } = Input;
-
 const CreateDepartmentDetails = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [specialist, setSpecialist] = useState({
-    name: "",
-    designation: "",
-    location: "",
-    photo_url: null,
-  });
   const [successStories, setSuccessStories] = useState([]);
   const dispatch = useDispatch();
 
   const handleAddSuccessStory = () => {
     setSuccessStories([
       ...successStories,
-      { title: "", views: 0, video_thumbnail_url: "" },
+      {
+        title: "",
+        views: 0,
+        video_thumbnail_url: ""
+      }
     ]);
   };
-
   const resetForm = () => {
     setUploadedImage(null);
     setTitle("");
     setSubtitle("");
     setDescription("");
-    setSpecialist({
-      name: "",
-      designation: "",
-      location: "",
-      photo_url: null,
-    });
+   
     setSuccessStories([]);
   };
 
@@ -63,42 +54,38 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
       requestData.append("title", title);
       requestData.append("subtitle", subtitle);
       requestData.append("description", description);
-      requestData.append("specialistName", specialist.name);
-      requestData.append("specialistDesignation", specialist.designation);
-      requestData.append("specialistLocation", specialist.location);
-
-      if (specialist.photo_url) {
-        requestData.append("photo_url", specialist.photo_url);
-      }
-
       if (uploadedImage) {
         requestData.append("thumbnail", uploadedImage);
       }
 
-      successStories.forEach((story, index) => {
-        Object.entries(story).forEach(([key, value]) => {
-          requestData.append(`success_stories[${index}][${key}]`, value);
-        });
-      });
-
-      const response = await Instance.post("department/upload", requestData, {
+      const formattedSuccessStories = successStories.map(story => ({
+        video_thumbnail_url: story.video_thumbnail_url,
+        title: story.title,
+        views: parseInt(story.views)
+      }));
+  
+      requestData.append("success_stories", JSON.stringify(formattedSuccessStories));
+      const response = await Instance.post("/department", requestData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-
+  
       dispatch(addDepartment(response.data));
-
       message.success("Department created successfully!");
       showSuccessMessage("Department added successfully!");
       resetForm();
       handleCancel();
     } catch (error) {
-      console.error("Error during department creation:", error);
+      console.error("Error during department creation:", {
+        error: error,
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
       message.error("Failed to create department.");
     } finally {
       setIsLoading(false);
     }
   };
-
   return (
     <>
       {isLoading && <Loader />}
@@ -197,94 +184,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
               </div>
             )}
           </Form.Item>
-          <h5>Specialist Details</h5>
-          <Row gutter={16}>
-            <Col span={8}>
-              <Form.Item label="Name">
-                <Input
-                  value={specialist.name}
-                  onChange={(e) =>
-                    setSpecialist({ ...specialist, name: e.target.value })
-                  }
-                  placeholder="Add Name"
-                />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item label="Designation">
-                <Input
-                  value={specialist.designation}
-                  onChange={(e) =>
-                    setSpecialist({
-                      ...specialist,
-                      designation: e.target.value,
-                    })
-                  }
-                  placeholder="Add Designation"
-                />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item label="Location">
-                <Input
-                  value={specialist.location}
-                  onChange={(e) =>
-                    setSpecialist({ ...specialist, location: e.target.value })
-                  }
-                  placeholder="Add Location"
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Form.Item label="Photo Upload">
-            <Upload
-              listType="picture"
-              showUploadList={false}
-              beforeUpload={(file) => {
-                if (file) {
-                  setSpecialist({ ...specialist, photo_url: file });
-                }
-                return false;
-              }}
-              className="upload-users-image"
-            >
-              <p className="create-campaign-ant-upload-text">
-                Drop files here or click to upload
-              </p>
-              <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline />
-                <span style={{ color: "#727880" }}>Upload Image</span>
-              </span>
-            </Upload>
-            {specialist.photo_url && (
-              <div className="uploaded-image-preview d-flex gap-2">
-                <img
-                  src={URL.createObjectURL(specialist.photo_url)}
-                  alt="Specialist Preview"
-                  style={{
-                    width: "200px",
-                    height: "auto",
-                    marginTop: "10px",
-                    borderRadius: "5px",
-                  }}
-                />
-                <Button
-                  onClick={() =>
-                    setSpecialist({ ...specialist, photo_url: "" })
-                  }
-                  style={{
-                    marginTop: "10px",
-                    backgroundColor: "#e6f2ed",
-                    borderRadius: "50%",
-                    fontSize: "16px",
-                    padding: "4px 12px",
-                  }}
-                >
-                  <RiDeleteBin5Line className="model-image-upload-delete-icon" />
-                </Button>
-              </div>
-            )}
-          </Form.Item>
+         
           <Button
             onClick={handleAddSuccessStory}
             className="create-campaign-cancel-button"

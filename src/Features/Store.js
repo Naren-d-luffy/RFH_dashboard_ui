@@ -16,7 +16,7 @@ import readingMaterialsSlice from "./ReadingMaterialsSlice"
 import facilitySlice from "./FacilitySlice"
 import technologySlice from "./TechnologySlice"
 import blogSlice from "./BlogSlice"
-
+import serviceSlice from "./ServiceSlice"
 export default configureStore({
     reducer: {
         videos: hellodoctorSlice,
@@ -34,7 +34,8 @@ export default configureStore({
         doctorProfiles:doctorProfileSlice,
         readingmaterials:readingMaterialsSlice,
         facility:facilitySlice,
+        blog:blogSlice,
+        service:serviceSlice,
         technology:technologySlice,
-        blog:blogSlice
     },
 });
