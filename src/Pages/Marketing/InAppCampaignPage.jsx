@@ -6,6 +6,8 @@ import UpcomingEventList from "../../Components/Marketing/InAppCampaign/Upcoming
 import { FeaturedProgramsList } from "../../Components/Marketing/InAppCampaign/FeaturedPrograms/FeaturedProgramsList";
 import { LatestCampsList } from "../../Components/Marketing/InAppCampaign/LatestCamps/LatestCampsList";
 import OutstationClinicList from "../../Components/Marketing/InAppCampaign/OutstationClinic/OutstationClinicList";
+import RecommendedVideosList from "../../Components/Marketing/InAppCampaign/RecommendedVideos/RecommendedVideosList";
+
 import BlogsList from "../../Components/Marketing/InAppCampaign/Blogs/BlogList";
 
 const InAppCampaignPage = () => {
@@ -15,6 +17,7 @@ const InAppCampaignPage = () => {
         <InAppCampaigncards />
         <UpcomingEventList/>
         <HelloDoctorList/>
+        <RecommendedVideosList />
         <FeaturedProgramsList/>
         <LatestCampsList/>
         <OutstationClinicList/>

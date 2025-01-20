@@ -30,18 +30,22 @@ const OutstationClinicList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const handleViewCancel = () => setIsViewModalOpen(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const clinics = useSelector((state) => state.clinics.clinics?.data || []); 
 
   const handleCancel = () => setIsModalOpen(false);
   const handleEditCancel = () => setIsEditModalOpen(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const handleViewCancel = () => setIsViewModalOpen(false);
+
   const showEditModal = () => setIsEditModalOpen(true);
   const showViewModal = () => setIsViewModalOpen(true);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const showModal = () => setIsModalOpen(true);
-  const clinics = useSelector((state) => state.clinics.clinics || []);
+
   const itemsPerPage = 100;
+
   const truncateText = (text, wordLimit) => {
     if (!text) return "";
     const words = text.split(" ");
@@ -50,13 +54,14 @@ const OutstationClinicList = () => {
       : text;
   };
 
-  const fetchOutstationClinic = async (page) => {
+  const fetchOutstationClinic = async () => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/discover/clinic", {
-        params: { page, limit: itemsPerPage },
+        params: { page: 1, limit: itemsPerPage },
       });
-      dispatch(setOutstationClinic(response.data || []));
+      console.log("API response received:", response);
+      dispatch(setOutstationClinic(response.data || { data: [] })); 
     } catch (error) {
       console.error("Error fetching clinics:", error);
     } finally {
@@ -124,25 +129,18 @@ const OutstationClinicList = () => {
 
   const renderClinicCard = (clinic) => (
     <div className="col-lg-4" key={clinic._id}>
-      <div
-        className="outstation-clinic-upcoming-event-card p-3"
-        style={{ position: "relative" }}
-      >
-        <div className="treatment-info-icon-container">
-          <Dropdown overlay={sortMenu(clinic)} trigger={["click"]}>
-            <button className="action-icon-button">
-              <BsThreeDotsVertical />
-            </button>
-          </Dropdown>
-        </div>
-
+      <div className="outstation-clinic-upcoming-event-card p-3">
+        <Dropdown overlay={sortMenu(clinic)} trigger={["click"]}>
+          <button className="action-icon-button">
+            <BsThreeDotsVertical />
+          </button>
+        </Dropdown>
         <div className="d-flex justify-content-center align-items-center mb-3">
           <img
             src={clinic.image || "https://via.placeholder.com/150"}
             alt={clinic.name}
           />
         </div>
-
         <div className="outstation-clinic-data">
           <h4>{clinic.name}</h4>
           <div className="d-flex justify-content-between">
@@ -152,9 +150,7 @@ const OutstationClinicList = () => {
             <p>{clinic.experience} years experience</p>
           </div>
           <p>{clinic.patients} Patients Treated</p>
-          <div>
-            <span>{truncateText(clinic.about, 8)}</span>
-          </div>
+          <span>{truncateText(clinic.about, 8)}</span>
           <div className="d-flex justify-content-between">
             <p>
               <CiCalendarDate />{" "}
@@ -217,6 +213,7 @@ const OutstationClinicList = () => {
       },
     ],
   };
+
   return (
     <div className="container mt-4">
       <div className="marketing-categories-section">
@@ -237,7 +234,7 @@ const OutstationClinicList = () => {
           </div>
           <div className="mt-3">
             <Slider {...sliderSettings}>
-              {Object.values(clinics).map((clinic) => renderClinicCard(clinic))}
+              {clinics.map((clinic) => renderClinicCard(clinic))}
             </Slider>
           </div>
         </div>
@@ -258,3 +255,4 @@ const OutstationClinicList = () => {
 };
 
 export default OutstationClinicList;
+
