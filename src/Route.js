@@ -54,6 +54,10 @@ import ViewAllCampTable from "./Components/Marketing/InAppCampaign/LatestCamps/V
 import Register from "./Components/Auth/Register";
 import SignUpOtpScreen from "./Components/Auth/SignUpOtp";
 import ReadingMaterialsList from "./Components/PatientEducation/EducationResources/ReadingMaterials/ReadingMaterialsTable";
+import ConditionWeTreatList from "./Components/DepartmentDetails/ConditionWeTreat/ConditionWeTreatList";
+import FacilityList from "./Components/DepartmentDetails/Facility/FacilityList";
+import ServicesList from "./Components/DepartmentDetails/Services/ServicesList";
+import TechnologiesList from "./Components/DepartmentDetails/Technology/TechnologiesList";
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -226,6 +230,10 @@ export const AppRouter = () => {
           <Route path="/view-all-camp-table" element={<ViewAllCampTable />} />
 
           <Route path="/view-all-readingmaterials" element={<ReadingMaterialsList />} />
+          <Route path="/department-conditions" element={<ConditionWeTreatList />} />
+          <Route path="/department-facility" element={<FacilityList />} />
+          <Route path="/department-services" element={<ServicesList />} />
+          <Route path="/department-technology" element={<TechnologiesList />} />
 
         </Route>
       </Routes>
