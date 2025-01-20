@@ -33,7 +33,7 @@ const CommunityPost = () => {
       const response = await Instance.get(`/post`, {
         params: { page, limit: itemsPerPage },
       });
-
+      console.log("tttttt",response)
       if (response.status === 200) {
         const { data, total } = response.data;
         dispatch(setPost(data));
