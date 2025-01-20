@@ -97,7 +97,6 @@ const EducationCategoriesGastroIllness = () => {
       const response = await Instance.get("/gastro", {
         params: { page, limit: itemsPerPage },
       });
-      console.log("gastroIllness:", response.data.gastros);
       dispatch(setGastroIllness(response.data.gastros || []));
       setGastroIllnessList(response.data.gastros || []);
       setIsLoading(false);
