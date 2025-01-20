@@ -3,32 +3,31 @@ import { GoPlus } from "react-icons/go";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import AddTreatmentsInfo from "./AddTreatmentsInfo";
+import AddReadingMaterials from "./AddReadingMaterials";
 import { Dropdown, Menu } from "antd";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
-import EditTreatmentsInfo from "./EditTreatmentsInfo";
+import EditReadingMaterials from "./EditReadingMaterials";
 import { FiEye } from "react-icons/fi";
-import ViewTreatmentsInfo from "./ViewTreatmentsInfo";
+import ViewReadingMaterials from "./ViewReadingMaterials";
 import {
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
 import {
-  deleteTreatment,
-  setTreatment,
-} from "../../../../Features/TreatmentInfoSlice";
+  deleteReadingMaterials,
+  setReadingMaterials,
+} from "../../../../Features/ReadingMaterialsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../../../Loader";
-const EducationCategoriesTreatmentsInfo = () => {
+const CategoriesReadingMaterials = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [selectedTreatment, setSelectedTreatment] = useState(null);
-  const [treatmentList, setTreatmentList] = useState([]);
+  const [selectedReadingmaterial, setSelectedReadingmaterial] = useState(null);
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
   const showEditModal = () => setIsEditModalOpen(true);
@@ -36,7 +35,8 @@ const EducationCategoriesTreatmentsInfo = () => {
   const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
   const [isLoading, setIsLoading] = useState(false);
-  const treatmentData = useSelector((state) => state.treatments.treatments);
+
+  const readingMaterialsData = useSelector(state => state.readingmaterials.readingmaterials); 
   const navigate = useNavigate();
 
   const itemsPerPage = 100;
@@ -49,13 +49,13 @@ const EducationCategoriesTreatmentsInfo = () => {
       : text;
   };
 
-  const sortMenu = (treatment) => (
+  const sortMenu = (readingmaterial) => (
     <Menu>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
         onClick={() => {
-          setSelectedTreatment(treatment);
+          setSelectedReadingmaterial(readingmaterial);
           showEditModal();
         }}
       >
@@ -66,7 +66,7 @@ const EducationCategoriesTreatmentsInfo = () => {
         key="view"
         className="filter-menu-item"
         onClick={() => {
-          setSelectedTreatment(treatment);
+          setSelectedReadingmaterial(readingmaterial);
           showViewModal();
         }}
       >
@@ -76,7 +76,7 @@ const EducationCategoriesTreatmentsInfo = () => {
       <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteTreatment(treatment._id)}
+        onClick={() => deleteReadingMaterial(readingmaterial._id)}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -86,47 +86,46 @@ const EducationCategoriesTreatmentsInfo = () => {
     </Menu>
   );
 
-  const handleDeleteTreatment = (_id) => {
+  const deleteReadingMaterial = (_id) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/education/${_id}`);
+          const response = await Instance.delete(`/reading-material/${_id}`);
           if (response.status === 200) {
             showSuccessMessage("Deleted successfully", "Details deleted");
-            dispatch(deleteTreatment(_id));
+            dispatch(deleteReadingMaterials(_id));
           }
         } catch (error) {
-          console.error("Error deleting treatment:", error);
+          console.error("Error deleting readingmaterial:", error);
         }
       },
     });
   };
-  const fetchTreatmentsInfo = async (page) => {
+  const fetchReadingMaterials = async (page) => {
     setIsLoading(true);
     try {
-      const response = await Instance.get(`/education`, {
+      const response = await Instance.get(`/reading-material`, {
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setTreatment(response.data.educations));
-      setTreatmentList(response.data.educations || []);
+      dispatch(setReadingMaterials(response.data));      
       setIsLoading(false);
     } catch (error) {
-      console.error("Error fetching treatments:", error);
+      console.error("Error fetching reading materials:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchTreatmentsInfo();
+    fetchReadingMaterials();
   }, []);
 
-  const renderImageCard = (treatment) => (
-    <div className="col-lg-4" key={treatment._id}>
+  const renderImageCard = (readingmaterial) => (
+    <div className="col-lg-4" key={readingmaterial._id}>
       <div className="upcoming-event-card p-3" style={{ position: "relative" }}>
         <div className="treatment-info-icon-container">
-          <Dropdown overlay={sortMenu(treatment)} trigger={["click"]}>
+          <Dropdown overlay={sortMenu(readingmaterial)} trigger={["click"]}>
             <button className="action-icon-button">
               <BsThreeDotsVertical />
             </button>
@@ -134,13 +133,13 @@ const EducationCategoriesTreatmentsInfo = () => {
         </div>
 
         <div className="d-flex justify-content-center align-items-center mb-3">
-          <img src={treatment.thumbnail} alt={treatment.title} />
+          <img src={readingmaterial.thumbnail} alt={readingmaterial.title} />
         </div>
         <div>
           <div className="d-flex justify-content-between mb-2">
-            <h4>{treatment.title}</h4>
+            <h4>{readingmaterial.title}</h4>
           </div>
-          <p>{truncateText(treatment.description, 30)}</p>
+          <p>{truncateText(readingmaterial.description, 30)}</p>
         </div>
       </div>
     </div>
@@ -174,7 +173,7 @@ const EducationCategoriesTreatmentsInfo = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -196,11 +195,11 @@ const EducationCategoriesTreatmentsInfo = () => {
     <div className="container">
       <div className="row mt-4 marketing-categories-section">
         <div className="d-flex justify-content-between">
-          <h6>Treatments Info</h6>
+          <h6>Reading Materials</h6>
           <div className="d-flex gap-2">
             <button
               className="rfh-view-all-button"
-              onClick={() => navigate("/view-all-treatments")}
+              onClick={() => navigate("/view-all-readingmaterials")}
             >
               View all
             </button>
@@ -212,23 +211,23 @@ const EducationCategoriesTreatmentsInfo = () => {
         {isLoading && <Loader />}
         <div className="row mt-3">
           <Slider {...sliderSettings}>
-            {treatmentData.map((treatment) => renderImageCard(treatment))}
+            {readingMaterialsData.map((readingmaterial) => renderImageCard(readingmaterial))}
           </Slider>
         </div>
       </div>
-      <AddTreatmentsInfo open={isModalOpen} handleCancel={handleCancel} />
-      <EditTreatmentsInfo
+      <AddReadingMaterials open={isModalOpen} handleCancel={handleCancel} />
+      <EditReadingMaterials
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
-        treatmentData={selectedTreatment}
+        readingmaterialsData={selectedReadingmaterial}
       />
-      <ViewTreatmentsInfo
+      <ViewReadingMaterials
         open={isViewModalOpen}
         handleCancel={handleViewCancel}
-        treatmentData={selectedTreatment}
+        readingmaterialsData={selectedReadingmaterial}
       />
     </div>
   );
 };
 
-export default EducationCategoriesTreatmentsInfo;
+export default CategoriesReadingMaterials;

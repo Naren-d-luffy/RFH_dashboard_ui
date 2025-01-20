@@ -12,40 +12,42 @@ import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
-import DOMPurify from "dompurify";
-import AddEventsGastroIllness from "./AddEventsGastroIllness";
-import EditEventsGastroIllness from "./EditEventsGastroIllness";
-import ViewEventsGastroIllness from "./ViewEventsGastroIllness";
 import {
-  deleteGastroIllness,
-  setGastroIllness,
-} from "../../../../Features/GastroIllnessSlice";
-import { Navigate, useNavigate } from "react-router-dom";
+  deleteReadingMaterials,
+  setReadingMaterials,
+} from "../../../../Features/ReadingMaterialsSlice";
+import DOMPurify from "dompurify";
+import EditReadingMaterials from "./EditReadingMaterials";
+import ViewReadingMaterials from "./ViewReadingMaterials";
+import AddReadingMaterials from "./AddReadingMaterials";
+import { useNavigate } from "react-router-dom";
 
-const GastroIllnessTable = () => {
+const ReadingMaterialsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [EventList, setEventList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedReadingmaterial, setSelectedReadingmaterial] = useState(null);
+  const navigate = useNavigate();
 
-  const EventData = useSelector((state) => state.gastroIllness.gastroIllness);
+  const readingMaterialsData = useSelector(
+    (state) => state.readingmaterials.readingmaterials
+  );
+
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
-  const navigate = useNavigate();
-  const showEditModal = (Event) => {
-    setSelectedEvent(Event);
+  const showEditModal = (readingmaterial) => {
+    setSelectedReadingmaterial(readingmaterial);
     setIsEditModalOpen(true);
   };
   const handleEditCancel = () => setIsEditModalOpen(false);
-  const showViewModal = (Event) => {
-    setSelectedEvent(Event);
+  const showViewModal = (readingmaterial) => {
+    setSelectedReadingmaterial(readingmaterial);
     setIsViewModalOpen(true);
   };
   const handleViewCancel = () => setIsViewModalOpen(false);
@@ -68,50 +70,49 @@ const GastroIllnessTable = () => {
         : textContent;
     return truncatedText;
   };
-  const handleDeleteGastroIllness = (_id) => {
+  const deleteReadingMaterial = (_id) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/gastro/${_id}`);
+          const response = await Instance.delete(`/reading-material/${_id}`);
           if (response.status === 200) {
             showSuccessMessage("Deleted successfully", "Details deleted");
-            dispatch(deleteGastroIllness(_id));
+            dispatch(deleteReadingMaterials(_id));
           }
         } catch (error) {
-          console.error("Error deleting event:", error);
+          console.error("Error deleting readingmaterial:", error);
         }
       },
     });
   };
-  const fetchGastroIllnessInfo = async (page) => {
+  const fetchReadingMaterials = async (page) => {
     setIsLoading(true);
     try {
-      const response = await Instance.get(`/gastro`, {
+      const response = await Instance.get(`/reading-material`, {
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setGastroIllness(response?.data?.gastros));
-      setGastroIllness(response.data?.gastros || []);
-      setTotalRows(response.data?.totalGastros || 0);
+      dispatch(setReadingMaterials(response.data));
+      setTotalRows(response.data || 0);
     } catch (error) {
-      console.error("Error fetching treatments:", error);
+      console.error("Error fetching reading materials:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchGastroIllnessInfo(currentPage);
+    fetchReadingMaterials(currentPage);
   }, [currentPage]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return EventData;
-    return EventData.filter((Event) =>
-      `${Event.title}{}${Event.description}`
+    if (searchText.trim() === "") return readingMaterialsData;
+    return readingMaterialsData.filter((readingmaterial) =>
+      `${readingmaterial.title}{}${readingmaterial.description}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
-  }, [searchText, EventData]);
+  }, [searchText, readingMaterialsData]);
 
   const columns = [
     {
@@ -159,7 +160,7 @@ const GastroIllnessTable = () => {
           </div>
           <div
             className="campaign-performance-table-delete-icon"
-            onClick={() => handleDeleteGastroIllness(record._id)}
+            onClick={() => deleteReadingMaterial(record._id)}
           >
             <FiTrash2 />
           </div>
@@ -195,11 +196,11 @@ const GastroIllnessTable = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : EventData.length > 0 ? (
+      ) : readingMaterialsData.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>GastroIllness Info</h3>
+              <h3>Reading Material</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -207,7 +208,7 @@ const GastroIllnessTable = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add Event
+                Add
               </button>
             </div>
           </div>
@@ -267,33 +268,33 @@ const GastroIllnessTable = () => {
             <img src={Empty_survey_image} alt="" />
           </div>
           <div className="no-data-container-text d-flex flex-column justify-content-center">
-            <h4>No Events Found</h4>
+            <h4>No Treatments Found</h4>
             <p>
-              Currently, there are no events available to display.
+              Currently, there are no Treatments available to display.
               <br /> Please check back later or contact support for further
               assistance if this is an error.
             </p>
             <div className="d-flex justify-content-center">
               <button className="rfh-basic-button" onClick={showModal}>
-                <FaPlus /> Create News
+                <FaPlus /> Create Treatment
               </button>
             </div>
           </div>
         </div>
       )}
-      <AddEventsGastroIllness open={isModalOpen} handleCancel={handleCancel} />
-      <EditEventsGastroIllness
+      <AddReadingMaterials open={isModalOpen} handleCancel={handleCancel} />
+      <EditReadingMaterials
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
-        EventData={selectedEvent}
+        readingmaterialsData={selectedReadingmaterial}
       />
-      <ViewEventsGastroIllness
+      <ViewReadingMaterials
         open={isViewModalOpen}
         handleCancel={handleViewCancel}
-        EventData={selectedEvent}
+        readingmaterialsData={selectedReadingmaterial}
       />
     </div>
   );
 };
 
-export default GastroIllnessTable;
+export default ReadingMaterialsList;

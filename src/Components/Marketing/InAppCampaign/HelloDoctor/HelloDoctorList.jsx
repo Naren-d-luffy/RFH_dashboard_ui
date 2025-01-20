@@ -188,7 +188,6 @@ export const HelloDoctorList = () => {
   const fetchVideoList = async () => {
     try {
       const response = await Instance.get("/videos");
-      console.log(response, "videos");
       setVideoList(response.data);
       dispatch(setHelloDoctorVideos(response.data));
     } catch (error) {
