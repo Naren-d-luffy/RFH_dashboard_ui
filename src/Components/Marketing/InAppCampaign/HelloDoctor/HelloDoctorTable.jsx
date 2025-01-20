@@ -95,8 +95,8 @@ const HelloDoctorTable = () => {
   }, [currentPage]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return EventData;
-    return EventData.filter((video) =>
+    if (searchText.trim() === "") return Object.values(EventData);
+    return Object.values(EventData).filter((video) =>
       `${video.title} ${video.description}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
@@ -174,7 +174,7 @@ const HelloDoctorTable = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : EventData.length > 0 ? (
+      ) : Object.values(EventData).length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">

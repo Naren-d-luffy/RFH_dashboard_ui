@@ -17,8 +17,8 @@ const VirtualManagementTable = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await Instance.get("/doctor");
-        setDoctors(response.data.doctor); // Adjust response.data if the API structure is different
+        const response = await Instance.get("/doctor");        
+        setDoctors(response.data.doctors); 
       } catch (error) {
         console.error("Error fetching doctors:", error);
       } finally {

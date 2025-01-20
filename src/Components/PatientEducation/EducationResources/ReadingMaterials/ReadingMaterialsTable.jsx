@@ -243,7 +243,8 @@ const ReadingMaterialsList = () => {
                 pagination={{
                   current: currentPage,
                   pageSize: itemsPerPage,
-                  total: totalRows,
+                  // total: totalRows,
+                  total: dataSource.length,
                   onChange: (page) => setCurrentPage(page),
                   showSizeChanger: false,
                 }}
