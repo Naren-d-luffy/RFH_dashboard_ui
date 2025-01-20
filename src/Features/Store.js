@@ -13,6 +13,7 @@ import discovereventSlice from "./DiscoverEventsCard"
 import campSlice from "./CampSlice"
 import doctorProfileSlice from "./DoctorProfileSlice"
 import readingMaterialsSlice from "./ReadingMaterialsSlice"
+import recommendedVideosSlice from "./RecommendedVideosSlice"
 
 export default configureStore({
     reducer: {
@@ -29,7 +30,7 @@ export default configureStore({
         discoverevent: discovereventSlice,
         camps:campSlice,
         doctorProfiles:doctorProfileSlice,
-        readingmaterials:readingMaterialsSlice
-
+        readingmaterials:readingMaterialsSlice,
+        recommendedvideos: recommendedVideosSlice,
     },
 });

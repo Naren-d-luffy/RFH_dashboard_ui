@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, Input, message, Col, Row, TextArea, Upload } from "antd";
+import { Button, Modal, Form, Input, message, Col, Row, Upload, Radio } from "antd"; 
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
 import { editOutstationClinic } from "../../../../Features/OutstationClinicSlice";
 import Loader from "../../../../Loader";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
-
 
 const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
   const { TextArea } = Input;
@@ -19,6 +18,7 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
   const [experience, setExperience] = useState("");
   const [description, setDescription] = useState("");
   const [timing, setTiming] = useState("");
+  const [clinicType, setClinicType] = useState("");
   const [uploadedImage, setUploadedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -33,7 +33,8 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
       setExperience(EventData.experience || "");
       setDescription(EventData.about || "");
       setTiming(EventData.timing || "");
-      setUploadedImage(EventData.image || null); 
+      setClinicType(EventData.type || "outstation");
+      setUploadedImage(EventData.image || null);
     }
   }, [EventData]);
 
@@ -55,7 +56,8 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
       !patients ||
       !experience ||
       !description ||
-      !timing
+      !timing ||
+      !clinicType 
     ) {
       message.error("Please fill in all required fields.");
       return;
@@ -72,6 +74,7 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
       formData.append("experience", experience.toString());
       formData.append("about", description);
       formData.append("timing", timing);
+      formData.append("type", clinicType); 
 
       if (uploadedImage) {
         formData.append("image", uploadedImage);
@@ -206,6 +209,17 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
                 <span className="create-campaign-input-span">Timing</span>
               </Form.Item>
             </Col>
+            <Col span={12}>
+              <Form.Item label="Clinic Type">
+                <Radio.Group
+                  onChange={(e) => setClinicType(e.target.value)}
+                  value={clinicType} 
+                >
+                  <Radio value="outstation">Outstation</Radio>
+                  <Radio value="speciality">Speciality</Radio>
+                </Radio.Group>
+              </Form.Item>
+            </Col>
           </Row>
           <Form.Item>
             <Input
@@ -216,8 +230,6 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
             />
             <span className="create-campaign-input-span">Address</span>
           </Form.Item>
-
-          {/* Image Upload Section */}
           <Form.Item>
             <Upload
               listType="picture"
@@ -272,3 +284,4 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
 };
 
 export default EditOutstationClinic;
+
