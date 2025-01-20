@@ -78,17 +78,11 @@ const AddEventsList = ({ open, handleCancel }) => {
 
     try {
       const response = await Instance.post("/discover/card", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
       });
 
       if (response?.status === 200 || response?.status === 201) {
-        console.log("add", response);
         handleCancel();
-        console.log("Dispatching addEvent with payload:", response.data._doc);
-        dispatch(addEvent(response.data._doc));
-
+        dispatch(addEvent(response.data.data));
         showSuccessMessage("Event card added successfully!");
         setTitle("");
         setDescription("");

@@ -77,10 +77,10 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
       formData.append("thumbnail", thumbnailImage);
       
       const response = await Instance.put(`/education/${treatmentData._id}`, formData);
-      if (response?.status === 200 || response?.status === 201) {
+      if (response?.status === 200 || response?.status === 201) {        
         handleCancel();
-        dispatch(editTreatment(response.data))
-        showSuccessMessage("Treatment Info Added successfully!");
+        dispatch(editTreatment(response.data._doc))
+        showSuccessMessage("Treatment Info updated successfully!");
         setTitle("");
         setDescription("");
         setContent("");
@@ -121,7 +121,7 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
             className="create-campaign-save-button"
             loading={isLoading}
           >
-            Save
+            Update
           </Button>,
         ]}
       >
