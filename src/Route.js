@@ -54,6 +54,7 @@ import ViewAllCampTable from "./Components/Marketing/InAppCampaign/LatestCamps/V
 import Register from "./Components/Auth/Register";
 import SignUpOtpScreen from "./Components/Auth/SignUpOtp";
 import ReadingMaterialsList from "./Components/PatientEducation/EducationResources/ReadingMaterials/ReadingMaterialsTable";
+
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -226,7 +227,6 @@ export const AppRouter = () => {
           <Route path="/view-all-camp-table" element={<ViewAllCampTable />} />
 
           <Route path="/view-all-readingmaterials" element={<ReadingMaterialsList />} />
-
         </Route>
       </Routes>
     </BrowserRouter>
