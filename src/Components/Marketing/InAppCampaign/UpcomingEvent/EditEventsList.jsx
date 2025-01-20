@@ -95,16 +95,12 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
 
     try {
       const response = await Instance.put(`/discover/card/${eventsData?._id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
       });
 
-      if (response?.status === 200 || response?.status === 201) {
+      if (response?.status === 200 || response?.status === 201) {        
         handleCancel(); 
-        dispatch(editEvent(response.data));
+        dispatch(editEvent(response.data.data));
         showSuccessMessage("Event updated successfully!");
-   
         setTitle("");
         setDescription("");
         setLink("");

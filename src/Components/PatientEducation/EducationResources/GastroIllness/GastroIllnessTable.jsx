@@ -33,7 +33,6 @@ const GastroIllnessTable = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const EventData = useSelector((state) => state.gastroIllness.gastroIllness);
-  console.log(EventData, "Eventdata");
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
@@ -91,7 +90,6 @@ const GastroIllnessTable = () => {
       const response = await Instance.get(`/gastro`, {
         params: { page, limit: itemsPerPage },
       });
-      console.log(response.data);
       dispatch(setGastroIllness(response?.data?.gastros));
       setGastroIllness(response.data?.gastros || []);
       setTotalRows(response.data?.totalGastros || 0);

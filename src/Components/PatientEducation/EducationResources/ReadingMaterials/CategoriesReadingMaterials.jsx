@@ -1,39 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import AddReadingMaterials from "./AddReadingMaterials";
 import { Dropdown, Menu } from "antd";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import AddFeaturesModal from "./AddFeaturedProgram";
-import { useNavigate } from "react-router-dom";
 import { Instance } from "../../../../AxiosConfig";
-import { useDispatch, useSelector } from "react-redux";
+import EditReadingMaterials from "./EditReadingMaterials";
 import { FiEye } from "react-icons/fi";
+import ViewReadingMaterials from "./ViewReadingMaterials";
 import {
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
-import EditFeaturesModal from "./EditFetauredProgram";
-import { deleteFeature, setFeature } from "../../../../Features/FeatureSlice";
-import ViewFeaturedModal from "./ViewFeaturedProgram";
-
-export const FeaturedProgramsList = () => {
+import {
+  deleteReadingMaterials,
+  setReadingMaterials,
+} from "../../../../Features/ReadingMaterialsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Loader from "../../../../Loader";
+const CategoriesReadingMaterials = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [selectedReadingmaterial, setSelectedReadingmaterial] = useState(null);
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
   const showEditModal = () => setIsEditModalOpen(true);
   const handleEditCancel = () => setIsEditModalOpen(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedFeature, setSelectedFeature] = useState(null);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [featureList, setFeatureList] = useState([]);
   const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
-  const FeaturesData = useSelector((state) => state.features.features);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const readingMaterialsData = useSelector(state => state.readingmaterials.readingmaterials); 
   const navigate = useNavigate();
 
   const itemsPerPage = 100;
@@ -46,13 +49,13 @@ export const FeaturedProgramsList = () => {
       : text;
   };
 
-  const sortMenu = (feature) => (
+  const sortMenu = (readingmaterial) => (
     <Menu>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
         onClick={() => {
-          setSelectedFeature(feature);
+          setSelectedReadingmaterial(readingmaterial);
           showEditModal();
         }}
       >
@@ -63,7 +66,7 @@ export const FeaturedProgramsList = () => {
         key="view"
         className="filter-menu-item"
         onClick={() => {
-          setSelectedFeature(feature);
+          setSelectedReadingmaterial(readingmaterial);
           showViewModal();
         }}
       >
@@ -73,7 +76,7 @@ export const FeaturedProgramsList = () => {
       <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteFeature(feature._id)}
+        onClick={() => deleteReadingMaterial(readingmaterial._id)}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -83,50 +86,46 @@ export const FeaturedProgramsList = () => {
     </Menu>
   );
 
-  const handleDeleteFeature = (_id) => {
+  const deleteReadingMaterial = (_id) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(
-            `/discover/featuredProgram/${_id}`
-          );
+          const response = await Instance.delete(`/reading-material/${_id}`);
           if (response.status === 200) {
             showSuccessMessage("Deleted successfully", "Details deleted");
-            dispatch(deleteFeature(_id));
-            console.log(response);
+            dispatch(deleteReadingMaterials(_id));
           }
         } catch (error) {
-          console.error("Error deleting feature:", error);
+          console.error("Error deleting readingmaterial:", error);
         }
       },
     });
   };
-  const fetchFeaturesInfo = async (page) => {
+  const fetchReadingMaterials = async (page) => {
     setIsLoading(true);
     try {
-      const response = await Instance.get(`/discover/featuredProgram`, {
+      const response = await Instance.get(`/reading-material`, {
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setFeature(response.data));
-      setFeatureList(response.data || []);
+      dispatch(setReadingMaterials(response.data));      
       setIsLoading(false);
     } catch (error) {
-      console.error("Error fetching Features:", error);
+      console.error("Error fetching reading materials:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchFeaturesInfo();
+    fetchReadingMaterials();
   }, []);
 
-  const renderFeatureCard = (feature) => (
-    <div className="col-lg-4" key={feature._id}>
+  const renderImageCard = (readingmaterial) => (
+    <div className="col-lg-4" key={readingmaterial._id}>
       <div className="upcoming-event-card p-3" style={{ position: "relative" }}>
         <div className="treatment-info-icon-container">
-          <Dropdown overlay={sortMenu(feature)} trigger={["click"]}>
+          <Dropdown overlay={sortMenu(readingmaterial)} trigger={["click"]}>
             <button className="action-icon-button">
               <BsThreeDotsVertical />
             </button>
@@ -134,13 +133,13 @@ export const FeaturedProgramsList = () => {
         </div>
 
         <div className="d-flex justify-content-center align-items-center mb-3">
-          <img src={feature.thumbnail} alt={feature.title} />
+          <img src={readingmaterial.thumbnail} alt={readingmaterial.title} />
         </div>
         <div>
           <div className="d-flex justify-content-between mb-2">
-            <h4>{feature.title}</h4>
+            <h4>{readingmaterial.title}</h4>
           </div>
-          <p>{truncateText(feature.description, 30)}</p>
+          <p>{truncateText(readingmaterial.description, 30)}</p>
         </div>
       </div>
     </div>
@@ -174,7 +173,7 @@ export const FeaturedProgramsList = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -193,41 +192,42 @@ export const FeaturedProgramsList = () => {
   };
 
   return (
-    <div className="row mt-4">
-      <div className="marketing-categories-section">
-        <div className="row mt-4">
-          <div className="d-flex justify-content-between">
-            <h6>Featured Programs</h6>
-            <div className="d-flex gap-2">
-              <button
-                className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-features")}
-              >
-                View all
-              </button>
-              <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} /> Add Program
-              </button>
-            </div>
+    <div className="container">
+      <div className="row mt-4 marketing-categories-section">
+        <div className="d-flex justify-content-between">
+          <h6>Reading Materials</h6>
+          <div className="d-flex gap-2">
+            <button
+              className="rfh-view-all-button"
+              onClick={() => navigate("/view-all-readingmaterials")}
+            >
+              View all
+            </button>
+            <button className="rfh-basic-button" onClick={showModal}>
+              <GoPlus size={20} /> Add
+            </button>
           </div>
-          <div className="mt-4">
-            <Slider {...sliderSettings}>
-              {Object.values(FeaturesData).map((feature) => renderFeatureCard(feature))}
-            </Slider>
-          </div>
-          <AddFeaturesModal open={isModalOpen} handleCancel={handleCancel} />
         </div>
-        <EditFeaturesModal
-          open={isEditModalOpen}
-          handleCancel={handleEditCancel}
-          featuresData={selectedFeature}
-        />
-        <ViewFeaturedModal
-          open={isViewModalOpen}
-          handleCancel={handleViewCancel}
-          featuresData={selectedFeature}
-        />
+        {isLoading && <Loader />}
+        <div className="row mt-3">
+          <Slider {...sliderSettings}>
+            {readingMaterialsData.map((readingmaterial) => renderImageCard(readingmaterial))}
+          </Slider>
+        </div>
       </div>
+      <AddReadingMaterials open={isModalOpen} handleCancel={handleCancel} />
+      <EditReadingMaterials
+        open={isEditModalOpen}
+        handleCancel={handleEditCancel}
+        readingmaterialsData={selectedReadingmaterial}
+      />
+      <ViewReadingMaterials
+        open={isViewModalOpen}
+        handleCancel={handleViewCancel}
+        readingmaterialsData={selectedReadingmaterial}
+      />
     </div>
   );
 };
+
+export default CategoriesReadingMaterials;

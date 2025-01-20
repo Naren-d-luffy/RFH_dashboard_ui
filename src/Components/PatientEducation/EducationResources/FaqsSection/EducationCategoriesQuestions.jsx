@@ -34,8 +34,6 @@ const EducationCategoriesQuestions = () => {
   };
 
   const faqData = useSelector((state) => state.faq.faqs);
-  console.log("FAQs Data:", faqData);
-
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
 

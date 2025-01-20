@@ -1,0 +1,76 @@
+import React, { useState } from "react";
+import { Modal, Button, Form, Input } from "antd";
+import Loader from "../../../Loader";
+import { Instance } from "../../../AxiosConfig";
+import { showErrorMessage, showSuccessMessage } from "../../../globalConstant";
+
+const AddTermsModal = ({ visible, onClose }) => {
+  const [form] = Form.useForm();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    try {
+      const values = await form.validateFields();
+      const payload = {
+        title: values.title,
+        content: values.content, // Added content to the payload
+      };
+
+      setIsLoading(true);
+      const response = await Instance.post("/terms/67879866307e0dc54d1b828d", payload);
+      console.log("response", response);
+      showSuccessMessage("Terms and conditions added successfully!");
+      onClose();
+      form.resetFields();
+    } catch (error) {
+      console.error("Failed to add terms and conditions:", error);
+      showErrorMessage(error.response?.data?.message || "Something went wrong!");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <>
+      {isLoading && <Loader />}
+      <Modal
+        visible={visible}
+        title={<span className="create-campaign-modal-title">Add Terms and Conditions</span>}
+        onCancel={onClose}
+        footer={[
+          <Button key="back" onClick={onClose} className="create-campaign-cancel-button">
+            Cancel
+          </Button>,
+          <Button
+            key="save"
+            onClick={handleSubmit}
+            className="create-campaign-save-button"
+            loading={isLoading}
+          >
+            Save
+          </Button>,
+        ]}
+      >
+        <Form form={form} layout="vertical">
+          <Form.Item
+            name="title"
+            label="Clause Title"
+            rules={[{ required: true, message: "Please enter a title" }]}
+          >
+            <Input placeholder="Clause Title" />
+          </Form.Item>
+
+          <Form.Item
+            name="content"
+            label="Clause Content"
+            rules={[{ required: true, message: "Please enter content" }]}
+          >
+            <Input.TextArea placeholder="Clause Content" />
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
+  );
+};
+
+export default AddTermsModal;

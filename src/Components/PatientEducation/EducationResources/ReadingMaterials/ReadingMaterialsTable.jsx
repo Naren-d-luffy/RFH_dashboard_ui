@@ -1,45 +1,56 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Table, Dropdown, Button, Space } from "antd";
-import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
-import DOMPurify from "dompurify";
-import { useNavigate } from "react-router-dom";
 import {
-  deleteHelloDoctorVideos,
-  setHelloDoctorVideos,
-} from "../../../../Features/HelloDoctorSlice";
-import AddVideo from "./AddVideo";
-import EditVideo from "./EditVideo";
+  deleteReadingMaterials,
+  setReadingMaterials,
+} from "../../../../Features/ReadingMaterialsSlice";
+import DOMPurify from "dompurify";
+import EditReadingMaterials from "./EditReadingMaterials";
+import ViewReadingMaterials from "./ViewReadingMaterials";
+import AddReadingMaterials from "./AddReadingMaterials";
+import { useNavigate } from "react-router-dom";
 
-const HelloDoctorTable = () => {
+const ReadingMaterialsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
-  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedReadingmaterial, setSelectedReadingmaterial] = useState(null);
+  const navigate = useNavigate();
 
-  const EventData = useSelector((state) => state.videos.videos);
+  const readingMaterialsData = useSelector(
+    (state) => state.readingmaterials.readingmaterials
+  );
+
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
-  const navigate = useNavigate();
-
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
-
-  const showEditModal = (video) => {
-    setSelectedVideo(video);
+  const showEditModal = (readingmaterial) => {
+    setSelectedReadingmaterial(readingmaterial);
     setIsEditModalOpen(true);
   };
   const handleEditCancel = () => setIsEditModalOpen(false);
+  const showViewModal = (readingmaterial) => {
+    setSelectedReadingmaterial(readingmaterial);
+    setIsViewModalOpen(true);
+  };
+  const handleViewCancel = () => setIsViewModalOpen(false);
 
   const truncateText = (text, wordLimit = 15) => {
     if (!text) return "";
@@ -48,88 +59,99 @@ const HelloDoctorTable = () => {
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
   };
-
   const truncateHTML = (htmlContent, wordLimit) => {
     if (!htmlContent) return "";
     const sanitizedContent = DOMPurify.sanitize(htmlContent);
     const textContent = sanitizedContent.replace(/<[^>]*>/g, "");
     const words = textContent.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : textContent;
+    const truncatedText =
+      words.length > wordLimit
+        ? words.slice(0, wordLimit).join(" ") + "..."
+        : textContent;
+    return truncatedText;
   };
-
-  const handleDeleteHelloDoctorVideo = (_id) => {
+  const deleteReadingMaterial = (_id) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/videos/${_id}`);
-          if (response.status === 200 || response.status === 204) {
-            dispatch(deleteHelloDoctorVideos(_id));
+          const response = await Instance.delete(`/reading-material/${_id}`);
+          if (response.status === 200) {
+            showSuccessMessage("Deleted successfully", "Details deleted");
+            dispatch(deleteReadingMaterials(_id));
           }
         } catch (error) {
-          console.error("Error deleting video:", error);
+          console.error("Error deleting readingmaterial:", error);
         }
       },
     });
   };
-
-  const fetchHelloDoctorVideoInfo = async (page) => {
+  const fetchReadingMaterials = async (page) => {
     setIsLoading(true);
     try {
-      const response = await Instance.get(`/videos`, {
+      const response = await Instance.get(`/reading-material`, {
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setHelloDoctorVideos(response.data));
-      setTotalRows(response.data.total || 0);
+      dispatch(setReadingMaterials(response.data));
+      setTotalRows(response.data || 0);
     } catch (error) {
-      console.error("Error fetching videos:", error);
+      console.error("Error fetching reading materials:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchHelloDoctorVideoInfo(currentPage);
+    fetchReadingMaterials(currentPage);
   }, [currentPage]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return Object.values(EventData);
-    return Object.values(EventData).filter((video) =>
-      `${video.title} ${video.description}`
+    if (searchText.trim() === "") return readingMaterialsData;
+    return readingMaterialsData.filter((readingmaterial) =>
+      `${readingmaterial.title}{}${readingmaterial.description}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
-  }, [searchText, EventData]);
+  }, [searchText, readingMaterialsData]);
 
   const columns = [
     {
       title: "Title",
       dataIndex: "title",
       className: "campaign-performance-table-column",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      className: "campaign-performance-table-column",
       render: (text) => truncateText(text),
     },
     {
-      title: "URL",
-      dataIndex: "url",
+      title: "Content",
+      dataIndex: "content",
       className: "campaign-performance-table-column",
-    },
-    {
-      title: "Likes",
-      dataIndex: "likes",
-      className: "campaign-performance-table-column",
-    },
-    {
-      title: "Created At",
-      dataIndex: "createdAt",
-      className: "campaign-performance-table-column",
+      render: (content) => {
+        const truncatedHTML = truncateHTML(content, 15);
+        return (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(truncatedHTML),
+            }}
+          />
+        );
+      },
     },
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <div className="campaign-performance-table-action-icons">
+          <div
+            className="campaign-performance-table-eye-icon"
+            onClick={() => showViewModal(record)}
+          >
+            <FiEye />
+          </div>
           <div
             className="campaign-performance-table-edit-icon"
             onClick={() => showEditModal(record)}
@@ -138,7 +160,7 @@ const HelloDoctorTable = () => {
           </div>
           <div
             className="campaign-performance-table-delete-icon"
-            onClick={() => handleDeleteHelloDoctorVideo(record._id)}
+            onClick={() => deleteReadingMaterial(record._id)}
           >
             <FiTrash2 />
           </div>
@@ -174,11 +196,11 @@ const HelloDoctorTable = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : Object.values(EventData).length > 0 ? (
+      ) : readingMaterialsData.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>Hello Doctor Info</h3>
+              <h3>Reading Material</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -186,7 +208,7 @@ const HelloDoctorTable = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add Video
+                Add
               </button>
             </div>
           </div>
@@ -221,7 +243,8 @@ const HelloDoctorTable = () => {
                 pagination={{
                   current: currentPage,
                   pageSize: itemsPerPage,
-                  total: totalRows,
+                  // total: totalRows,
+                  total: dataSource.length,
                   onChange: (page) => setCurrentPage(page),
                   showSizeChanger: false,
                 }}
@@ -233,7 +256,7 @@ const HelloDoctorTable = () => {
           <div className="d-flex justify-content-start mt-2">
             <button
               className="d-flex gap-2 align-items-center rfh-basic-button"
-              onClick={() => navigate("/marketing/in-app-campaign")}
+              onClick={() => navigate("/patient-education/resources")}
             >
               <FaAngleLeft />
               Back
@@ -246,28 +269,33 @@ const HelloDoctorTable = () => {
             <img src={Empty_survey_image} alt="" />
           </div>
           <div className="no-data-container-text d-flex flex-column justify-content-center">
-            <h4>No Events Found</h4>
+            <h4>No Treatments Found</h4>
             <p>
-              Currently, there are no events available to display.
+              Currently, there are no Treatments available to display.
               <br /> Please check back later or contact support for further
               assistance if this is an error.
             </p>
             <div className="d-flex justify-content-center">
               <button className="rfh-basic-button" onClick={showModal}>
-                <FaPlus /> Create News
+                <FaPlus /> Create Treatment
               </button>
             </div>
           </div>
         </div>
       )}
-      <AddVideo open={isModalOpen} handleCancel={handleCancel} />
-      <EditVideo
+      <AddReadingMaterials open={isModalOpen} handleCancel={handleCancel} />
+      <EditReadingMaterials
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
-        videoData={selectedVideo}
+        readingmaterialsData={selectedReadingmaterial}
+      />
+      <ViewReadingMaterials
+        open={isViewModalOpen}
+        handleCancel={handleViewCancel}
+        readingmaterialsData={selectedReadingmaterial}
       />
     </div>
   );
 };
 
-export default HelloDoctorTable;
+export default ReadingMaterialsList;

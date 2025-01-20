@@ -7,6 +7,7 @@ import { PiDevicesBold } from "react-icons/pi";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { Account } from "./Account";
 import { MdOutlineAccountBox } from "react-icons/md";
+import { TermsAndConditionsList } from "./TermsAndConditions/TermsAndConditionsList";
 
 export const Settings = () => {
   const [selectedOption, setSelectedOption] = useState("general");
@@ -20,6 +21,8 @@ export const Settings = () => {
         return <Notifications />;
       case "account":
         return <Account />;
+      case "termsAndConditions":
+        return <TermsAndConditionsList/>;
       default:
         return <General />;
     }
@@ -64,6 +67,14 @@ export const Settings = () => {
                 onClick={() => setSelectedOption("account")}
               >
                 <MdOutlineAccountBox /> &nbsp; Account
+              </div>
+              <div
+                className={`settings-items mt-3 ${
+                  selectedOption === "termsAndConditions" ? "active" : ""
+                }`}
+                onClick={() => setSelectedOption("termsAndConditions")}
+              >
+                <MdOutlineAccountBox /> &nbsp;Terms & Conditions
               </div>
             </div>
           </div>

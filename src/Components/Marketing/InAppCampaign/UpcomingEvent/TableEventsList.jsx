@@ -4,7 +4,10 @@ import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage, showSuccessMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
@@ -90,8 +93,8 @@ const TableEventsList = () => {
 
   const dataSource = useMemo(() => {
     if (!searchText.trim())
-      return eventsData.map((event, index) => ({ ...event, key: index }));
-    return eventsData
+      return Object.values(eventsData).map((event, index) => ({ ...event, key: index }));
+    return Object.values(eventsData)
       .filter((event) =>
         `${event.title} ${event.description}`
           .toLowerCase()
@@ -170,7 +173,7 @@ const TableEventsList = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : eventsData.length > 0 ? (
+      ) : Object.values(eventsData).length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <h3>Event List</h3>

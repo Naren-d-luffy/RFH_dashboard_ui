@@ -188,7 +188,6 @@ export const HelloDoctorList = () => {
   const fetchVideoList = async () => {
     try {
       const response = await Instance.get("/videos");
-      console.log(response, "videos");
       setVideoList(response.data);
       dispatch(setHelloDoctorVideos(response.data));
     } catch (error) {
@@ -231,6 +230,9 @@ export const HelloDoctorList = () => {
                 <p>No videos available</p>
               )}
             </Slider>
+            {/* <Slider {...sliderSettings}>
+              {Object.values(videos).map((video) => renderRecommendVideo(video))}
+            </Slider> */}
           </div>
           <AddVideo
             open={modals.video}

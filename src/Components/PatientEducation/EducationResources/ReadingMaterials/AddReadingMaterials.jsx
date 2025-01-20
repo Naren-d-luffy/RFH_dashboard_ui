@@ -8,7 +8,7 @@ import { Instance } from "../../../../AxiosConfig";
 import { showSuccessMessage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
-import { addTreatment } from "../../../../Features/TreatmentInfoSlice";
+import { addReadingMaterials } from "../../../../Features/ReadingMaterialsSlice";
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -21,7 +21,7 @@ const modules = {
 
 const { TextArea } = Input;
 
-const AddTreatmentsInfo = ({ open, handleCancel }) => {
+const AddReadingMaterials = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -66,11 +66,12 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
       formData.append("headerImage", uploadedImage);
       formData.append("thumbnail", thumbnailImage);
       
-      const response = await Instance.post("/education", formData);
+      const response = await Instance.post("/reading-material", formData);
+      console.log(response,"response")
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
-        dispatch(addTreatment(response.data._doc))
-        showSuccessMessage("Treatment Info Added successfully!");
+        dispatch(addReadingMaterials(response.data.newMaterial))
+        showSuccessMessage("Reading Materials Added successfully!");
         setTitle("");
         setDescription("");
         setContent("");
@@ -79,7 +80,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
       }
     } catch (error) {
       console.error(error);
-      message.error("Failed to add treatment.");
+      message.error("Failed to add Reading Materials.");
     } finally {
       setIsLoading(false);
     }
@@ -92,7 +93,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Add Treatment Info{" "}
+            Add Reading Materials{" "}
           </span>
         }
         onCancel={handleCancel}
@@ -243,4 +244,4 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
     </>
   );
 };
-export default AddTreatmentsInfo;
+export default AddReadingMaterials;

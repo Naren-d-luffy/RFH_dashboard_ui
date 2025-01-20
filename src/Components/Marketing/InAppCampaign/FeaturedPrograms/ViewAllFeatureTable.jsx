@@ -92,8 +92,8 @@ const FeaturesTable = () => {
   };
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return FeaturesData;
-    return FeaturesData.filter((feature) =>
+    if (searchText.trim() === "") return Object.values(FeaturesData);
+    return Object.values(FeaturesData).filter((feature) =>
       `${feature.title}{}${feature.description}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
@@ -165,7 +165,7 @@ const FeaturesTable = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : FeaturesData.length > 0 ? (
+      ) : Object.values(FeaturesData).length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <h3>Feature Programs</h3>

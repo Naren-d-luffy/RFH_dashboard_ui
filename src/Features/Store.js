@@ -12,6 +12,8 @@ import outstationClinicSlice from "./OutstationClinicSlice"
 import discovereventSlice from "./DiscoverEventsCard"
 import campSlice from "./CampSlice"
 import doctorProfileSlice from "./DoctorProfileSlice"
+import readingMaterialsSlice from "./ReadingMaterialsSlice"
+
 export default configureStore({
     reducer: {
         videos: hellodoctorSlice,
@@ -26,6 +28,8 @@ export default configureStore({
         clinics: outstationClinicSlice,
         discoverevent: discovereventSlice,
         camps:campSlice,
-        doctorProfiles:doctorProfileSlice
+        doctorProfiles:doctorProfileSlice,
+        readingmaterials:readingMaterialsSlice
+
     },
 });

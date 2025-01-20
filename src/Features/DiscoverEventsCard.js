@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const discovereventSlice = createSlice({
     name: 'discoverevent',
     initialState: {
-        events: []
+        events: [],
     },
     reducers: {
         setEvent: (state, action) => {
