@@ -76,7 +76,7 @@ const EducationCategoriesQuestions = () => {
     try {
       const response = await Instance.get(`/faq`);
       setFaqsList(response.data || []);
-      dispatch(setFaqs(response.data));
+      dispatch(setFaqs(response.data.data));
     } catch (error) {
       console.error("Error fetching FAQs list:", error);
     } finally {
