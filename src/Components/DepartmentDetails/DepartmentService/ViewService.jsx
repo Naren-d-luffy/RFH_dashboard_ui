@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Button, Modal } from "antd";
 import "react-quill/dist/quill.snow.css";
-import Loader from "../../../../Loader";
+import Loader from "../../../Loader";
 
-const ViewBlog = ({ open, handleCancel, blogData }) => {
+const ViewService = ({ open, handleCancel, serviceData }) => {
   const [isLoading, setIsLoading] = useState(false);
   return (
     <>
@@ -25,16 +25,16 @@ const ViewBlog = ({ open, handleCancel, blogData }) => {
       >
         <div className="view-treatment-info-modal-container">
           <div className="view-treatment-info-modal-header d-flex justify-content-between align-items-center">
-            <h4>{blogData?.heading || "N/A"}</h4>
-            <img src={blogData?.image} alt="Health Package" />
+            <h4>{serviceData?.heading || "N/A"}</h4>
+            <img src={serviceData?.thumbnail} alt="Health Package" />
           </div>
 
           <div className="view-treatment-info-modal-content">
-            <h5>{blogData?.subHeading || "N/A"}</h5>
+            <h5>{serviceData?.subHeading || "N/A"}</h5>
 
             <div
               className="news-content"
-              dangerouslySetInnerHTML={{ __html: blogData?.content }}
+              dangerouslySetInnerHTML={{ __html: serviceData?.content }}
             />
           </div>
         </div>
@@ -42,4 +42,4 @@ const ViewBlog = ({ open, handleCancel, blogData }) => {
     </>
   );
 };
-export default ViewBlog;
+export default ViewService;

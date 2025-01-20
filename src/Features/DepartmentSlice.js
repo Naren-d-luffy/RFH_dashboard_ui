@@ -7,7 +7,7 @@ const departmentSlice = createSlice({
   },
   reducers: {
     setDepartment: (state, action) => {
-      state.departments = action.payload.departments || [];
+      state.departments = action.payload || [];
     },
     addDepartment: (state, action) => {
       state.departments.push(action.payload);

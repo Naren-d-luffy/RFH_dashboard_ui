@@ -2,33 +2,42 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Table, Dropdown, Button, Space } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
-import { FaPlus } from "react-icons/fa6";
-import Empty_survey_image from "../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage, showSuccessMessage } from "../../globalConstant";
-import { GoPlus } from "react-icons/go";
-import { Instance } from "../../AxiosConfig";
+import { FaAngleLeft, FaPlus } from "react-icons/fa6";
+import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png";
 import {
-  deleteDepartment,
-  setDepartment,
-} from "../../Features/DepartmentSlice";
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../globalConstant";
+import { GoPlus } from "react-icons/go";
+import { Instance } from "../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
-import ViewDepartmentDetails from "./ViewDepartmentDetails";
-import EditDepartmentDetails from "./EditDepartmentDetails";
-import CreateDepartmentDetails from "./CreateDepartmentDetails";
-import Loader from "../../Loader";
+import Loader from "../../../Loader";
+import DOMPurify from "dompurify";
+import { useNavigate } from "react-router-dom";
+import AddService from "./AddService";
+import EditService from "./EditService";
+import ViewService from "./ViewService";
+import { deleteService, setService } from "../../../Features/ServiceSlice";
 
-const DepartmentDetailsList = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isViewDepartmentModalOpen, setIsViewDepartmentModalOpen] =
-    useState(false);
-
-  const [departmentList, setDepartmentList] = useState([]);
+const ServiceTable = () => {
+  const [modals, setModals] = useState({
+    event: false,
+    service: false,
+    edit: false,
+    view: false
+  });
+  const [selectedService, setSelectedService] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedDepartment, setSelectedDepartment] = useState([]);
-  const [totalRows, setTotalRows] = useState(0);
-  const departments = useSelector((state) => state.department.departments);
-  console.log("khkkj", departments);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  const servicesList = useSelector((state) => state.service.services);
+  const [searchText, setSearchText] = useState("");
+  const dispatch = useDispatch();
+  const itemsPerPage = 10;
+  const totalRows = servicesList?.length || 0;
+  
+  const navigate = useNavigate();
+  
   const truncateText = (text, wordLimit = 15) => {
     if (!text) return "";
     const words = text.split(" ");
@@ -36,105 +45,98 @@ const DepartmentDetailsList = () => {
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
   };
-  const [searchText, setSearchText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
-  const dispatch = useDispatch();
-  const itemsPerPage = 5;
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-  const showEditModal = (department) => {
-    setSelectedDepartment(department);
-    setIsEditModalOpen(true);
-  };
-  const handleCancelEditModal = () => {
-    setSelectedDepartment(null);
-    setIsEditModalOpen(false);
+  const truncateHTML = (html, wordLimit = 15) => {
+    if (!html) return "";
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    const text = div.textContent || div.innerText;
+    return truncateText(text, wordLimit);
   };
 
-  const ShowDepartmentModal = (department) => {
-    setSelectedDepartment(department);
-    setIsViewDepartmentModalOpen(true);
-  };
-  const handleCancelDepartmentModal = () => {
-    setSelectedDepartment(null);
-    setIsViewDepartmentModalOpen(false);
+  const toggleModal = (modalType) =>
+    setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
+
+  const showEditModal = (service) => {
+    setSelectedService(service);
+    toggleModal("edit");
   };
 
-  const handleDeleteDepartment = (_id) => {
+  const showViewModal = (service) => {
+    setSelectedService(service);
+    toggleModal("view");
+  };
+
+  const showModal = () => toggleModal("service");
+
+  const handleDeleteService = (_id) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/department/${_id}`);
-          if (response.status === 200) {
-            showSuccessMessage("Deleted successfully", "Details deleted");
-            dispatch(deleteDepartment(_id));
-            setDepartmentList((prev) =>
-              prev.filter((dept) => dept._id !== _id)
-            );
+          const response = await Instance.delete(`/depcat/service/${_id}`);
+          if (response.status === 200 || response.status === 204) {
+            dispatch(deleteService(_id));
+            showSuccessMessage("Deleted successfully");
           }
         } catch (error) {
-          console.error("Error deleting department list:", error);
+          console.error("Error deleting service:", error);
         }
       },
     });
   };
 
-  const fetchDepartmentList = async (page) => {
+  const fetchServiceList = async () => {
     setIsLoading(true);
-
     try {
-      const response = await Instance.get(`/department`, {});
-      setDepartmentList(response.data.departments || []);
-      console.log(response.data,"department");
-      setTotalRows(response.data.totalDepartments);
-      dispatch(setDepartment(response.data));
+      const response = await Instance.get("depcat/service");
+      dispatch(setService(response.data));
     } catch (error) {
-      console.error("Error fetching department list:", error);
+      console.error("Error fetching Services:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
+  useEffect(() => {
+    fetchServiceList();
+  }, []);
+
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return departments;
-    return departments.filter((department) =>
-      `${department.title} ${department.subtitle}`
+    if (searchText.trim() === "") return servicesList || [];
+    return (servicesList || []).filter((service) =>
+      `${service.heading}${service.subHeading}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
-  }, [searchText, departments]);
-
-  useEffect(() => {
-    fetchDepartmentList(currentPage);
-  }, [currentPage]);
+  }, [searchText, servicesList]);
 
   const columns = [
     {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
+      title: "Heading",
+      dataIndex: "heading",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Subtitle",
-      dataIndex: "subtitle",
-      key: "subtitle",
-      className: "campaign-performance-table-column",
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
+      title: "Sub Heading",
+      dataIndex: "subHeading",
       className: "campaign-performance-table-column",
       render: (text) => truncateText(text),
-
+    },
+    {
+      title: "Content",
+      dataIndex: "content",
+      className: "campaign-performance-table-column",
+      render: (content) => {
+        const truncatedHTML = truncateHTML(content);
+        return (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(truncatedHTML),
+            }}
+          />
+        );
+      },
     },
     {
       title: "Action",
@@ -143,7 +145,7 @@ const DepartmentDetailsList = () => {
         <div className="campaign-performance-table-action-icons">
           <div
             className="campaign-performance-table-eye-icon"
-            onClick={() => ShowDepartmentModal(record)}
+            onClick={() => showViewModal(record)}
           >
             <FiEye />
           </div>
@@ -155,7 +157,7 @@ const DepartmentDetailsList = () => {
           </div>
           <div
             className="campaign-performance-table-delete-icon"
-            onClick={() => handleDeleteDepartment(record._id)}
+            onClick={() => handleDeleteService(record._id)}
           >
             <FiTrash2 />
           </div>
@@ -188,14 +190,14 @@ const DepartmentDetailsList = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : departments.length > 0 ? (
+      ) : servicesList?.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>Department List</h3>
+              <h3>Services List</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -203,7 +205,7 @@ const DepartmentDetailsList = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Create Department
+                Add Service
               </button>
             </div>
           </div>
@@ -240,46 +242,60 @@ const DepartmentDetailsList = () => {
                   pageSize: itemsPerPage,
                   total: totalRows,
                   onChange: (page) => setCurrentPage(page),
+                  showSizeChanger: false,
                 }}
                 className="campaign-performance-table overflow-y-auto"
                 bordered={false}
               />
             </div>
           </div>
+          <div className="d-flex justify-content-start mt-2">
+            <button
+              className="d-flex gap-2 align-items-center rfh-basic-button"
+              onClick={() => navigate("/marketing/in-app-campaign")}
+            >
+              <FaAngleLeft />
+              Back
+            </button>
+          </div>
         </>
       ) : (
         <div className="container">
           <div className="no-data-container">
-            <img src={Empty_survey_image} alt="" />
+            <img src={Empty_survey_image} alt="No services" />
           </div>
           <div className="no-data-container-text d-flex flex-column justify-content-center">
-            <h4>No Department Found</h4>
+            <h4>No Services Found</h4>
             <p>
-              Currently, there are no Department available to display.
+              Currently, there are no services available to display.
               <br /> Please check back later or contact support for further
               assistance if this is an error.
             </p>
             <div className="d-flex justify-content-center">
               <button className="rfh-basic-button" onClick={showModal}>
-                <FaPlus /> Create Department
+                <FaPlus /> Create Service
               </button>
             </div>
           </div>
         </div>
       )}
-      <CreateDepartmentDetails open={isModalOpen} handleCancel={handleCancel} />
-      <EditDepartmentDetails
-        open={isEditModalOpen}
-        handleCancel={handleCancelEditModal}
-        departmentData={selectedDepartment}
+      <AddService
+        open={modals.service}
+        handleCancel={() => toggleModal("service")}
+        serviceData={selectedService}
       />
-      <ViewDepartmentDetails
-        open={isViewDepartmentModalOpen}
-        handleCancel={handleCancelDepartmentModal}
-        departmentData={selectedDepartment}
+      <EditService
+        open={modals.edit}
+        handleCancel={() => toggleModal("edit")}
+        serviceData={selectedService}
+      />
+      <ViewService
+        open={modals.view}
+        handleCancel={() => toggleModal("view")}
+        serviceData={selectedService}
       />
     </div>
   );
 };
 
-export default DepartmentDetailsList;
+export default ServiceTable;
