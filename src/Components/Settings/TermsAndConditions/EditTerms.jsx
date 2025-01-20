@@ -3,11 +3,12 @@ import { Modal, Button, Form, Input } from "antd";
 import Loader from "../../../Loader";
 import { Instance } from "../../../AxiosConfig";
 import { showErrorMessage, showSuccessMessage } from "../../../globalConstant";
-
+import { useDispatch } from "react-redux";
+import { editTerm } from "../../../Features/TermsSlice";
 const EditTermsModal = ({ visible, onClose,clause }) => {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
-
+ const dispatch=useDispatch();
   useEffect(() => {
     if (clause) {
       form.setFieldsValue({
@@ -28,6 +29,7 @@ const EditTermsModal = ({ visible, onClose,clause }) => {
       setIsLoading(true);
       const response = await Instance.put(`/terms/${clause._id}`, payload);
       console.log("responseeee", response);
+      dispatch(editTerm(response.data))
       showSuccessMessage("Terms and conditions edited successfully!");
       onClose();
       form.resetFields();

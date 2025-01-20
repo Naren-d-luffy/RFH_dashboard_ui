@@ -13,21 +13,14 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
-  const [specialistDesignation, setSpecialistDesignation] = useState("");
-  const [specialistName, setSpecialistName] = useState("");
-  const [specialistLocation, setSpecialistLocation] = useState("");
   const [videoList, setVideoList] = useState([]);
-
+  const[thumbnail,setThumbnail]=useState("")
   useEffect(() => {
     if (departmentData) {
       setTitle(departmentData.title || "");
       setSubtitle(departmentData.subtitle || "");
       setDescription(DOMPurify.sanitize(departmentData.description || ""));
-      setSpecialistDesignation(departmentData.specialistDesignation || "");
-      setSpecialistName(departmentData.specialistName || "");
-      setSpecialistLocation(departmentData.specialistLocation || "");
-      setPhoto(departmentData.photo_url || "");
-
+      setThumbnail(departmentData.thumbnail || "");
       const uniqueVideos = departmentData.success_stories
         ? Array.from(
             new Map(
@@ -110,12 +103,17 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
             background: `linear-gradient(var(--department-bg-color), white)`,
           }}
         >
-          <div className="d-flex flex-column">
+          <div className="d-flex justify-content-between">
+            <div>
             <h2 className="department-heading">{title}</h2>
             <p className="department-subheading">{subtitle}</p>
+            </div>
+            <div>
+            <img src={thumbnail} style={{width:"250px",height:"150px",borderRadius:"15px"}} alt="Health Package" />
+            </div>
           </div>
           <div
-            className="department-about"
+            className="department-about mt-4"
             style={{ display: "flex", alignItems: "center" }}
           >
             <FaInfoCircle style={{ marginRight: "8px", fontSize: "16px" }} />
@@ -123,27 +121,6 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
           </div>
         </div>
       </div>
-
-      <div className="specialist-modal">
-        <h2 className="specialist-heading-name">Specialist</h2>
-        <div className="specialist-modal-content d-flex justify-content-between">
-          <div>
-            <h4 className="specialist-subheading">{specialistDesignation}</h4>
-            <h3 className="specialist-name">{specialistName}</h3>
-            <h5 className="specialist-location">
-              <GrLocation /> {specialistLocation}
-            </h5>
-          </div>
-          <div className="news-modal-image">
-            {photo ? (
-              <img src={photo} alt="Specialist" className="news-image" />
-            ) : (
-              <div className="news-placeholder">No Images</div>
-            )}
-          </div>
-        </div>
-      </div>
-
       <div className="videos-section mt-4">
         <h2 className="specialist-heading-name">Our Success Stories</h2>
         <div className="row mt-2">

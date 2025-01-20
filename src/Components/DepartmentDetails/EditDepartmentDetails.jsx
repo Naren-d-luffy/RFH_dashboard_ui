@@ -16,10 +16,8 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   const [subtitle, setSubtitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState("");
-  const [specialist, setSpecialist] = useState("");
-  const [specialistDesignation, setSpecialistDesignation] = useState("");
-  const [specialistLocation, setSpecialistLocation] = useState("");
-  const [photo_url, setPhoto_url] = useState("");
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+
   const [successStories, setSuccessStories] = useState([]);
   const dispatch = useDispatch();
 
@@ -50,11 +48,9 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
       setTitle(departmentData.title || "");
       setSubtitle(departmentData.subtitle || "");
       setDescription(departmentData.description || "");
-      setSpecialist(departmentData.specialistName || "");
-      setSpecialistDesignation(departmentData.specialistDesignation || "");
-      setSpecialistLocation(departmentData.specialistLocation || "");
-      setPhoto_url(departmentData.photo_url || "");
-
+      if (departmentData.thumbnail) {
+        setImagePreviewUrl(departmentData.thumbnail); // Store the URL for preview
+      }
       if (Array.isArray(departmentData.success_stories)) {
         setSuccessStories(
           departmentData.success_stories.map((story) => ({
@@ -69,57 +65,54 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
 
   const handleUpdate = async () => {
     setIsLoading(true);
-    if (!title || !subtitle || !description) {
-      message.error("Please fill in all required fields.");
-      setIsLoading(false);
-      return;
-    }
-
-    const updatedDepartmentData = {
-      _id: departmentData?._id,
-      title,
-      subtitle,
-      description,
-      specialist,
-      specialistDesignation,
-      specialistLocation,
-      photo_url,
-
-      success_stories: successStories.map((story) => ({
-        ...story,
-        views: Number(story.views) || 0,
-      })),
-    };
-
     try {
+      const requestData = new FormData();
+      requestData.append("title", title);
+      requestData.append("subtitle", subtitle);
+      requestData.append("description", description);
+      if (uploadedImage) {
+        requestData.append("thumbnail", uploadedImage);
+      }
+
+      const formattedSuccessStories = successStories.map((story) => ({
+        video_thumbnail_url: story.video_thumbnail_url,
+        title: story.title,
+        views: parseInt(story.views),
+      }));
+
+      requestData.append(
+        "success_stories",
+        JSON.stringify(formattedSuccessStories)
+      );
       const response = await Instance.put(
-        `/department/${updatedDepartmentData._id}`,
-        updatedDepartmentData,
+        `/department/${departmentData._id}`,
+        requestData,
         {
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      if ([200, 201, 204].includes(response.status)) {
-        showSuccessMessage("Department updated successfully!");
-        dispatch(editDepartment(updatedDepartmentData));
-        resetForm();
-        handleCancel();
-      } else {
-        message.error("Failed to update department.");
-      }
+
+      dispatch(editDepartment(response.data));
+      message.success("Department Updtaed successfully!");
+      showSuccessMessage("Department Updated successfully!");
+      resetForm();
+      handleCancel();
     } catch (error) {
-      console.error("Error during department update:", error);
-      message.error("Failed to update department.");
+      console.error("Error during department creation:", {
+        error: error,
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
+      message.error("Failed to create department.");
     } finally {
       setIsLoading(false);
     }
   };
-
   const resetForm = () => {
     setTitle("");
     setSubtitle("");
     setDescription("");
-    setSpecialist("");
     setSuccessStories([]);
     setUploadedImage(null);
   };
@@ -178,46 +171,13 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
             />
           </Form.Item>
 
-          <h5 className="specialist-heading-name">Specialist Details</h5>
-          <Row gutter={16}>
-            <Col span={8}>
-              <Form.Item label="Name">
-                <Input
-                  value={specialist}
-                  onChange={(e) => setSpecialist(e.target.value)}
-                  placeholder="Add Name"
-                  required
-                />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item label="Designation">
-                <Input
-                  value={specialistDesignation}
-                  onChange={(e) => setSpecialistDesignation(e.target.value)}
-                  placeholder="Add Designation"
-                  required
-                />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item label="Location">
-                <Input
-                  value={specialistLocation}
-                  onChange={(e) => setSpecialistLocation(e.target.value)}
-                  placeholder="Add Location"
-                  required
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Form.Item label="Photo URL">
+          <Form.Item label="Thumbnail">
             <Upload
               listType="picture"
               showUploadList={false}
               beforeUpload={(file) => {
                 setUploadedImage(file);
-                setPhoto_url(URL.createObjectURL(file));
+                setImagePreviewUrl(URL.createObjectURL(file));
                 return false;
               }}
               className="upload-users-image"
@@ -230,11 +190,15 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>
-            {photo_url && (
+            {(uploadedImage || imagePreviewUrl) && (
               <div className="uploaded-image-preview d-flex gap-2">
                 <img
-                  src={photo_url}
-                  alt="Uploaded"
+                  src={
+                    uploadedImage
+                      ? URL.createObjectURL(uploadedImage)
+                      : imagePreviewUrl
+                  }
+                  alt="Thumbnail"
                   style={{
                     width: "200px",
                     height: "auto",
@@ -244,8 +208,8 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 />
                 <Button
                   onClick={() => {
-                    setPhoto_url("");
                     setUploadedImage(null);
+                    setImagePreviewUrl("");
                   }}
                   style={{
                     marginTop: "10px",
@@ -259,6 +223,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 </Button>
               </div>
             )}
+            <span className="create-campaign-input-span">Thumbnail Image</span>
           </Form.Item>
 
           <Button
