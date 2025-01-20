@@ -102,7 +102,7 @@ const AddFacility = ({ open, handleCancel }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title="Add Department Facility"
+        title={<span className="create-campaign-modal-title">Add Department Facility</span>}
         onCancel={handleCancel}
         width={680}
         footer={[

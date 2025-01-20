@@ -3,148 +3,126 @@ import { Table, Dropdown, Button, Space } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
-import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
-import {
-  showDeleteMessage,
-  showSuccessMessage,
-} from "../../../../globalConstant";
+import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png";
+import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
 import { GoPlus } from "react-icons/go";
-import { Instance } from "../../../../AxiosConfig";
+import { Instance } from "../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../../../../Loader";
+import Loader from "../../../Loader";
+import DOMPurify from "dompurify";
 import { useNavigate } from "react-router-dom";
-import AddOutstationClinic from "./AddTechnology";
-import EditOutstationClinic from "./EditTechnology";
-import ViewOutstationClinic from "./ViewTechnology";
+import AddTechnology from "./AddTechnology";
+import EditTechnology from "./EditTechnology";
+import ViewTechnology from "./ViewTechnology";
 import {
-  deleteOutstationClinic,
-  setOutstationClinic,
-} from "../../../../Features/OutstationClinicSlice";
+  deleteTechnology,
+  setTechnology,
+} from "../../../Features/TechnologySlice";
 
 const TechnologyTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedFacility, setSelectedFacility] = useState(null);
+  const [selectedReadingMaterial, setSelectedReadingMaterial] = useState(null);
 
-  const EventData = useSelector((state) => state.clinics.clinics);
-  console.log(EventData, "Eventdata");
+  const technologyList = useSelector((state) => state.technology.technologies);
+
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
+  const navigate = useNavigate();
+
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
-  const navigate = useNavigate();
-  const showEditModal = (Event) => {
-    setSelectedEvent(Event);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+
+  const showEditModal = (technology) => {
+    setSelectedFacility(technology);
     setIsEditModalOpen(true);
   };
-  const handleEditCancel = () => setIsEditModalOpen(false);
-  const showViewModal = (Event) => {
-    setSelectedEvent(Event);
+  const showViewModal = (technology) => {
+    setSelectedReadingMaterial(technology);
     setIsViewModalOpen(true);
   };
+  const handleEditCancel = () => setIsEditModalOpen(false);
   const handleViewCancel = () => setIsViewModalOpen(false);
 
-  const handleDeleteOutstationClinic = (_id) => {
+  const truncateText = (text, wordLimit = 15) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : text;
+  };
+
+  const handleDeleteFacility = (_id) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/discover/clinic/${_id}`);
-          if (response.status === 200) {
+          const response = await Instance.delete(`/depcat/technology/${_id}`);
+          if (response.status === 200 || response.status === 204) {
             showSuccessMessage("Deleted successfully", "Details deleted");
-            dispatch(deleteOutstationClinic(_id));
+            dispatch(deleteTechnology(_id));
           }
         } catch (error) {
-          console.error("Error deleting event:", error);
+          console.error("Error deleting technology:", error);
         }
       },
     });
   };
-  const fetchOutstationClinicInfo = async (page) => {
+
+  const fetchTechnologyList = async (page) => {
     setIsLoading(true);
     try {
-      const response = await Instance.get(`/discover/clinic`, {
+      const response = await Instance.get(`/depcat/technology`, {
         params: { page, limit: itemsPerPage },
       });
-      console.log(response.data);
-      dispatch(setOutstationClinic(response.data));
-      setOutstationClinic(response.data || []);
-      setTotalRows(response.data || 0);
+      dispatch(setTechnology(response.data));
+      setTotalRows(response.data.total || 0);
     } catch (error) {
-      console.error("Error fetching clinic:", error);
+      console.error("Error fetching technology list:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchOutstationClinicInfo(currentPage);
+    fetchTechnologyList(currentPage);
   }, [currentPage]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return Object.values(EventData);
-    return Object.values(EventData).filter((Event) =>
-      `${Event.title}{}${Event.description}`
+    if (searchText.trim() === "") return technologyList;
+    return technologyList.filter((technology) =>
+      `${technology.heading} ${technology.subHeading}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
-  }, [searchText, EventData]);
+  }, [searchText, technologyList]);
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "Title",
+      dataIndex: "heading",
+      className: "campaign-performance-table-column",
+      render: (text) => truncateText(text),
+    },
+    {
+      title: "Sub Heading",
+      dataIndex: "subHeading",
       className: "campaign-performance-table-column",
     },
     // {
-    //   title: "About",
-    //   dataIndex: "about",
+    //   title: "Video Heading",
+    //   dataIndex: "video_heading",
     //   className: "campaign-performance-table-column",
-    //   render: (text) => truncateText(text),
-    //   render: (content) => {
-    //     const truncatedHTML = truncateHTML(content, 15);
-    //     return (
-    //       <div
-    //         dangerouslySetInnerHTML={{
-    //           __html: DOMPurify.sanitize(truncatedHTML),
-    //         }}
-    //       />
-    //     );
-    //   },
     // },
     {
-      title: "Rating",
-      dataIndex: "rating",
-      className: "campaign-performance-table-column",
-    },
-    {
-      title: "Reviews",
-      dataIndex: "reviews",
-      className: "campaign-performance-table-column",
-    },
-    {
-      title: "Location",
-      dataIndex: "location",
-      className: "campaign-performance-table-column",
-    },
-    {
-      title: "Patients",
-      dataIndex: "patients",
-      className: "campaign-performance-table-column",
-    },
-    {
-      title: "Experience",
-      dataIndex: "experience",
-      className: "campaign-performance-table-column",
-    },
-    {
-      title: "Timing",
-      dataIndex: "timing",
+      title: "Created At",
+      dataIndex: "createdAt",
       className: "campaign-performance-table-column",
     },
     {
@@ -166,7 +144,7 @@ const TechnologyTable = () => {
           </div>
           <div
             className="campaign-performance-table-delete-icon"
-            onClick={() => handleDeleteOutstationClinic(record._id)}
+            onClick={() => handleDeleteFacility(record._id)}
           >
             <FiTrash2 />
           </div>
@@ -202,11 +180,11 @@ const TechnologyTable = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : Object.values(EventData).length > 0 ? (
+      ) : technologyList.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>OutstationClinic Info</h3>
+              <h3>Department Technology</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -214,7 +192,7 @@ const TechnologyTable = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add Clinic
+                Add Department Technology
               </button>
             </div>
           </div>
@@ -261,7 +239,7 @@ const TechnologyTable = () => {
           <div className="d-flex justify-content-start mt-2">
             <button
               className="d-flex gap-2 align-items-center rfh-basic-button"
-              onClick={() => navigate("/marketing/in-app-campaign")}
+              onClick={() => navigate("/department-details")}
             >
               <FaAngleLeft />
               Back
@@ -274,30 +252,30 @@ const TechnologyTable = () => {
             <img src={Empty_survey_image} alt="" />
           </div>
           <div className="no-data-container-text d-flex flex-column justify-content-center">
-            <h4>No Clinics Found</h4>
+            <h4>No Events Found</h4>
             <p>
-              Currently, there are no Clinics available to display.
+              Currently, there are no events available to display.
               <br /> Please check back later or contact support for further
               assistance if this is an error.
             </p>
             <div className="d-flex justify-content-center">
               <button className="rfh-basic-button" onClick={showModal}>
-                <FaPlus /> Create Clinic
+                <FaPlus /> Create News
               </button>
             </div>
           </div>
         </div>
       )}
-      <AddOutstationClinic open={isModalOpen} handleCancel={handleCancel} />
-      <EditOutstationClinic
+      <AddTechnology open={isModalOpen} handleCancel={handleCancel} />
+      <EditTechnology
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
-        EventData={selectedEvent}
+        technologyData={selectedFacility}
       />
-      <ViewOutstationClinic
+      <ViewTechnology
         open={isViewModalOpen}
         handleCancel={handleViewCancel}
-        EventData={selectedEvent}
+        technologyData={selectedReadingMaterial}
       />
     </div>
   );

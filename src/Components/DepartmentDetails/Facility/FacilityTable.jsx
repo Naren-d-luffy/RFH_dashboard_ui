@@ -1,22 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Table, Dropdown, Button, Space } from "antd";
-import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage } from "../../../globalConstant";
+import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import DOMPurify from "dompurify";
 import { useNavigate } from "react-router-dom";
-// import {
-//   deleteHelloDoctorVideos,
-//   setHelloDoctorVideos,
-// } from "../../../../Features/HelloDoctorSlice";
 import AddFacility from "./AddFacility";
 import EditFacility from "./EditFacility";
+import ViewFacility from "./ViewFacility";
+import { deleteFacility } from "../../../Features/FacilitySlice";
 
 const FacilityTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,8 +22,10 @@ const FacilityTable = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-    const facilities = useSelector((state) => state.facility.facilities);
+  const [selectedFacility, setSelectedFacility] = useState(null);
+  const [selectedReadingMaterial, setSelectedReadingMaterial] = useState(null);
+
+  const facilities = useSelector((state) => state.facility.facilities);
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
@@ -33,12 +33,18 @@ const FacilityTable = () => {
 
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
-  const showEditModal = (video) => {
-    setSelectedVideo(video);
+  const showEditModal = (facility) => {
+    setSelectedFacility(facility);
     setIsEditModalOpen(true);
   };
+  const showViewModal = (facility) => {
+    setSelectedReadingMaterial(facility);
+    setIsViewModalOpen(true);
+  };
   const handleEditCancel = () => setIsEditModalOpen(false);
+  const handleViewCancel = () => setIsViewModalOpen(false);
 
   const truncateText = (text, wordLimit = 15) => {
     if (!text) return "";
@@ -58,45 +64,46 @@ const FacilityTable = () => {
       : textContent;
   };
 
-  const handleDeleteHelloDoctorVideo = (_id) => {
+  const handleDeleteFacility = (_id) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/videos/${_id}`);
+          const response = await Instance.delete(`/depcat/facility/${_id}`);
           if (response.status === 200 || response.status === 204) {
-            // dispatch(deleteHelloDoctorVideos(_id));
+            showSuccessMessage("Deleted successfully", "Details deleted");
+            dispatch(deleteFacility(_id));
           }
         } catch (error) {
-          console.error("Error deleting video:", error);
+          console.error("Error deleting facility:", error);
         }
       },
     });
   };
 
-  const fetchHelloDoctorVideoInfo = async (page) => {
+  const fetchFacilitiesInfo = async (page) => {
     setIsLoading(true);
     try {
-      const response = await Instance.get(`/videos`, {
+      const response = await Instance.get(`/facilities`, {
         params: { page, limit: itemsPerPage },
       });
-      // dispatch(setHelloDoctorVideos(response.data));
+      // dispatch(setFacilities(response.data));
       setTotalRows(response.data.total || 0);
     } catch (error) {
-      console.error("Error fetching videos:", error);
+      console.error("Error fetching facilities:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchHelloDoctorVideoInfo(currentPage);
+    fetchFacilitiesInfo(currentPage);
   }, [currentPage]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return (facilities);
-    return (facilities).filter((video) =>
-      `${video.title} ${video.description}`
+    if (searchText.trim() === "") return facilities;
+    return facilities.filter((facility) =>
+      `${facility.heading} ${facility.subHeading}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
@@ -110,13 +117,13 @@ const FacilityTable = () => {
       render: (text) => truncateText(text),
     },
     {
-      title: "URL",
-      dataIndex: "video",
+      title: "Sub Heading",
+      dataIndex: "subHeading",
       className: "campaign-performance-table-column",
     },
     {
-      title: "Content",
-      dataIndex: "content",
+      title: "Video Heading",
+      dataIndex: "video_heading",
       className: "campaign-performance-table-column",
     },
     {
@@ -130,6 +137,12 @@ const FacilityTable = () => {
       render: (_, record) => (
         <div className="campaign-performance-table-action-icons">
           <div
+            className="campaign-performance-table-eye-icon"
+            onClick={() => showViewModal(record)}
+          >
+            <FiEye />
+          </div>
+          <div
             className="campaign-performance-table-edit-icon"
             onClick={() => showEditModal(record)}
           >
@@ -137,7 +150,7 @@ const FacilityTable = () => {
           </div>
           <div
             className="campaign-performance-table-delete-icon"
-            onClick={() => handleDeleteHelloDoctorVideo(record._id)}
+            onClick={() => handleDeleteFacility(record._id)}
           >
             <FiTrash2 />
           </div>
@@ -173,7 +186,7 @@ const FacilityTable = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : (facilities).length > 0 ? (
+      ) : facilities.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
@@ -232,7 +245,7 @@ const FacilityTable = () => {
           <div className="d-flex justify-content-start mt-2">
             <button
               className="d-flex gap-2 align-items-center rfh-basic-button"
-              onClick={() => navigate("/marketing/in-app-campaign")}
+              onClick={() => navigate("/department-details")}
             >
               <FaAngleLeft />
               Back
@@ -263,7 +276,12 @@ const FacilityTable = () => {
       <EditFacility
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
-        videoData={selectedVideo}
+        facilityData={selectedFacility}
+      />
+      <ViewFacility
+        open={isViewModalOpen}
+        handleCancel={handleViewCancel}
+        facilityData={selectedReadingMaterial}
       />
     </div>
   );
