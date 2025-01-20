@@ -1,112 +1,93 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, Input, message, Col, Row, Upload } from "antd";
-import { Instance } from "../../../AxiosConfig";
-import { useDispatch } from "react-redux";
-// import { editOutstationClinic } from "../../../../Features/OutstationClinicSlice";
-import Loader from "../../../Loader";
+import { Button, Modal, Form, Input, Upload, message } from "antd";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import { Instance } from "../../../AxiosConfig";
+import { showSuccessMessage } from "../../../globalConstant";
+import Loader from "../../../Loader";
+import { useDispatch } from "react-redux";
+import { editTechnology } from "../../../Features/TechnologySlice";
 
+const modules = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["bold", "italic"],
+    ["link", "image"],
+    ["clean"],
+  ],
+};
 
-const EditTechnology = ({ open, handleCancel, EventData }) => {
-  const { TextArea } = Input;
+const { TextArea } = Input;
 
-  const [clinicName, setClinicName] = useState("");
-  const [address, setAddress] = useState("");
-  const [rating, setRating] = useState("");
-  const [reviews, setReviews] = useState("");
-  const [patients, setPatients] = useState("");
-  const [experience, setExperience] = useState("");
+const EditTechnology = ({ open, handleCancel, technologyData }) => {
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [timing, setTiming] = useState("");
+  const [content, setContent] = useState("");
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [thumbnailImage, setThumbnailImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (EventData) {
-      setClinicName(EventData.name || "");
-      setAddress(EventData.location || "");
-      setRating(EventData.rating?.toString() || "");
-      setReviews(EventData.reviews?.toString() || "");
-      setPatients(EventData.patients?.toString() || "");
-      setExperience(EventData.experience || "");
-      setDescription(EventData.about || "");
-      setTiming(EventData.timing || "");
-      setUploadedImage(EventData.image || null); 
+    if (technologyData) {
+      setTitle(technologyData.heading || "");
+      setDescription(technologyData.subHeading || "");
+      setContent(technologyData.content || "");
+      setUploadedImage(technologyData.video || null);
+      setThumbnailImage(technologyData.thumbnail || null);
     }
-  }, [EventData]);
+  }, [technologyData]);
 
-  const handleUpload = (info) => {
+  const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
-    setUploadedImage(file);
+    setThumbnailImage(file);
   };
 
-  const handleDeleteImage = () => {
-    setUploadedImage(null);
+  const handleDeleteThumbnail = () => {
+    setThumbnailImage(null);
   };
 
-  const handleSave = async () => {
-    if (
-      !clinicName ||
-      !address ||
-      !rating ||
-      !reviews ||
-      !patients ||
-      !experience ||
-      !description ||
-      !timing
-    ) {
+  const handleUpdate = async () => {
+    if (!title || !description || !content) {
       message.error("Please fill in all required fields.");
       return;
     }
-
+  
     setIsLoading(true);
     try {
       const formData = new FormData();
-      formData.append("name", clinicName);
-      formData.append("location", address);
-      formData.append("rating", parseFloat(rating));
-      formData.append("reviews", parseInt(reviews, 10));
-      formData.append("patients", parseInt(patients, 10));
-      formData.append("experience", experience.toString());
-      formData.append("about", description);
-      formData.append("timing", timing);
-
-      if (uploadedImage) {
-        formData.append("image", uploadedImage);
+      formData.append("heading", title);
+      formData.append("subHeading", description);
+      formData.append("content", content);
+  
+      if (thumbnailImage && typeof thumbnailImage !== "string") {
+        formData.append("thumbnail", thumbnailImage);
       }
-
-      console.log("Submitting Edited Data: ", formData);
-
-      const response = await Instance.put(
-        `/discover/clinic/${EventData._id}`,
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-
-      if (response?.status === 200) {
+  
+      const response = await Instance.put(`/depcat/technology/${technologyData._id}`, formData);
+      if (response?.status === 200 || response?.status === 201) {
+        showSuccessMessage("Technology updated successfully!");
         handleCancel();
-        message.success("Outstation Clinic details updated successfully!");
-        // dispatch(editOutstationClinic(response.data));
+        dispatch(editTechnology(response.data));
       }
     } catch (error) {
-      console.error(
-        "Error while updating clinic: ",
-        error?.response?.data || error
-      );
-      message.error("Failed to update outstation clinic. Please try again.");
+      console.error("Failed to update technology:", error);
+      message.error("Failed to update technology.");
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <>
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Edit Outstation Clinic</span>}
+        title={<span className="create-campaign-modal-title">Edit Department Technology</span>}
         onCancel={handleCancel}
         width={680}
         footer={[
@@ -118,8 +99,8 @@ const EditTechnology = ({ open, handleCancel, EventData }) => {
             Cancel
           </Button>,
           <Button
-            key="save"
-            onClick={handleSave}
+            key="update"
+            onClick={handleUpdate}
             className="create-campaign-save-button"
             loading={isLoading}
           >
@@ -130,140 +111,73 @@ const EditTechnology = ({ open, handleCancel, EventData }) => {
         <Form layout="vertical" className="mt-4">
           <Form.Item>
             <Input
-              value={clinicName}
-              onChange={(e) => setClinicName(e.target.value)}
-              placeholder="Edit Clinic Name"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Add Title"
               required
             />
-            <span className="create-campaign-input-span">Clinic Name</span>
+            <span className="create-campaign-input-span">Title</span>
           </Form.Item>
-          <Row gutter={24}>
-            <Col span={12}>
-              <Form.Item>
-                <Input
-                  value={rating}
-                  onChange={(e) => setRating(e.target.value)}
-                  placeholder="Enter Rating (e.g., 4.5)"
-                  required
-                />
-                <span className="create-campaign-input-span">Rating</span>
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item>
-                <Input
-                  value={reviews}
-                  onChange={(e) => setReviews(e.target.value)}
-                  placeholder="Enter Number of Reviews"
-                  required
-                />
-                <span className="create-campaign-input-span">Reviews</span>
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={24}>
-            <Col span={12}>
-              <Form.Item>
-                <Input
-                  value={patients}
-                  onChange={(e) => setPatients(e.target.value)}
-                  placeholder="Enter Number of Patients"
-                  required
-                />
-                <span className="create-campaign-input-span">Patients</span>
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item>
-                <Input
-                  value={experience}
-                  onChange={(e) => setExperience(e.target.value)}
-                  placeholder="Enter Experience (in years)"
-                  required
-                />
-                <span className="create-campaign-input-span">Experience</span>
-              </Form.Item>
-            </Col>
-          </Row>
           <Form.Item>
             <TextArea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Edit Description"
+              placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">About</span>
+            <span className="create-campaign-input-span">Description</span>
           </Form.Item>
-          <Row gutter={24}>
-            <Col span={12}>
+          <div className="row">
+            <div className="col-lg-12">
               <Form.Item>
-                <Input
-                  value={timing}
-                  onChange={(e) => setTiming(e.target.value)}
-                  placeholder="Enter Timing (e.g., Mon-Fri 9AM-5PM)"
-                  required
-                />
-                <span className="create-campaign-input-span">Timing</span>
+                <Upload
+                  listType="picture"
+                  showUploadList={false}
+                  onChange={handleUploadThumbnail}
+                  className="create-campaign-upload"
+                >
+                  <p className="create-campaign-ant-upload-text">
+                    Drop files here or click to upload
+                  </p>
+                  <IoCloudUploadOutline />{" "}
+                  <span style={{ color: "#727880" }}>Upload Thumbnail</span>
+                </Upload>
+                {thumbnailImage && (
+                  <div className="uploaded-image-preview">
+                    <img
+                      src={
+                        typeof thumbnailImage === "string"
+                          ? thumbnailImage
+                          : URL.createObjectURL(thumbnailImage)
+                      }
+                      alt="Thumbnail"
+                      style={{
+                        width: "200px",
+                        height: "auto",
+                        marginTop: "10px",
+                      }}
+                    />
+                    <Button
+                      onClick={handleDeleteThumbnail}
+                      className="model-image-upload-delete-icon"
+                    >
+                      <RiDeleteBin5Line />
+                    </Button>
+                  </div>
+                )}
               </Form.Item>
-            </Col>
-          </Row>
+            </div>
+          </div>
           <Form.Item>
-            <Input
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder="Enter Address"
+            <ReactQuill
+              theme="snow"
+              modules={modules}
+              value={content}
+              onChange={setContent}
+              placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Address</span>
-          </Form.Item>
-
-          {/* Image Upload Section */}
-          <Form.Item>
-            <Upload
-              listType="picture"
-              showUploadList={false}
-              onChange={handleUpload}
-              className="create-campaign-upload"
-            >
-              <p className="create-campaign-ant-upload-text">
-                Drop files here or click to upload
-              </p>
-              <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline />{" "}
-                <span style={{ color: "#727880" }}>Upload Image</span>
-              </span>
-            </Upload>
-            {uploadedImage && (
-              <div className="uploaded-image-preview d-flex gap-2">
-                <img
-                  src={
-                    typeof uploadedImage === "string"
-                      ? uploadedImage
-                      : URL.createObjectURL(uploadedImage)
-                  }
-                  alt="Uploaded"
-                  style={{
-                    width: "200px",
-                    height: "auto",
-                    marginTop: "10px",
-                    borderRadius: "5px",
-                  }}
-                />
-                <Button
-                  onClick={handleDeleteImage}
-                  style={{
-                    marginTop: "10px",
-                    backgroundColor: "#e6f2ed",
-                    borderRadius: "50%",
-                    fontSize: "16px",
-                    padding: "4px 12px",
-                  }}
-                >
-                  <RiDeleteBin5Line className="model-image-upload-delete-icon" />
-                </Button>
-              </div>
-            )}
-            <span className="create-campaign-input-span">Image</span>
+            <span className="create-campaign-input-span">Content</span>
           </Form.Item>
         </Form>
       </Modal>

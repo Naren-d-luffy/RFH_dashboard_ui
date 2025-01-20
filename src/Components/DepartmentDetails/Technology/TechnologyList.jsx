@@ -1,99 +1,65 @@
-import React, { useState, useEffect } from "react";
-import { Dropdown, Menu } from "antd";
-import { FiEye } from "react-icons/fi";
+import React, { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { BiEdit } from "react-icons/bi";
-import { RiDeleteBin7Line } from "react-icons/ri";
+import { Dropdown, Menu } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { BiEdit } from "react-icons/bi";
+import { RiDeleteBin7Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import {
-  showDeleteMessage,
-  showSuccessMessage,
-} from "../../../globalConstant";
-// import {
-//   setOutstationClinic,
-//   deleteOutstationClinic,
-// } from "../../../../Features/OutstationClinicSlice";
+import AddTechnology from "./AddTechnology";
+import EditTechnology from "./EditTechnology";
+import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
-import { CiCalendarDate, CiLocationOn } from "react-icons/ci";
-import { IoMdTime } from "react-icons/io";
-import AddOutstationClinic from "./AddTechnology";
-import EditOutstationClinic from "./EditTechnology";
-import ViewOutstationClinic from "./ViewTechnology";
 import { useNavigate } from "react-router-dom";
+import { FiEye } from "react-icons/fi";
+import ViewTechnology from "./ViewTechnology";
+import { deleteTechnology, setTechnology } from "../../../Features/TechnologySlice";
 
-const TechnologyList = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const handleViewCancel = () => setIsViewModalOpen(false);
-
-  const handleCancel = () => setIsModalOpen(false);
-  const handleEditCancel = () => setIsEditModalOpen(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const showEditModal = () => setIsEditModalOpen(true);
-  const showViewModal = () => setIsViewModalOpen(true);
-  const navigate = useNavigate();
+export const TechnologyList = () => {
+  const [modals, setModals] = useState({
+    event: false,
+    technology: false,
+    edit: false,
+  });
+  const [selectedTechnology, setSelectedTechnology] = useState(null);
   const dispatch = useDispatch();
-  const showModal = () => setIsModalOpen(true);
-  const clinics = useSelector((state) => state.clinics.clinics || []);
-  const itemsPerPage = 100;
-  const truncateText = (text, wordLimit) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
+  const navigate = useNavigate();
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+
+  const technologyList = useSelector((state) => state.technology.technologies);
+  const toggleModal = (modalType) =>
+    setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
+
+  const handleEditClick = (technology) => {
+    setSelectedTechnology(technology);
+    toggleModal("edit");
   };
 
-  const fetchOutstationClinic = async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get("/discover/clinic", {
-        params: { page, limit: itemsPerPage },
-      });
-      // dispatch(setOutstationClinic(response.data || []));
-    } catch (error) {
-      console.error("Error fetching clinics:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleDeleteClinic = (_id) => {
+  const handleDeleteClick = (_id) => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
         try {
-          const response = await Instance.delete(`/discover/clinic/${_id}`);
-          if (response.status === 200) {
+          const response = await Instance.delete(`/depcat/technology/${_id}`);
+          if (response.status === 200 || response.status === 204) {
             showSuccessMessage("Deleted successfully", "Details deleted");
-            // dispatch(deleteOutstationClinic(_id));
+            dispatch(deleteTechnology(_id));
           }
         } catch (error) {
-          console.error("Error deleting clinic:", error);
+          console.error("Error deleting technology:", error);
         }
       },
     });
   };
 
-  useEffect(() => {
-    fetchOutstationClinic();
-  }, []);
-
-  const sortMenu = (clinic) => (
+  const sortMenu = (technology) => (
     <Menu>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => {
-          setSelectedEvent(clinic);
-          showEditModal();
-        }}
+        onClick={() => handleEditClick(technology)}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
@@ -102,8 +68,8 @@ const TechnologyList = () => {
         key="view"
         className="filter-menu-item"
         onClick={() => {
-          setSelectedEvent(clinic);
-          showViewModal();
+          setSelectedTechnology(technology);
+          setIsViewModalOpen(true);
         }}
       >
         <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
@@ -112,7 +78,7 @@ const TechnologyList = () => {
       <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteClinic(clinic._id)}
+        onClick={() => handleDeleteClick(technology._id)}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -122,14 +88,11 @@ const TechnologyList = () => {
     </Menu>
   );
 
-  const renderClinicCard = (clinic) => (
-    <div className="col-lg-4" key={clinic._id}>
-      <div
-        className="outstation-clinic-upcoming-event-card p-3"
-        style={{ position: "relative" }}
-      >
-        <div className="treatment-info-icon-container">
-          <Dropdown overlay={sortMenu(clinic)} trigger={["click"]}>
+  const renderTechnologyCard = (technology) => (
+    <div className="col-lg-4" key={technology._id}>
+      <div className="upcoming-event-card p-3">
+        <div className="action-icon-container">
+          <Dropdown overlay={() => sortMenu(technology)} trigger={["click"]}>
             <button className="action-icon-button">
               <BsThreeDotsVertical />
             </button>
@@ -137,36 +100,17 @@ const TechnologyList = () => {
         </div>
 
         <div className="d-flex justify-content-center align-items-center mb-3">
-          <img
-            src={clinic.image || "https://via.placeholder.com/150"}
-            alt={clinic.name}
-          />
+          <img src={technology.thumbnail} alt={technology.heading} />
         </div>
 
-        <div className="outstation-clinic-data">
-          <h4>{clinic.name}</h4>
-          <div className="d-flex justify-content-between">
-            <p>
-              {clinic.rating} ({clinic.reviews} reviews)
-            </p>
-            <p>{clinic.experience} years experience</p>
+        <div>
+          <div className="d-flex justify-content-between mb-2">
+            <h4>{technology.heading}</h4>
+            <span>
+              {new Date(technology.createdAt).toLocaleDateString("en-GB")}
+            </span>
           </div>
-          <p>{clinic.patients} Patients Treated</p>
-          <div>
-            <span>{truncateText(clinic.about, 8)}</span>
-          </div>
-          <div className="d-flex justify-content-between">
-            <p>
-              <CiCalendarDate />{" "}
-              {new Date(clinic.createdAt).toLocaleDateString()}
-            </p>
-            <p>
-              <IoMdTime /> {clinic.timing}
-            </p>
-          </div>
-          <span>
-            <CiLocationOn /> {clinic.location}
-          </span>
+          <p>{technology.subHeading}</p>
         </div>
       </div>
     </div>
@@ -200,7 +144,7 @@ const TechnologyList = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -217,42 +161,68 @@ const TechnologyList = () => {
       },
     ],
   };
+
+  const fetchTechnologyList = async () => {
+    try {
+      const response = await Instance.get("/depcat/technology");
+      dispatch(setTechnology(response.data));
+    } catch (error) {
+      console.error("Error fetching technology list:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTechnologyList();
+  }, []);
+
   return (
-    <div className="container mt-4">
+    <div className="row mt-4">
       <div className="marketing-categories-section">
         <div className="row mt-4">
           <div className="d-flex justify-content-between">
-            <h6>Outstation/Speciality Clinic</h6>
+            <h6>Technology List</h6>
             <div className="d-flex gap-2">
               <button
                 className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-outstation-clinic")}
+                onClick={() => navigate("/view-all-technology-list")}
               >
                 View all
               </button>
-              <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} /> Add Clinic
+              <button
+                className="rfh-basic-button"
+                onClick={() => toggleModal("technology")}
+              >
+                <GoPlus size={20} /> Add Technology
               </button>
             </div>
           </div>
-          <div className="mt-3">
+          <div className="mt-4">
             <Slider {...sliderSettings}>
-              {Object.values(clinics).map((clinic) => renderClinicCard(clinic))}
+              {technologyList && Object.keys(technologyList).length > 0 ? (
+                Object.entries(technologyList)
+                  .filter(([key]) => key !== "status")
+                  .map(([key, technology]) => renderTechnologyCard(technology))
+              ) : (
+                <p>No data available</p>
+              )}
             </Slider>
           </div>
+          <AddTechnology
+            open={modals.technology}
+            handleCancel={() => toggleModal("technology")}
+          />
+          <EditTechnology
+            open={modals.edit}
+            handleCancel={() => toggleModal("edit")}
+            technologyData={selectedTechnology}
+          />
+          <ViewTechnology
+            open={isViewModalOpen}
+            handleCancel={() => setIsViewModalOpen(false)}
+            technologyData={selectedTechnology}
+          />
         </div>
       </div>
-      <AddOutstationClinic open={isModalOpen} handleCancel={handleCancel} />
-      <EditOutstationClinic
-        open={isEditModalOpen}
-        handleCancel={handleEditCancel}
-        EventData={selectedEvent}
-      />
-      <ViewOutstationClinic
-        open={isViewModalOpen}
-        handleCancel={handleViewCancel}
-        EventData={selectedEvent}
-      />
     </div>
   );
 };

@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { Button, Modal } from "antd";
 import "react-quill/dist/quill.snow.css";
-import Loader from "../../../../Loader";
+import Loader from "../../../Loader";
+import ReactPlayer from "react-player";
 
-const ViewFacility = ({ open, handleCancel, eventsData }) => {
+const ViewFacility = ({ open, handleCancel, facilityData }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [playingVideo, setPlayingVideo] = useState(null);
+
+  const handlePlayVideo = (videoId) => {
+    setPlayingVideo(videoId);
+  };
+
   return (
     <>
       {isLoading && <Loader />}
@@ -25,19 +32,42 @@ const ViewFacility = ({ open, handleCancel, eventsData }) => {
       >
         <div className="view-treatment-info-modal-container">
           <div className="view-treatment-info-modal-header d-flex justify-content-between align-items-center">
-            <h4>{eventsData?.title || "N/A"}</h4>
-            <img src={eventsData?.image} alt="Event Image" />
+            <h4>{facilityData?.heading || "N/A"}</h4>
+            {facilityData?.thumbnail && (
+              <img
+                src={facilityData.thumbnail}
+                alt="Event Thumbnail"
+                className="facility-thumbnail"
+              />
+            )}
           </div>
 
           <div className="view-treatment-info-modal-content">
-            <h5>{eventsData?.description || "N/A"}</h5>
-            <ul>
-              {eventsData?.tags
-                ?.flatMap((tag) => tag.split(",")) 
-                .map((individualTag, index) => (
-                  <li key={index}>{individualTag.trim()}</li> 
-                ))}
-            </ul>
+            <h5>{facilityData?.video_heading || "N/A"}</h5>
+            {facilityData?.video && (
+              <div className="recommend-video-card p-3">
+                <div className="video-player-container">
+                  <ReactPlayer
+                    url={facilityData.video}
+                    controls={true}
+                    playing={playingVideo === facilityData?._id}
+                    width="100%"
+                    height="150px"
+                    onPlay={() => handlePlayVideo(facilityData?._id)}
+                    onPause={() => setPlayingVideo(null)}
+                  />
+                </div>
+              </div>
+            )}
+
+            {facilityData?.content ? (
+              <div
+                className="news-content"
+                dangerouslySetInnerHTML={{ __html: facilityData.content }}
+              />
+            ) : (
+              <p>No content available</p>
+            )}
           </div>
         </div>
       </Modal>

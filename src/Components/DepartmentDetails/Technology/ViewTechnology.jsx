@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Button, Modal } from "antd";
+import "react-quill/dist/quill.snow.css";
 import Loader from "../../../Loader";
+import ReactPlayer from "react-player";
 
-const ViewTechnology = ({ open, handleCancel, EventData }) => {
+const ViewTechnology = ({ open, handleCancel, technologyData }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
@@ -24,34 +26,28 @@ const ViewTechnology = ({ open, handleCancel, EventData }) => {
         ]}
       >
         <div className="view-treatment-info-modal-container">
-          <div className="view-treatment-info-modal-header  d-flex justify-content-between align-items-center">
-            <h4>{EventData?.name || "N/A"}</h4>
-            <img src={EventData?.image} alt="Clinic" />
+          <div className="view-treatment-info-modal-header d-flex justify-content-between align-items-center">
+            <h4>{technologyData?.heading || "N/A"}</h4>
+            {technologyData?.thumbnail && (
+              <img
+                src={technologyData.thumbnail}
+                alt="Event Thumbnail"
+                className="facility-thumbnail"
+              />
+            )}
           </div>
 
           <div className="view-treatment-info-modal-content">
-            <h5>{EventData?.about || "N/A"}</h5>
-            <div>
-              <p>
-                <strong>Address:</strong> {EventData?.location || "N/A"}
-              </p>
-              <p>
-                <strong>Rating:</strong> {EventData?.rating || "N/A"}
-              </p>
-              <p>
-                <strong>Reviews:</strong> {EventData?.reviews || "N/A"}
-              </p>
-              <p>
-                <strong>Patients:</strong> {EventData?.patients || "N/A"}
-              </p>
-              <p>
-                <strong>Experience:</strong> {EventData?.experience || "N/A"}{" "}
-                years
-              </p>
-              <p>
-                <strong>Timing:</strong> {EventData?.timing || "N/A"}
-              </p>
-            </div>
+            <h5>{technologyData?.subHeading || "N/A"}</h5>
+
+            {technologyData?.content ? (
+              <div
+                className="news-content"
+                dangerouslySetInnerHTML={{ __html: technologyData.content }}
+              />
+            ) : (
+              <p>No content available</p>
+            )}
           </div>
         </div>
       </Modal>

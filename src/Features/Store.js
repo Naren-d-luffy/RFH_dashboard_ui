@@ -14,6 +14,7 @@ import campSlice from "./CampSlice"
 import doctorProfileSlice from "./DoctorProfileSlice"
 import readingMaterialsSlice from "./ReadingMaterialsSlice"
 import facilitySlice from "./FacilitySlice"
+import technologySlice from "./TechnologySlice"
 import blogSlice from "./BlogSlice"
 import serviceSlice from "./ServiceSlice"
 export default configureStore({
@@ -35,5 +36,6 @@ export default configureStore({
         facility:facilitySlice,
         blog:blogSlice,
         service:serviceSlice,
+        technology:technologySlice,
     },
 });
