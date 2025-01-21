@@ -158,13 +158,13 @@ function SidebarAdmin() {
       id: "education",
       label: (
         <span
-        onClick={() => navigate("/patient-education/overview")}
+        onClick={() => navigate("/patient-education/resources")}
           style={{ cursor: "pointer" }}
         >
           Patient Education
         </span>
       ),
-      to: "/patient-education/overview",
+      to: "/patient-education/resources",
       icon: <SlGraduation className="sidebar-icon" />,
       subMenu: [
         { label: "Education Overview", to: "/patient-education/overview" },
@@ -255,24 +255,24 @@ function SidebarAdmin() {
   //     icon: <FiActivity className="sidebar-icon" size={14} />,
   //     to: "/health-package",
   //   },
-    {
-      id: "technical",
-      label: (
-        <span
-        onClick={() => navigate("/")}
-          style={{ cursor: "pointer" }}
-        >
-          Technical
-        </span>
-      ),
-      to: "/",
-      icon: <MemoryStick className="sidebar-icon" size={14} />,
-      subMenu: [
-        { label: "Raise TIcket", to: "/" },
-        // { label: "User Engagement", to: "/" },
-        // { label: "User Feedback", to: "/" },
-      ],
-    },
+    // {
+    //   id: "technical",
+    //   label: (
+    //     <span
+    //     onClick={() => navigate("/")}
+    //       style={{ cursor: "pointer" }}
+    //     >
+    //       Technical
+    //     </span>
+    //   ),
+    //   to: "/",
+    //   icon: <MemoryStick className="sidebar-icon" size={14} />,
+    //   subMenu: [
+    //     { label: "Raise TIcket", to: "/" },
+    //     // { label: "User Engagement", to: "/" },
+    //     // { label: "User Feedback", to: "/" },
+    //   ],
+    // },
     {
       id: "medication",
       label: "Medication Tracker",

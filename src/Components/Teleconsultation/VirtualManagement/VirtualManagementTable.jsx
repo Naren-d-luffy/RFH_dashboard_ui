@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Instance } from "../../../AxiosConfig";
-import { Table, Dropdown, Button, Modal, Tag } from "antd";
+import { Table, Dropdown, Button, Modal, Avatar,Tag } from "antd";
 import { FiSearch, FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
@@ -8,20 +8,36 @@ import { GoPlus } from "react-icons/go";
 import { showDeleteMessage } from "../../../globalConstant";
 import { filterDropdown } from "../../../globalConstant";
 import { FaUserMd } from "react-icons/fa";
+import defaultUser from "../../../Assets/Images/singleuser.png";
 
 const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
   if (!doctor) return null;
 
   return (
-    <Modal open={isOpen} onClose={onClose}>
+    <Modal
+      open={isOpen}
+      onClose={onClose}
+      width={600}
+      footer={[
+        <Button
+          key="back"
+          onClick={onClose}
+          className="create-campaign-cancel-button"
+        >
+          Cancel
+        </Button>,
+      ]}
+    >
       <div
-        className={`fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center ${isOpen ? "block" : "hidden"}`}
+        className={`fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center ${
+          isOpen ? "block" : "hidden"
+        }`}
       >
         <div className="bg-white w-3/4 max-w-5xl rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
           <div className="p-8">
             {/* Header */}
             <div className="flex items-center space-x-6 border-b border-gray-200 pb-6">
-              {doctor.profile ? (
+              {/* {doctor.profile ? (
                 <img
                   src={doctor.profile}
                   alt={doctor.name}
@@ -31,93 +47,92 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
                 <div className="w-24 h-24 rounded-full bg-blue-50 flex items-center justify-center shadow-md">
                   <FaUserMd className="w-12 h-12 text-blue-500" />
                 </div>
-              )}
-              <div>
+              )} */}
+              <div className="view-doctor-detail-doctor-image">
+                <Avatar
+                  size={74}
+                  src={doctor.profile || defaultUser} // Default image fallback
+                  className="view-doctor-profile-image"
+                />
+              </div>
+              {/* <div>
                 <h2 className="text-3xl font-bold text-gray-900">
                   {doctor.name}
                 </h2>
                 <p className="text-lg text-gray-600 mt-1">{doctor.position}</p>
+              </div> */}
+              <div className="view-doctor-detail-info-section">
+                <h3>{doctor.name}</h3>
+                <h6>{doctor.position}</h6>
               </div>
             </div>
-
+            <hr color="var(--border-color)" />
+              <div className="view-doctor-detail-specialist-section">
+                <h3>Department</h3>
+                <p>{doctor.department}</p>
+                <h3 className="mt-3">Experience</h3>
+                <p>{doctor.experience}</p>
+                <h3 className="mt-3">Contact Details</h3>
+                <p>{doctor.contactDetails}</p>
+              </div>
+              <hr />
+              <div >
+                <h6>About</h6>
+                <p>{doctor.about} </p>
+              </div>
             {/* Main Content */}
             <div className="mt-8">
-              {/* Info Grid */}
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Department
-                  </h3>
-                  <p className="text-gray-700">{doctor.department}</p>
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Experience
-                  </h3>
-                  <p className="text-gray-700">{doctor.experience}</p>
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Contact Details
-                  </h3>
-                  <p className="text-gray-700">{doctor.contactDetails}</p>
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold text-gray-900">About</h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    {doctor.about}
-                  </p>
-                </div>
-              </div>
+             
+              
 
               {/* Qualifications */}
               <div className="mt-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Qualifications
-                </h3>
+              <div className="view-doctor-detail-specialist-section">
+                <h6>Qualifiactions</h6>
+              </div>
                 <div className="flex flex-wrap gap-2">
                   {doctor.qualifications.map((qual, index) => (
-                    <span
+                    <Tag
                       key={index}
-                      className="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium"
+                      className="most-user-success-tag p-2"
                     >
                       {qual}
-                    </span>
+                    </Tag>
                   ))}
                 </div>
               </div>
 
               {/* Areas of Expertise */}
-              <div className="mt-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              <div className="mt-4">
+                <h6>
                   Areas of Expertise
-                </h3>
-                <div className="flex flex-wrap gap-2">
+                </h6>
+                <div className="flex flex-wrap gap-2 mt-2">
                   {doctor.AreasOfExpertise.map((area, index) => (
-                    <span
+                    <Tag
                       key={index}
-                      className="px-4 py-2 bg-green-50 text-green-700 rounded-full text-sm font-medium"
+                      className="most-user-success-tag p-2"
                     >
                       {area}
-                    </span>
+                    </Tag>
                   ))}
                 </div>
               </div>
 
               {/* Fellowships */}
               {doctor.fellowships && doctor.fellowships.length > 0 && (
-                <div className="mt-8">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                <div className="mt-4">
+                  <h6>
                     Fellowships
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
+                  </h6>
+                  <div className="d-flex flex-column gap-2 mt-2">
                     {doctor.fellowships.map((fellowship, index) => (
-                      <span
+                      <Tag
                         key={index}
-                        className="px-4 py-2 bg-purple-50 text-purple-700 rounded-full text-sm font-medium"
+                        className="most-user-success-tag p-2"
                       >
                         {fellowship}
-                      </span>
+                      </Tag>
                     ))}
                   </div>
                 </div>
@@ -126,31 +141,21 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
               {/* Awards */}
               {doctor.awards && doctor.awards.length > 0 && (
                 <div className="mt-8">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  <h6 >
                     Awards
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
+                  </h6>
+                  <div className="d-flex flex-column gap-2">
                     {doctor.awards.map((award, index) => (
-                      <span
+                      <Tag
                         key={index}
-                        className="px-4 py-2 bg-yellow-50 text-yellow-700 rounded-full text-sm font-medium"
+                        className="most-user-success-tag p-2"
                       >
                         {award}
-                      </span>
+                      </Tag>
                     ))}
                   </div>
                 </div>
               )}
-            </div>
-
-            {/* Footer */}
-            <div className="mt-8 pt-6 border-t border-gray-200 flex justify-end">
-              <button
-                onClick={onClose}
-                className="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg font-medium transition-colors duration-200"
-              >
-                Close
-              </button>
             </div>
           </div>
         </div>
@@ -237,7 +242,7 @@ const VirtualManagementTable = () => {
       render: (text, record) => (
         <div className="d-flex align-items-center gap-2">
           <img
-            src={record.profile || <FaUserMd />}
+            src={record.profile || defaultUser}
             alt="Doctor"
             style={{
               width: "30px",
