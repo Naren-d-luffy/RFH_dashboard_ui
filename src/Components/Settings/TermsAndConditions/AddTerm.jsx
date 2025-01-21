@@ -30,16 +30,19 @@ const AddTermsModal = ({ visible, onClose }) => {
       setIsLoading(false);
     }
   };
-
+  const handleClose = () => {
+    form.resetFields(); // Reset form fields
+    onClose(); // Close the modal
+  };
   return (
     <>
       {isLoading && <Loader />}
       <Modal
         visible={visible}
         title={<span className="create-campaign-modal-title">Add Terms and Conditions</span>}
-        onCancel={onClose}
+        onCancel={handleClose}
         footer={[
-          <Button key="back" onClick={onClose} className="create-campaign-cancel-button">
+          <Button key="back" onClick={handleClose} className="create-campaign-cancel-button">
             Cancel
           </Button>,
           <Button

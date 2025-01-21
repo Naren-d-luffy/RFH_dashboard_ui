@@ -24,7 +24,7 @@ const AddAskedQuestions = ({ open, handleCancel }) => {
 
       if ([200, 201, 204].includes(response.status)) {
         showSuccessMessage("FAQ created successfully!");
-        dispatch(addFaqs(response.data));
+        dispatch(addFaqs(response.data.data));
         setQuestion("");
         setAnswer("");
         handleCancel();
@@ -39,15 +39,19 @@ const AddAskedQuestions = ({ open, handleCancel }) => {
       message.error("Failed to create FAQ.");
     }
   };
-
+  const handleCancelClick = () => {
+    setQuestion("");
+    setAnswer("");
+    handleCancel();
+  };
   return (
     <Modal
       open={open}
       title={<span className="create-campaign-modal-title">Frequently Asked Questions</span>}
-      onCancel={handleCancel}
+      onCancel={handleCancelClick}
       width={680}
       footer={[
-        <Button key="back" onClick={handleCancel} className="create-campaign-cancel-button">
+        <Button key="back" onClick={handleCancelClick} className="create-campaign-cancel-button">
           Cancel
         </Button>,
         <Button key="save" onClick={handleSave} className="create-campaign-save-button">

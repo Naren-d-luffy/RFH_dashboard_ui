@@ -12,6 +12,8 @@ import {
   showSuccessMessage,
 } from "../../../../globalConstant";
 import EditAskedQuestions from "./EditAskedQuestions";
+import { RiDeleteBin7Line } from "react-icons/ri";
+import { BiEdit } from "react-icons/bi";
 
 const EducationCategoriesQuestions = () => {
   const dispatch = useDispatch();
@@ -20,17 +22,17 @@ const EducationCategoriesQuestions = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [faqsList, setFaqsList] = useState([]);
-  const [selectedFaq, setSelectedFaq] = useState(null); // Set initial value to null
+  const [selectedFaq, setSelectedFaq] = useState(null);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const showEditModal = (faq) => {
-    setSelectedFaq(faq); // Pass the entire FAQ object
-    setIsEditModalOpen(true); // Set modal to open
+    setSelectedFaq(faq);
+    setIsEditModalOpen(true);
   };
 
   const handleCancelEditModal = () => {
-    setSelectedFaq(null); // Clear selected FAQ
-    setIsEditModalOpen(false); // Close the modal
+    setSelectedFaq(null);
+    setIsEditModalOpen(false);
   };
 
   const faqData = useSelector((state) => state.faq.faqs);
@@ -61,11 +63,24 @@ const EducationCategoriesQuestions = () => {
 
   const menu = (faq) => (
     <Menu>
-      <Menu.Item key="edit" onClick={() => showEditModal(faq)}>
+      <Menu.Item
+        key="edit"
+        className="filter-menu-item"
+        onClick={() => {
+          showEditModal(faq);
+        }}
+      >
+        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="delete" onClick={() => handleDelete(faq._id)}>
+      <Menu.Item
+        key="delete"
+        className="filter-menu-item"
+        onClick={() => handleDelete(faq._id)}
+      >
+        <RiDeleteBin7Line
+          style={{ color: "var(--red-color)", marginRight: "4px" }}
+        />
         Delete
       </Menu.Item>
     </Menu>
@@ -75,7 +90,9 @@ const EducationCategoriesQuestions = () => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/faq`);
-      setFaqsList(response.data || []);
+      console.log("ccccccc", response);
+
+      setFaqsList(response.data.data || []);
       dispatch(setFaqs(response.data.data));
     } catch (error) {
       console.error("Error fetching FAQs list:", error);
@@ -102,7 +119,7 @@ const EducationCategoriesQuestions = () => {
           </button>
         </div>
 
-          {Object.values(faqData).map((faq, index) => (
+        {Object.values(faqData).map((faq, index) => (
           <div key={faq.id} className="education-categories-faq-item">
             <div className="education-categories-faq-question d-flex justify-content-between mt-4 align-items-center">
               <span>{faq.question}</span>

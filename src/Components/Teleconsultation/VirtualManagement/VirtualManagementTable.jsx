@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Instance } from "../../../AxiosConfig";
-import { Table, Dropdown, Button, Modal, Avatar,Tag } from "antd";
+import { Table, Dropdown, Button, Modal, Avatar, Tag } from "antd";
 import { FiSearch, FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
@@ -67,35 +67,29 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
               </div>
             </div>
             <hr color="var(--border-color)" />
-              <div className="view-doctor-detail-specialist-section">
-                <h3>Department</h3>
-                <p>{doctor.department}</p>
-                <h3 className="mt-3">Experience</h3>
-                <p>{doctor.experience}</p>
-                <h3 className="mt-3">Contact Details</h3>
-                <p>{doctor.contactDetails}</p>
-              </div>
-              <hr />
-              <div >
-                <h6>About</h6>
-                <p>{doctor.about} </p>
-              </div>
+            <div className="view-doctor-detail-specialist-section">
+              <h3>Department</h3>
+              <p>{doctor.department}</p>
+              <h3 className="mt-3">Experience</h3>
+              <p>{doctor.experience}</p>
+              <h3 className="mt-3">Contact Details</h3>
+              <p>{doctor.contactDetails}</p>
+            </div>
+            <hr />
+            <div>
+              <h6>About</h6>
+              <p>{doctor.about} </p>
+            </div>
             {/* Main Content */}
             <div className="mt-8">
-             
-              
-
               {/* Qualifications */}
               <div className="mt-8">
-              <div className="view-doctor-detail-specialist-section">
-                <h6>Qualifiactions</h6>
-              </div>
+                <div className="view-doctor-detail-specialist-section">
+                  <h6>Qualifiactions</h6>
+                </div>
                 <div className="flex flex-wrap gap-2">
                   {doctor.qualifications.map((qual, index) => (
-                    <Tag
-                      key={index}
-                      className="most-user-success-tag p-2"
-                    >
+                    <Tag key={index} className="most-user-success-tag p-2">
                       {qual}
                     </Tag>
                   ))}
@@ -104,15 +98,10 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
 
               {/* Areas of Expertise */}
               <div className="mt-4">
-                <h6>
-                  Areas of Expertise
-                </h6>
+                <h6>Areas of Expertise</h6>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {doctor.AreasOfExpertise.map((area, index) => (
-                    <Tag
-                      key={index}
-                      className="most-user-success-tag p-2"
-                    >
+                    <Tag key={index} className="most-user-success-tag p-2">
                       {area}
                     </Tag>
                   ))}
@@ -122,15 +111,10 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
               {/* Fellowships */}
               {doctor.fellowships && doctor.fellowships.length > 0 && (
                 <div className="mt-4">
-                  <h6>
-                    Fellowships
-                  </h6>
+                  <h6>Fellowships</h6>
                   <div className="d-flex flex-column gap-2 mt-2">
                     {doctor.fellowships.map((fellowship, index) => (
-                      <Tag
-                        key={index}
-                        className="most-user-success-tag p-2"
-                      >
+                      <Tag key={index} className="most-user-success-tag p-2">
                         {fellowship}
                       </Tag>
                     ))}
@@ -141,15 +125,10 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
               {/* Awards */}
               {doctor.awards && doctor.awards.length > 0 && (
                 <div className="mt-8">
-                  <h6 >
-                    Awards
-                  </h6>
+                  <h6>Awards</h6>
                   <div className="d-flex flex-column gap-2">
                     {doctor.awards.map((award, index) => (
-                      <Tag
-                        key={index}
-                        className="most-user-success-tag p-2"
-                      >
+                      <Tag key={index} className="most-user-success-tag p-2">
                         {award}
                       </Tag>
                     ))}
@@ -171,7 +150,7 @@ const VirtualManagementTable = () => {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-
+  const [searchQuery, setSearchQuery] = useState(""); 
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
@@ -227,6 +206,14 @@ const VirtualManagementTable = () => {
     setIsModalOpen(false);
     setSelectedDoctor(null);
   };
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+  const filteredDoctors = doctors.filter((doctor) =>
+    doctor.name.toLowerCase().includes(searchQuery) ||
+    doctor.department.toLowerCase().includes(searchQuery) ||
+    doctor.position.toLowerCase().includes(searchQuery)
+  );
 
   const columns = [
     {
@@ -331,17 +318,13 @@ const VirtualManagementTable = () => {
                 type="text"
                 placeholder="Search anything here"
                 className="search-input-table"
+                value={searchQuery}
+                onChange={handleSearchChange}
               />
             </div>
             <div className="d-flex gap-3 align-items-center">
               <Dropdown
-                overlay={filterDropdown(
-                  [],
-                  [],
-                  () => {},
-                  () => {},
-                  () => {}
-                )}
+                overlay={filterDropdown([], () => {})}
                 trigger={["click"]}
                 open={isDropdownOpen}
                 onOpenChange={setIsDropdownOpen}
@@ -364,7 +347,7 @@ const VirtualManagementTable = () => {
         <div className="mt-3">
           <Table
             columns={columns}
-            dataSource={doctors}
+            dataSource={filteredDoctors}
             loading={loading}
             rowKey="_id"
             className="campaign-performance-table overflow-y-auto"

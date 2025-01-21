@@ -29,7 +29,10 @@ const AllConfigList = () => {
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="d-flex justify-content-between mb-4">
           <h2>All Configurations</h2>
-          <Button type="primary" onClick={() => setAddConfigModalVisible(true)}>
+          <Button
+            className="create-campaign-save-button"
+            onClick={() => setAddConfigModalVisible(true)}
+          >
             <FaPlus /> Add Configuration
           </Button>
         </div>
@@ -41,7 +44,7 @@ const AllConfigList = () => {
             {configs.map((config, index) => (
               <div
                 key={config._id}
-                className="col-lg-5 col-md-7 col-sm-12 mb-4"
+                className="col-lg-6 col-md-7 col-sm-12 mb-4 settings-event-card"
               >
                 <Card
                   title={config.name || `Configuration ${index + 1}`}
@@ -56,9 +59,10 @@ const AllConfigList = () => {
                         </p>
                       ))}
                   </div>
-                  <div className="d-flex justify-content-between">
+                  <div className="d-flex justify-content-end gap-3">
                     <Button
                       type="text"
+                      className="create-campaign-save-button"
                       icon={<HiOutlinePencilSquare />}
                       onClick={() => setSelectedConfig(config)}
                     >
@@ -66,9 +70,9 @@ const AllConfigList = () => {
                     </Button>
                     <Button
                       type="text"
+                      className="campaign-performance-table-delete-icon"
                       icon={<MdDeleteOutline />}
                       onClick={() => handleDeleteConfig(config._id)}
-                      danger
                     >
                       Delete
                     </Button>

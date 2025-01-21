@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
 import ReactQuill from "react-quill";
@@ -41,12 +40,7 @@ const AddTechnology = ({ open, handleCancel }) => {
   };
 
   const handleSave = async () => {
-    if (
-      !title ||
-      !description ||
-      !content ||
-      !thumbnailImage
-    ) {
+    if (!title || !description || !content || !thumbnailImage) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -54,10 +48,10 @@ const AddTechnology = ({ open, handleCancel }) => {
     try {
       const formData = new FormData();
       formData.append("heading", title);
-      formData.append("subHeading", description); 
+      formData.append("subHeading", description);
       formData.append("thumbnail", thumbnailImage);
-      formData.append("content", content); 
-  
+      formData.append("content", content);
+
       const response = await Instance.post("/depcat/technology", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
@@ -75,20 +69,30 @@ const AddTechnology = ({ open, handleCancel }) => {
       setIsLoading(false);
     }
   };
-  
 
+  const handleCancelClick = () => {
+    setTitle("");
+    setDescription("");
+    setContent("");
+    setThumbnailImage(null);
+    handleCancel();
+  };
   return (
     <>
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Add Department Technology</span>}
-        onCancel={handleCancel}
+        title={
+          <span className="create-campaign-modal-title">
+            Add Department Technology
+          </span>
+        }
+        onCancel={handleCancelClick}
         width={680}
         footer={[
           <Button
             key="back"
-            onClick={handleCancel}
+            onClick={handleCancelClick}
             className="create-campaign-cancel-button"
           >
             Cancel
