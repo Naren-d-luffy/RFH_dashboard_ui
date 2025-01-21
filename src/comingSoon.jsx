@@ -1,20 +1,20 @@
 import React from 'react';
-import { Clock } from 'lucide-react';
-import comingSoon from "../src/Assets/Images/comingsoon1.png"
+
 const ComingSoon = () => {
+  const comingsoon = "https://reliancehospital.blob.core.windows.net/reliancehospitalblob/coming soon.png";
 
   return (
-    <div className='coming-soon-container'>
-        <div >
-          <img 
-            src={comingSoon}
-            alt="Coming Soon"    
-          />
-        </div>
-        <p>
-          We're working hard to bring you something amazing. Stay tuned!
-        </p> 
-        
+    <div className="coming-soon-container">
+      <div>
+        <img
+          src={comingsoon}
+          alt="Coming Soon"
+        />
+      </div>
+      <h1 className="coming-soon-title">Coming Soon</h1>
+      <p className="coming-soon-text">
+        Stay ahead in your wellness journey with our comprehensive health.<br /> Coming soon with personalized care, tailored just for you!
+      </p>
     </div>
   );
 };

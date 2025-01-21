@@ -46,9 +46,9 @@ const ViewDoctorDetail = () => {
         <div className="col-lg-4">
           <div className="doctor-detail-page">
             <div className="view-doctor-detail-doctor-card">
-              <div className="view-doctor-detail-doctor-image">
+             <div className="view-doctor-detail-doctor-image">
                 <Avatar
-                  size={74}
+                  siz e={74}
                   src={doctor.image || "/default-doctor.png"} // Default image fallback
                   className="view-doctor-profile-image"
                 />

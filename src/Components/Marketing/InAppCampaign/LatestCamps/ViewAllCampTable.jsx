@@ -62,8 +62,8 @@ const ViewAllCampTable = () => {
       const response = await Instance.get(`/camp`, {
         params: { page, limit: itemsPerPage },
       });
-      setTotalRows(response.data?.length || 0);
-      dispatch(setFeature(response.data));
+      setTotalRows(response.data?.data?.length || 0);
+      dispatch(setFeature(response.data.data));
     } catch (error) {
       console.error("Error fetching events:", error);
     } finally {
