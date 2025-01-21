@@ -77,10 +77,9 @@ const NewsList = () => {
       const response = await Instance.get(`/cards`, {
         params: { page, limit: itemsPerPage },
       });
-      console.log(response,"news")
-      setNewsList(response.data || []);
-      setTotalRows(response.data.length);
-      dispatch(setNews(response.data));
+      setNewsList(response.data.data || []);
+      setTotalRows(response.data.data.length);
+      dispatch(setNews(response.data.data));
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching news:", error);

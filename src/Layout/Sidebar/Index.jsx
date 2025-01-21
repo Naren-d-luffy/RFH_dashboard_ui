@@ -175,7 +175,7 @@ function SidebarAdmin() {
       id: "teleconsultation",
       label: (
         <span
-        onClick={() => navigate("/teleconsultation/doctors-list")}
+        onClick={() => navigate("/teleconsultation/virtual-management")}
           style={{ cursor: "pointer" }}
         >
           Teleconsultation
@@ -185,17 +185,17 @@ function SidebarAdmin() {
       icon: <IoTelescopeOutline className="sidebar-icon" />,
       subMenu: [
         {
-          label: "Virtual Management",
+          label: "Doctors List",
           to: "/teleconsultation/virtual-management",
         },
         // {
         //   label: "Appointment Status",
         //   to: "/teleconsultation/appointment-status",
         // },
-        {
-          label: "Doctors List",
-          to: "/teleconsultation/doctors-list",
-        },
+        // {
+        //   label: "Doctors List",
+        //   to: "/teleconsultation/doctors-list",
+        // },
         { label: "Technical Support", to: "/teleconsultation/technical-support" },
       ],
     },
