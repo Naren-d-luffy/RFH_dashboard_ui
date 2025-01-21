@@ -69,7 +69,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
       const response = await Instance.post("/education", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
-        dispatch(addTreatment(response.data._doc))
+        dispatch(addTreatment(response.data.data))
         showSuccessMessage("Treatment Info Added successfully!");
         setTitle("");
         setDescription("");
@@ -84,7 +84,14 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
       setIsLoading(false);
     }
   };
-
+  const handleCancelClick = () => {
+    setTitle("");
+    setDescription("");
+    setContent("");
+    setUploadedImage(null);
+    setThumbnailImage(null);
+    handleCancel();
+  };
   return (
     <>
       {isLoading && <Loader />}
@@ -95,12 +102,12 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
             Add Treatment Info{" "}
           </span>
         }
-        onCancel={handleCancel}
+        onCancel={handleCancelClick}
         width={680}
         footer={[
           <Button
             key="back"
-            onClick={handleCancel}
+            onClick={handleCancelClick}
             className="create-campaign-cancel-button"
           >
             Cancel

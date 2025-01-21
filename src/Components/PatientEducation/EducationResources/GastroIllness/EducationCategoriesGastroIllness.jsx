@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Button, Dropdown, Menu } from "antd";
-import { FiEye, FiSearch } from "react-icons/fi";
+import { Dropdown, Menu } from "antd";
+import { FiEye } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
-import { VscSettings } from "react-icons/vsc";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
@@ -29,8 +28,7 @@ const EducationCategoriesGastroIllness = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [gastroIllnessList, setGastroIllnessList] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -98,7 +96,6 @@ const EducationCategoriesGastroIllness = () => {
         params: { page, limit: itemsPerPage },
       });
       dispatch(setGastroIllness(response.data.data.gastros || []));
-      setGastroIllnessList(response.data.gastros || []);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching gastro events:", error);
@@ -180,7 +177,7 @@ const EducationCategoriesGastroIllness = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,

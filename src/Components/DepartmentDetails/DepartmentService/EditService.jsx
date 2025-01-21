@@ -81,7 +81,9 @@ const EditService = ({ open, handleCancel, serviceData }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title="Edit Department Services"
+        title={
+          <span className="create-campaign-modal-title">Edit Department Services</span>
+        }
         onCancel={handleCancel}
         width={680}
         footer={[

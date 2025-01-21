@@ -100,7 +100,14 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
       setIsLoading(false);
     }
   };
-
+  const handleCancelClick = () => {
+    setTitle("");
+    setDescription("");
+    setFeatures([]);
+    setContent("");
+    setUploadedImage(null);
+    handleCancel();
+  };
   return (
     <Modal
       visible={open}
@@ -109,12 +116,12 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
           Create Feature Program
         </span>
       }
-      onCancel={handleCancel}
+      onCancel={handleCancelClick}
       width={680}
       footer={[
         <Button
           key="back"
-          onClick={handleCancel}
+          onClick={handleCancelClick}
           className="create-campaign-cancel-button"
         >
           Cancel

@@ -65,19 +65,27 @@ const AddService = ({ open, handleCancel }) => {
       setIsLoading(false);
     }
   };
-
+  const handleCancelClick = () => {
+    setHeading("");
+    setSubHeading("");
+    setContent("");
+    setThumbnailImage(null);
+    handleCancel();
+  };
   return (
     <>
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title="Add Department Services"
-        onCancel={handleCancel}
+        title={
+          <span className="create-campaign-modal-title">Add Department Services</span>
+        }
+        onCancel={handleCancelClick}
         width={680}
         footer={[
           <Button
             key="back"
-            onClick={handleCancel}
+            onClick={handleCancelClick}
             className="create-campaign-cancel-button"
           >
             Cancel
