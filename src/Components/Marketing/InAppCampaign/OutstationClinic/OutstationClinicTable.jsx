@@ -72,8 +72,8 @@ const OutstationClinicTable = () => {
         params: { page, limit: itemsPerPage },
       });
       console.log(response.data);
-      dispatch(setOutstationClinic(response.data));
-      setOutstationClinic(response.data || []);
+      dispatch(setOutstationClinic(response.data.data));
+      setOutstationClinic(response.data.data || []);
       setTotalRows(response.data || 0);
     } catch (error) {
       console.error("Error fetching clinic:", error);
