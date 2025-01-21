@@ -9,85 +9,91 @@ import EditConfigModal from "./EditConfigModal";
 import AddConfigurationModal from "./AddConfigurationModal";
 
 const AllConfigList = () => {
-    const { configs, loading, fetchConfigs, deleteConfig } = useConfigList();
-    const [selectedConfig, setSelectedConfig] = useState(null);
-    const [isAddConfigModalVisible, setAddConfigModalVisible] = useState(false);
+  const { configs, loading, fetchConfigs, deleteConfig } = useConfigList();
+  const [selectedConfig, setSelectedConfig] = useState(null);
+  const [isAddConfigModalVisible, setAddConfigModalVisible] = useState(false);
 
-    const handleDeleteConfig = (id) => {
-        Modal.confirm({
-            title: "Deleting this configuration may affect functionality on Application. Proceed?",
-            icon: <ExclamationCircleOutlined style={{ color: "red" }} />,
-            okText: "Yes",
-            cancelText: "No",
-            onOk: () => deleteConfig(id),
-        });
-    };
+  const handleDeleteConfig = (id) => {
+    Modal.confirm({
+      title:
+        "Deleting this configuration may affect functionality on Application. Proceed?",
+      icon: <ExclamationCircleOutlined style={{ color: "red" }} />,
+      okText: "Yes",
+      cancelText: "No",
+      onOk: () => deleteConfig(id),
+    });
+  };
 
-    return (
+  return (
+    <div className="settings-personal-information">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="d-flex justify-content-between mb-4">
-                <h2>All Configurations</h2>
-                <Button type="primary" onClick={() => setAddConfigModalVisible(true)}>
-                    <FaPlus /> Add Configuration
-                </Button>
-            </div>
-
-            {loading ? (
-                <Spin size="large" className="d-flex justify-content-center mt-5" />
-            ) : (
-                <div className="row">
-                    {configs.map((config, index) => (
-                        <div key={config._id} className="col-lg-5 col-md-7 col-sm-12 mb-4">
-                            <Card
-                                title={config.name || `Configuration ${index + 1}`}
-                                bordered
-                                className="config-card"
-                            >
-                                <div>
-                                    {config.content &&
-                                        Object.entries(config.content).map(([key, value]) => (
-                                            <p key={key}>
-                                                <strong>{key}:</strong> {value || "N/A"}
-                                            </p>
-                                        ))}
-                                </div>
-                                <div className="d-flex justify-content-between">
-                                    <Button
-                                        type="text"
-                                        icon={<HiOutlinePencilSquare />}
-                                        onClick={() => setSelectedConfig(config)}
-                                    >
-                                        Edit
-                                    </Button>
-                                    <Button
-                                        type="text"
-                                        icon={<MdDeleteOutline />}
-                                        onClick={() => handleDeleteConfig(config._id)}
-                                        danger
-                                    >
-                                        Delete
-                                    </Button>
-                                </div>
-                            </Card>
-                        </div>
-                    ))}
-                </div>
-            )}
-
-            {selectedConfig && (
-                <EditConfigModal
-                    config={selectedConfig}
-                    onClose={() => setSelectedConfig(null)}
-                    refreshList={fetchConfigs}
-                />
-            )}
-            <AddConfigurationModal
-                visible={isAddConfigModalVisible}
-                onClose={() => setAddConfigModalVisible(false)}
-                refreshList={fetchConfigs}
-            />
+        <div className="d-flex justify-content-between mb-4">
+          <h2>All Configurations</h2>
+          <Button type="primary" onClick={() => setAddConfigModalVisible(true)}>
+            <FaPlus /> Add Configuration
+          </Button>
         </div>
-    );
+
+        {loading ? (
+          <Spin size="large" className="d-flex justify-content-center mt-5" />
+        ) : (
+          <div className="row">
+            {configs.map((config, index) => (
+              <div
+                key={config._id}
+                className="col-lg-5 col-md-7 col-sm-12 mb-4"
+              >
+                <Card
+                  title={config.name || `Configuration ${index + 1}`}
+                  bordered
+                  className="config-card"
+                >
+                  <div>
+                    {config.content &&
+                      Object.entries(config.content).map(([key, value]) => (
+                        <p key={key}>
+                          <strong>{key}:</strong> {value || "N/A"}
+                        </p>
+                      ))}
+                  </div>
+                  <div className="d-flex justify-content-between">
+                    <Button
+                      type="text"
+                      icon={<HiOutlinePencilSquare />}
+                      onClick={() => setSelectedConfig(config)}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      type="text"
+                      icon={<MdDeleteOutline />}
+                      onClick={() => handleDeleteConfig(config._id)}
+                      danger
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </Card>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {selectedConfig && (
+          <EditConfigModal
+            config={selectedConfig}
+            onClose={() => setSelectedConfig(null)}
+            refreshList={fetchConfigs}
+          />
+        )}
+        <AddConfigurationModal
+          visible={isAddConfigModalVisible}
+          onClose={() => setAddConfigModalVisible(false)}
+          refreshList={fetchConfigs}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default AllConfigList;
