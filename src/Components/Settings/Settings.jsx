@@ -8,6 +8,10 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { Account } from "./Account";
 import { MdOutlineAccountBox } from "react-icons/md";
 import { TermsAndConditionsList } from "./TermsAndConditions/TermsAndConditionsList";
+import AboutHospital from "./AboutHospital";
+import { FaHospitalUser, FaRegFileLines } from "react-icons/fa6";
+import { FiGrid, FiTool } from "react-icons/fi";
+import AllConfigList from "./Config/AllConfigList";
 
 export const Settings = () => {
   const [selectedOption, setSelectedOption] = useState("general");
@@ -23,6 +27,10 @@ export const Settings = () => {
         return <Account />;
       case "termsAndConditions":
         return <TermsAndConditionsList/>;
+      case "aboutHospital":
+        return <AboutHospital/>;
+      case "config":
+        return <AllConfigList/>;
       default:
         return <General />;
     }
@@ -42,7 +50,7 @@ export const Settings = () => {
                 }`}
                 onClick={() => setSelectedOption("general")}
               >
-                <RiHospitalLine /> &nbsp; General
+                <FiGrid /> &nbsp; General
               </div>
               <div
                 className={`settings-items mt-3 ${
@@ -74,7 +82,23 @@ export const Settings = () => {
                 }`}
                 onClick={() => setSelectedOption("termsAndConditions")}
               >
-                <MdOutlineAccountBox /> &nbsp;Terms & Conditions
+               <FaRegFileLines /> &nbsp;Terms & Conditions
+              </div>
+              <div
+                className={`settings-items mt-3 ${
+                  selectedOption === "aboutHospital" ? "active" : ""
+                }`}
+                onClick={() => setSelectedOption("aboutHospital")}
+              >
+                <RiHospitalLine /> &nbsp;About Hospital
+              </div>
+              <div
+                className={`settings-items mt-3 ${
+                  selectedOption === "config" ? "active" : ""
+                }`}
+                onClick={() => setSelectedOption("config")}
+              >
+                <FiTool /> &nbsp;Configuration
               </div>
             </div>
           </div>

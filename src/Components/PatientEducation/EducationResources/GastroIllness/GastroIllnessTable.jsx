@@ -90,7 +90,7 @@ const GastroIllnessTable = () => {
       const response = await Instance.get(`/gastro`, {
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setGastroIllness(response?.data?.gastros));
+      dispatch(setGastroIllness(response?.data?.data?.gastros));
       setGastroIllness(response.data?.gastros || []);
       setTotalRows(response.data?.totalGastros || 0);
     } catch (error) {

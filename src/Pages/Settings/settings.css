@@ -318,5 +318,59 @@
 }
 
 
+.hospital-container {
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hospital-image-container {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.hospital-image {
+  width: 50%;
+  height: 50%;
+  object-fit: cover;
+}
+
+.upload-button {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+}
+
+.hospital-section {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.hospital-section h3 {
+  margin-bottom: 8px;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.hospital-section .ant-input,
+.hospital-section .ant-input-textarea {
+  margin-top: 8px;
+}
+
+.hospital-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.hospital-actions .ant-btn {
+  padding: 8px 16px;
+}
 
 
