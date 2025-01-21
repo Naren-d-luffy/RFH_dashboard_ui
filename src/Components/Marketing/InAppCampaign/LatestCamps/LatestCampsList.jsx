@@ -104,9 +104,11 @@ export const LatestCampsList = () => {
   const fetchCampList = async () => {
     try {
       const response = await Instance.get(`/camp`);
+      console.log("vvvvv",response);
+      
       if (response.status === 200 || response.status === 201) {
-        setCampData(response.data);
-        dispatch(setCamps(response.data));
+        setCampData(response.data.data);
+        dispatch(setCamps(response.data.data));
       }
     } catch (error) {
       console.error("Error fetching camp:", error);
