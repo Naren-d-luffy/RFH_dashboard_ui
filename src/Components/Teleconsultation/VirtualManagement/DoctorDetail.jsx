@@ -4,48 +4,38 @@ import {
   Input,
   Row,
   Col,
-  DatePicker,
-  Select,
   Button,
   Upload,
 } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
-import moment from "moment"
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useNavigate, useLocation } from "react-router-dom";
 import { showSuccessMessage } from "../../../globalConstant";
-import {Instance} from "../../../AxiosConfig"; 
-
-const { Option } = Select;
+import { Instance } from "../../../AxiosConfig";
 
 const DoctorDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const doctorData = location.state || null; // Get the doctor data from navigation state
+  const doctorData = location.state || null;
 
   const [uploadedFile, setUploadedFile] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
-    specialty: "",
-    DOB: null,
-    gender: "",
-    email: "",
-    phoneNumber: "",
-    content: "",
-    availableTime: "",
-    patients: "",
-    experienceYears: "",
-    rating: "",
-    status: "Active",
-    aboutMe: "",
-    location: "",
+    position: "",
+    department: "",
+    qualifications: [],
+    fellowships: [],
+    awards: [],
+    experience: "",
+    contactDetails: "",
+    about: "",
+    AreasOfExpertise: [],
   });
 
-  // Populate form data in edit mode
   useEffect(() => {
     if (doctorData) {
       setFormData({ ...doctorData });
-      setUploadedFile(doctorData.image || null);
+      setUploadedFile(doctorData.profile || null);
     }
   }, [doctorData]);
 
@@ -62,30 +52,40 @@ const DoctorDetail = () => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
   };
 
+  const handleArrayInputChange = (field, value) => {
+    // Split the input string by commas and trim whitespace
+    const arrayValue = value.split(',').map(item => item.trim());
+    handleInputChange(field, arrayValue);
+  };
+
   const handleSave = async () => {
     const data = new FormData();
-    data.append("image", uploadedFile);
-    Object.keys(formData).forEach((key) => data.append(key, formData[key]));
+    if (uploadedFile) {
+      data.append("profile", uploadedFile);
+    }
+    
+    // Append all other form fields
+    Object.keys(formData).forEach((key) => {
+      if (Array.isArray(formData[key])) {
+        // Convert arrays to JSON strings for FormData
+        data.append(key, JSON.stringify(formData[key]));
+      } else {
+        data.append(key, formData[key]);
+      }
+    });
 
     try {
       if (doctorData) {
-        // Edit Mode (PUT Request)
         const response = await Instance.put(`/doctor/${doctorData._id}`, data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          headers: { "Content-Type": "multipart/form-data" },
         });
-        console.log("Response:",response);
-        
+        console.log("Response:", response);
         showSuccessMessage("Doctor Details Updated Successfully", "");
       } else {
-        // Create Mode (POST Request)
         const response = await Instance.post("/doctor", data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          headers: { "Content-Type": "multipart/form-data" },
         });
-        console.log("Response:",response);
+        console.log("Response:", response);
         showSuccessMessage("Doctor Details Added Successfully", "");
       }
       navigate("/teleconsultation/virtual-management");
@@ -106,36 +106,22 @@ const DoctorDetail = () => {
               <Form.Item>
                 <Input
                   className="create-campaign-input"
-                  placeholder="Enter First Name"
-                  value={formData.firstName || ""}
-                  onChange={(e) => {
-                    const firstName = e.target.value;
-                    handleInputChange("firstName", firstName);
-                    handleInputChange(
-                      "name",
-                      `Dr. ${firstName} ${formData.lastName || ""}`
-                    );
-                  }}
+                  placeholder="Enter Full Name"
+                  value={formData.name.replace(/^Dr\.\s*/, '') || ""}
+                  onChange={(e) => handleInputChange("name", e.target.value)}
                 />
-                <span className="create-campaign-input-span">First Name</span>
+                <span className="create-campaign-input-span">Full Name</span>
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item>
                 <Input
                   className="create-campaign-input"
-                  placeholder="Enter Last Name"
-                  value={formData.lastName || ""}
-                  onChange={(e) => {
-                    const lastName = e.target.value;
-                    handleInputChange("lastName", lastName);
-                    handleInputChange(
-                      "name",
-                      `Dr. ${formData.firstName || ""} ${lastName}`
-                    );
-                  }}
+                  placeholder="Enter Position"
+                  value={formData.position || ""}
+                  onChange={(e) => handleInputChange("position", e.target.value)}
                 />
-                <span className="create-campaign-input-span">Last Name</span>
+                <span className="create-campaign-input-span">Position</span>
               </Form.Item>
             </Col>
           </Row>
@@ -144,175 +130,102 @@ const DoctorDetail = () => {
             <Col span={12}>
               <Form.Item>
                 <Input
-                  className="create-camapign-input"
-                  placeholder="Enter Specialty"
-                  value={formData.specialty || ""} 
-                  onChange={(e) =>
-                    handleInputChange("specialty", e.target.value)
-                  }
+                  className="create-campaign-input"
+                  placeholder="Enter Department"
+                  value={formData.department || ""}
+                  onChange={(e) => handleInputChange("department", e.target.value)}
                 />
-                <span className="create-campaign-input-span">Specialty</span>
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item>
-                <DatePicker
-                  className="add-events-datepicker"
-                  placeholder="Select Date of Birth"
-                  style={{ width: "100%" }}
-                  format="DD/MM/YYYY"
-                  value={formData.DOB ? moment(formData.DOB, "DD/MM/YYYY") : null}
-                  onChange={(date, dateString) =>
-                    handleInputChange("DOB", dateString)
-                  }
-                />
-                <span className="create-campaign-input-span">
-                  Date of Birth
-                </span>
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={24}>
-            <Col span={12}>
-              <Form.Item>
-                <Select
-                  className="create-camapign-input-select"
-                  placeholder="Select Gender"
-                  style={{ width: "100%" }}
-                  value={formData.gender || undefined}
-                  onChange={(value) => handleInputChange("gender", value)}
-                >
-                  <Option value="Male">Male</Option>
-                  <Option value="Female">Female</Option>
-                  <Option value="Other">Other</Option>
-                </Select>
-                <span className="create-campaign-input-span">Gender</span>
+                <span className="create-campaign-input-span">Department</span>
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item>
                 <Input
-                  className="create-camapign-input"
-                  placeholder="Enter Email ID"
-                  value={formData.email || ""} 
-                  onChange={(e) => handleInputChange("email", e.target.value)}
+                  className="create-campaign-input"
+                  placeholder="Enter Qualifications (comma-separated)"
+                  value={formData.qualifications?.join(', ') || ""}
+                  onChange={(e) => handleArrayInputChange("qualifications", e.target.value)}
                 />
-                <span className="create-campaign-input-span">Email</span>
+                <span className="create-campaign-input-span">Qualifications</span>
               </Form.Item>
             </Col>
           </Row>
+
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item>
                 <Input
-                  className="create-camapign-input"
-                  placeholder="Enter Phone Number"
-                  value={formData.phoneNumber || ""} 
-                  onChange={(e) =>
-                    handleInputChange("phoneNumber", e.target.value)
-                  }
+                  className="create-campaign-input"
+                  placeholder="Enter Fellowships (comma-separated)"
+                  value={formData.fellowships?.join(', ') || ""}
+                  onChange={(e) => handleArrayInputChange("fellowships", e.target.value)}
                 />
-                <span className="create-campaign-input-span">Phone Number</span>
+                <span className="create-campaign-input-span">Fellowships</span>
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item>
-                <Input.TextArea
-                  className="create-camapign-input"
-                  placeholder="Write Description"
-                  value={formData.content || ""} 
-                  onChange={(e) => handleInputChange("content", e.target.value)}
+                <Input
+                  className="create-campaign-input"
+                  placeholder="Enter Awards (comma-separated)"
+                  value={formData.awards?.join(', ') || ""}
+                  onChange={(e) => handleArrayInputChange("awards", e.target.value)}
                 />
-                <span className="create-campaign-input-span">Description</span>
+                <span className="create-campaign-input-span">Awards</span>
               </Form.Item>
             </Col>
           </Row>
+
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item>
                 <Input
-                  className="create-camapign-input"
-                  placeholder="Enter Availability Time"
-                  value={formData.availableTime || ""} 
-                  onChange={(e) =>
-                    handleInputChange("availableTime", e.target.value)
-                  }
+                  className="create-campaign-input"
+                  placeholder="Enter Experience"
+                  value={formData.experience || ""}
+                  onChange={(e) => handleInputChange("experience", e.target.value)}
                 />
-                <span className="create-campaign-input-span">
-                  Available Time
-                </span>
+                <span className="create-campaign-input-span">Experience</span>
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item>
                 <Input
-                  className="create-camapign-input"
-                  placeholder="Enter Number of Patients Treated"
-                  value={formData.patients || ""} 
-                  onChange={(e) =>
-                    handleInputChange("patients", e.target.value)
-                  }
+                  className="create-campaign-input"
+                  placeholder="Enter Contact Details"
+                  value={formData.contactDetails || ""}
+                  onChange={(e) => handleInputChange("contactDetails", e.target.value)}
                 />
-                <span className="create-campaign-input-span">
-                  Patients Treated
-                </span>
+                <span className="create-campaign-input-span">Contact Details</span>
               </Form.Item>
             </Col>
           </Row>
-          <Row gutter={24}>
-            <Col span={12}>
-              <Form.Item>
-                <Input
-                  className="create-camapign-input"
-                  placeholder="Enter Years of Experience"
-                  value={formData.experienceYears || ""} 
-                  onChange={(e) =>
-                    handleInputChange("experienceYears", e.target.value)
-                  }
-                />
-                <span className="create-campaign-input-span">
-                  Years of Experience
-                </span>
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item>
-                <Input
-                  className="create-camapign-input"
-                  placeholder="Enter Doctor Rating"
-                  value={formData.rating || ""} 
-                  onChange={(e) => handleInputChange("rating", e.target.value)}
-                />
-                <span className="create-campaign-input-span">Rating</span>
-              </Form.Item>
-            </Col>
-          </Row>
+
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item>
                 <Input.TextArea
-                  className="create-camapign-input"
-                  placeholder="Enter About Me"
-                  value={formData.aboutMe || ""} 
-                  onChange={(e) => handleInputChange("aboutMe", e.target.value)}
+                  className="create-campaign-input"
+                  placeholder="Enter About"
+                  value={formData.about || ""}
+                  onChange={(e) => handleInputChange("about", e.target.value)}
                 />
-                <span className="create-campaign-input-span">About Me</span>
+                <span className="create-campaign-input-span">About</span>
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item>
                 <Input
-                  className="create-camapign-input"
-                  placeholder="Enter Location"
-                  value={formData.location || ""} 
-                  onChange={(e) =>
-                    handleInputChange("location", e.target.value)
-                  }
+                  className="create-campaign-input"
+                  placeholder="Enter Areas of Expertise (comma-separated)"
+                  value={formData.AreasOfExpertise?.join(', ') || ""}
+                  onChange={(e) => handleArrayInputChange("AreasOfExpertise", e.target.value)}
                 />
-                <span className="create-campaign-input-span">Location</span>
+                <span className="create-campaign-input-span">Areas of Expertise</span>
               </Form.Item>
             </Col>
           </Row>
+
           <Form.Item>
             <Upload
               listType="picture"
@@ -324,9 +237,8 @@ const DoctorDetail = () => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline className="image-upload-icon"/>{" "} Upload Image
+                <IoCloudUploadOutline className="image-upload-icon" /> Upload Image
               </span>
-
             </Upload>
             {uploadedFile && (
               <div className="uploaded-image-preview d-flex gap-2">

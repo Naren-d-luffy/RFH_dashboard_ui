@@ -38,7 +38,7 @@ const dispatch=useDispatch()
 
   const fetchDoctorListMyApi = async () => {
     try {
-      const response = await Instance.get("/doctorProfile");
+      const response = await Instance.get("/doctor");
       const profileMapping = {};
       const idMapping = {};
       
