@@ -394,3 +394,21 @@ p.hospital-title-paragraph{
   font-size: 14px;
   color: var(--faq-ans-color);  
 }
+
+.config-card.ant-card-bordered{
+  border: none !important;
+}
+.ant-card-body{
+  padding: 12px !important;
+}
+.ant-card-head{
+  padding: 12px !important;
+  color: var(--primary-green) !important;
+  text-decoration: underline !important;
+}
+.settings-event-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 14px;
+  background-color: var(--card-background-color);
+}

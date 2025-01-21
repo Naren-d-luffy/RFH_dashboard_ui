@@ -59,6 +59,7 @@ import BlogsTable from "./Components/Marketing/InAppCampaign/Blogs/BlogListTable
 import ServiceTable from "./Components/DepartmentDetails/DepartmentService/ServiceTable";
 import TechnologyTable from "./Components/DepartmentDetails/Technology/TechnologyTable";
 import ConditionWeTreatTable from "./Components/DepartmentDetails/ConditionWeTreat/ConditionWeTreatTable";
+import RecommendedVideosTable from "./Components/Marketing/InAppCampaign/RecommendedVideos/RecommendedVideosTable";
 
 export const AppRouter = () => {
   return (
@@ -238,7 +239,7 @@ export const AppRouter = () => {
           <Route path="/view-all-facility-list" element={<FacilityTable />} />
           <Route path="/view-all-technology-list" element={<TechnologyTable />} />
           <Route path="/view-all-condition-we-treat-list" element={<ConditionWeTreatTable />} />
-
+          <Route path="/view-all-recommended-videos-table" element={<RecommendedVideosTable />} />
 
         </Route>
       </Routes>

@@ -67,7 +67,7 @@ const AddBlogs = ({ open, handleCancel }) => {
       formData.append("thumbnail", thumbnailImage);
 
       const response = await Instance.post("/discover/blog", formData);
-      console.log("blog",response)
+      console.log("blog", response);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
 
@@ -86,23 +86,25 @@ const AddBlogs = ({ open, handleCancel }) => {
       setIsLoading(false);
     }
   };
-
+  const handleCancelClick = () => {
+    setHeading("");
+    setSubHeading("");
+    setContent("");
+    setUploadedImage(null);
+    handleCancel();
+  };
   return (
     <>
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={
-          <span className="create-campaign-modal-title">
-            Add Blog
-          </span>
-        }
-        onCancel={handleCancel}
+        title={<span className="create-campaign-modal-title">Add Blog</span>}
+        onCancel={handleCancelClick}
         width={680}
         footer={[
           <Button
             key="back"
-            onClick={handleCancel}
+            onClick={handleCancelClick}
             className="create-campaign-cancel-button"
           >
             Cancel

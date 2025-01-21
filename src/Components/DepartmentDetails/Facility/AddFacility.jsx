@@ -96,19 +96,28 @@ const AddFacility = ({ open, handleCancel }) => {
       setIsLoading(false);
     }
   };
-
+  const handleCancelClick = () => {
+    setTitle("");
+    setDescription("");
+    setContent("");
+    setUploadedImage(null);
+    setThumbnailImage(null);
+    setVideoHeading("");
+    setVideoSubHeading("");
+    handleCancel();
+  };
   return (
     <>
       {isLoading && <Loader />}
       <Modal
         visible={open}
         title={<span className="create-campaign-modal-title">Add Department Facility</span>}
-        onCancel={handleCancel}
+        onCancel={handleCancelClick}
         width={680}
         footer={[
           <Button
             key="back"
-            onClick={handleCancel}
+            onClick={handleCancelClick}
             className="create-campaign-cancel-button"
           >
             Cancel

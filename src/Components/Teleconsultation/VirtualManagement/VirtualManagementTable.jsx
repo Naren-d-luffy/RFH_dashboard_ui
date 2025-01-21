@@ -53,6 +53,7 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
               </div>
             </div>
             <hr color="var(--border-color)" />
+
             {/* Qualifications */}
             <div className="mt-8">
               <div className="view-doctor-detail-specialist-section">
@@ -66,6 +67,7 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
                 ))}
               </div>
             </div>
+
             <div className="view-doctor-detail-specialist-section">
               <h3>Department</h3>
               <p>{doctor.department}</p>
@@ -77,6 +79,7 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
             <hr />
             <div>
               <h6>About</h6>
+
               {/* <p>{doctor.about} </p> */}
               <p
                 dangerouslySetInnerHTML={{
@@ -86,12 +89,15 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
             </div>
             {/* Main Content */}
             <div className="mt-8">
+
               {/* Areas of Expertise */}
               <div className="mt-4">
                 <h6>Areas of Expertise</h6>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {doctor.AreasOfExpertise.map((area, index) => (
+
                     <Tag key={index} className="most-user-success-tag p-2 mt-2">
+
                       {area}
                     </Tag>
                   ))}
@@ -140,6 +146,7 @@ const VirtualManagementTable = () => {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+
   const [searchText, setSearchText] = useState("");
 
   const dataSource = useMemo(() => {
@@ -150,6 +157,7 @@ const VirtualManagementTable = () => {
         .includes(searchText.toLowerCase())
     );
   }, [searchText, doctors]);
+
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -206,6 +214,14 @@ const VirtualManagementTable = () => {
     setIsModalOpen(false);
     setSelectedDoctor(null);
   };
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+  const filteredDoctors = doctors.filter((doctor) =>
+    doctor.name.toLowerCase().includes(searchQuery) ||
+    doctor.department.toLowerCase().includes(searchQuery) ||
+    doctor.position.toLowerCase().includes(searchQuery)
+  );
 
   const columns = [
     {
@@ -315,7 +331,7 @@ const VirtualManagementTable = () => {
               />
             </div>
             <div className="d-flex gap-3 align-items-center">
-           
+       
               <button
                 className="rfh-basic-button"
                 onClick={() => navigate(`/teleconsultation/doctor-detail`)}

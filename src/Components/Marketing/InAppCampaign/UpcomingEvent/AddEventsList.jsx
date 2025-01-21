@@ -77,8 +77,7 @@ const AddEventsList = ({ open, handleCancel }) => {
     setIsLoading(true);
 
     try {
-      const response = await Instance.post("/discover/card", formData, {
-      });
+      const response = await Instance.post("/discover/card", formData, {});
 
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
@@ -99,7 +98,16 @@ const AddEventsList = ({ open, handleCancel }) => {
       setIsLoading(false);
     }
   };
-
+  const handleCancelClick = () => {
+    setTitle("");
+    setDescription("");
+    setLink("");
+    setOrder("");
+    setIsActive(true);
+    setFeatures([]);
+    setUploadedImage(null);
+    handleCancel();
+  };
   return (
     <>
       {isLoading && <Loader />}
@@ -108,12 +116,12 @@ const AddEventsList = ({ open, handleCancel }) => {
         title={
           <span className="create-campaign-modal-title">Add Event Card</span>
         }
-        onCancel={handleCancel}
+        onCancel={handleCancelClick}
         width={680}
         footer={[
           <Button
             key="back"
-            onClick={handleCancel}
+            onClick={handleCancelClick}
             className="create-campaign-cancel-button"
           >
             Cancel
@@ -258,26 +266,3 @@ const AddEventsList = ({ open, handleCancel }) => {
 };
 
 export default AddEventsList;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

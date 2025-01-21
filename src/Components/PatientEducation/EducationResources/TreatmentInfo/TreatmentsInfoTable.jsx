@@ -91,9 +91,9 @@ const TreatmentList = () => {
       const response = await Instance.get(`/education`, {
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setTreatment(response?.data?.educations));
-      setTreatmentList(response.data?.educations || []);
-      setTotalRows(response.data?.totalEducations || 0);
+      dispatch(setTreatment(response?.data?.data?.educations));
+      setTreatmentList(response.data?.data?.educations || []);
+      setTotalRows(response.data?.data?.totalEducations || 0);
     } catch (error) {
       console.error("Error fetching treatments:", error);
     } finally {

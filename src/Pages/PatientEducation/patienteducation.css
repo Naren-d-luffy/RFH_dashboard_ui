@@ -71,7 +71,8 @@
   font-weight: 600;
   line-height: 37.93px;
   letter-spacing: -0.03em;
-  color: var(--black-color);
+  color: var(--primary-green);
+  text-decoration: underline;
 }
 
 .education-categories-faq-menu {

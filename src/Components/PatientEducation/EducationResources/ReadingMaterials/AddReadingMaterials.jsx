@@ -85,7 +85,14 @@ const AddReadingMaterials = ({ open, handleCancel }) => {
       setIsLoading(false);
     }
   };
-
+  const handleCancelClick = () => {
+    setTitle("");
+    setDescription("");
+    setContent("");
+    setUploadedImage(null);
+    setThumbnailImage(null);
+    handleCancel();
+  };
   return (
     <>
       {isLoading && <Loader />}
@@ -96,12 +103,12 @@ const AddReadingMaterials = ({ open, handleCancel }) => {
             Add Reading Materials{" "}
           </span>
         }
-        onCancel={handleCancel}
+        onCancel={handleCancelClick}
         width={680}
         footer={[
           <Button
             key="back"
-            onClick={handleCancel}
+            onClick={handleCancelClick}
             className="create-campaign-cancel-button"
           >
             Cancel

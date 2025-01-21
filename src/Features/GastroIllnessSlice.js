@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const gastroIllnessSlice = createSlice({
     name: 'gastroIllness',
     initialState: {
-        gastroIllness: []
+        gastroIllness: [],
     },
     reducers: {
         setGastroIllness: (state, action) => {

@@ -23,12 +23,24 @@ const AddLatestCamps = ({ open, handleCancel }) => {
   const handleInputChange = (key, value) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
+  const resetForm = () => {
+    setFormData({
+      campName: "",
+      date: null,
+      time: null,
+      description: "",
+      hospitalName: "",
+      location: "",
+      address: "",
+      pinCode: "",
+    });
+  };
   const dispatch=useDispatch()
   const handleSave = async () => {
     const formattedData = {
       ...formData,
-      date: formData.date?.format("YYYY-MM-DD"), // Format date
-      time: formData.time?.format("hh:mm A"),   // Format time
+      date: formData.date?.format("YYYY-MM-DD"),
+      time: formData.time?.format("hh:mm A"),  
     };
 
     try {
@@ -43,15 +55,18 @@ const AddLatestCamps = ({ open, handleCancel }) => {
       message.error("Failed to create Camp.");
     }
   };
-
+  const handleCancelClick = () => {
+    resetForm(); 
+    handleCancel();
+  };
   return (
     <Modal
       open={open}
       title={<span className="create-campaign-modal-title">Latest Camps</span>}
-      onCancel={handleCancel}
+      onCancel={handleCancelClick}
       width={680}
       footer={[
-        <Button key="back" onClick={handleCancel} className="create-campaign-cancel-button">
+        <Button key="back" onClick={handleCancelClick} className="create-campaign-cancel-button">
           Cancel
         </Button>,
         <Button key="save" onClick={handleSave} className="create-campaign-save-button">

@@ -80,7 +80,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("GastroIllness Info Updated successfully!");
-        dispatch(editGastroIllness(response.data));
+        dispatch(editGastroIllness(response.data.data));
 
         setTitle("");
         setDescription("");
