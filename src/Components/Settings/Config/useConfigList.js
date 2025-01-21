@@ -1,3 +1,4 @@
+// useConfigList.js
 import { useState, useEffect } from "react";
 import { message } from "antd";
 import { Instance } from "../../../AxiosConfig";
@@ -11,8 +12,6 @@ export const useConfigList = () => {
         try {
             const response = await Instance.get(`/config`);
             setConfigs(response.data || []);
-            console.log("conf:",configs);
-            
         } catch (error) {
             message.error("Failed to fetch configurations.");
             console.error("Error fetching configs:", error);
@@ -24,7 +23,8 @@ export const useConfigList = () => {
     const deleteConfig = async (id) => {
         setLoading(true);
         try {
-            await Instance.delete(`/config`, { data: { configId: id } });
+            // Updated DELETE request to match the API endpoint
+            await Instance.delete(`/config/${id}`);
             message.success("Configuration deleted successfully.");
             fetchConfigs();
         } catch (error) {
