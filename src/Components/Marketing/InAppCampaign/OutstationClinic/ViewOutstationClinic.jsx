@@ -51,6 +51,9 @@ const ViewOutstationClinic = ({ open, handleCancel, EventData }) => {
               <p>
                 <strong>Timing:</strong> {EventData?.timing || "N/A"}
               </p>
+              <p>
+                <strong>Clinic Type:</strong> {EventData?.type || "N/A"}
+              </p>
             </div>
           </div>
         </div>

@@ -80,7 +80,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("Outstation Clinic added successfully!");
-        dispatch(addOutstationClinic(response.data));
+        dispatch(addOutstationClinic(response.data.data));
       }
     } catch (error) {
       console.error("Error while submitting: ", error?.response?.data || error);
