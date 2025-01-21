@@ -3,23 +3,19 @@ import { Modal, Button, Input, message } from "antd";
 import { Instance } from "../../../AxiosConfig";
 
 const EditConfigModal = ({ config, onClose, refreshList }) => {
+    const [name, setName] = useState("");
     const [configData, setConfigData] = useState([]);
 
-    // Initialize form data with the existing configuration
     useEffect(() => {
-        console.log('Config data:', config); // Debugging the config object
-        if (config && config.config) {
-            const formattedData = Object.entries(config.config).map(([key, value]) => ({
+        if (config) {
+            setName(config.name || "");
+            const formattedData = Object.entries(config.content || {}).map(([key, value]) => ({
                 key,
-                value,
+                value: value || "",
             }));
-            setConfigData(formattedData);
-        } else {
-            console.warn('Config data is missing or invalid');
-            setConfigData([]);  // Optionally set empty array or default value
+            setConfigData(formattedData.length ? formattedData : [{ key: "", value: "" }]);
         }
     }, [config]);
-    
 
     const handleAddField = () => setConfigData([...configData, { key: "", value: "" }]);
 
@@ -30,16 +26,18 @@ const EditConfigModal = ({ config, onClose, refreshList }) => {
     };
 
     const handleSave = async () => {
-        const formattedData = configData.reduce((acc, { key, value }) => {
+        if (!name.trim()) {
+            message.error("Configuration name is required");
+            return;
+        }
+
+        const content = configData.reduce((acc, { key, value }) => {
             if (key && value) acc[key] = value;
             return acc;
         }, {});
 
         try {
-            await Instance.put(`/config`, {
-                configId: config._id,
-                updatedConfig: formattedData,
-            });
+            await Instance.put(`/config/id/${config._id}`, { name, content });
             message.success("Configuration updated successfully.");
             refreshList();
             onClose();
@@ -63,6 +61,14 @@ const EditConfigModal = ({ config, onClose, refreshList }) => {
                 </Button>,
             ]}
         >
+            <div className="mb-3">
+                <Input
+                    placeholder="Configuration Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="mb-3"
+                />
+            </div>
             {configData.map((field, index) => (
                 <div key={index} className="d-flex align-items-center mb-3">
                     <Input
