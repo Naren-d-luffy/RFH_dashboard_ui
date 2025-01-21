@@ -372,5 +372,25 @@
 .hospital-actions .ant-btn {
   padding: 8px 16px;
 }
-
-
+.hospital-profile-image{
+   width: 300px;
+   height: 200px;
+   border-radius: 14px;
+}
+h4.hospital-title-heading {
+  width: 180px;
+  font-size: 14px;
+  font-weight: 600;
+}
+p.hospital-title-paragraph{
+  font-size: 14px;
+  color: var(--faq-ans-color);
+}
+.hospital-profile-description h4{
+  font-size: 14px;
+  font-weight: 600;
+}
+.hospital-profile-description p{
+  font-size: 14px;
+  color: var(--faq-ans-color);  
+}
