@@ -13,12 +13,13 @@ const AddRecommendedVideos = ({ open, handleCancel, refreshList }) => {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [file, setFile] = useState(null);
+  const [thumbnail, setThumbnail] = useState(""); 
   const [isLoading, setIsLoading] = useState(false);
   const [uploadType, setUploadType] = useState("url");
   const dispatch = useDispatch();
 
   const handleSave = async () => {
-    if (!title.trim() || (uploadType === "url" && !url.trim()) || (uploadType === "file" && !file)) {
+    if (!title.trim() || !thumbnail.trim() || (uploadType === "url" && !url.trim()) || (uploadType === "file" && !file)) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -27,6 +28,7 @@ const AddRecommendedVideos = ({ open, handleCancel, refreshList }) => {
     try {
       const formData = new FormData();
       formData.append("name", title.trim());
+      formData.append("thumbnail", thumbnail.trim());
 
       if (uploadType === "url") {
         formData.append("video_URL", url.trim());
@@ -45,6 +47,7 @@ const AddRecommendedVideos = ({ open, handleCancel, refreshList }) => {
         handleCancel();
         setTitle("");
         setUrl("");
+        setThumbnail(""); 
         setFile(null);
         setUploadType("url");
         dispatch(addRecommendedVideos(response.data));
@@ -104,6 +107,14 @@ const AddRecommendedVideos = ({ open, handleCancel, refreshList }) => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Enter Title"
+              required
+            />
+          </Form.Item>
+          <Form.Item label="Thumbnail URL">
+            <Input
+              value={thumbnail}
+              onChange={(e) => setThumbnail(e.target.value)}
+              placeholder="Enter Thumbnail URL"
               required
             />
           </Form.Item>

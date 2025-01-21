@@ -9,6 +9,7 @@ import { editRecommendedVideos } from "../../../../Features/RecommendedVideosSli
 const EditRecommendedVideos = ({ open, handleCancel, videoData, refreshList }) => {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
+  const [thumbnail, setThumbnail] = useState(""); 
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -16,11 +17,12 @@ const EditRecommendedVideos = ({ open, handleCancel, videoData, refreshList }) =
     if (videoData) {
       setTitle(videoData.name || ""); 
       setUrl(videoData.video_URL || videoData.Video_file || "");
+      setThumbnail(videoData.thumbnail || ""); 
     }
   }, [videoData]);
 
   const handleUpdate = async () => {
-    if (!title || !url) {
+    if (!title || !url || !thumbnail) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -30,6 +32,7 @@ const EditRecommendedVideos = ({ open, handleCancel, videoData, refreshList }) =
       const payload = {
         name: title, 
         Video_file: url, 
+        thumbnail: thumbnail, 
       };
 
       const response = await Instance.put(`/recommended/${videoData._id}`, payload);
@@ -55,7 +58,7 @@ const EditRecommendedVideos = ({ open, handleCancel, videoData, refreshList }) =
         title={<span className="create-campaign-modal-title">Edit Video</span>}
         onCancel={handleCancel}
         width={680}
-        footer={[
+        footer={[ 
           <Button
             key="back"
             onClick={handleCancel}
@@ -91,6 +94,15 @@ const EditRecommendedVideos = ({ open, handleCancel, videoData, refreshList }) =
               required
             />
             <span className="create-campaign-input-span">Video URL</span>
+          </Form.Item>
+          <Form.Item>
+            <Input
+              value={thumbnail}
+              onChange={(e) => setThumbnail(e.target.value)}
+              placeholder="Enter Thumbnail URL"
+              required
+            />
+            <span className="create-campaign-input-span">Thumbnail URL</span>
           </Form.Item>
         </Form>
       </Modal>
