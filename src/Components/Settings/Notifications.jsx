@@ -8,6 +8,7 @@ import {
 } from "antd";
 
 import "react-international-phone/style.css";
+import ComingSoon from "../../comingSoon";
 
 export const Notifications = () => {
   const [form] = Form.useForm();
@@ -18,7 +19,7 @@ export const Notifications = () => {
   };
   return (
     <div className="settings-personal-information">
-      <div className="container">
+      {/* <div className="container">
         <h4 className="mt-4 mt-lg-0">Notifications</h4>
         <p>
           Get notified what's happening right now. you can turn off at any time
@@ -170,7 +171,9 @@ export const Notifications = () => {
             </div>
           </div>
         </Form>
-      </div>
+      </div> */}
+       <ComingSoon/>
     </div>
+   
   );
 };
