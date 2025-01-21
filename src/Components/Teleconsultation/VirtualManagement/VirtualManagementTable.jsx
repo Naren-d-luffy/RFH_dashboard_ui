@@ -214,14 +214,14 @@ const VirtualManagementTable = () => {
     setIsModalOpen(false);
     setSelectedDoctor(null);
   };
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value.toLowerCase());
-  };
-  const filteredDoctors = doctors.filter((doctor) =>
-    doctor.name.toLowerCase().includes(searchQuery) ||
-    doctor.department.toLowerCase().includes(searchQuery) ||
-    doctor.position.toLowerCase().includes(searchQuery)
-  );
+  // const handleSearchChange = (e) => {
+  //   setSearchQuery(e.target.value.toLowerCase());
+  // };
+  // const filteredDoctors = doctors.filter((doctor) =>
+  //   doctor.name.toLowerCase().includes(searchQuery) ||
+  //   doctor.department.toLowerCase().includes(searchQuery) ||
+  //   doctor.position.toLowerCase().includes(searchQuery)
+  // );
 
   const columns = [
     {
