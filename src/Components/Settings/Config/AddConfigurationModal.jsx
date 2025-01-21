@@ -3,6 +3,7 @@ import { Modal, Button, Input, message } from "antd";
 import { Instance } from "../../../AxiosConfig";
 
 const AddConfigurationModal = ({ visible, onClose, refreshList }) => {
+    const [name, setName] = useState("");
     const [configData, setConfigData] = useState([{ key: "", value: "" }]);
 
     const handleAddField = () => setConfigData([...configData, { key: "", value: "" }]);
@@ -14,16 +15,22 @@ const AddConfigurationModal = ({ visible, onClose, refreshList }) => {
     };
 
     const handleSave = async () => {
-        const formattedData = configData.reduce((acc, { key, value }) => {
+        if (!name.trim()) {
+            message.error("Configuration name is required");
+            return;
+        }
+
+        const content = configData.reduce((acc, { key, value }) => {
             if (key && value) acc[key] = value;
             return acc;
         }, {});
 
         try {
-            await Instance.post(`/config`, formattedData);
+            await Instance.post(`/config`, { name, content });
             message.success("Configuration added successfully.");
             refreshList();
             onClose();
+            setName("");
             setConfigData([{ key: "", value: "" }]);
         } catch (error) {
             message.error("Failed to add configuration.");
@@ -45,6 +52,14 @@ const AddConfigurationModal = ({ visible, onClose, refreshList }) => {
                 </Button>,
             ]}
         >
+            <div className="mb-3">
+                <Input
+                    placeholder="Configuration Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="mb-3"
+                />
+            </div>
             {configData.map((field, index) => (
                 <div key={index} className="d-flex align-items-center mb-3">
                     <Input
