@@ -68,6 +68,7 @@ const RecommendedVideosTable = () => {
       title: "Name",
       dataIndex: "name",
       className: "campaign-performance-table-column",
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       title: "Video URL",
@@ -100,6 +101,8 @@ const RecommendedVideosTable = () => {
       dataIndex: "createdAt",
       className: "campaign-performance-table-column",
       render: (text) => new Date(text).toLocaleDateString(),
+      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt), 
+
     },
     {
       title: "Actions",
@@ -162,7 +165,7 @@ const RecommendedVideosTable = () => {
               </div>
 
               <div className="d-flex gap-2">
-                <Dropdown
+                {/* <Dropdown
                   menu={{
                     items: [
                       { label: "Sort by Name", key: "name" },
@@ -177,7 +180,7 @@ const RecommendedVideosTable = () => {
                       <BiSortAlt2 />
                     </Space>
                   </Button>
-                </Dropdown>
+                </Dropdown> */}
               </div>
             </div>
 
