@@ -104,7 +104,6 @@ const DepartmentDetailsList = () => {
     try {
       const response = await Instance.get(`/department`, {});
       setDepartmentList(response.data.departments || []);
-      console.log(response.data,"department");
       setTotalRows(response.data.totalDepartments);
       dispatch(setDepartment(response.data));
     } catch (error) {
