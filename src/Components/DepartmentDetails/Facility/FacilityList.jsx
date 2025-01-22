@@ -189,9 +189,9 @@ export const FacilityList = () => {
     <div className="row mt-4">
       <div className="marketing-categories-section">
         <div className="row mt-4">
-          <div className="d-flex justify-content-between">
+          <div className="events-header-container">
             <h6>Department Facility</h6>
-            <div className="d-flex gap-2">
+            <div className="events-buttons">
               <button
                 className="rfh-view-all-button"
                 onClick={() => navigate("/view-all-facility-list")}

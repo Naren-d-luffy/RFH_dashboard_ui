@@ -187,7 +187,7 @@ const BlogsList = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -227,9 +227,9 @@ const BlogsList = () => {
         </div> */}
 
         <div className="row mt-4">
-          <div className="d-flex justify-content-between">
+          <div className="events-header-container">
             <h6>Blogs</h6>
-            <div className="d-flex gap-2">
+            <div className="events-buttons">
               <button
                 className="rfh-view-all-button"
                 onClick={() => navigate("/view-all-blog-lists")}
@@ -244,7 +244,11 @@ const BlogsList = () => {
           <div className="mt-3">
             <Slider {...sliderSettings}>
               {/* {gastroEvents.map((event) => renderEventCard(event))} */}
-              {BlogsList.map((event, index) => renderBlogCard(event, index))}
+              {BlogsList && BlogsList.length > 0 ? (
+                BlogsList.map((event, index) => renderBlogCard(event, index))
+              ) : (
+                <p>No data available</p>
+              )}
             </Slider>
           </div>
         </div>
