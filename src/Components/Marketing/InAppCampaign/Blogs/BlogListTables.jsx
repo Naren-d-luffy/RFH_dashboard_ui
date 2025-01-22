@@ -24,7 +24,6 @@ const BlogsTable = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [blogList, setBlogList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
   const [selectedBlog, setSelectedBlog] = useState(null);
@@ -107,8 +106,8 @@ const BlogsTable = () => {
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return BlogsList;
-    return BlogsList.filter((Event) =>
-      `${Event.heading}{}${Event.subheading}`
+    return BlogsList.filter((blog) =>
+      `${blog.heading}{}${blog.subheading}{}${blog.content}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
@@ -120,6 +119,7 @@ const BlogsTable = () => {
       title: "Heading",
       dataIndex: "heading",
       className: "campaign-performance-table-column",
+      sorter:(a,b)=>a.heading.localesCompare(b.heading)
     },
     {
       title: "Sub Heading",
@@ -171,27 +171,27 @@ const BlogsTable = () => {
     },
   ];
 
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
+//   const items = [
+//     {
+//       label: "Last Day",
+//       key: "1",
+//     },
+//     {
+//       label: "Last week",
+//       key: "2",
+//     },
+//     {
+//       label: "Last Month",
+//       key: "3",
+//     },
+//   ];
 
-  const handleMenuClick = ({ key }) => {};
+//   const handleMenuClick = ({ key }) => {};
 
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+//   const menuProps = {
+//     items,
+//     onClick: handleMenuClick,
+//   };
 
   return (
     <div className="container mt-1">
@@ -226,7 +226,7 @@ const BlogsTable = () => {
                 />
               </div>
 
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -235,7 +235,7 @@ const BlogsTable = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table
