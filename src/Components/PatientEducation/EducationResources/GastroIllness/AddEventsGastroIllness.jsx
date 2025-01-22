@@ -71,7 +71,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
         handleCancel();
 
         showSuccessMessage("GastroIllness Added successfully!");
-        dispatch(addGastroIllness(response.data));
+        dispatch(addGastroIllness(response.data.data));
         setTitle("");
         setDescription("");
         setContent("");
@@ -85,6 +85,14 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
       setIsLoading(false);
     }
   };
+  const handleCancelClick = () => {
+    setTitle("");
+    setDescription("");
+    setContent("");
+    setUploadedImage(null);
+    setThumbnailImage(null);
+    handleCancel();
+  };
 
   return (
     <>
@@ -96,12 +104,12 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
             Add GastroIllness Info
           </span>
         }
-        onCancel={handleCancel}
+        onCancel={handleCancelClick}
         width={680}
         footer={[
           <Button
             key="back"
-            onClick={handleCancel}
+            onClick={handleCancelClick}
             className="create-campaign-cancel-button"
           >
             Cancel

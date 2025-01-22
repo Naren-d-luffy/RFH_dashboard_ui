@@ -40,19 +40,23 @@ const AddVideo = ({ open, handleCancel, refreshList }) => {
       setIsLoading(false);
     }
   };
-
+  const handleCancelClick = () => {
+    setTitle("");
+    setUrl("");
+    handleCancel();
+  };
   return (
     <>
       {isLoading && <Loader />}
       <Modal
         visible={open}
         title={<span className="create-campaign-modal-title">Add Video</span>}
-        onCancel={handleCancel}
+        onCancel={handleCancelClick}
         width={680}
         footer={[
           <Button
             key="back"
-            onClick={handleCancel}
+            onClick={handleCancelClick}
             className="create-campaign-cancel-button"
           >
             Cancel

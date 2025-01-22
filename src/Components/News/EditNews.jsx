@@ -95,13 +95,12 @@ const EditNews = ({ open, handleCancel, newsData }) => {
       const response = await Instance.put(`/cards/${newsData._id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-
+      console.log("edit",response)
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("News Edited successfully!");
-        dispatch(editNews(response.data));
+        dispatch(editNews(response?.data));
       }
-      console.log("response", response);
     } catch (error) {
       console.error("Error updating news:", error);
       message.error("Failed to update news.");

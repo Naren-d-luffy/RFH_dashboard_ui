@@ -63,7 +63,7 @@ export const Preferences = () => {
             </div> */}
           </div>
 
-          <div className="row mt-4">
+          {/* <div className="row mt-4">
             <div className="col-md-4 mt-4 theme-select-option">
               <p>Time Zone</p>
             </div>
@@ -115,7 +115,7 @@ export const Preferences = () => {
                 </Select>
               </Form.Item>
             </div>
-          </div>
+          </div> */}
           <div className="row mt-4">
             <div className="d-flex justify-content-end gap-2">
               <button className="settings-delete-button" type="button">
