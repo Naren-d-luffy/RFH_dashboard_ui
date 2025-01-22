@@ -13,6 +13,7 @@ import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { FiEye } from "react-icons/fi";
 import {
+  accessToken,
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -107,6 +108,9 @@ export const FeaturedProgramsList = () => {
     try {
       const response = await Instance.get(`/discover/featuredProgram`, {
         params: { page, limit: itemsPerPage },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
       dispatch(setFeature(response.data.data));
       setFeatureList(response.data || []);
@@ -212,7 +216,9 @@ export const FeaturedProgramsList = () => {
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {Object.values(FeaturesData).map((feature) => renderFeatureCard(feature))}
+              {Object.values(FeaturesData).map((feature) =>
+                renderFeatureCard(feature)
+              )}
             </Slider>
           </div>
           <AddFeaturesModal open={isModalOpen} handleCancel={handleCancel} />

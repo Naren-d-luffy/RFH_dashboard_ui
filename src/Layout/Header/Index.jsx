@@ -35,7 +35,10 @@ const HeaderAdmin = () => {
       title: "Confirm Logout",
       content: "Are you sure you want to log out?",
       onDelete: () => {
-        localStorage.removeItem("token");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("accessTokenExpiration");
+        localStorage.removeItem("refreshTokenExpiration");
         localStorage.removeItem("userInfo");
         navigate("/");
       },
