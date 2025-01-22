@@ -5,6 +5,7 @@ import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
+  accessToken,
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -78,6 +79,9 @@ const TableEventsList = () => {
     try {
       const response = await Instance.get(`/discover/card`, {
         params: { page, limit: itemsPerPage },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
       dispatch(setEvent(response.data.data));
     } catch (error) {
@@ -93,7 +97,10 @@ const TableEventsList = () => {
 
   const dataSource = useMemo(() => {
     if (!searchText.trim())
-      return Object.values(eventsData).map((event, index) => ({ ...event, key: index }));
+      return Object.values(eventsData).map((event, index) => ({
+        ...event,
+        key: index,
+      }));
     return Object.values(eventsData)
       .filter((event) =>
         `${event.title} ${event.description}`
@@ -109,7 +116,6 @@ const TableEventsList = () => {
       dataIndex: "title",
       key: "title",
       sorter: (a, b) => a.title.localeCompare(b.title), // Sorting based on the title alphabetically
-
     },
     {
       title: "Description",
@@ -122,7 +128,6 @@ const TableEventsList = () => {
       dataIndex: "order",
       key: "order",
       sorter: (a, b) => a.order - b.order, // Sorting numerically by likes
-
     },
     {
       title: "Action",

@@ -5,6 +5,7 @@ import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
+  accessToken,
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -61,6 +62,9 @@ const ViewAllCampTable = () => {
     try {
       const response = await Instance.get(`/camp`, {
         params: { page, limit: itemsPerPage },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
       setTotalRows(response.data?.data?.length || 0);
       dispatch(setFeature(response.data.data));
@@ -114,14 +118,12 @@ const ViewAllCampTable = () => {
       dataIndex: "hospitalName",
       key: "hospitalName",
       sorter: (a, b) => a.hospitalName.localeCompare(b.hospitalName),
-
     },
     {
       title: "Location",
       dataIndex: "location",
       key: "location",
       render: (text) => truncateText(text),
-
     },
     {
       title: "Pincode",
@@ -134,14 +136,12 @@ const ViewAllCampTable = () => {
       key: "date",
       render: (text) => formatDate(text),
       sorter: (a, b) => new Date(a.date) - new Date(b.date), // Sorting by date
-
     },
     {
       title: "Time",
       dataIndex: "time",
       key: "time",
       sorter: (a, b) => new Date(a.time) - new Date(b.time), // Sorting by date
-
     },
     {
       title: "Action",

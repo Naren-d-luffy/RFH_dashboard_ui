@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Instance } from "../../../../AxiosConfig";
 import {
+  accessToken,
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -163,7 +164,11 @@ export const RecommendedVideosList = () => {
 
   const fetchVideoList = async () => {
     try {
-      const response = await Instance.get("/recommended");
+      const response = await Instance.get("/recommended",{
+         headers: {
+                  Authorization: `Bearer ${accessToken}`, 
+                },
+      });
       console.log("Fetched video data:", response.data);
       dispatch(setRecommendedVideos(response.data));
     } catch (error) {
