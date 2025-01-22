@@ -7,7 +7,17 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import Loader from "../../Loader";
 import { addDepartment } from "../../Features/DepartmentSlice";
 import { showSuccessMessage } from "../../globalConstant";
-
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+const modules = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["bold", "italic"],
+    ["link", "image"],
+    ["clean"],
+  ],
+};
 const { TextArea } = Input;
 const CreateDepartmentDetails = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -24,8 +34,8 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
       {
         title: "",
         views: 0,
-        video_thumbnail_url: ""
-      }
+        video_thumbnail_url: "",
+      },
     ]);
   };
   const resetForm = () => {
@@ -33,7 +43,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
     setTitle("");
     setSubtitle("");
     setDescription("");
-   
+
     setSuccessStories([]);
   };
 
@@ -58,17 +68,20 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
         requestData.append("thumbnail", uploadedImage);
       }
 
-      const formattedSuccessStories = successStories.map(story => ({
+      const formattedSuccessStories = successStories.map((story) => ({
         video_thumbnail_url: story.video_thumbnail_url,
         title: story.title,
-        views: parseInt(story.views)
+        views: parseInt(story.views),
       }));
-  
-      requestData.append("success_stories", JSON.stringify(formattedSuccessStories));
+
+      requestData.append(
+        "success_stories",
+        JSON.stringify(formattedSuccessStories)
+      );
       const response = await Instance.post("/department", requestData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-  
+
       dispatch(addDepartment(response.data));
       message.success("Department created successfully!");
       showSuccessMessage("Department added successfully!");
@@ -79,7 +92,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
         error: error,
         message: error.message,
         response: error.response?.data,
-        status: error.response?.status
+        status: error.response?.status,
       });
       message.error("Failed to create department.");
     } finally {
@@ -131,11 +144,21 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
               required
             />
           </Form.Item>
-          <Form.Item label="Description">
+          {/* <Form.Item label="Description">
             <TextArea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Add Description"
+              required
+            />
+          </Form.Item> */}
+          <Form.Item label="Description">
+            <ReactQuill
+              theme="snow"
+              modules={modules}
+              value={description}
+              onChange={setDescription}
+              placeholder="Your text goes here"
               required
             />
           </Form.Item>
@@ -184,7 +207,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
               </div>
             )}
           </Form.Item>
-         
+
           <Button
             onClick={handleAddSuccessStory}
             className="create-campaign-cancel-button"

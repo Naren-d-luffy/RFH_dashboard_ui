@@ -17,8 +17,8 @@ export const Settings = () => {
   const [selectedOption, setSelectedOption] = useState("general");
   const renderContent = () => {
     switch (selectedOption) {
-      case "general":
-        return <General />;
+      // case "general":
+      //   return <General />;
       case "preferences":
         return <Preferences />;
       case "notifications":
@@ -44,13 +44,21 @@ export const Settings = () => {
           <p>Customize until match to your workflows</p>
           <div className="col-lg-3">
             <div className="settings-options">
-              <div
+              {/* <div
                 className={`settings-items ${
                   selectedOption === "general" ? "active" : ""
                 }`}
                 onClick={() => setSelectedOption("general")}
               >
                 <FiGrid /> &nbsp; General
+              </div> */}
+              <div
+                className={`settings-items mt-3 ${
+                  selectedOption === "account" ? "active" : ""
+                }`}
+                onClick={() => setSelectedOption("account")}
+              >
+                <MdOutlineAccountBox /> &nbsp; Account
               </div>
               <div
                 className={`settings-items mt-3 ${
@@ -68,14 +76,7 @@ export const Settings = () => {
               >
                 <IoNotificationsOutline /> &nbsp; Notifications
               </div>
-              <div
-                className={`settings-items mt-3 ${
-                  selectedOption === "account" ? "active" : ""
-                }`}
-                onClick={() => setSelectedOption("account")}
-              >
-                <MdOutlineAccountBox /> &nbsp; Account
-              </div>
+              
               <div
                 className={`settings-items mt-3 ${
                   selectedOption === "termsAndConditions" ? "active" : ""

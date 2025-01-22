@@ -107,9 +107,7 @@ export const RecommendedVideosList = () => {
         <div className="video-details mt-2">
           <h4>{video.name}</h4>
           <p style={{ color: "var(--black-color)", fontSize: "13px" }}>
-            {`${video.likes || 0} Likes | ${new Date(
-              video.createdAt
-            ).toLocaleDateString()}`}
+              {video.createdAt}
           </p>
         </div>
       </div>
@@ -185,7 +183,7 @@ export const RecommendedVideosList = () => {
             <div className="d-flex gap-2">
               <button
                 className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-hello-doctor")}
+                onClick={() => navigate("/view-all-recommended-videos-table")}
               >
                 View all
               </button>

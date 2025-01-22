@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Instance } from "../../../AxiosConfig";
 import { Table, Dropdown, Button, Modal, Avatar, Tag } from "antd";
 import { FiSearch, FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
@@ -7,16 +7,19 @@ import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { showDeleteMessage } from "../../../globalConstant";
 import { filterDropdown } from "../../../globalConstant";
-import { FaUserMd } from "react-icons/fa";
 import defaultUser from "../../../Assets/Images/singleuser.png";
+import DOMPurify from "dompurify";
 
+const sanitizeContent = (content) => {
+  return DOMPurify.sanitize(content);
+};
 const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
   if (!doctor) return null;
 
   return (
     <Modal
       open={isOpen}
-      onClose={onClose}
+      onCancel={onClose}
       width={600}
       footer={[
         <Button
@@ -35,38 +38,36 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
       >
         <div className="bg-white w-3/4 max-w-5xl rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
           <div className="p-8">
-            {/* Header */}
             <div className="flex items-center space-x-6 border-b border-gray-200 pb-6">
-              {/* {doctor.profile ? (
-                <img
-                  src={doctor.profile}
-                  alt={doctor.name}
-                  className="w-24 h-24 rounded-full object-cover shadow-md"
-                />
-              ) : (
-                <div className="w-24 h-24 rounded-full bg-blue-50 flex items-center justify-center shadow-md">
-                  <FaUserMd className="w-12 h-12 text-blue-500" />
-                </div>
-              )} */}
               <div className="view-doctor-detail-doctor-image">
                 <Avatar
                   size={74}
-                  src={doctor.profile || defaultUser} // Default image fallback
+                  src={doctor.profile || defaultUser}
                   className="view-doctor-profile-image"
                 />
               </div>
-              {/* <div>
-                <h2 className="text-3xl font-bold text-gray-900">
-                  {doctor.name}
-                </h2>
-                <p className="text-lg text-gray-600 mt-1">{doctor.position}</p>
-              </div> */}
+
               <div className="view-doctor-detail-info-section">
                 <h3>{doctor.name}</h3>
                 <h6>{doctor.position}</h6>
               </div>
             </div>
             <hr color="var(--border-color)" />
+
+            {/* Qualifications */}
+            <div className="mt-8">
+              <div className="view-doctor-detail-specialist-section">
+                <h6 className="mb-0">Qualifications</h6>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {doctor.qualifications.map((qual, index) => (
+                  <Tag key={index} className="most-user-success-tag p-2 mt-2">
+                    {qual}
+                  </Tag>
+                ))}
+              </div>
+            </div>
+
             <div className="view-doctor-detail-specialist-section">
               <h3>Department</h3>
               <p>{doctor.department}</p>
@@ -78,30 +79,25 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
             <hr />
             <div>
               <h6>About</h6>
-              <p>{doctor.about} </p>
+
+              {/* <p>{doctor.about} </p> */}
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: sanitizeContent(doctor.about),
+                }}
+              ></p>
             </div>
             {/* Main Content */}
             <div className="mt-8">
-              {/* Qualifications */}
-              <div className="mt-8">
-                <div className="view-doctor-detail-specialist-section">
-                  <h6>Qualifiactions</h6>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {doctor.qualifications.map((qual, index) => (
-                    <Tag key={index} className="most-user-success-tag p-2">
-                      {qual}
-                    </Tag>
-                  ))}
-                </div>
-              </div>
 
               {/* Areas of Expertise */}
               <div className="mt-4">
                 <h6>Areas of Expertise</h6>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {doctor.AreasOfExpertise.map((area, index) => (
-                    <Tag key={index} className="most-user-success-tag p-2">
+
+                    <Tag key={index} className="most-user-success-tag p-2 mt-2">
+
                       {area}
                     </Tag>
                   ))}
@@ -150,7 +146,19 @@ const VirtualManagementTable = () => {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState(""); 
+
+  const [searchText, setSearchText] = useState("");
+
+  const dataSource = useMemo(() => {
+    if (searchText.trim() === "") return doctors; // Convert to array
+    return doctors.filter((doctors) =>
+      `${doctors._id} ${doctors.name} ${doctors.department} ${doctors.position} ${doctors.experience} ${doctors.qualifications}`
+        .toLowerCase()
+        .includes(searchText.toLowerCase())
+    );
+  }, [searchText, doctors]);
+
+
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
@@ -206,14 +214,14 @@ const VirtualManagementTable = () => {
     setIsModalOpen(false);
     setSelectedDoctor(null);
   };
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value.toLowerCase());
-  };
-  const filteredDoctors = doctors.filter((doctor) =>
-    doctor.name.toLowerCase().includes(searchQuery) ||
-    doctor.department.toLowerCase().includes(searchQuery) ||
-    doctor.position.toLowerCase().includes(searchQuery)
-  );
+  // const handleSearchChange = (e) => {
+  //   setSearchQuery(e.target.value.toLowerCase());
+  // };
+  // const filteredDoctors = doctors.filter((doctor) =>
+  //   doctor.name.toLowerCase().includes(searchQuery) ||
+  //   doctor.department.toLowerCase().includes(searchQuery) ||
+  //   doctor.position.toLowerCase().includes(searchQuery)
+  // );
 
   const columns = [
     {
@@ -318,23 +326,12 @@ const VirtualManagementTable = () => {
                 type="text"
                 placeholder="Search anything here"
                 className="search-input-table"
-                value={searchQuery}
-                onChange={handleSearchChange}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
               />
             </div>
             <div className="d-flex gap-3 align-items-center">
-              <Dropdown
-                overlay={filterDropdown([], () => {})}
-                trigger={["click"]}
-                open={isDropdownOpen}
-                onOpenChange={setIsDropdownOpen}
-                placement="bottomLeft"
-              >
-                <Button style={{ width: 160 }}>
-                  <VscSettings />
-                  Filters
-                </Button>
-              </Dropdown>
+       
               <button
                 className="rfh-basic-button"
                 onClick={() => navigate(`/teleconsultation/doctor-detail`)}
@@ -347,7 +344,7 @@ const VirtualManagementTable = () => {
         <div className="mt-3">
           <Table
             columns={columns}
-            dataSource={filteredDoctors}
+            dataSource={dataSource}
             loading={loading}
             rowKey="_id"
             className="campaign-performance-table overflow-y-auto"

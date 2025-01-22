@@ -16,6 +16,7 @@ import ViewDepartmentDetails from "./ViewDepartmentDetails";
 import EditDepartmentDetails from "./EditDepartmentDetails";
 import CreateDepartmentDetails from "./CreateDepartmentDetails";
 import Loader from "../../Loader";
+import DOMPurify from "dompurify";
 
 const DepartmentDetailsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,13 +29,24 @@ const DepartmentDetailsList = () => {
   const [selectedDepartment, setSelectedDepartment] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const departments = useSelector((state) => state.department.departments);
-  console.log("khkkj", departments);
+
   const truncateText = (text, wordLimit = 15) => {
     if (!text) return "";
     const words = text.split(" ");
     return words.length > wordLimit
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
+  };
+  const truncateHTML = (htmlContent, wordLimit) => {
+    if (!htmlContent) return "";
+    const sanitizedContent = DOMPurify.sanitize(htmlContent);
+    const textContent = sanitizedContent.replace(/<[^>]*>/g, "");
+    const words = textContent.split(" ");
+    const truncatedText =
+      words.length > wordLimit
+        ? words.slice(0, wordLimit).join(" ") + "..."
+        : textContent;
+    return truncatedText;
   };
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -114,7 +126,7 @@ const DepartmentDetailsList = () => {
   useEffect(() => {
     fetchDepartmentList(currentPage);
   }, [currentPage]);
-
+  
   const columns = [
     {
       title: "Title",
@@ -133,8 +145,16 @@ const DepartmentDetailsList = () => {
       dataIndex: "description",
       key: "description",
       className: "campaign-performance-table-column",
-      render: (text) => truncateText(text),
-
+      render: (text) => {
+        const truncatedHTML = truncateHTML(text, 15);
+        return (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(truncatedHTML(text)),
+            }}
+          />
+        );
+      },
     },
     {
       title: "Action",

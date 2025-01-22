@@ -152,7 +152,7 @@ const AddFacility = ({ open, handleCancel }) => {
             <span className="create-campaign-input-span">Description</span>
           </Form.Item>
           <div className="row">
-            <div className="col-lg-6">
+            <div className="col-lg-12">
               <Form.Item>
                 <Upload
                   listType="picture"
@@ -187,7 +187,38 @@ const AddFacility = ({ open, handleCancel }) => {
                 )}
               </Form.Item>
             </div>
-            <div className="col-lg-6">
+            
+          </div>
+          <Form.Item>
+            <ReactQuill
+              theme="snow"
+              modules={modules}
+              value={content}
+              onChange={setContent}
+              placeholder="Your text goes here"
+              required
+            />
+            <span className="create-campaign-input-span">Content</span>
+          </Form.Item>
+          <Form.Item>
+            <Input
+              value={videoHeading}
+              onChange={(e) => setVideoHeading(e.target.value)}
+              placeholder="Video Heading"
+              required
+            />
+            <span className="create-campaign-input-span">Video Heading</span>
+          </Form.Item>
+          <Form.Item>
+            <Input
+              value={videoSubHeading}
+              onChange={(e) => setVideoSubHeading(e.target.value)}
+              placeholder="Video Subheading"
+              required
+            />
+            <span className="create-campaign-input-span">Video Subheading</span>
+          </Form.Item>
+          <div className="col-lg-12">
               <Form.Item>
                 <Upload
                   listType="picture"
@@ -222,36 +253,6 @@ const AddFacility = ({ open, handleCancel }) => {
                 )}
               </Form.Item>
             </div>
-          </div>
-          <Form.Item>
-            <ReactQuill
-              theme="snow"
-              modules={modules}
-              value={content}
-              onChange={setContent}
-              placeholder="Your text goes here"
-              required
-            />
-            <span className="create-campaign-input-span">Content</span>
-          </Form.Item>
-          <Form.Item>
-            <Input
-              value={videoHeading}
-              onChange={(e) => setVideoHeading(e.target.value)}
-              placeholder="Video Heading"
-              required
-            />
-            <span className="create-campaign-input-span">Video Heading</span>
-          </Form.Item>
-          <Form.Item>
-            <Input
-              value={videoSubHeading}
-              onChange={(e) => setVideoSubHeading(e.target.value)}
-              placeholder="Video Subheading"
-              required
-            />
-            <span className="create-campaign-input-span">Video Subheading</span>
-          </Form.Item>
         </Form>
       </Modal>
     </>

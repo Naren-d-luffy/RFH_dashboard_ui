@@ -87,11 +87,12 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-
+      console.log("response",response);
+      
       if (response?.status === 200) {
         handleCancel();
         message.success("Outstation Clinic details updated successfully!");
-        dispatch(editOutstationClinic(response.data));
+        dispatch(editOutstationClinic([response.data.data]));
       }
     } catch (error) {
       console.error(
