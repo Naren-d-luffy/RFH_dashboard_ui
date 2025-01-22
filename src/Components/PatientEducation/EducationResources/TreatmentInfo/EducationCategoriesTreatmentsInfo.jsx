@@ -37,7 +37,7 @@ const EducationCategoriesTreatmentsInfo = () => {
   const handleViewCancel = () => setIsViewModalOpen(false);
   const [isLoading, setIsLoading] = useState(false);
   const treatmentData = useSelector((state) => state.treatments.treatments);
-  
+
   const navigate = useNavigate();
 
   const itemsPerPage = 100;
@@ -108,7 +108,7 @@ const EducationCategoriesTreatmentsInfo = () => {
     try {
       const response = await Instance.get(`/education`, {
         params: { page, limit: itemsPerPage },
-      });      
+      });
       dispatch(setTreatment(response.data.data.educations));
       setTreatmentList(response.data.educations || []);
       setIsLoading(false);
@@ -196,9 +196,9 @@ const EducationCategoriesTreatmentsInfo = () => {
   return (
     <div className="container">
       <div className="row mt-4 marketing-categories-section">
-        <div className="d-flex justify-content-between">
+        <div className="events-header-container">
           <h6>Treatments Info</h6>
-          <div className="d-flex gap-2">
+          <div className="events-buttons">
             <button
               className="rfh-view-all-button"
               onClick={() => navigate("/view-all-treatments")}
@@ -213,7 +213,11 @@ const EducationCategoriesTreatmentsInfo = () => {
         {isLoading && <Loader />}
         <div className="row mt-3">
           <Slider {...sliderSettings}>
-            {treatmentData.map((treatment) => renderImageCard(treatment))}
+            {treatmentData && treatmentData.length > 0 ? (
+              treatmentData.map((treatment) => renderImageCard(treatment))
+            ) : (
+              <p>No data available</p>
+            )}
           </Slider>
         </div>
       </div>

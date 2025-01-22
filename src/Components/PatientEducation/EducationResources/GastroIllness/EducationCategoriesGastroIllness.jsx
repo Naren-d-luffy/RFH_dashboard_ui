@@ -217,9 +217,9 @@ const EducationCategoriesGastroIllness = () => {
         </div> */}
 
         <div className="row mt-4">
-          <div className="d-flex justify-content-between">
+          <div className="events-header-container">
             <h6>Gastro Illness</h6>
-            <div className="d-flex gap-2">
+            <div className="events-buttons">
               <button
                 className="rfh-view-all-button"
                 onClick={() => navigate("/view-all-gastro-illness")}
@@ -234,7 +234,13 @@ const EducationCategoriesGastroIllness = () => {
           <div className="mt-3">
             <Slider {...sliderSettings}>
               {/* {gastroEvents.map((event) => renderEventCard(event))} */}
-              {Object.values(gastroEvents).map((event, index) => renderEventCard(event, index))}
+              {gastroEvents && Object.keys(gastroEvents).length > 0 ? (
+                Object.values(gastroEvents).map((event, index) =>
+                  renderEventCard(event, index)
+                )
+              ) : (
+                <p>No data available</p>
+              )}
             </Slider>
           </div>
         </div>
