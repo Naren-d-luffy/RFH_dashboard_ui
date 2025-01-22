@@ -107,7 +107,7 @@ const GastroIllnessTable = () => {
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return EventData;
     return EventData.filter((Event) =>
-      `${Event.title}{}${Event.description}`
+      `${Event.title}{}${Event.description}{}${Event.content}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
@@ -118,6 +118,8 @@ const GastroIllnessTable = () => {
       title: "Title",
       dataIndex: "title",
       className: "campaign-performance-table-column",
+      sorter:(a,b)=>a.title.localeCompare(b.title)
+
     },
     {
       title: "Description",
@@ -169,27 +171,27 @@ const GastroIllnessTable = () => {
     },
   ];
 
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
+  // const items = [
+  //   {
+  //     label: "Last Day",
+  //     key: "1",
+  //   },
+  //   {
+  //     label: "Last week",
+  //     key: "2",
+  //   },
+  //   {
+  //     label: "Last Month",
+  //     key: "3",
+  //   },
+  // ];
 
-  const handleMenuClick = ({ key }) => {};
+  // const handleMenuClick = ({ key }) => {};
 
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+  // const menuProps = {
+  //   items,
+  //   onClick: handleMenuClick,
+  // };
 
   return (
     <div className="container mt-1">
@@ -224,7 +226,7 @@ const GastroIllnessTable = () => {
                 />
               </div>
 
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -233,7 +235,7 @@ const GastroIllnessTable = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table

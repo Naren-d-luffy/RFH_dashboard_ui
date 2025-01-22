@@ -105,6 +105,7 @@ const FeaturesTable = () => {
       title: "Title",
       dataIndex: "title",
       key: "title",
+      sorter: (a, b) => a.title.localeCompare(b.title),
     },
     {
       title: "Description",
@@ -141,26 +142,26 @@ const FeaturesTable = () => {
       className: "campaign-performance-table-column",
     },
   ];
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
+  // const items = [
+  //   {
+  //     label: "Last Day",
+  //     key: "1",
+  //   },
+  //   {
+  //     label: "Last week",
+  //     key: "2",
+  //   },
+  //   {
+  //     label: "Last Month",
+  //     key: "3",
+  //   },
+  // ];
 
-  const handleMenuClick = ({ key }) => {};
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+  // const handleMenuClick = ({ key }) => {};
+  // const menuProps = {
+  //   items,
+  //   onClick: handleMenuClick,
+  // };
   return (
     <div className="container mt-1">
       {isLoading ? (
@@ -192,7 +193,7 @@ const FeaturesTable = () => {
                   onChange={(e) => setSearchText(e.target.value)}
                 />
               </div>
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -201,7 +202,7 @@ const FeaturesTable = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table

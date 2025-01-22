@@ -96,7 +96,7 @@ const ViewAllCampTable = () => {
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return Object.values(FeaturesData);
     return Object.values(FeaturesData).filter((camp) =>
-      `${camp.title} ${camp.description}`
+      `${camp.campName} ${camp.hospitalName} ${camp.location} ${camp.pinCode} ${camp.date} ${camp.time}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
@@ -107,17 +107,21 @@ const ViewAllCampTable = () => {
       title: "Camp Name",
       dataIndex: "campName",
       key: "campName",
+      sorter: (a, b) => a.campName.localeCompare(b.campName),
     },
     {
       title: "Hospital Name",
       dataIndex: "hospitalName",
       key: "hospitalName",
+      sorter: (a, b) => a.hospitalName.localeCompare(b.hospitalName),
+
     },
     {
       title: "Location",
       dataIndex: "location",
       key: "location",
       render: (text) => truncateText(text),
+
     },
     {
       title: "Pincode",
@@ -129,11 +133,15 @@ const ViewAllCampTable = () => {
       dataIndex: "date",
       key: "date",
       render: (text) => formatDate(text),
+      sorter: (a, b) => new Date(a.date) - new Date(b.date), // Sorting by date
+
     },
     {
       title: "Time",
       dataIndex: "time",
       key: "time",
+      sorter: (a, b) => new Date(a.time) - new Date(b.time), // Sorting by date
+
     },
     {
       title: "Action",
@@ -191,7 +199,7 @@ const ViewAllCampTable = () => {
                   onChange={(e) => setSearchText(e.target.value)}
                 />
               </div>
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown>
                   <Button>
                     <Space>
@@ -200,7 +208,7 @@ const ViewAllCampTable = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table
