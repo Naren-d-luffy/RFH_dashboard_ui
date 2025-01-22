@@ -178,7 +178,7 @@ export const FeaturedProgramsList = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -200,9 +200,9 @@ export const FeaturedProgramsList = () => {
     <div className="row mt-4">
       <div className="marketing-categories-section">
         <div className="row mt-4">
-          <div className="d-flex justify-content-between">
+          <div className="events-header-container">
             <h6>Featured Programs</h6>
-            <div className="d-flex gap-2">
+            <div className="events-buttons">
               <button
                 className="rfh-view-all-button"
                 onClick={() => navigate("/view-all-features")}
@@ -216,8 +216,13 @@ export const FeaturedProgramsList = () => {
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {Object.values(FeaturesData).map((feature) =>
-                renderFeatureCard(feature)
+              {FeaturesData && Object.keys(FeaturesData).length > 0 ? (
+                Object.values(FeaturesData).map((feature) =>
+                  renderFeatureCard(feature)
+                )
+              ) : (
+                <p>No data available</p>
+
               )}
             </Slider>
           </div>

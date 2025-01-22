@@ -36,7 +36,9 @@ const CategoriesReadingMaterials = () => {
   const handleViewCancel = () => setIsViewModalOpen(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const readingMaterialsData = useSelector(state => state.readingmaterials.readingmaterials); 
+  const readingMaterialsData = useSelector(
+    (state) => state.readingmaterials.readingmaterials
+  );
   const navigate = useNavigate();
 
   const itemsPerPage = 100;
@@ -108,7 +110,7 @@ const CategoriesReadingMaterials = () => {
       const response = await Instance.get(`/reading-material`, {
         params: { page, limit: itemsPerPage },
       });
-      dispatch(setReadingMaterials(response.data));      
+      dispatch(setReadingMaterials(response.data));
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching reading materials:", error);
@@ -194,9 +196,9 @@ const CategoriesReadingMaterials = () => {
   return (
     <div className="container">
       <div className="row mt-4 marketing-categories-section">
-        <div className="d-flex justify-content-between">
+        <div className="events-header-container">
           <h6>Reading Materials</h6>
-          <div className="d-flex gap-2">
+          <div className="events-buttons">
             <button
               className="rfh-view-all-button"
               onClick={() => navigate("/view-all-readingmaterials")}
@@ -211,7 +213,13 @@ const CategoriesReadingMaterials = () => {
         {isLoading && <Loader />}
         <div className="row mt-3">
           <Slider {...sliderSettings}>
-            {readingMaterialsData.map((readingmaterial) => renderImageCard(readingmaterial))}
+            {readingMaterialsData && readingMaterialsData.length > 0 ? (
+              readingMaterialsData.map((readingmaterial) =>
+                renderImageCard(readingmaterial)
+              )
+            ) : (
+              <p>No data available</p>
+            )}
           </Slider>
         </div>
       </div>

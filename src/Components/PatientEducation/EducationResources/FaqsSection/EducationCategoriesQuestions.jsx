@@ -108,15 +108,17 @@ const EducationCategoriesQuestions = () => {
   return (
     <div className="container mt-3">
       <div className="education-categories-faq-container">
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="events-header-container">
           <h3>Frequently Asked Questions</h3>
+          <div className="events-buttons">
           <button
             className="rfh-basic-button"
             onClick={showModal}
             aria-label="Add Question"
-          >
+          > 
             <GoPlus size={20} /> Add
           </button>
+          </div>
         </div>
 
         {Object.values(faqData).map((faq, index) => (

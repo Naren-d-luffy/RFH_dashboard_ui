@@ -104,6 +104,7 @@ export const LatestCampsList = () => {
 
   const fetchCampList = async () => {
     try {
+
       const response = await Instance.get(`/camp`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -218,7 +219,7 @@ export const LatestCampsList = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -240,10 +241,10 @@ export const LatestCampsList = () => {
     <div className="row mt-4">
       <div className="marketing-categories-section">
         <div className="row mt-4">
-          <div className="d-flex justify-content-between">
+          <div className="events-header-container">
             <h6>Latest Camps</h6>
 
-            <div className="d-flex gap-2">
+            <div className="events-buttons">
               <button
                 className="rfh-view-all-button"
                 onClick={() => navigate("/view-all-camp-table")}
@@ -260,7 +261,11 @@ export const LatestCampsList = () => {
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {Object.values(camps).map((camp) => renderLatestCamps(camp))}
+              {camps && Object.keys(camps).length > 0 ? (
+                Object.values(camps).map((camp) => renderLatestCamps(camp))
+              ) : (
+                <p>No data available</p>
+              )}
             </Slider>
           </div>
           <AddLatestCamps
