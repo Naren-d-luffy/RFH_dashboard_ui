@@ -5,6 +5,7 @@ import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
+  accessToken,
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -70,6 +71,9 @@ const OutstationClinicTable = () => {
     try {
       const response = await Instance.get(`/discover/clinic`, {
         params: { page, limit: itemsPerPage },
+         headers: {
+                  Authorization: `Bearer ${accessToken}`, 
+                },
       });
       console.log(response.data);
       dispatch(setOutstationClinic(response.data.data));

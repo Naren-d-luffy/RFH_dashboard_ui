@@ -15,7 +15,7 @@ import EditEventsList from "./EditEventsList";
 import ViewEventList from "./ViewEventList";
 import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { showDeleteMessage, showSuccessMessage } from "../../../../globalConstant";
+import { accessToken, showDeleteMessage, showSuccessMessage } from "../../../../globalConstant";
 
 export const UpcomingEventList = () => {
   const [modals, setModals] = useState({
@@ -34,11 +34,14 @@ export const UpcomingEventList = () => {
   const navigate = useNavigate();
 
   const fetchEvenInfo = async (page) => {
+    // const accessToken = localStorage.getItem("accessToken");
     setIsLoading(true);
     try {
-      const response = await Instance.get(`/discover/card`, {
-        
+      const response = await Instance.get(`/discover/card`, { 
         params: { page, limit: itemsPerPage },
+        headers: {
+          Authorization: `Bearer ${accessToken}`, 
+        },
       });      
       dispatch(setEvent(response.data.data));
     } catch (error) {

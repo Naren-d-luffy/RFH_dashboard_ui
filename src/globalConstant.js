@@ -226,3 +226,6 @@ export const filterDropdown = (
 		</div>
 	</Card>
 );
+
+
+export  const accessToken = localStorage.getItem("accessToken");
