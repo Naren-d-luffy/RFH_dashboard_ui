@@ -76,7 +76,7 @@ const NewsList = () => {
       const response = await Instance.get(`/cards`, {
         params: { page, limit: itemsPerPage },
       });
-      console.log("cccccc",response);
+      // console.log("cccccc",response);
       
       setNewsList(response.data.data || []);
       setTotalRows(response.data.data.length);
@@ -112,6 +112,8 @@ const NewsList = () => {
       title: "Heading",
       dataIndex: "heading",
       className: "campaign-performance-table-column",
+      sorter:(a,b)=>a.heading.localeCompare(b.heading)
+
     },
     {
       title: "SubHeading",
@@ -153,27 +155,27 @@ const NewsList = () => {
     },
   ];
 
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
+  // const items = [
+  //   {
+  //     label: "Last Day",
+  //     key: "1",
+  //   },
+  //   {
+  //     label: "Last week",
+  //     key: "2",
+  //   },
+  //   {
+  //     label: "Last Month",
+  //     key: "3",
+  //   },
+  // ];
 
-  const handleMenuClick = ({ key }) => {};
+  // const handleMenuClick = ({ key }) => {};
 
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+  // const menuProps = {
+  //   items,
+  //   onClick: handleMenuClick,
+  // };
 
   return (
     <div className="container mt-1">
@@ -208,7 +210,7 @@ const NewsList = () => {
                 />
               </div>
 
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -217,7 +219,7 @@ const NewsList = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table

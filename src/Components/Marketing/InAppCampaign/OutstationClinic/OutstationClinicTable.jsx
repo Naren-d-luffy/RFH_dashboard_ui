@@ -89,7 +89,7 @@ const OutstationClinicTable = () => {
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return Object.values(EventData);
     return Object.values(EventData).filter((Event) =>
-      `${Event.title}{}${Event.description}`
+      `${Event.name}{}${Event.rating}{} ${Event.reviews}{}${Event.location}{}${Event.patients}{}${Event.experience} `
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
@@ -100,6 +100,8 @@ const OutstationClinicTable = () => {
       title: "Name",
       dataIndex: "name",
       className: "campaign-performance-table-column",
+      sorter: (a, b) => a.name.localeCompare(b.name), // Sorting based on the title alphabetically
+
     },
     // {
     //   title: "About",
@@ -121,21 +123,26 @@ const OutstationClinicTable = () => {
       title: "Rating",
       dataIndex: "rating",
       className: "campaign-performance-table-column",
+      sorter: (a, b) => a.rating - b.rating, // Sorting numerically by likes
+
     },
     {
       title: "Reviews",
       dataIndex: "reviews",
       className: "campaign-performance-table-column",
+      sorter: (a, b) => a.reviews - b.reviews, // Sorting numerically by likes
     },
     {
       title: "Location",
       dataIndex: "location",
       className: "campaign-performance-table-column",
+      sorter: (a, b) => a.location.localeCompare(b.location),
     },
     {
       title: "Patients",
       dataIndex: "patients",
       className: "campaign-performance-table-column",
+      sorter: (a, b) => a.patients - b.patients, // Sorting numerically by likes
     },
     {
       title: "Experience",
@@ -146,6 +153,7 @@ const OutstationClinicTable = () => {
       title: "Timing",
       dataIndex: "timing",
       className: "campaign-performance-table-column",
+
     },
     {
       title: "Action",
@@ -176,27 +184,27 @@ const OutstationClinicTable = () => {
     },
   ];
 
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
+  // const items = [
+  //   {
+  //     label: "Last Day",
+  //     key: "1",
+  //   },
+  //   {
+  //     label: "Last week",
+  //     key: "2",
+  //   },
+  //   {
+  //     label: "Last Month",
+  //     key: "3",
+  //   },
+  // ];
 
-  const handleMenuClick = ({ key }) => {};
+  // const handleMenuClick = ({ key }) => {};
 
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+  // const menuProps = {
+  //   items,
+  //   onClick: handleMenuClick,
+  // };
 
   return (
     <div className="container mt-1">
@@ -231,7 +239,7 @@ const OutstationClinicTable = () => {
                 />
               </div>
 
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -240,7 +248,7 @@ const OutstationClinicTable = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table

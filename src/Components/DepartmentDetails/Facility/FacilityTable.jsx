@@ -103,7 +103,7 @@ const FacilityTable = () => {
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return facilities;
     return facilities.filter((facility) =>
-      `${facility.heading} ${facility.subHeading}`
+      `${facility.heading} ${facility.subHeading} ${facility.video_heading}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
@@ -115,11 +115,14 @@ const FacilityTable = () => {
       dataIndex: "heading",
       className: "campaign-performance-table-column",
       render: (text) => truncateText(text),
+      sorter:(a,b)=>a.heading.localeCompare(b.heading)
     },
     {
       title: "Sub Heading",
       dataIndex: "subHeading",
       className: "campaign-performance-table-column",
+      sorter:(a,b)=>a.subHeading.localeCompare(b.subHeading)
+
     },
     {
       title: "Video Heading",
@@ -160,27 +163,27 @@ const FacilityTable = () => {
     },
   ];
 
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
+  // const items = [
+  //   {
+  //     label: "Last Day",
+  //     key: "1",
+  //   },
+  //   {
+  //     label: "Last week",
+  //     key: "2",
+  //   },
+  //   {
+  //     label: "Last Month",
+  //     key: "3",
+  //   },
+  // ];
 
-  const handleMenuClick = ({ key }) => {};
+  // const handleMenuClick = ({ key }) => {};
 
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+  // const menuProps = {
+  //   items,
+  //   onClick: handleMenuClick,
+  // };
 
   return (
     <div className="container mt-1">
@@ -215,7 +218,7 @@ const FacilityTable = () => {
                 />
               </div>
 
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -224,7 +227,7 @@ const FacilityTable = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table

@@ -49,15 +49,15 @@ const HelloDoctorTable = () => {
       : text;
   };
 
-  const truncateHTML = (htmlContent, wordLimit) => {
-    if (!htmlContent) return "";
-    const sanitizedContent = DOMPurify.sanitize(htmlContent);
-    const textContent = sanitizedContent.replace(/<[^>]*>/g, "");
-    const words = textContent.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : textContent;
-  };
+  // const truncateHTML = (htmlContent, wordLimit) => {
+  //   if (!htmlContent) return "";
+  //   const sanitizedContent = DOMPurify.sanitize(htmlContent);
+  //   const textContent = sanitizedContent.replace(/<[^>]*>/g, "");
+  //   const words = textContent.split(" ");
+  //   return words.length > wordLimit
+  //     ? words.slice(0, wordLimit).join(" ") + "..."
+  //     : textContent;
+  // };
 
   const handleDeleteHelloDoctorVideo = (_id) => {
     showDeleteMessage({
@@ -97,7 +97,7 @@ const HelloDoctorTable = () => {
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return Object.values(EventData);
     return Object.values(EventData).filter((video) =>
-      `${video.title} ${video.description}`
+      `${video.title} ${video.url} ${video.likes}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
@@ -109,6 +109,8 @@ const HelloDoctorTable = () => {
       dataIndex: "title",
       className: "campaign-performance-table-column",
       render: (text) => truncateText(text),
+      sorter: (a, b) => a.title.localeCompare(b.title), // Sorting based on the title alphabetically
+
     },
     {
       title: "URL",
@@ -119,11 +121,16 @@ const HelloDoctorTable = () => {
       title: "Likes",
       dataIndex: "likes",
       className: "campaign-performance-table-column",
+      sorter: (a, b) => a.likes - b.likes, // Sorting numerically by likes
     },
     {
       title: "Created At",
       dataIndex: "createdAt",
       className: "campaign-performance-table-column",
+      // render: (createdAt) => new Date(createdAt).toLocaleDateString(),
+      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt), // Sorting by date
+
+
     },
     {
       title: "Action",
@@ -163,12 +170,12 @@ const HelloDoctorTable = () => {
     },
   ];
 
-  const handleMenuClick = ({ key }) => {};
+  // const handleMenuClick = ({ key }) => {};
 
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+  // const menuProps = {
+  //   items,
+  //   onClick: handleMenuClick,
+  // };
 
   return (
     <div className="container mt-1">
@@ -203,7 +210,7 @@ const HelloDoctorTable = () => {
                 />
               </div>
 
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -212,7 +219,7 @@ const HelloDoctorTable = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table

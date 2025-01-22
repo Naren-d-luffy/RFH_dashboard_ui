@@ -46,7 +46,7 @@ const ServiceTable = () => {
       : text;
   };
 
-  const truncateHTML = (html, wordLimit = 15) => {
+  const truncateHTML = (html, wordLimit = 10) => {
     if (!html) return "";
     const div = document.createElement('div');
     div.innerHTML = html;
@@ -105,7 +105,7 @@ const ServiceTable = () => {
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return servicesList || [];
     return (servicesList || []).filter((service) =>
-      `${service.heading}${service.subHeading}`
+      `${service.heading}{}${service.subHeading}{}${service.content}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
@@ -116,6 +116,7 @@ const ServiceTable = () => {
       title: "Heading",
       dataIndex: "heading",
       className: "campaign-performance-table-column",
+      sorter:(a,b)=>a.heading.localeCompare(b.heading)
     },
     {
       title: "Sub Heading",
@@ -167,27 +168,27 @@ const ServiceTable = () => {
     },
   ];
 
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
+  // const items = [
+  //   {
+  //     label: "Last Day",
+  //     key: "1",
+  //   },
+  //   {
+  //     label: "Last week",
+  //     key: "2",
+  //   },
+  //   {
+  //     label: "Last Month",
+  //     key: "3",
+  //   },
+  // ];
 
-  const handleMenuClick = ({ key }) => {};
+  // const handleMenuClick = ({ key }) => {};
 
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+  // const menuProps = {
+  //   items,
+  //   onClick: handleMenuClick,
+  // };
 
   return (
     <div className="container mt-1">
@@ -222,7 +223,7 @@ const ServiceTable = () => {
                 />
               </div>
 
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -231,7 +232,7 @@ const ServiceTable = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table

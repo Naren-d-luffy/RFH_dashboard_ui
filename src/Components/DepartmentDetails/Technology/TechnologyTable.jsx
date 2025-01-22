@@ -109,6 +109,8 @@ const TechnologyTable = () => {
       dataIndex: "heading",
       className: "campaign-performance-table-column",
       render: (text) => truncateText(text),
+      sorter:(a,b)=>a.heading.localeCompare(b.heading)
+
     },
     {
       title: "Sub Heading",
@@ -154,27 +156,27 @@ const TechnologyTable = () => {
     },
   ];
 
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
+  // const items = [
+  //   {
+  //     label: "Last Day",
+  //     key: "1",
+  //   },
+  //   {
+  //     label: "Last week",
+  //     key: "2",
+  //   },
+  //   {
+  //     label: "Last Month",
+  //     key: "3",
+  //   },
+  // ];
 
-  const handleMenuClick = ({ key }) => {};
+  // const handleMenuClick = ({ key }) => {};
 
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+  // const menuProps = {
+  //   items,
+  //   onClick: handleMenuClick,
+  // };
 
   return (
     <div className="container mt-1">
@@ -209,7 +211,7 @@ const TechnologyTable = () => {
                 />
               </div>
 
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -218,7 +220,7 @@ const TechnologyTable = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table
