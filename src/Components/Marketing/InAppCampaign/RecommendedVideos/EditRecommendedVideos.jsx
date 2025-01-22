@@ -20,7 +20,7 @@ const EditRecommendedVideos = ({ open, handleCancel, videoData, refreshList }) =
     if (videoData) {
       setTitle(videoData.name || "");
       setUrl(videoData.video_URL || videoData.Video_file || "");
-      setThumbnail(videoData.thumbnail || null); // Set thumbnail from videoData if available
+      setThumbnail(videoData.thumbnail || null);
     }
   }, [videoData]);
 
@@ -30,12 +30,12 @@ const EditRecommendedVideos = ({ open, handleCancel, videoData, refreshList }) =
       message.error("You can only upload image files!");
       return false;
     }
-    setFile(file);  // Store the uploaded thumbnail image
+    setFile(file);  
     return false;
   };
 
   const handleDeleteFile = () => {
-    setFile(null);  // Clear the uploaded file state
+    setFile(null);  
   };
 
   const handleUpdate = async () => {
@@ -48,8 +48,8 @@ const EditRecommendedVideos = ({ open, handleCancel, videoData, refreshList }) =
     try {
       const formData = new FormData();
       formData.append("name", title); 
-      formData.append("video_URL", url);  // Video URL remains mandatory
-      formData.append("thumbnail", file);  // Include the uploaded thumbnail image file
+      formData.append("video_URL", url);  
+      formData.append("thumbnail", file);  
 
       const response = await Instance.put(`/recommended/${videoData._id}`, formData, {
         headers: {
@@ -117,50 +117,68 @@ const EditRecommendedVideos = ({ open, handleCancel, videoData, refreshList }) =
             <span className="create-campaign-input-span">Video URL</span>
           </Form.Item>
 
-          {/* Thumbnail Upload */}
           <Form.Item>
-            <Upload
-              listType="picture"
-              showUploadList={false}
-              beforeUpload={handleUploadThumbnail}
-              className="create-campaign-upload"
-            >
-              <p className="create-campaign-ant-upload-text">
-                Drop files here or click to upload
-              </p>
-              <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline />{" "}
-                <span style={{ color: "#727880" }}>Upload Thumbnail Image</span>
-              </span>
-            </Upload>
-            {file && (
-              <div className="uploaded-image-preview d-flex gap-2">
-                <img
-                  src={URL.createObjectURL(file)}
-                  alt="Uploaded"
-                  style={{
-                    width: "200px",
-                    height: "auto",
-                    marginTop: "10px",
-                    borderRadius: "5px",
-                  }}
-                />
-                <Button
-                  onClick={handleDeleteFile}
-                  style={{
-                    marginTop: "10px",
-                    backgroundColor: "#e6f2ed",
-                    borderRadius: "50%",
-                    fontSize: "16px",
-                    padding: "4px 12px",
-                  }}
-                >
-                  <RiDeleteBin5Line className="model-image-upload-delete-icon" />
-                </Button>
-              </div>
-            )}
-            <span className="create-campaign-input-span">Thumbnail</span>
-          </Form.Item>
+  <Upload
+    listType="picture"
+    showUploadList={false}
+    beforeUpload={handleUploadThumbnail}
+    className="create-campaign-upload"
+  >
+    <p className="create-campaign-ant-upload-text">
+      Drop files here or click to upload
+    </p>
+    <span className="create-campaign-ant-upload-drag-icon">
+      <IoCloudUploadOutline />{" "}
+      <span style={{ color: "#727880" }}>Upload Thumbnail Image</span>
+    </span>
+  </Upload>
+  {file ? (
+    // Display the new uploaded file
+    <div className="uploaded-image-preview d-flex gap-2">
+      <img
+        src={URL.createObjectURL(file)}
+        alt="Uploaded"
+        style={{
+          width: "200px",
+          height: "auto",
+          marginTop: "10px",
+          borderRadius: "5px",
+        }}
+      />
+      <Button
+        onClick={handleDeleteFile}
+        style={{
+          marginTop: "10px",
+          backgroundColor: "#e6f2ed",
+          borderRadius: "50%",
+          fontSize: "16px",
+          padding: "4px 12px",
+        }}
+      >
+        <RiDeleteBin5Line className="model-image-upload-delete-icon" />
+      </Button>
+    </div>
+  ) : thumbnail ? (
+    // Display the existing thumbnail from videoData
+    <img
+      src={thumbnail}
+      alt="Thumbnail"
+      style={{
+        width: "200px",
+        height: "auto",
+        marginTop: "10px",
+        borderRadius: "5px",
+      }}
+    />
+  ) : (
+    // Display a placeholder if no thumbnail exists
+    <p style={{ marginTop: "10px", color: "#727880" }}>
+      No thumbnail available
+    </p>
+  )}
+  <span className="create-campaign-input-span">Thumbnail</span>
+</Form.Item>
+
         </Form>
       </Modal>
     </>
