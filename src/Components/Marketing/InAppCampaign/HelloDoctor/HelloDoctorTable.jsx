@@ -4,7 +4,7 @@ import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage } from "../../../../globalConstant";
+import { accessToken, showDeleteMessage } from "../../../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
@@ -80,6 +80,9 @@ const HelloDoctorTable = () => {
     try {
       const response = await Instance.get(`/videos`, {
         params: { page, limit: itemsPerPage },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
       dispatch(setHelloDoctorVideos(response.data.data));
       setTotalRows(response.data.total || 0);
@@ -110,7 +113,6 @@ const HelloDoctorTable = () => {
       className: "campaign-performance-table-column",
       render: (text) => truncateText(text),
       sorter: (a, b) => a.title.localeCompare(b.title), // Sorting based on the title alphabetically
-
     },
     {
       title: "URL",
@@ -129,8 +131,6 @@ const HelloDoctorTable = () => {
       className: "campaign-performance-table-column",
       // render: (createdAt) => new Date(createdAt).toLocaleDateString(),
       sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt), // Sorting by date
-
-
     },
     {
       title: "Action",

@@ -5,6 +5,7 @@ import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
+  accessToken,
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -57,6 +58,9 @@ const FeaturesTable = () => {
     try {
       const response = await Instance.get(`/discover/featuredProgram`, {
         params: { page, limit: itemsPerPage },
+         headers: {
+                  Authorization: `Bearer ${accessToken}`, 
+                },
       });
       setTotalRows(response.data?.length || 0);
       dispatch(setFeature(response.data.data));
