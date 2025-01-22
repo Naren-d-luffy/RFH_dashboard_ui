@@ -15,6 +15,7 @@ import EditEventsList from "./EditEventsList";
 import ViewEventList from "./ViewEventList";
 import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+
 import { accessToken, showDeleteMessage, showSuccessMessage } from "../../../../globalConstant";
 
 export const UpcomingEventList = () => {
@@ -28,7 +29,7 @@ export const UpcomingEventList = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const eventsData = useSelector((state) => state.discoverevent.events);  
+  const eventsData = useSelector((state) => state.discoverevent.events);
   const itemsPerPage = 100;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ export const UpcomingEventList = () => {
     // const accessToken = localStorage.getItem("accessToken");
     setIsLoading(true);
     try {
+
       const response = await Instance.get(`/discover/card`, { 
         params: { page, limit: itemsPerPage },
         headers: {
@@ -132,10 +134,7 @@ export const UpcomingEventList = () => {
         </div>
 
         <div className="d-flex justify-content-center align-items-center mb-3">
-          <img
-            src={event.image }
-            alt={event.title}
-          />
+          <img src={event.image} alt={event.title} />
         </div>
 
         <div>
@@ -177,7 +176,7 @@ export const UpcomingEventList = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -199,9 +198,9 @@ export const UpcomingEventList = () => {
     <div className="row mt-4">
       <div className="marketing-categories-section">
         <div className="row mt-4">
-          <div className="d-flex justify-content-between">
+          <div className="events-header-container">
             <h6>Upcoming Events</h6>
-            <div className="d-flex gap-2">
+            <div className="events-buttons">
               <button
                 className="rfh-view-all-button"
                 onClick={() => navigate("/view-all-events")}
@@ -216,9 +215,14 @@ export const UpcomingEventList = () => {
               </button>
             </div>
           </div>
+
           <div className="mt-4">
             <Slider {...sliderSettings}>
-              {Object.values(eventsData).map((event) => renderEventCard(event))}
+              {eventsData && Object.keys(eventsData).length > 0 ? (
+                Object.values(eventsData).map((event) => renderEventCard(event))
+              ) : (
+                <p>No data available</p>
+              )}
             </Slider>
           </div>
           <AddEventsList
@@ -242,12 +246,3 @@ export const UpcomingEventList = () => {
 };
 
 export default UpcomingEventList;
-
-
-
-
-
-
-
-
-

@@ -35,7 +35,7 @@ const OutstationClinicList = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const clinics = useSelector((state) => state.clinics.clinics?.data || []); 
+  const clinics = useSelector((state) => state.clinics.clinics?.data || []);
 
   const handleCancel = () => setIsModalOpen(false);
   const handleEditCancel = () => setIsEditModalOpen(false);
@@ -65,7 +65,7 @@ const OutstationClinicList = () => {
                 },
       });
       console.log("API response received:", response);
-      dispatch(setOutstationClinic(response.data || { data: [] })); 
+      dispatch(setOutstationClinic(response.data || { data: [] }));
     } catch (error) {
       console.error("Error fetching clinics:", error);
     } finally {
@@ -200,7 +200,7 @@ const OutstationClinicList = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -222,9 +222,9 @@ const OutstationClinicList = () => {
     <div className="container mt-4">
       <div className="marketing-categories-section">
         <div className="row mt-4">
-          <div className="d-flex justify-content-between">
+          <div className="events-header-container">
             <h6>Outstation/Speciality Clinic</h6>
-            <div className="d-flex gap-2">
+            <div className="events-buttons">
               <button
                 className="rfh-view-all-button"
                 onClick={() => navigate("/view-all-outstation-clinic")}
@@ -238,7 +238,11 @@ const OutstationClinicList = () => {
           </div>
           <div className="mt-3">
             <Slider {...sliderSettings}>
-              {clinics.map((clinic) => renderClinicCard(clinic))}
+              {clinics && clinics.length > 0 ? (
+                clinics.map((clinic) => renderClinicCard(clinic))
+              ) : (
+                <p>No data available</p>
+              )}
             </Slider>
           </div>
         </div>
@@ -259,4 +263,3 @@ const OutstationClinicList = () => {
 };
 
 export default OutstationClinicList;
-
