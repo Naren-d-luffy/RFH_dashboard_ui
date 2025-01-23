@@ -35,7 +35,7 @@ const OutstationClinicList = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const clinics = useSelector((state) => state.clinics.clinics?.data || []);
+  const clinics = useSelector((state) => state.clinics.clinics || []);
 
   const handleCancel = () => setIsModalOpen(false);
   const handleEditCancel = () => setIsEditModalOpen(false);
@@ -62,7 +62,7 @@ const OutstationClinicList = () => {
         params: { page: 1, limit: itemsPerPage }
       });
       console.log("API response received:", response);
-      dispatch(setOutstationClinic(response.data || { data: [] }));
+      dispatch(setOutstationClinic(response.data));
     } catch (error) {
       console.error("Error fetching clinics:", error);
     } finally {
