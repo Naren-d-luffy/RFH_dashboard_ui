@@ -10,7 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Instance } from "../../../../AxiosConfig";
 import {
-  accessToken,
+ 
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -59,10 +59,7 @@ const OutstationClinicList = () => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/discover/clinic", {
-        params: { page: 1, limit: itemsPerPage },
-         headers: {
-                  Authorization: `Bearer ${accessToken}`, 
-                },
+        params: { page: 1, limit: itemsPerPage }
       });
       console.log("API response received:", response);
       dispatch(setOutstationClinic(response.data || { data: [] }));

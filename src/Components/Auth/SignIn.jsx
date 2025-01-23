@@ -11,7 +11,7 @@ import login2 from "../../Assets/Images/login-5.png";
 import login3 from "../../Assets/Images/login-2.png";
 import login4 from "../../Assets/Images/login-4.png";
 import { showErrorMessage, showSuccessMessage } from "../../globalConstant";
-import {jwtDecode} from "jwt-decode"; // Import jwt-decode
+import { jwtDecode } from "jwt-decode"; // Import jwt-decode
 
 const CustomDot = ({ active }) => (
   <span className={`dot ${active ? "active" : ""}`}></span>
@@ -51,7 +51,6 @@ const SignIn = () => {
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  
   const handleLogin = () => {
     if (!email.match(emailRegex)) {
       message.error("Please enter a valid email address.");
@@ -76,31 +75,21 @@ const SignIn = () => {
         email,
         password,
       });
-  
+
       console.log("Server response:", response);
-  
+
       if (response.status === 200) {
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("refreshToken", response.data.refreshToken);
-  
         const decodedAccessToken = jwtDecode(response.data.accessToken);
-        const accessIssuedTime = decodedAccessToken.iat * 1000; // Convert to milliseconds
         const accessExpirationTime = decodedAccessToken.exp * 1000; // Convert to milliseconds
-  
-        console.log("Access Token Decoded:", decodedAccessToken);
-        console.log("Access Token Expiration Time:", new Date(accessExpirationTime));
-  
         localStorage.setItem("accessTokenExpiration", accessExpirationTime);
-  
+
         const decodedRefreshToken = jwtDecode(response.data.refreshToken);
-        const refreshIssuedTime = decodedRefreshToken.iat * 1000; 
         const refreshExpirationTime = decodedRefreshToken.exp * 1000;
-  
-        console.log("Refresh Token Expiration Time:", new Date(refreshExpirationTime));
-  
-      
+
         localStorage.setItem("refreshTokenExpiration", refreshExpirationTime);
-  
+
         const userInfo = {
           name: response.data.admin.name,
           email: response.data.admin.email,
@@ -117,13 +106,17 @@ const SignIn = () => {
         showErrorMessage(response.data.error);
       }
     } catch (error) {
-      console.error("Login error:", error.response ? error.response.data : error);
-      showErrorMessage(error.response?.data?.error || "An error occurred during login.");
+      console.error(
+        "Login error:",
+        error.response ? error.response.data : error
+      );
+      showErrorMessage(
+        error.response?.data?.error || "An error occurred during login."
+      );
     } finally {
       setLoading(false);
     }
   };
-  
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
