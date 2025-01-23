@@ -119,7 +119,7 @@ const BlogsTable = () => {
       title: "Heading",
       dataIndex: "heading",
       className: "campaign-performance-table-column",
-      sorter:(a,b)=>a.heading.localesCompare(b.heading)
+      sorter:(a,b)=>a.heading.localeCompare(b.heading)
     },
     {
       title: "Sub Heading",
