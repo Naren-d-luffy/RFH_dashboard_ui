@@ -166,7 +166,7 @@ const HeaderAdmin = () => {
                     style={{ cursor: "pointer" }}
                   >
                     <Link
-                      to="/"
+                      to="/dashboard/settings"
                       className="dropdown-item"
                       role="menuitem"
                       tabIndex="0"

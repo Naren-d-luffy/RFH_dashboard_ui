@@ -9,17 +9,27 @@ export const Account = () => {
   const fileInputRef = useRef(null);
   const [previewImage, setPreviewImage] = useState("");
   const [userData, setUserData] = useState(null); // State to store user data
+  const [profileFile, setProfileFile] = useState(null); // Store the file for upload
   const [isProfileUpdated, setIsProfileUpdated] = useState(false); // Track if profile image was updated
   const navigate=useNavigate();
+  // const handleFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setPreviewImage(reader.result);
+  //       setIsProfileUpdated(true); // Mark that profile image was updated
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result);
-        setIsProfileUpdated(true); // Mark that profile image was updated
-      };
-      reader.readAsDataURL(file);
+      setProfileFile(file); // Save the file for upload
+      setPreviewImage(URL.createObjectURL(file)); // Show a preview of the image
+      setIsProfileUpdated(true);
     }
   };
   const handleChangePasswordClick = () => {
@@ -64,7 +74,9 @@ export const Account = () => {
         formData.append("name", updatedFields.name);
         formData.append("email", updatedFields.email);
         formData.append("phoneNumber", updatedFields.phoneNumber);
-        formData.append("profile", previewImage); // Assuming the profile image is a base64 string
+        if (profileFile) {
+          formData.append("profile", profileFile); 
+        }; 
 
         const response=await Instance.put(`/admin/profile/${parsedUserInfo.uid}`, formData, {
           headers: {
