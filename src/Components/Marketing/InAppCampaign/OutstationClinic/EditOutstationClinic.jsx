@@ -6,6 +6,7 @@ import { editOutstationClinic } from "../../../../Features/OutstationClinicSlice
 import Loader from "../../../../Loader";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import { showSuccessMessage } from "../../../../globalConstant";
 
 const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
   const { TextArea } = Input;
@@ -91,8 +92,8 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
       
       if (response?.status === 200) {
         handleCancel();
-        message.success("Outstation Clinic details updated successfully!");
-        dispatch(editOutstationClinic([response.data.data]));
+        showSuccessMessage("Successfully Updated", "");
+        dispatch(editOutstationClinic(response.data));
       }
     } catch (error) {
       console.error(
