@@ -5,7 +5,6 @@ import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
-  accessToken,
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -57,10 +56,7 @@ const FeaturesTable = () => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/discover/featuredProgram`, {
-        params: { page, limit: itemsPerPage },
-         headers: {
-                  Authorization: `Bearer ${accessToken}`, 
-                },
+        params: { page, limit: itemsPerPage }
       });
       setTotalRows(response.data?.length || 0);
       dispatch(setFeature(response.data.data));
@@ -96,8 +92,8 @@ const FeaturesTable = () => {
   };
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return (FeaturesData);
-    return (FeaturesData).filter((feature) =>
+    if (searchText.trim() === "") return FeaturesData;
+    return FeaturesData.filter((feature) =>
       `${feature.title}{}${feature.description}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
@@ -170,7 +166,7 @@ const FeaturesTable = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) :(FeaturesData).length > 0 ? (
+      ) : FeaturesData.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <h3>Feature Programs</h3>

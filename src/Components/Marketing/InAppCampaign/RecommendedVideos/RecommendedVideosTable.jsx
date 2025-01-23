@@ -14,7 +14,6 @@ import {
 import AddRecommendedVideos from "./AddRecommendedVideos";
 import EditRecommendedVideos from "./EditRecommendedVideos";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
-import { accessToken } from "../../../../globalConstant";
 
 const RecommendedVideosTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,11 +34,7 @@ const RecommendedVideosTable = () => {
   const fetchRecommendedVideos = async () => {
     setIsLoading(true);
     try {
-      const response = await Instance.get("/recommended", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const response = await Instance.get("/recommended");
       dispatch(setRecommendedVideos(response.data));
     } catch (error) {
       console.error("Error fetching videos:", error);
