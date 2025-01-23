@@ -73,8 +73,8 @@ const OutstationClinicTable = () => {
         params: { page, limit: itemsPerPage }
       });
       console.log(response.data);
-      dispatch(setOutstationClinic(response.data.data));
-      setOutstationClinic(response.data.data || []);
+      dispatch(setOutstationClinic(response.data));
+      setOutstationClinic(response.data || []);
       setTotalRows(response.data || 0);
     } catch (error) {
       console.error("Error fetching clinic:", error);
@@ -88,8 +88,8 @@ const OutstationClinicTable = () => {
   }, [currentPage]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return Object.values(EventData);
-    return Object.values(EventData).filter((Event) =>
+    if (searchText.trim() === "") return EventData;
+    return EventData.filter((Event) =>
       `${Event.name}{}${Event.rating}{} ${Event.reviews}{}${Event.location}{}${Event.patients}{}${Event.experience} `
         .toLowerCase()
         .includes(searchText.toLowerCase())
@@ -211,7 +211,7 @@ const OutstationClinicTable = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : Object.values(EventData).length > 0 ? (
+      ) : EventData?.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">

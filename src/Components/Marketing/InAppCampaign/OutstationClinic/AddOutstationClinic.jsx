@@ -76,11 +76,11 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
           "Content-Type": "multipart/form-data",
         },
       });
-
+      console.log("API response :", response);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("Outstation Clinic added successfully!");
-        dispatch(addOutstationClinic(response.data.data));
+        dispatch(addOutstationClinic(response.data));
       }
     } catch (error) {
       console.error("Error while submitting: ", error?.response?.data || error);

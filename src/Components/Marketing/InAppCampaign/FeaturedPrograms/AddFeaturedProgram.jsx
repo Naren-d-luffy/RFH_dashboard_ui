@@ -86,7 +86,7 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("Feature added successfully!");
-        dispatch(addFeature(response.data));
+        dispatch(addFeature(response.data.data));
         setTitle("");
         setDescription("");
         setFeatures([]);
