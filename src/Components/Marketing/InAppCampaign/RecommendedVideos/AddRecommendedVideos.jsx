@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { addRecommendedVideos } from "../../../../Features/RecommendedVideosSlice";
 
-const AddRecommendedVideos = ({ open, handleCancel, refreshList }) => {
+const AddRecommendedVideos = ({ open, handleCancel }) => {
   const [title, setTitle] = useState("");
   const [uploadType, setUploadType] = useState("url");
   const [url, setUrl] = useState("");
@@ -71,7 +71,6 @@ const AddRecommendedVideos = ({ open, handleCancel, refreshList }) => {
         setThumbnailFile(null);
         setUploadType("url");
         dispatch(addRecommendedVideos(response.data));
-        if (refreshList) refreshList();
       }
     } catch (error) {
       console.error("Failed to add video:", error);

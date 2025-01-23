@@ -31,7 +31,7 @@ const AddVideo = ({ open, handleCancel, refreshList }) => {
         handleCancel();
         setTitle("");
         setUrl("");
-        dispatch(addHelloDoctorVideos(response.data));
+        dispatch(addHelloDoctorVideos(response.data.data));
       }
     } catch (error) {
       console.error("Failed to add video:", error);

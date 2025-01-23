@@ -151,7 +151,7 @@ const DepartmentDetailsList = () => {
         return (
           <div
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(truncatedHTML(text)),
+              __html: DOMPurify.sanitize(truncatedHTML),
             }}
           />
         );

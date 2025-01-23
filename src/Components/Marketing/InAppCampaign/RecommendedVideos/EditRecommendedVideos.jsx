@@ -11,8 +11,8 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 const EditRecommendedVideos = ({
   open,
   handleCancel,
-  videoData,
-  refreshList,
+  videoData
+ 
 }) => {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
@@ -96,7 +96,6 @@ const EditRecommendedVideos = ({
         showSuccessMessage("Video updated successfully!");
         handleCancel();
         dispatch(editRecommendedVideos(response.data));
-        refreshList();
       }
     } catch (error) {
       console.error("Failed to update video:", error);

@@ -12,12 +12,9 @@ import { Switch, message, List } from "antd";
 
 const HeaderAdmin = () => {
   const navigate = useNavigate();
-  const username = JSON.parse(localStorage.getItem("userInfo"));
-  const infoUsers = {
-    userName: username?.name || "Guest",
-    role: "Admin",
-  };
-
+  const userInfo = localStorage.getItem("userInfo");
+    const parsedUserInfo = JSON.parse(userInfo);
+  
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [searchQuery, setSearchQuery] = useState("");
@@ -143,7 +140,7 @@ const HeaderAdmin = () => {
                 onClick={toggleDropdown}
                 aria-expanded={isDropdownOpen}
               >
-                <img className="profile--icon" src={DefaultUser} alt="" />
+    <img className="profile--icon" src={parsedUserInfo?.profile || DefaultUser} alt="" />
               </button>
               <div className="user-info">
                 <span
@@ -154,7 +151,7 @@ const HeaderAdmin = () => {
                     letterSpacing: "0.5px",
                   }}
                 >
-                  {infoUsers.userName}
+                  {parsedUserInfo.name}
                 </span>
               </div>
 
@@ -169,7 +166,7 @@ const HeaderAdmin = () => {
                     style={{ cursor: "pointer" }}
                   >
                     <Link
-                      to="/"
+                      to="/dashboard/settings"
                       className="dropdown-item"
                       role="menuitem"
                       tabIndex="0"

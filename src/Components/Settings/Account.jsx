@@ -1,50 +1,166 @@
-import React, { useState, useRef } from "react";
-import { Form, Input, DatePicker } from "antd";
-import DefaultUser from "../../Assets/Images/DefaultUser.png";
+import React, { useState, useRef, useEffect } from "react";
+import { Form, Input, message } from "antd";
+import DefaultUser from "../../Assets/Images/singleuser.png";
 import "react-international-phone/style.css";
-import { FiEyeOff } from "react-icons/fi";
-import { FaRegEye } from "react-icons/fa6";
-import {showLogoutMessage} from "../../globalConstant"
-
-
+import { Instance } from "../../AxiosConfig";
+import { useNavigate } from "react-router-dom";
 export const Account = () => {
   const [form] = Form.useForm();
   const fileInputRef = useRef(null);
   const [previewImage, setPreviewImage] = useState("");
-  const [, setProfileImage] = useState(null);
+  const [userData, setUserData] = useState(null); // State to store user data
+  const [profileFile, setProfileFile] = useState(null); // Store the file for upload
+  const [isProfileUpdated, setIsProfileUpdated] = useState(false); // Track if profile image was updated
+  const navigate=useNavigate();
+  // const handleFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setPreviewImage(reader.result);
+  //       setIsProfileUpdated(true); // Mark that profile image was updated
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
-  const [passwordVisible, setPasswordVisible] = useState(false);
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfileImage(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setProfileFile(file); // Save the file for upload
+      setPreviewImage(URL.createObjectURL(file)); // Show a preview of the image
+      setIsProfileUpdated(true);
     }
   };
-
-  const handleDelete = () => {
-    showLogoutMessage({ message: "" });
+  const handleChangePasswordClick = () => {
+    const email = form.getFieldValue("email"); 
+    navigate("/confirm-password", { state: { email } }); 
   };
   const handleEditClick = () => {
     fileInputRef.current.click();
   };
 
+  const fetchUser = async () => {
+    const userInfo = localStorage.getItem("userInfo");
+    const parsedUserInfo = JSON.parse(userInfo);
+    try {
+      const response = await Instance.get(`/admin/getProfile/${parsedUserInfo.uid}`);
+      setUserData(response.data); // Store the user data
+      form.setFieldsValue({
+        name: response.data.name,
+        email: response.data.email,
+        phoneNumber: response.data.phoneNumber,
+      });
+      if (response.data.profile) {
+        setPreviewImage(response.data.profile); // Update preview image with the fetched profile image URL
+      } else {
+        setPreviewImage(DefaultUser); // Set default image if no profile image is available
+      }
+    } catch (error) {
+      message.error("Error fetching user data");
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    const userInfo = localStorage.getItem("userInfo");
+    const parsedUserInfo = JSON.parse(userInfo);
+    const updatedFields = form.getFieldsValue();
+
+    try {
+      if (isProfileUpdated) {
+        // If profile picture is updated, make PUT request
+        const formData = new FormData();
+        formData.append("name", updatedFields.name);
+        formData.append("email", updatedFields.email);
+        formData.append("phoneNumber", updatedFields.phoneNumber);
+        if (profileFile) {
+          formData.append("profile", profileFile); 
+        }; 
+
+        const response=await Instance.put(`/admin/profile/${parsedUserInfo.uid}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log(response)
+        const updatedUserInfo = {
+          ...parsedUserInfo,
+          name: updatedFields.name,
+          email: updatedFields.email,
+          phoneNumber: updatedFields.phoneNumber,
+          profile: previewImage,
+        };
+        localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
+        message.success("Profile updated successfully!");
+      } else {
+        // If only fields are updated, make PATCH request
+        const updatedData = {};
+        if (updatedFields.name !== userData.name) {
+          updatedData.name = updatedFields.name;
+        }
+        if (updatedFields.email !== userData.email) {
+          updatedData.email = updatedFields.email;
+        }
+        if (updatedFields.phoneNumber !== userData.phoneNumber) {
+          updatedData.phoneNumber = updatedFields.phoneNumber;
+        }
+      
+        if (Object.keys(updatedData).length === 0) {
+          message.warning("No changes made to the profile.");
+          return;
+        }
+      
+        try {
+          // Send PATCH request only with the updated fields
+          const response = await Instance.patch(`/admin/updateProfile/${parsedUserInfo.uid}`, updatedData);
+          message.success("Profile updated successfully!");
+          const updatedUserInfo = {
+            ...parsedUserInfo,
+            ...updatedData,
+          };
+          localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
+          setUserData({ ...userData, ...updatedData }); 
+        } catch (error) {
+          message.error("Error updating profile");
+          console.error("Error updating profile:", error);
+        }
+      }
+    } catch (error) {
+      message.error("Error updating profile");
+      console.error("Error updating profile:", error);
+    }
+  };
+
+  const handleDeleteProfile = async () => {
+    const userInfo = localStorage.getItem("userInfo");
+    const parsedUserInfo = JSON.parse(userInfo);
+    try {
+      await Instance.delete(`/admin/profile/${parsedUserInfo.uid}`);
+      message.success("Profile deleted successfully!");
+      
+    } catch (error) {
+      message.error("Error deleting profile");
+      console.error("Error deleting profile:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   return (
     <div className="settings-personal-information">
       <div className="container">
         <h4 className="mt-4 mt-lg-0">Account</h4>
-        <p>Settings you details account here</p>
+        <p>Settings your account details here</p>
         <hr />
-        <Form layout="vertical" form={form}>
+        <Form layout="vertical" form={form} onFinish={handleSubmit}>
           <h5>My Profile</h5>
           <div className="row mt-4">
             <div className="settings-profile-icon-section">
               <img
-                src={previewImage ? previewImage : DefaultUser}
+                src={previewImage || DefaultUser}
                 alt="Profile"
                 className="settings-profile-image"
               />
@@ -62,112 +178,44 @@ export const Account = () => {
               >
                 Upload new
               </button>
-              <button type="button" className="settings-delete-button ms-3">
+              <button
+                type="button"
+                className="settings-delete-button ms-3"
+                onClick={handleDeleteProfile}
+              >
                 Delete
               </button>
             </div>
           </div>
           <div className="row mt-4">
             <div className="col-md-6 mt-4">
-              <Form.Item>
-                <Input
-                  className="settings-input"
-                  placeholder="Enter Fisrt Name"
-                  defaultValue="Alexandro"
-                />
-                <span className="settings-input-span">First Name</span>
+              <Form.Item name="name" label="Name">
+                <Input className="settings-input" placeholder="Enter First Name" />
               </Form.Item>
             </div>
             <div className="col-md-6 mt-4">
-              <Form.Item>
-                <Input
-                  className="settings-input"
-                  placeholder="Enter Last Name"
-                  defaultValue="Bernard"
-                />
-                <span className="settings-input-span">Last Name</span>
+              <Form.Item name="phoneNumber" label="Phone Number">
+                <Input className="settings-input" placeholder="Enter Phone Number" />
               </Form.Item>
             </div>
           </div>
           <div className="row">
             <div className="col-md-6 mt-2">
-              <Form.Item>
-                <Input
-                  className="settings-input"
-                  placeholder="Enter Phone Number"
-                  defaultValue="123456789"
-                />
-                <span className="settings-input-span">Phone Number</span>
+              <Form.Item name="email" label="Email">
+                <Input className="settings-input" placeholder="Email ID" />
               </Form.Item>
             </div>
             <div className="col-md-6 mt-2">
-              <Form.Item>
-                <Input
-                  className="settings-input"
-                  placeholder="Email ID"
-                  defaultValue="Alexandrobern@mail.com"
-                />
-                <span className="settings-input-span">Email Address</span>
-              </Form.Item>
+            <button
+                type="button"
+                className="settings-delete-button ms-3 mt-4"
+                onClick={handleChangePasswordClick}
+              >
+                Change Password
+              </button>
             </div>
           </div>
-          <div className="row">
-            <div className="col-md-6 mt-2">
-              <Form.Item>
-                <DatePicker
-                  className="settings-input w-100"
-                  placeholder="Enter DOB"
-                  format="DD-MM-YYYY"
-                />
-                <span className="settings-input-span">Birth Date</span>
-              </Form.Item>
-            </div>
-            <div className="col-md-6 mt-2">
-              <Form.Item>
-                <Input
-                  type={passwordVisible ? "text" : "password"}
-                  className="settings-input"
-                  placeholder="*******"
-                  defaultValue="458767"
-                  suffix={
-                    passwordVisible ? (
-                      <FaRegEye
-                        onClick={() => setPasswordVisible(false)}
-                        style={{ cursor: "pointer" }}
-                      />
-                    ) : (
-                      <FiEyeOff
-                        onClick={() => setPasswordVisible(true)}
-                        style={{ cursor: "pointer" }}
-                      />
-                    )
-                  }
-                />
-                <span className="settings-input-span">Password</span>
-              </Form.Item>
-            </div>
-          </div>
-          <div className="row align-items-center">
-            <div className="col-md-6 mt-4 theme-select-option">
-              <p>Delete account</p>
-              <h6>
-                When you delete your account, you lose access to Front account
-                services, and we permanently delete your personal data. You can
-                cancel the deletion for 14 days.
-              </h6>
-            </div>
-            <div className="col-lg-6 mt-4">
-              <div className="d-flex gap-2">
-                <button className="settings-delete-account" type="button" onClick={handleDelete}>
-                  Delete Account
-                </button>
-                <button className="settings-learn-button" type="submit">
-                  Learn More
-                </button>
-              </div>
-            </div>
-          </div>
-          <hr />
+          
           <div className="row mt-4">
             <div className="d-flex justify-content-end gap-2">
               <button className="settings-delete-button" type="button">

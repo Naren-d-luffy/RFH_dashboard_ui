@@ -23,6 +23,7 @@ import { IoMenu, IoNewspaperOutline, IoTelescopeOutline } from "react-icons/io5"
 import { BiCapsule } from "react-icons/bi";
 import { useDarkMode } from "../../DarkMode";
 import { HiOutlineUserGroup } from "react-icons/hi";
+import { showLogoutMessage } from "../../globalConstant";
 
 
 function SidebarAdmin() {
@@ -35,7 +36,20 @@ function SidebarAdmin() {
     setExpandedMenu(expandedMenu === menu ? null : menu);
   };
   const { isDarkMode } = useDarkMode();
-
+const handleLogout = () => {
+    showLogoutMessage({
+      title: "Confirm Logout",
+      content: "Are you sure you want to log out?",
+      onDelete: () => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("accessTokenExpiration");
+        localStorage.removeItem("refreshTokenExpiration");
+        localStorage.removeItem("userInfo");
+        navigate("/");
+      },
+    });
+  };
   useEffect(() => {
     const pathToMenuMap = {
       "/user-dashboards/user-aquisition": "userDashboards",
@@ -319,9 +333,17 @@ function SidebarAdmin() {
     },
     {
       id: "logout",
-      label: "LogOut",
+      // label: "LogOut",
       icon: <LogOut size={14} className="sidebar-icon" />,
-      to: "/logout",
+      // to: "/logout",
+      label: (
+            <span
+            onClick={handleLogout}
+              style={{ cursor: "pointer" }}
+            >
+              Logout
+            </span>
+          ),
     },
   ];
   
