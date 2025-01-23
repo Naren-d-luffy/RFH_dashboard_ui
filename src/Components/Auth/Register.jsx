@@ -96,6 +96,7 @@ const Register = () => {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="signin-input"
               />
             </div>
             <button className="login-button" onClick={handleContinue}>
