@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, Input, message, Select, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import {  showSuccessMessage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { FaTrash } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -90,8 +90,8 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
         }
       );
       if (response?.status === 200 || response?.status === 201) {
-        console.log(response);
-        dispatch(editFeature(response.data));
+        console.log(response,"eit");
+        dispatch(editFeature(response.data.data));
         handleCancel();
         showSuccessMessage("Feature added successfully!");
       }

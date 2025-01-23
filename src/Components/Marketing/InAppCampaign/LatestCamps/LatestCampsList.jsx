@@ -13,7 +13,7 @@ import { CiCalendarDate, CiLocationOn } from "react-icons/ci";
 import { IoMdTime } from "react-icons/io";
 import EditCamps from "./EditCamp";
 import {
-  accessToken,
+  
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -105,11 +105,7 @@ export const LatestCampsList = () => {
   const fetchCampList = async () => {
     try {
 
-      const response = await Instance.get(`/camp`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const response = await Instance.get(`/camp`);
 
       if (response.status === 200 || response.status === 201) {
         setCampData(response.data.data);

@@ -11,6 +11,20 @@ const Instance = axios.create({
   baseURL: "http://20.197.35.214:9000/api/v1/",
 });
 
+Instance.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => {
+    // Handle request errors
+    return Promise.reject(error);
+  }
+);
+
 // Instance for LocalHost
 // const Instance = axios.create({
 //   baseURL: "http://localhost:9000/api/v1/",

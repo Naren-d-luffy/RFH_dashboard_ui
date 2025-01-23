@@ -75,9 +75,11 @@ const AddEventsList = ({ open, handleCancel }) => {
     formData.append("tags", features);
     formData.append("image", uploadedImage);
     setIsLoading(true);
+ 
+  
 
     try {
-      const response = await Instance.post("/discover/card", formData, {});
+      const response = await Instance.post("/discover/card", formData);
 
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();

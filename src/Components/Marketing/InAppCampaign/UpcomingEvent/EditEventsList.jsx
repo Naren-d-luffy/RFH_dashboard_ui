@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Form, Input, message, Select, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import {  showSuccessMessage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { editEvent } from "../../../../Features/DiscoverEventsCard";
 import { FaTrash } from "react-icons/fa6";
@@ -93,9 +93,9 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
     formData.append("image", uploadedImage);
     setIsLoading(true);
 
+
     try {
-      const response = await Instance.put(`/discover/card/${eventsData?._id}`, formData, {
-      });
+      const response = await Instance.put(`/discover/card/${eventsData?._id}`, formData);
 
       if (response?.status === 200 || response?.status === 201) {        
         handleCancel(); 

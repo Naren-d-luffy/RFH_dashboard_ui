@@ -12,7 +12,7 @@ import ReactPlayer from "react-player";
 import AddVideo from "./AddVideo";
 import EditVideo from "./EditVideo";
 import {
-  accessToken,
+  
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -188,11 +188,7 @@ export const HelloDoctorList = () => {
 
   const fetchVideoList = async () => {
     try {
-      const response = await Instance.get("/videos", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const response = await Instance.get("/videos");
       setVideoList(response.data);
       dispatch(setHelloDoctorVideos(response.data.data));
     } catch (error) {

@@ -4,7 +4,7 @@ import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
-import { accessToken, showDeleteMessage } from "../../../../globalConstant";
+import {  showDeleteMessage } from "../../../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
@@ -79,10 +79,7 @@ const HelloDoctorTable = () => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/videos`, {
-        params: { page, limit: itemsPerPage },
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+        params: { page, limit: itemsPerPage }
       });
       dispatch(setHelloDoctorVideos(response.data.data));
       setTotalRows(response.data.total || 0);
