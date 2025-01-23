@@ -110,6 +110,7 @@ const ConfirmPassword = () => {
                   placeholder="Enter your Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  className="signin-input"
                 />
                 <button
                   className="password-toggle"
@@ -128,6 +129,7 @@ const ConfirmPassword = () => {
                   placeholder="Confirm your Password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="signin-input"
                 />
                 <button
                   className="password-toggle"

@@ -90,6 +90,7 @@ const SignUp = () => {
                 placeholder="Enter your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                className="signin-input"
               />
             </div>
             <div className="form-group">
@@ -100,6 +101,7 @@ const SignUp = () => {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="signin-input"
               />
             </div>
             <div className="form-group">
@@ -110,6 +112,7 @@ const SignUp = () => {
                 placeholder="Enter your Phone Number"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
+                className="signin-input"
               />
             </div>
             <div className="form-group">
@@ -121,6 +124,7 @@ const SignUp = () => {
                   placeholder="Create a password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  className="signin-input"
                 />
                 <button
                   className="password-toggle"

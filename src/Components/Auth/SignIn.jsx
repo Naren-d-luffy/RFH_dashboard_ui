@@ -56,10 +56,6 @@ const SignIn = () => {
       message.error("Please enter a valid email address.");
       return;
     }
-    if (password.length < 8) {
-      message.error("Password must be at least 8 characters long.");
-      return;
-    }
     if (rememberMe) {
       localStorage.setItem("rememberedEmail", email);
     } else {
@@ -94,6 +90,7 @@ const SignIn = () => {
           name: response.data.admin.name,
           email: response.data.admin.email,
           uid: response.data.admin._id,
+          profile:response.data.admin.profile
         };
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
         showSuccessMessage(
@@ -151,6 +148,7 @@ const SignIn = () => {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="signin-input"
               />
             </div>
             <div className="form-group">
@@ -162,6 +160,7 @@ const SignIn = () => {
                   placeholder="Enter your Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  className="signin-input"
                 />
                 <button
                   className="password-toggle"

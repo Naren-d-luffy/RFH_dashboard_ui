@@ -36,7 +36,7 @@ const EditVideo = ({ open, handleCancel, videoData }) => {
       if (response?.status === 200 || response?.status === 201) {
         showSuccessMessage("Video updated successfully!");
         handleCancel(); 
-        dispatch(editHelloDoctorVideos(response.data));
+        dispatch(editHelloDoctorVideos(response.data.data));
       }
     } catch (error) {
       console.error("Failed to update video:", error);

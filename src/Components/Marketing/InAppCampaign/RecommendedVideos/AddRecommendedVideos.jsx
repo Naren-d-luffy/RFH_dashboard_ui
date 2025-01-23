@@ -8,7 +8,7 @@ import { addRecommendedVideos } from "../../../../Features/RecommendedVideosSlic
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
-const AddRecommendedVideos = ({ open, handleCancel, refreshList }) => {
+const AddRecommendedVideos = ({ open, handleCancel }) => {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [file, setFile] = useState(null);
@@ -59,7 +59,7 @@ const AddRecommendedVideos = ({ open, handleCancel, refreshList }) => {
         showSuccessMessage("Video added successfully!");
         handleCancel();
         dispatch(addRecommendedVideos(response.data));
-        refreshList();
+       
       }
     } catch (error) {
       console.error("Failed to add video:", error);
