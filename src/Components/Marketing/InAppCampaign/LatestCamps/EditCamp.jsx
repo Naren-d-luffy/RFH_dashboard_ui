@@ -52,7 +52,7 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
       const response = await Instance.put(`/camp/${campDataa._id}`, formattedData);
       if (response?.status === 200 || response?.status === 201) {
         dispatch(editCamp(response.data))
-        showSuccessMessage("Successfully Updated", "");
+        showSuccessMessage("Successfully Updated Camp");
         handleCancel();
       }
     } catch (error) {
@@ -72,7 +72,7 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
           Cancel
         </Button>,
         <Button key="save" onClick={handleSave} className="create-campaign-save-button">
-          Save
+          Update
         </Button>,
       ]}
     >

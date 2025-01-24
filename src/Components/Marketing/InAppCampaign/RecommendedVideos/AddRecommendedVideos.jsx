@@ -3,7 +3,7 @@ import { Button, Modal, Form, Input, message, Radio, Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { showErrorMessage, showSuccessMessage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { addRecommendedVideos } from "../../../../Features/RecommendedVideosSlice";
@@ -63,7 +63,7 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
       });
 
       if (response?.status === 200 || response?.status === 201) {
-        showSuccessMessage("Video added successfully!");
+        showSuccessMessage("Recommended Video added successfully!");
         handleCancel();
         setTitle("");
         setUrl("");
@@ -73,8 +73,10 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
         dispatch(addRecommendedVideos(response.data));
       }
     } catch (error) {
-      console.error("Failed to add video:", error);
-      message.error(error.response?.data?.message || "Failed to add video.");
+      console.error("Failed to add recommended video:", error);
+      const errorMessage =
+      error.response?.data?.message || error.message || "Error adding recommended video";
+    showErrorMessage(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +87,7 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Add Video</span>}
+        title={<span className="create-campaign-modal-title">Add Recommended Video</span>}
         onCancel={() => {
           setTitle("");
           setUrl("");
@@ -121,16 +123,17 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
         ]}
       >
         <Form layout="vertical" className="mt-4">
-          <Form.Item label="Video Title">
+          <Form.Item>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Enter Title"
               required
             />
+              <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Video Title</span>
           </Form.Item>
 
-          <Form.Item label="Thumbnail">
+          <Form.Item>
             <Upload
               listType="picture"
               showUploadList={false}
@@ -141,6 +144,7 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
               <span className="create-campaign-ant-upload-drag-icon">
                 <IoCloudUploadOutline /> <span style={{ color: "#727880" }}>Upload Thumbnail</span>
               </span>
+              <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Thumbnail</span>
             </Upload>
             {thumbnailFile && (
               <div className="uploaded-image-preview d-flex gap-2">
@@ -170,8 +174,8 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
             )}
           </Form.Item>
 
-          <Form.Item label="Upload Type">
-            <Radio.Group
+          <Form.Item label={<span>Upload Type <span style={{ color: "red" }}>*</span></span>}>
+          <Radio.Group
               value={uploadType}
               onChange={(e) => setUploadType(e.target.value)}
               className="mb-3"
@@ -182,13 +186,14 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
           </Form.Item>
 
           {uploadType === "url" ? (
-            <Form.Item label="Video URL">
+            <Form.Item>
               <Input
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="Enter Video URL"
                 required
               />
+                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Video URL</span>
             </Form.Item>
           ) : (
             <Form.Item>

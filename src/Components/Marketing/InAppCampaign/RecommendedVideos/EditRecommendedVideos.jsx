@@ -132,13 +132,14 @@ const EditRecommendedVideos = ({
         ]}
       >
         <Form layout="vertical" className="mt-4">
-          <Form.Item label="Video Title">
+          <Form.Item>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Enter Title"
               required
             />
+              <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Video Title</span>
           </Form.Item>
           <Form.Item>
             <Upload
@@ -196,10 +197,10 @@ const EditRecommendedVideos = ({
                 No thumbnail available
               </p>
             )}
-            <span className="create-campaign-input-span">Thumbnail</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Thumbnail</span>
           </Form.Item>
-          <Form.Item label="Upload Type">
-            <Radio.Group
+          <Form.Item label={<span>Upload Type <span style={{ color: "red" }}>*</span></span>}>
+          <Radio.Group
               value={uploadType}
               onChange={(e) => {
                 setUploadType(e.target.value);
@@ -217,13 +218,14 @@ const EditRecommendedVideos = ({
             </Radio.Group>
           </Form.Item>
           {uploadType === "url" ? (
-            <Form.Item label="Video URL">
+            <Form.Item>
               <Input
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="Enter Video URL"
                 required
               />
+                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Video URL</span>
             </Form.Item>
           ) : (
             <Form.Item>

@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, Input, message, Select, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import {
+  showErrorMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { addEvent } from "../../../../Features/DiscoverEventsCard";
 import { FaTrash } from "react-icons/fa6";
@@ -73,14 +76,13 @@ const AddEventsList = ({ open, handleCancel }) => {
     formData.append("tags", features);
     formData.append("image", uploadedImage);
     setIsLoading(true);
- 
-  
 
     try {
       const response = await Instance.post("/discover/card", formData);
 
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
+
         dispatch(addEvent(response.data.data));
         showSuccessMessage("Event card added successfully!");
         setTitle("");
@@ -93,7 +95,9 @@ const AddEventsList = ({ open, handleCancel }) => {
       }
     } catch (error) {
       console.error("Error adding event card:", error);
-      // message.error("Failed to add event card.");
+      const errorMessage =
+        error.response?.data?.message || error.message || "Error adding event";
+      showErrorMessage(errorMessage);
     } finally {
       setIsLoading(false);
     }
