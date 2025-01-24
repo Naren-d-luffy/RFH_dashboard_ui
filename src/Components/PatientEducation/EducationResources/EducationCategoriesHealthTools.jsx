@@ -111,7 +111,7 @@ const EducationCategoriesHealthTools = () => {
             </button>
           </div>
           <div className="mt-3">
-            <Slider {...sliderSettings}>
+            <Slider {...sliderSettings} key={Object.keys(eventData).length}>
               {Object.values(eventData).map((event, index) => renderEventCard(event, index))}
             </Slider>
           </div>

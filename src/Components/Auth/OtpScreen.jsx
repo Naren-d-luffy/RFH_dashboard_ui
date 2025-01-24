@@ -82,8 +82,10 @@ const OtpScreen = () => {
         otp: otpCode.join(""),
         email,
       });
+      const token = response.data.token;
+      console.log("otp page",token)
       showSuccessMessage(response.data.message)
-      navigate("/confirm-password", { state: { email } });
+      navigate("/confirm-password", { state: { email,token } });
     } catch (error) {
       if (error.response && error.response.data) {
         console.log("error",error.response)

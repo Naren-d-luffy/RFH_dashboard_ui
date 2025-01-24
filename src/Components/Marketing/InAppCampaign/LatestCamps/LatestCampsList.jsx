@@ -106,7 +106,7 @@ export const LatestCampsList = () => {
     try {
 
       const response = await Instance.get(`/camp`);
-
+console.log("camps",response)
       if (response.status === 200 || response.status === 201) {
         setCampData(response.data.data);
         dispatch(setCamps(response.data.data));
@@ -256,7 +256,7 @@ export const LatestCampsList = () => {
             </div>
           </div>
           <div className="mt-4">
-            <Slider {...sliderSettings}>
+            <Slider {...sliderSettings} key={Object.keys(camps).length}>
               {camps && Object.keys(camps).length > 0 ? (
                 Object.values(camps).map((camp) => renderLatestCamps(camp))
               ) : (

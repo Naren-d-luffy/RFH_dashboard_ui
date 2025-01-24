@@ -232,7 +232,7 @@ const EducationCategoriesGastroIllness = () => {
             </div>
           </div>
           <div className="mt-3">
-            <Slider {...sliderSettings}>
+            <Slider {...sliderSettings} key={Object.keys(gastroEvents).length}>
               {/* {gastroEvents.map((event) => renderEventCard(event))} */}
               {gastroEvents && Object.keys(gastroEvents).length > 0 ? (
                 Object.values(gastroEvents).map((event, index) =>

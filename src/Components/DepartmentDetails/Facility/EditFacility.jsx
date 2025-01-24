@@ -34,7 +34,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (facilityData) {
+    if (open && facilityData) {
       setTitle(facilityData.heading || "");
       setDescription(facilityData.subHeading || "");
       setContent(facilityData.content || "");
@@ -44,7 +44,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
       setUploadedImage(facilityData.video || null);
       setThumbnailImage(facilityData.thumbnail || null);
     }
-  }, [facilityData]);
+  }, [open && facilityData]);
 
   const handleUpload = (info) => {
     const file = info.file.originFileObj;

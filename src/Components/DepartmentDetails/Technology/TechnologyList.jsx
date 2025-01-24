@@ -197,7 +197,7 @@ export const TechnologyList = () => {
             </div>
           </div>
           <div className="mt-4">
-            <Slider {...sliderSettings}>
+            <Slider {...sliderSettings} key={Object.keys(technologyList).length}>
               {technologyList && Object.keys(technologyList).length > 0 ? (
                 Object.entries(technologyList)
                   .filter(([key]) => key !== "status")

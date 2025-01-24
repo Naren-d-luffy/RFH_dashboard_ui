@@ -1,0 +1,75 @@
+name: Deploy React App to Azure VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build React App
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Install Node.js and dependencies
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' 
+
+      - name: Install dependencies
+        run: npm install
+
+      # Step 3: Build the React app
+      - name: Build the application
+        run: npm run build
+
+      # Step 4: Upload build artifacts for reuse
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: react-app-build
+          path: build/
+
+  deploy:
+    name: Deploy React App to Azure VM
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      # Step 1: Download build artifacts
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: react-app-build
+
+      # Step 2: SSH into the server and prepare the deployment directory
+      - name: Prepare Deployment Directory
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.VM_IP }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: 22
+          script: |
+            sudo rm -rf /var/www/react-app/*
+            mkdir -p /var/www/react-app
+
+      # Step 3: Copy build files to the server
+      - name: Upload Build Files
+        run: |
+          scp -i /path/to/private-key.pem -r build/* ${{ secrets.VM_USER }}@${{ secrets.VM_IP }}:/var/www/react-app
+
+      # Step 4: Restart NGINX to serve the new build
+      - name: Restart NGINX
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.VM_IP }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: 22
+          script: |
+            sudo systemctl restart nginx
+            sudo systemctl status nginx

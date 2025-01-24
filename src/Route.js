@@ -66,11 +66,11 @@ export const AppRouter = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/register" element={<Register />} />
+        {/* <Route path="/sign-up" element={<SignUp />} /> */}
+        {/* <Route path="/register" element={<Register />} /> */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/otp-verification" element={<OtpScreen />} />
-        <Route path="/signup-otp" element={<SignUpOtpScreen />} />
+        {/* <Route path="/signup-otp" element={<SignUpOtpScreen />} /> */}
         <Route path="/confirm-password" element={<ConfirmPassword />} />
 
         <Route element={<Layout />}>
