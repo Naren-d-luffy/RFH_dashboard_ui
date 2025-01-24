@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "../layout.css";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DefaultUser from "../../Assets/Images/DefaultUser.png";
 import { GoBell } from "react-icons/go";
 import { FiSearch } from "react-icons/fi";
@@ -13,8 +12,9 @@ import { Switch, message, List } from "antd";
 const HeaderAdmin = () => {
   const navigate = useNavigate();
   const userInfo = localStorage.getItem("userInfo");
-    const parsedUserInfo = JSON.parse(userInfo);
-  
+  const parsedUserInfo = JSON.parse(userInfo);
+  const dropdownRef = useRef(null);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [searchQuery, setSearchQuery] = useState("");
@@ -27,6 +27,19 @@ const HeaderAdmin = () => {
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const handleLogout = () => {
     showLogoutMessage({
       title: "Confirm Logout",
@@ -41,6 +54,7 @@ const HeaderAdmin = () => {
       },
     });
   };
+
   const handleSearch = (value) => {
     const searchQuery = value.toLowerCase().trim().replace(/\s+/g, "");
     setSearchQuery(searchQuery);
@@ -61,11 +75,13 @@ const HeaderAdmin = () => {
       message.error("No matching page found");
     }
   };
+
   const handleSelect = (route) => {
     navigate(route);
     setSearchQuery("");
     setFilteredRoutes([]);
   };
+
   return (
     <div style={{ position: "sticky", top: "0", zIndex: "999" }}>
       <nav className="navbar-header">
@@ -73,7 +89,7 @@ const HeaderAdmin = () => {
           <FiSearch className="search-icon" />
           <input
             type="text"
-            placeholder="Search anything here.."
+            placeholder="Search here.."
             className="search-input-header"
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
@@ -114,7 +130,7 @@ const HeaderAdmin = () => {
               }`}
             />
           </div>
-          <div className="d-flex align-items-center gap-2">
+          <div>
             <button
               type="button"
               aria-controls="navbar-notification"
@@ -126,65 +142,67 @@ const HeaderAdmin = () => {
                 className="notification-icon"
                 color="var(--black-color)"
               />
-              <span className="notification-badge">4</span>
+              <span className="notification-badge">0</span>
             </button>
-
-            <div
-              className="d-flex align-items-center gap-2"
-              style={{ borderLeft: "1px solid var(--border-color)" }}
+          </div>
+          <div
+            className="d-flex align-items-center gap-2"
+            ref={dropdownRef}
+            aria-expanded={isDropdownOpen}
+            onClick={toggleDropdown}
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            <button
+              className="user-image"
+              type="button"
+              aria-controls="user-menu"
             >
-              <button
-                className="user-image"
-                type="button"
-                aria-controls="user-menu"
-                onClick={toggleDropdown}
-                aria-expanded={isDropdownOpen}
+              <img
+                className="profile--icon"
+                src={parsedUserInfo?.profile || DefaultUser}
+                alt="User Profile"
+              />
+            </button>
+            <div className="user-info">
+              <span
+                style={{
+                  color: "var(--black-color)",
+                  fontSize: "15px",
+                  fontWeight: "600",
+                  letterSpacing: "0.5px",
+                }}
               >
-    <img className="profile--icon" src={parsedUserInfo?.profile || DefaultUser} alt="" />
-              </button>
-              <div className="user-info">
-                <span
-                  style={{
-                    color: "var(--black-color)",
-                    fontSize: "15px",
-                    fontWeight: "600",
-                    letterSpacing: "0.5px",
-                  }}
-                >
-                  {parsedUserInfo.name}
-                </span>
-              </div>
+                {parsedUserInfo.name}
+              </span>
+            </div>
 
-              {isDropdownOpen && (
-                <div
-                  className="dropdown-menu"
-                  role="menu"
-                  aria-labelledby="user-menu"
-                >
-                  <div
-                    className="dropdown-menu-items"
-                    style={{ cursor: "pointer" }}
+            {/* Dropdown Menu */}
+            {isDropdownOpen && (
+              <div
+                className="dropdown-menu"
+                role="menu"
+                aria-labelledby="user-menu"
+              >
+                <div className="dropdown-menu-items">
+                  <Link
+                    to="/dashboard/settings"
+                    className="dropdown-item"
+                    role="menuitem"
                   >
-                    <Link
-                      to="/dashboard/settings"
-                      className="dropdown-item"
-                      role="menuitem"
-                      tabIndex="0"
-                    >
-                      Edit Profile
-                    </Link>
-                    <div
-                      className="dropdown-item"
-                      role="menuitem"
-                      tabIndex="0"
-                      onClick={handleLogout}
-                    >
-                      Log out
-                    </div>
+                    Edit Profile
+                  </Link>
+                  <div
+                    className="dropdown-item"
+                    role="menuitem"
+                    onClick={handleLogout}
+                  >
+                    Log out
                   </div>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </nav>

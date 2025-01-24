@@ -25,6 +25,9 @@ const ConfirmPassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email;
+  const token=location.state?.token;
+  console.log(token)
+  console.log(email)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const sliderItems = [
     {
@@ -73,7 +76,9 @@ const ConfirmPassword = () => {
       const response = await Instance.post("/admin/forgotpassword", {
         email,
         newPassword: password,
+        token
       });
+      console.log("reset password",response)
       if (response.status === 200) {
        showSuccessMessage("Password reset successful!");
         navigate("/");
@@ -144,7 +149,7 @@ const ConfirmPassword = () => {
                 <Spin
                   indicator={
                     <LoadingOutlined
-                      style={{ fontSize: 24, color: "#00963f" }}
+                      style={{ fontSize: 24, color: "#fff" }}
                       spin
                     />
                   }

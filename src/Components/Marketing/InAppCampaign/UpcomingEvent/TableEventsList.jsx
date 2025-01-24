@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
@@ -12,7 +11,6 @@ import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
-import DOMPurify from "dompurify";
 
 import AddEventsList from "./AddEventsList";
 import EditEventsList from "./EditEventsList";
@@ -31,7 +29,7 @@ const TableEventsList = () => {
 
   const eventsData = useSelector((state) => state.discoverevent.events);
   const [searchText, setSearchText] = useState("");
-  const [totalRows, setTotalRows] = useState(0);
+  const [totalRows] = useState(0);
   const dispatch = useDispatch();
   const itemsPerPage = 10;
 

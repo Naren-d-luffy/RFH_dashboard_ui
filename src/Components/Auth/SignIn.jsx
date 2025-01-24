@@ -90,7 +90,7 @@ const SignIn = () => {
           name: response.data.admin.name,
           email: response.data.admin.email,
           uid: response.data.admin._id,
-          profile:response.data.admin.profile
+          profile: response.data.admin.profile,
         };
         localStorage.setItem("userInfo", JSON.stringify(userInfo));
         showSuccessMessage(
@@ -140,56 +140,68 @@ const SignIn = () => {
               />
             </center>
             <p className="login--p">Welcome to Institute of Gastro sciences</p>
-            <div className="form-group">
-              <label htmlFor="email">Email*</label>
-              <input
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="signin-input"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Password*</label>
-              <div className="password-input">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault(); // Prevent default form submission behavior
+                handleLogin();
+              }}
+            >
+              <div className="form-group">
+                <label htmlFor="email">Email*</label>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  placeholder="Enter your Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  type="email"
+                  id="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="signin-input"
                 />
-                <button
-                  className="password-toggle"
-                  onClick={togglePasswordVisibility}
-                >
-                  {showPassword ? <FiEye /> : <FiEyeOff />}
-                </button>
               </div>
-            </div>
-            <Link to="/forgot-password" className="forgot-password">
-              Forgot Password?
-            </Link>
-            <button className="login-button" onClick={handleLogin}>
-              {loading ? (
-                <Spin
-                  indicator={
-                    <LoadingOutlined
-                      style={{ fontSize: 24, color: "#fff" }}
-                      spin
-                    />
-                  }
-                />
-              ) : (
-                "Log In"
-              )}
-            </button>
-            <p className="login-link">
+              <div className="form-group">
+                <label htmlFor="password">Password*</label>
+                <div className="password-input">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    placeholder="Enter your Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="signin-input"
+                  />
+                  <button
+                    className="password-toggle"
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? <FiEye /> : <FiEyeOff />}
+                  </button>
+                </div>
+              </div>
+              <Link to="/forgot-password" className="forgot-password">
+                Forgot Password?
+              </Link>
+              <button
+                className="login-button"
+                onClick={handleLogin}
+                type="submit"
+              >
+                {loading ? (
+                  <Spin
+                    indicator={
+                      <LoadingOutlined
+                        style={{ fontSize: 24, color: "#fff" }}
+                        spin
+                      />
+                    }
+                  />
+                ) : (
+                  "Log In"
+                )}
+              </button>
+            </form>
+            {/* <p className="login-link">
               Do not have an account? <Link to="/register">Sign Up</Link>
-            </p>
+            </p> */}
             <p className="terms">
               By Continuing you agree to Reliance Terms of Service and Privacy
               Policy

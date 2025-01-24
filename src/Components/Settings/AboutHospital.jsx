@@ -117,7 +117,7 @@ const AboutHospital = () => {
             </button>
           </div>
         </div>
-        <hr />
+        <hr style={{color:"var(--bg-input-field)"}} />
         <div className="hospital-section mt-4">
           <div className="d-flex justify-content-between">
             <h3 style={{ color: "var(--primary-green)" }}>Basic Information</h3>
@@ -161,7 +161,7 @@ const AboutHospital = () => {
             </div>
           </div>
 
-          <hr />
+          <hr style={{color:"var(--bg-input-field)"}} />
           <h3 style={{ color: "var(--primary-green)" }}>Overview</h3>
           <div className="hospital-profile-description">
             <h4>Short Description</h4>
@@ -171,7 +171,7 @@ const AboutHospital = () => {
             <h4> Description</h4>
             <p>{hospital.description}</p>
           </div>
-          <hr />
+          <hr style={{color:"var(--bg-input-field)"}} />
           <h3 style={{ color: "var(--primary-green)" }}>History</h3>
           <div className="hospital-profile-description">
             <p>{hospital.history}</p>

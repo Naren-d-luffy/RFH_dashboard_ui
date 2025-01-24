@@ -71,7 +71,6 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
       content: content,
       thumbnail: uploadedImage,
     };
-    console.log(payload);
     setIsLoading(true);
     try {
       const response = await Instance.post(

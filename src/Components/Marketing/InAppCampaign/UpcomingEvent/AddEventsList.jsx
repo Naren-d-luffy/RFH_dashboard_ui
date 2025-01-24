@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, Input, message, Select, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import {
+  showErrorMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { addEvent } from "../../../../Features/DiscoverEventsCard";
 import { FaTrash } from "react-icons/fa6";
@@ -58,9 +61,7 @@ const AddEventsList = ({ open, handleCancel }) => {
       !title.trim() ||
       !description.trim() ||
       !link.trim() ||
-      !order.trim() ||
-      !uploadedImage ||
-      features.length === 0
+      !uploadedImage 
     ) {
       message.error("Please fill in all required fields.");
       return;
@@ -70,32 +71,33 @@ const AddEventsList = ({ open, handleCancel }) => {
     formData.append("title", title.trim());
     formData.append("description", description.trim());
     formData.append("link", link.trim());
-    formData.append("order", parseInt(order, 10));
+    // formData.append("order", parseInt(order, 10));
     formData.append("isActive", isActive);
     formData.append("tags", features);
     formData.append("image", uploadedImage);
     setIsLoading(true);
- 
-  
 
     try {
       const response = await Instance.post("/discover/card", formData);
 
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
+
         dispatch(addEvent(response.data.data));
         showSuccessMessage("Event card added successfully!");
         setTitle("");
         setDescription("");
         setLink("");
-        setOrder("");
+        // setOrder("");
         setIsActive(true);
         setFeatures([]);
         setUploadedImage(null);
       }
     } catch (error) {
       console.error("Error adding event card:", error);
-      // message.error("Failed to add event card.");
+      const errorMessage =
+        error.response?.data?.message || error.message || "Error adding event";
+      showErrorMessage(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -104,7 +106,7 @@ const AddEventsList = ({ open, handleCancel }) => {
     setTitle("");
     setDescription("");
     setLink("");
-    setOrder("");
+    // setOrder("");
     setIsActive(true);
     setFeatures([]);
     setUploadedImage(null);
@@ -139,14 +141,15 @@ const AddEventsList = ({ open, handleCancel }) => {
         ]}
       >
         <Form layout="vertical" className="mt-4">
-          <Form.Item>
+          <Form.Item >
             <Input
               value={title}
+              
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Enter Event Title"
               required
             />
-            <span className="create-campaign-input-span">Title</span>
+            <span className="create-campaign-input-span"> <span style={{ color: "red" }}>*</span> Title</span>
           </Form.Item>
           <Form.Item>
             <Input
@@ -155,7 +158,7 @@ const AddEventsList = ({ open, handleCancel }) => {
               placeholder="Enter Event Link"
               required
             />
-            <span className="create-campaign-input-span">Link</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Link</span>
           </Form.Item>
           <Form.Item>
             <Upload
@@ -198,9 +201,9 @@ const AddEventsList = ({ open, handleCancel }) => {
                 </Button>
               </div>
             )}
-            <span className="create-campaign-input-span">Image</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Image</span>
           </Form.Item>
-          <Form.Item>
+          {/* <Form.Item>
             <Input
               type="number"
               value={order}
@@ -209,7 +212,7 @@ const AddEventsList = ({ open, handleCancel }) => {
               required
             />
             <span className="create-campaign-input-span">Order</span>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item>
             <Select
               value={isActive}
@@ -229,7 +232,7 @@ const AddEventsList = ({ open, handleCancel }) => {
               placeholder="Enter Event Description"
               required
             />
-            <span className="create-campaign-input-span">Description</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span>  Description</span>
           </Form.Item>
           <h6 style={{ color: "var(--black-color)" }}>Tags</h6>
           <div className="row">
