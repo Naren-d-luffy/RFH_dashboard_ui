@@ -15,7 +15,7 @@ const { Option } = Select;
 const EditEventsList = ({ open, handleCancel, eventsData }) => {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
-  const [order, setOrder] = useState("");
+  // const [order, setOrder] = useState("");
   const [description, setDescription] = useState("");
   const [isActive, setIsActive] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +60,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
       setTitle(eventsData?.title || "");
       setDescription(eventsData?.description || "");
       setLink(eventsData?.link || "");
-      setOrder(eventsData?.order || "");
+      // setOrder(eventsData?.order || "");
       setIsActive(eventsData?.isActive ?? null);
       const parsedTags = eventsData?.tags[0]?.split(",") || [];
       setFeatures(parsedTags);
@@ -70,7 +70,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
       setTitle("");
       setDescription("");
       setLink("");
-      setOrder("");
+      // setOrder("");
       setIsActive(null);
       setFeatures([]);
       setUploadedImage(null);
@@ -78,7 +78,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   }, [open, eventsData]);
 
   const handleUpdate = async () => {
-    if (!title.trim() || !description.trim() || !link.trim() || !order || isNaN(order) || !uploadedImage || features.length === 0) {
+    if (!title.trim() || !description.trim() || !link.trim()  || !uploadedImage ) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -87,7 +87,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
     formData.append("title", title.trim());
     formData.append("description", description.trim());
     formData.append("link", link.trim());
-    formData.append("order", parseInt(order, 10));
+    // formData.append("order", parseInt(order, 10));
     formData.append("isActive", isActive);
     formData.append("tags", features.join(","));
     formData.append("image", uploadedImage);
@@ -104,7 +104,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
         setTitle("");
         setDescription("");
         setLink("");
-        setOrder("");
+        // setOrder("");
         setIsActive(true);
         setFeatures([]);
         setUploadedImage(null);
@@ -137,11 +137,11 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
         <Form layout="vertical" className="mt-4">
           <Form.Item>
             <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter Event Title" required />
-            <span className="create-campaign-input-span">Title</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Title</span>
           </Form.Item>
           <Form.Item>
             <Input value={link} onChange={(e) => setLink(e.target.value)} placeholder="Enter Event Link" required />
-            <span className="create-campaign-input-span">Link</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Link</span>
           </Form.Item>
           <Form.Item>
             <Upload
@@ -185,12 +185,12 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
                 </Button>
               </div>
             )}
-            <span className="create-campaign-input-span">Image</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Image</span>
           </Form.Item>
-          <Form.Item>
+          {/* <Form.Item>
             <Input type="number" value={order} onChange={(e) => setOrder(e.target.value)} placeholder="Enter Display Order" required />
             <span className="create-campaign-input-span">Order</span>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item>
             <Select value={isActive} onChange={(value) => setIsActive(value)} placeholder="Select Event Status" required>
               <Option value={true}>Active</Option>

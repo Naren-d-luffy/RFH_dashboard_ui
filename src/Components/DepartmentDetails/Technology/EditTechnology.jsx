@@ -32,14 +32,14 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (technologyData) {
+    if (open && technologyData) {
       setTitle(technologyData.heading || "");
       setDescription(technologyData.subHeading || "");
       setContent(technologyData.content || "");
       setUploadedImage(technologyData.video || null);
       setThumbnailImage(technologyData.thumbnail || null);
     }
-  }, [technologyData]);
+  }, [open && technologyData]);
 
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;

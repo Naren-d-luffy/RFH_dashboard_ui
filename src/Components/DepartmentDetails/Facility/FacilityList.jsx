@@ -207,7 +207,7 @@ export const FacilityList = () => {
             </div>
           </div>
           <div className="mt-4">
-            <Slider {...sliderSettings}>
+            <Slider {...sliderSettings} key={Object.keys(facilities).length}>
               {facilities && Object.keys(facilities).length > 0 ? (
                 Object.entries(facilities)
                   .filter(([key]) => key !== "status")

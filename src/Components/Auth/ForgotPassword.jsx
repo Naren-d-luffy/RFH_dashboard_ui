@@ -65,6 +65,7 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       const response = await Instance.post("/admin/sendForgotPasswordOtp", { email });
+      console.log("response",response)
       message.success("otp sent to mail")
       navigate("/otp-verification", { state: { email } });
     } catch (error) {
@@ -103,12 +104,13 @@ const ForgotPassword = () => {
                 className="signin-input"
               />
             </div>
+            
             <button className="login-button" onClick={handleContinue}>
               {loading ? (
                 <Spin
                   indicator={
                     <LoadingOutlined
-                      style={{ fontSize: 24, color: "#00963f" }}
+                      style={{ fontSize: 24, color: "#fff" }}
                       spin
                     />
                   }

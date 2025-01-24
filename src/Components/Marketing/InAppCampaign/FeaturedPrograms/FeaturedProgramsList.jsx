@@ -213,7 +213,7 @@ export const FeaturedProgramsList = () => {
             </div>
           </div>
           <div className="mt-4">
-            <Slider {...sliderSettings}>
+            <Slider {...sliderSettings} key={Object.keys(FeaturesData).length}>
               {FeaturesData && Object.keys(FeaturesData).length > 0 ? (
                 Object.values(FeaturesData).map((feature) =>
                   renderFeatureCard(feature)

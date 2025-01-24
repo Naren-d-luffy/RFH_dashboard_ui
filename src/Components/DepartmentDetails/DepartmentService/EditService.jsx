@@ -100,7 +100,7 @@ const EditService = ({ open, handleCancel, serviceData }) => {
             className="create-campaign-save-button"
             loading={isLoading}
           >
-            Save
+            Update
           </Button>,
         ]}
       >

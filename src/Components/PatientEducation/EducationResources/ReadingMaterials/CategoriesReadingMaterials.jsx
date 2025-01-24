@@ -212,7 +212,7 @@ const CategoriesReadingMaterials = () => {
         </div>
         {isLoading && <Loader />}
         <div className="row mt-3">
-          <Slider {...sliderSettings}>
+          <Slider {...sliderSettings} key={readingMaterialsData.length}>
             {readingMaterialsData && readingMaterialsData.length > 0 ? (
               readingMaterialsData.map((readingmaterial) =>
                 renderImageCard(readingmaterial)

@@ -234,7 +234,7 @@ const OutstationClinicList = () => {
             </div>
           </div>
           <div className="mt-3">
-            <Slider {...sliderSettings}>
+            <Slider {...sliderSettings} key={clinics?.length}>
               {clinics && clinics.length > 0 ? (
                 clinics.map((clinic) => renderClinicCard(clinic))
               ) : (
