@@ -10,7 +10,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Instance } from "../../../../AxiosConfig";
 import {
- 
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -59,7 +58,7 @@ const OutstationClinicList = () => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/discover/clinic", {
-        params: { page: 1, limit: itemsPerPage }
+        params: { page: 1, limit: itemsPerPage },
       });
       console.log("API response received:", response);
       dispatch(setOutstationClinic(response.data));
@@ -131,11 +130,13 @@ const OutstationClinicList = () => {
   const renderClinicCard = (clinic) => (
     <div className="col-lg-4" key={clinic._id}>
       <div className="outstation-clinic-upcoming-event-card p-3">
-        <Dropdown overlay={sortMenu(clinic)} trigger={["click"]}>
-          <button className="action-icon-button">
-            <BsThreeDotsVertical />
-          </button>
-        </Dropdown>
+        <div className="action-icon-container">
+          <Dropdown overlay={sortMenu(clinic)} trigger={["click"]}>
+            <button className="action-icon-button">
+              <BsThreeDotsVertical />
+            </button>
+          </Dropdown>
+        </div>
         <div className="d-flex justify-content-center align-items-center mb-3">
           <img
             src={clinic.image || "https://via.placeholder.com/150"}
