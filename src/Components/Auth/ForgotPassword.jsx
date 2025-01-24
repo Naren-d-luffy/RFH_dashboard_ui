@@ -108,7 +108,7 @@ const ForgotPassword = () => {
                 <Spin
                   indicator={
                     <LoadingOutlined
-                      style={{ fontSize: 24, color: "#00963f" }}
+                      style={{ fontSize: 24, color: "#fff" }}
                       spin
                     />
                   }

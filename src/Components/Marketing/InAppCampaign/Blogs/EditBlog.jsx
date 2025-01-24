@@ -85,7 +85,7 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
 
-        showSuccessMessage("Blog Edited successfully!");
+        showSuccessMessage("Blog Updated successfully!");
         dispatch(editBlog(response.data));
         setHeading("");
         setSubHeading("");
@@ -95,7 +95,7 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
       }
     } catch (error) {
       console.error(error);
-      message.error("Failed to edit Blog.");
+      message.error("Failed to update Blog.");
     } finally {
       setIsLoading(false);
     }
@@ -123,7 +123,7 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
             className="create-campaign-save-button"
             loading={isLoading}
           >
-            Save
+            Update
           </Button>,
         ]}
       >
