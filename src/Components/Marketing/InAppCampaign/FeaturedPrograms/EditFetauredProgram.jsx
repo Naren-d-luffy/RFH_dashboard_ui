@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, Input, message, Select, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import {  showSuccessMessage } from "../../../../globalConstant";
+import { showSuccessMessage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { FaTrash } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -54,17 +54,14 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
   };
 
   useEffect(() => {
-    console.log("Selected Package:", featuresData);
-
-    if (featuresData) {
+    if (open && featuresData) {
       setTitle(featuresData.title || "");
       setDescription(featuresData.description || "");
       setContent(DOMPurify.sanitize(featuresData.content || ""));
       setUploadedImage(featuresData.thumbnail || null);
       setFeatures(featuresData.tags || []);
-      setImageUrl(featuresData.thumbnail || null);
     }
-  }, [featuresData]);
+  }, [open, featuresData]);
 
   const handleSave = async () => {
     if (!title || !description || features.length === 0) {
@@ -90,14 +87,14 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
         }
       );
       if (response?.status === 200 || response?.status === 201) {
-        console.log(response,"eit");
+        console.log(response, "eit");
         dispatch(editFeature(response.data.data));
         handleCancel();
-        showSuccessMessage("Feature added successfully!");
+        showSuccessMessage("Feature updated successfully!");
       }
     } catch (error) {
       console.error(error);
-      message.error("Failed to create feature.");
+      message.error("Failed to update feature.");
     } finally {
       setIsLoading(false);
     }
@@ -127,7 +124,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
           className="create-campaign-save-button"
           loading={isLoading}
         >
-          Save
+          Update
         </Button>,
       ]}
     >

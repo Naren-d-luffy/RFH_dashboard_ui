@@ -25,7 +25,7 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (EventData) {
+    if (open && EventData) {
       setClinicName(EventData.name || "");
       setAddress(EventData.location || "");
       setRating(EventData.rating?.toString() || "");
@@ -37,7 +37,7 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
       setClinicType(EventData.type || "outstation");
       setUploadedImage(EventData.image || null);
     }
-  }, [EventData]);
+  }, [open, EventData]);
 
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
@@ -81,18 +81,14 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
         formData.append("image", uploadedImage);
       }
 
-      console.log("Submitting Edited Data: ", formData);
-
       const response = await Instance.put(
         `/discover/clinic/${EventData._id}`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
-      );
-      console.log("response",response);
-      
+      );      
       if (response?.status === 200) {
         handleCancel();
-        showSuccessMessage("Successfully Updated", "");
+        showSuccessMessage("Successfully Updated Clinic");
         dispatch(editOutstationClinic(response.data));
       }
     } catch (error) {

@@ -76,7 +76,6 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("API response :", response);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("Outstation Clinic added successfully!");
