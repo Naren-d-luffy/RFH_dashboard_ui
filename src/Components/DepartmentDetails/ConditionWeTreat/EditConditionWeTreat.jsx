@@ -32,14 +32,14 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (conditionData) {
+    if (open && conditionData) {
       setTitle(conditionData.heading || "");
       setDescription(conditionData.subHeading || "");
       setContent(conditionData.content || "");
       setUploadedImage(conditionData.video || null);
       setThumbnailImage(conditionData.thumbnail || null);
     }
-  }, [conditionData]);
+  }, [open && conditionData]);
 
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;

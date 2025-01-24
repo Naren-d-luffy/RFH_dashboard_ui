@@ -46,7 +46,7 @@ const AddLatestCamps = ({ open, handleCancel }) => {
     try {
       const response = await Instance.post("/camp", formattedData);
       if (response?.status === 200 || response?.status === 201) {
-        dispatch(addCamp(response.data))
+        dispatch(addCamp(response.data.data))
         showSuccessMessage("Successfully Created", "");
         handleCancel();
       }

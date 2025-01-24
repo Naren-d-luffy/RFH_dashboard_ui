@@ -198,7 +198,7 @@ export const ConditionWeTreatList = () => {
             </div>
           </div>
           <div className="mt-4">
-            <Slider {...sliderSettings}>
+            <Slider {...sliderSettings} key={Object.keys(conditionwetreatList).length}>
               {conditionwetreatList && Object.keys(conditionwetreatList).length > 0 ? (
                 Object.entries(conditionwetreatList)
                   .filter(([key]) => key !== "status")

@@ -215,7 +215,7 @@ export const UpcomingEventList = () => {
           </div>
 
           <div className="mt-4">
-            <Slider {...sliderSettings}>
+            <Slider key={Object.keys(eventsData).length} {...sliderSettings}>
               {eventsData && Object.keys(eventsData).length > 0 ? (
                 Object.values(eventsData).map((event) => renderEventCard(event))
               ) : (

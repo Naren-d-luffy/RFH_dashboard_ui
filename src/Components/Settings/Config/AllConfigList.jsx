@@ -44,12 +44,12 @@ const AllConfigList = () => {
             {configs.map((config, index) => (
               <div
                 key={config._id}
-                className="col-lg-6 col-md-7 col-sm-12 mb-4 settings-event-card"
+                className="col-lg-6 col-md-7 col-sm-12 mb-4 "
               >
                 <Card
                   title={config.name || `Configuration ${index + 1}`}
                   bordered
-                  className="config-card"
+                  className="settings-event-card"
                 >
                   <div>
                     {config.content &&

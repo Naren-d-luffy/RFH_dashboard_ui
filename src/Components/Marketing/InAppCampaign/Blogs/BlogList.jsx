@@ -242,7 +242,7 @@ const BlogsList = () => {
             </div>
           </div>
           <div className="mt-3">
-            <Slider {...sliderSettings}>
+            <Slider {...sliderSettings} key={BlogsList?.length}>
               {/* {gastroEvents.map((event) => renderEventCard(event))} */}
               {BlogsList && BlogsList.length > 0 ? (
                 BlogsList.map((event, index) => renderBlogCard(event, index))
