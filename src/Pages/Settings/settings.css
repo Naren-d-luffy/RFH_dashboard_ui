@@ -110,6 +110,9 @@
 .settings-input input {
   position: relative;
 }
+/* .settings-input .ant-picker-input input{
+  border: none !important;
+} */
 .settings-input-span {
   position: absolute;
   top: -10px;

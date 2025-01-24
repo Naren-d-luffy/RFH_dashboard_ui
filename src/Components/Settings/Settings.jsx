@@ -32,7 +32,7 @@ export const Settings = () => {
       case "config":
         return <AllConfigList/>;
       default:
-        return <General />;
+        return <Account />;
     }
   };
 

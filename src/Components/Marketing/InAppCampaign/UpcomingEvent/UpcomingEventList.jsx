@@ -16,7 +16,7 @@ import ViewEventList from "./ViewEventList";
 import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
-import { accessToken, showDeleteMessage, showSuccessMessage } from "../../../../globalConstant";
+import {  showDeleteMessage, showSuccessMessage } from "../../../../globalConstant";
 
 export const UpcomingEventList = () => {
   const [modals, setModals] = useState({
@@ -35,15 +35,12 @@ export const UpcomingEventList = () => {
   const navigate = useNavigate();
 
   const fetchEvenInfo = async (page) => {
-    // const accessToken = localStorage.getItem("accessToken");
     setIsLoading(true);
     try {
 
       const response = await Instance.get(`/discover/card`, { 
         params: { page, limit: itemsPerPage },
-        headers: {
-          Authorization: `Bearer ${accessToken}`, 
-        },
+       
       });      
       dispatch(setEvent(response.data.data));
     } catch (error) {
@@ -72,6 +69,7 @@ export const UpcomingEventList = () => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
+
         try {
           const response = await Instance.delete(`/discover/card/${_id}`);
           if (response.status === 200 || response.status === 204) {

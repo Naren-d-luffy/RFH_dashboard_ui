@@ -10,7 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Instance } from "../../../../AxiosConfig";
 import {
-  accessToken,
+ 
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -35,7 +35,7 @@ const OutstationClinicList = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const clinics = useSelector((state) => state.clinics.clinics?.data || []);
+  const clinics = useSelector((state) => state.clinics.clinics || []);
 
   const handleCancel = () => setIsModalOpen(false);
   const handleEditCancel = () => setIsEditModalOpen(false);
@@ -59,13 +59,10 @@ const OutstationClinicList = () => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/discover/clinic", {
-        params: { page: 1, limit: itemsPerPage },
-         headers: {
-                  Authorization: `Bearer ${accessToken}`, 
-                },
+        params: { page: 1, limit: itemsPerPage }
       });
       console.log("API response received:", response);
-      dispatch(setOutstationClinic(response.data || { data: [] }));
+      dispatch(setOutstationClinic(response.data));
     } catch (error) {
       console.error("Error fetching clinics:", error);
     } finally {

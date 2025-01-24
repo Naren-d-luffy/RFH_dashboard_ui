@@ -14,7 +14,7 @@ import {
 import AddRecommendedVideos from "./AddRecommendedVideos";
 import EditRecommendedVideos from "./EditRecommendedVideos";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
-import { accessToken } from "../../../../globalConstant";
+import { showDeleteMessage, showSuccessMessage } from "../../../../globalConstant";
 
 const RecommendedVideosTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,11 +35,7 @@ const RecommendedVideosTable = () => {
   const fetchRecommendedVideos = async () => {
     setIsLoading(true);
     try {
-      const response = await Instance.get("/recommended", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const response = await Instance.get("/recommended");
       dispatch(setRecommendedVideos(response.data));
     } catch (error) {
       console.error("Error fetching videos:", error);
@@ -52,14 +48,32 @@ const RecommendedVideosTable = () => {
     fetchRecommendedVideos();
   }, []);
 
-  const handleDeleteVideo = async (videoId) => {
-    try {
-      await Instance.delete(`/recommended/${videoId}`);
-      dispatch(deleteRecommendedVideos(videoId));
-    } catch (error) {
-      console.error("Error deleting video:", error);
-    }
-  };
+  // const handleDeleteVideo = async (videoId) => {
+  //   try {
+  //     await Instance.delete(`/recommended/${videoId}`);
+  //     dispatch(deleteRecommendedVideos(videoId));
+  //   } catch (error) {
+  //     console.error("Error deleting video:", error);
+  //   }
+  // };
+
+  const handleDeleteVideo = (_id) => {
+      showDeleteMessage({
+        message: "",
+        onDelete: async () => {
+          try {
+            const response = await Instance.delete(`/recommended/${_id}`);
+            console.log("response received:", response);
+            if (response.status === 200 || response.status === 204) {
+              showSuccessMessage("Deleted successfully", "Details deleted");
+              dispatch(deleteRecommendedVideos(_id));
+            }
+          } catch (error) {
+            console.error("Error deleting video:", error);
+          }
+        },
+      });
+    };
 
   const dataSource = useMemo(() => {
     if (!searchText) return recommendedVideos;
