@@ -140,7 +140,9 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
               placeholder="Add Title"
               required
             />
-            <span className="create-campaign-input-span">Title</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Title
+            </span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -149,7 +151,9 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">Description</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Description
+            </span>
           </Form.Item>
           <div className="row">
             <div className="col-lg-6">
@@ -189,6 +193,9 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
                     </Button>
                   </div>
                 )}
+                <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Thumbnail Image
+            </span>
               </Form.Item>
             </div>
             <div className="col-lg-6">
@@ -228,6 +235,9 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
                     </Button>
                   </div>
                 )}
+                <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Upload video
+            </span>
               </Form.Item>
             </div>
           </div>
@@ -240,7 +250,9 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Content
+            </span>
           </Form.Item>
           <Form.Item>
             <Input
@@ -249,7 +261,9 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
               placeholder="Video Heading"
               required
             />
-            <span className="create-campaign-input-span">Video Heading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Video Heading
+            </span>
           </Form.Item>
           <Form.Item>
             <Input
@@ -258,7 +272,9 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
               placeholder="Video Subheading"
               required
             />
-            <span className="create-campaign-input-span">Video Subheading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Video Subheading
+            </span>
           </Form.Item>
         </Form>
       </Modal>

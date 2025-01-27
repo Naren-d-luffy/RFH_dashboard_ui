@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, DatePicker, TimePicker, message } from "antd";
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  DatePicker,
+  TimePicker,
+  message,
+} from "antd";
 import "react-quill/dist/quill.snow.css";
 import { EnvironmentOutlined } from "@ant-design/icons";
 import { showSuccessMessage } from "../../../../globalConstant";
@@ -35,18 +43,18 @@ const AddLatestCamps = ({ open, handleCancel }) => {
       pinCode: "",
     });
   };
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const handleSave = async () => {
     const formattedData = {
       ...formData,
       date: formData.date?.format("YYYY-MM-DD"),
-      time: formData.time?.format("hh:mm A"),  
+      time: formData.time?.format("hh:mm A"),
     };
 
     try {
       const response = await Instance.post("/camp", formattedData);
       if (response?.status === 200 || response?.status === 201) {
-        dispatch(addCamp(response.data.data))
+        dispatch(addCamp(response.data.data));
         showSuccessMessage("Successfully Created Camp");
 
         handleCancel();
@@ -57,7 +65,7 @@ const AddLatestCamps = ({ open, handleCancel }) => {
     }
   };
   const handleCancelClick = () => {
-    resetForm(); 
+    resetForm();
     handleCancel();
   };
   return (
@@ -67,10 +75,18 @@ const AddLatestCamps = ({ open, handleCancel }) => {
       onCancel={handleCancelClick}
       width={680}
       footer={[
-        <Button key="back" onClick={handleCancelClick} className="create-campaign-cancel-button">
+        <Button
+          key="back"
+          onClick={handleCancelClick}
+          className="create-campaign-cancel-button"
+        >
           Cancel
         </Button>,
-        <Button key="save" onClick={handleSave} className="create-campaign-save-button">
+        <Button
+          key="save"
+          onClick={handleSave}
+          className="create-campaign-save-button"
+        >
           Save
         </Button>,
       ]}
@@ -85,7 +101,9 @@ const AddLatestCamps = ({ open, handleCancel }) => {
                 value={formData.campName}
                 onChange={(e) => handleInputChange("campName", e.target.value)}
               />
-              <span className="settings-input-span">Camp name</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Camp name
+              </span>
             </Form.Item>
           </div>
           <div className="col-md-3 mt-2">
@@ -97,7 +115,9 @@ const AddLatestCamps = ({ open, handleCancel }) => {
                 value={formData.date}
                 onChange={(date) => handleInputChange("date", date)}
               />
-              <span className="settings-input-span">Camp Date</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Camp Date
+              </span>
             </Form.Item>
           </div>
           <div className="col-md-3 mt-2">
@@ -109,7 +129,9 @@ const AddLatestCamps = ({ open, handleCancel }) => {
                 value={formData.time}
                 onChange={(time) => handleInputChange("time", time)}
               />
-              <span className="settings-input-span">Camp Time</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Camp Time
+              </span>
             </Form.Item>
           </div>
         </div>
@@ -119,9 +141,13 @@ const AddLatestCamps = ({ open, handleCancel }) => {
               <TextArea
                 placeholder="Description"
                 value={formData.description}
-                onChange={(e) => handleInputChange("description", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("description", e.target.value)
+                }
               />
-              <span className="create-campaign-input-span">Description</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Description
+              </span>
             </Form.Item>
           </div>
           <div className="col-md-6 mt-2">
@@ -130,9 +156,13 @@ const AddLatestCamps = ({ open, handleCancel }) => {
                 className="settings-input"
                 placeholder="Hospital Name"
                 value={formData.hospitalName}
-                onChange={(e) => handleInputChange("hospitalName", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("hospitalName", e.target.value)
+                }
               />
-              <span className="settings-input-span">Hospital Name</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Hospital Name
+              </span>
             </Form.Item>
           </div>
           <div className="col-md-6 mt-2">
@@ -143,7 +173,9 @@ const AddLatestCamps = ({ open, handleCancel }) => {
                 value={formData.location}
                 onChange={(e) => handleInputChange("location", e.target.value)}
               />
-              <span className="settings-input-span">Location</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Location
+              </span>
             </Form.Item>
           </div>
         </div>
@@ -153,11 +185,17 @@ const AddLatestCamps = ({ open, handleCancel }) => {
               <Input
                 className="settings-input"
                 placeholder="Enter Address"
-                prefix={<EnvironmentOutlined style={{ color: "#00963F", fontSize: "14px" }} />}
+                prefix={
+                  <EnvironmentOutlined
+                    style={{ color: "#00963F", fontSize: "14px" }}
+                  />
+                }
                 value={formData.address}
                 onChange={(e) => handleInputChange("address", e.target.value)}
               />
-              <span className="settings-input-span">Address</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Address
+              </span>
             </Form.Item>
           </div>
           <div className="col-md-6 mt-2">
@@ -168,7 +206,9 @@ const AddLatestCamps = ({ open, handleCancel }) => {
                 value={formData.pinCode}
                 onChange={(e) => handleInputChange("pinCode", e.target.value)}
               />
-              <span className="settings-input-span">Pin Code</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Pin Code
+              </span>
             </Form.Item>
           </div>
         </div>

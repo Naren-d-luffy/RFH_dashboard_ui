@@ -177,24 +177,32 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
               </Button>
             </div>
           )}
-          <span className="create-campaign-input-span">Image</span>
+          <span className="create-campaign-input-span">
+            <span style={{ color: "red" }}>*</span> Image
+          </span>
         </Form.Item>
-        <Form.Item label="Feature Title">
+        <Form.Item>
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Title"
             required
           />
+          <span className="create-campaign-input-span">
+            <span style={{ color: "red" }}>*</span> Feature Title
+          </span>
         </Form.Item>
 
-        <Form.Item label="Description ">
+        <Form.Item>
           <TextArea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Description "
             required
           />
+          <span className="create-campaign-input-span">
+            <span style={{ color: "red" }}>*</span> Description
+          </span>
         </Form.Item>
 
         <h6 style={{ color: "var(--black-color)" }}>Features</h6>
@@ -236,7 +244,9 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
             placeholder="Your text goes here"
             required
           />
-          <span className="create-campaign-input-span">Content</span>
+          <span className="create-campaign-input-span">
+            <span style={{ color: "red" }}>*</span> Content
+          </span>
         </Form.Item>
       </Form>
     </Modal>

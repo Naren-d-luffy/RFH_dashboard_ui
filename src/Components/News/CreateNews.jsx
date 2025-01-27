@@ -159,7 +159,9 @@ const CreateNews = ({ open, handleCancel }) => {
                 </Button>
               </div>
             )}
-            <span className="create-campaign-input-span">Image</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Image
+            </span>
           </Form.Item>
           <Form.Item>
             <Input
@@ -168,7 +170,9 @@ const CreateNews = ({ open, handleCancel }) => {
               placeholder="Add Heading"
               required
             />
-            <span className="create-campaign-input-span">Heading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Heading
+            </span>{" "}
           </Form.Item>
           <Form.Item>
             <Input
@@ -177,7 +181,9 @@ const CreateNews = ({ open, handleCancel }) => {
               placeholder="Add Sub Heading"
               required
             />
-            <span className="create-campaign-input-span">Sub Heading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Sub Heading
+            </span>{" "}
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -186,7 +192,9 @@ const CreateNews = ({ open, handleCancel }) => {
               placeholder="About"
               required
             />
-            <span className="create-campaign-input-span">About</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> About
+            </span>{" "}
           </Form.Item>
           <Form.Item>
             <ColorPicker
@@ -199,7 +207,9 @@ const CreateNews = ({ open, handleCancel }) => {
               allowClear={false}
               required
             />
-            <span className="create-campaign-input-span">Background Color</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Background Color
+            </span>
           </Form.Item>
 
           <Form.Item>
@@ -211,7 +221,9 @@ const CreateNews = ({ open, handleCancel }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content Points</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Content Points
+            </span>{" "}
           </Form.Item>
         </Form>
       </Modal>
