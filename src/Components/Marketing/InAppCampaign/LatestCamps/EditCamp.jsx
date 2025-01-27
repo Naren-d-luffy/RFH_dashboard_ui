@@ -62,7 +62,8 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
         formattedData
       );
       if (response?.status === 200 || response?.status === 201) {
-        dispatch(editCamp(response.data));
+
+        dispatch(editCamp(response.data.data))
         showSuccessMessage("Successfully Updated Camp");
         handleCancel();
       }

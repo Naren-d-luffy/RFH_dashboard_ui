@@ -128,7 +128,7 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
         <Form layout="vertical" className="mt-4">
           <Form.Item>
             <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Add Title" required />
-            <span className="create-campaign-input-span">Title</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Title</span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -137,7 +137,7 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">Description</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Description</span>
           </Form.Item>
           <div className="row">
             <div className="col-lg-6">
@@ -186,7 +186,7 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Header Image</span>
+                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Header Image</span>
               </Form.Item>
             </div>
             <div className="col-lg-6">
@@ -235,7 +235,7 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Thumbnail Image</span>
+                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Thumbnail Image</span>
               </Form.Item>
             </div>
           </div>
@@ -248,7 +248,7 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content Points</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Content Points</span>
           </Form.Item>
         </Form>
       </Modal>

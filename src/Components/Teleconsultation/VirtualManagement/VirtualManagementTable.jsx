@@ -13,9 +13,10 @@ import DOMPurify from "dompurify";
 const sanitizeContent = (content) => {
   return DOMPurify.sanitize(content);
 };
+
 const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
   if (!doctor) return null;
-
+  console.log(doctor,"doctor")
   return (
     <Modal
       open={isOpen}
@@ -105,12 +106,12 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
               </div>
 
               {/* Fellowships */}
-              {doctor.fellowships && doctor.fellowships.length > 0 && (
+              {doctor.fellowships?.filter((fellowship) => fellowship).length > 0 && (
                 <div className="mt-4">
                   <h6>Fellowships</h6>
-                  <div className="d-flex flex-column gap-2 mt-2">
+                  <div className="d-flex flex-column flex-wrap gap-2 mt-2">
                     {doctor.fellowships.map((fellowship, index) => (
-                      <Tag key={index} className="most-user-success-tag p-2">
+                      <Tag key={index} className="most-user-success-tag p-2" style={{width:"fit-content"}}>
                         {fellowship}
                       </Tag>
                     ))}
@@ -119,12 +120,13 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
               )}
 
               {/* Awards */}
-              {doctor.awards && doctor.awards.length > 0 && (
+             
+               {doctor.awards?.filter((award) => award).length > 0 && (
                 <div className="mt-8">
                   <h6>Awards</h6>
-                  <div className="d-flex flex-column gap-2">
+                  <div className="d-flex flex-column flex-wrap gap-2">
                     {doctor.awards.map((award, index) => (
-                      <Tag key={index} className="most-user-success-tag p-2">
+                      <Tag key={index} className="most-user-success-tag p-2" style={{width:"fit-content"}}>
                         {award}
                       </Tag>
                     ))}
@@ -164,6 +166,7 @@ const VirtualManagementTable = () => {
       try {
         const response = await Instance.get("/doctor");
         setDoctors(response.data);
+        console.log("doctorss",response.data)
       } catch (error) {
         console.error("Error fetching doctors:", error);
       } finally {
