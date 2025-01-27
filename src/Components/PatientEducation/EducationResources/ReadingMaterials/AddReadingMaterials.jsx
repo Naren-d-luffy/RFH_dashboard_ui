@@ -131,7 +131,7 @@ const AddReadingMaterials = ({ open, handleCancel }) => {
               placeholder="Add Title"
               required
             />
-            <span className="create-campaign-input-span">Title</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Title</span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -140,7 +140,7 @@ const AddReadingMaterials = ({ open, handleCancel }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">Description</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Description</span>
           </Form.Item>
           <div className="row">
             <div className="col-lg-6">
@@ -185,7 +185,7 @@ const AddReadingMaterials = ({ open, handleCancel }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Header Image</span>
+                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Header Image</span>
               </Form.Item>
             </div>
             <div className="col-lg-6">
@@ -230,7 +230,7 @@ const AddReadingMaterials = ({ open, handleCancel }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Thumbnail Image</span>
+                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Thumbnail Image</span>
               </Form.Item>
             </div>
           </div>
@@ -244,7 +244,7 @@ const AddReadingMaterials = ({ open, handleCancel }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content Points</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Content Points</span>
           </Form.Item>
         </Form>
       </Modal>
