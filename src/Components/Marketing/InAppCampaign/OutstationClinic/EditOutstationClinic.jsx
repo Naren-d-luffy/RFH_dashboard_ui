@@ -89,7 +89,7 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
       if (response?.status === 200) {
         handleCancel();
         showSuccessMessage("Successfully Updated Clinic");
-        dispatch(editOutstationClinic(response.data));
+        dispatch(editOutstationClinic(response.data.data));
       }
     } catch (error) {
       console.error(
