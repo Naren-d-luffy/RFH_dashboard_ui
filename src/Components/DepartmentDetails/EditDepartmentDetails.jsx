@@ -49,11 +49,11 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
       setSubtitle(departmentData.subtitle || "");
       setDescription(departmentData.description || "");
       if (departmentData.thumbnail) {
-        setImagePreviewUrl(departmentData.thumbnail); // Store the URL for preview
+        setImagePreviewUrl(departmentData.thumbnail);
       }
       if (Array.isArray(departmentData.success_stories)) {
         setSuccessStories(
-          departmentData.success_stories.map((story) => ({
+          departmentData.success_stories?.map((story) => ({
             title: story.title || "",
             views: story.views || 0,
             video_thumbnail_url: story.video_thumbnail_url || "",
@@ -74,7 +74,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
         requestData.append("thumbnail", uploadedImage);
       }
 
-      const formattedSuccessStories = successStories.map((story) => ({
+      const formattedSuccessStories = successStories?.map((story) => ({
         video_thumbnail_url: story.video_thumbnail_url,
         title: story.title,
         views: parseInt(story.views),
@@ -244,7 +244,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
           >
             Add Success Stories
           </Button>
-          {successStories.map((story, index) => (
+          {successStories?.map((story, index) => (
             <div key={index}>
               <h5 className="specialist-heading-name">
                 Success Story {index + 1}

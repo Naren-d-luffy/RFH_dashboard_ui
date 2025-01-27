@@ -225,7 +225,9 @@
   line-height: 27px;
   color: var(--black-color);
 }
-
+.view-doctor-detail-info-section h6 {
+  color: var(--black-color);
+}
 .view-doctor-detail-info-section p {
   font-size: 12px;
   font-weight: 400;
@@ -251,6 +253,9 @@
   font-weight: 500;
   line-height: 21px;
   color: var(--faq-ans-color);
+}
+.view-doctor-detail-specialist-section h6 {
+  color: var(--black-color);
 }
 
 .view-doctor-detail-specialist-section p {

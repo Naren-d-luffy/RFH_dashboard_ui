@@ -18,7 +18,6 @@ const modules = {
     ["clean"],
   ],
 };
-const { TextArea } = Input;
 const CreateDepartmentDetails = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -68,7 +67,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
         requestData.append("thumbnail", uploadedImage);
       }
 
-      const formattedSuccessStories = successStories.map((story) => ({
+      const formattedSuccessStories = successStories?.map((story) => ({
         video_thumbnail_url: story.video_thumbnail_url,
         title: story.title,
         views: parseInt(story.views),
@@ -227,7 +226,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
           >
             Add Success Stories
           </Button>
-          {successStories.map((story, index) => (
+          {successStories?.map((story, index) => (
             <div key={index}>
               <h5>Success Story {index + 1}</h5>
               <Row gutter={16}>

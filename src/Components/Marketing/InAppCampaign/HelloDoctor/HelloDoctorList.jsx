@@ -223,7 +223,7 @@ export const HelloDoctorList = () => {
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings} key={Object.keys(videos).length}>
-              {videos && Object.keys(videos).length > 0 ? (
+              {videos && Object.keys(videos)?.length > 0 ? (
                 Object.entries(videos)
                   .filter(([key]) => key !== "status")
                   .map(([key, video]) => renderRecommendVideo(video))

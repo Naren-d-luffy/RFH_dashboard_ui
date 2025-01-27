@@ -392,3 +392,6 @@ body,
   color: #718096;
   font-size: 14px;
 }
+.news-content h3, .news-content h4, .news-content p, .news-content h1, .news-content h2, .news-content h5, .news-content h6{
+  color: var(--black-color) !important;
+}

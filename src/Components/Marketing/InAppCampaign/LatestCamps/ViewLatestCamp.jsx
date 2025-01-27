@@ -6,12 +6,11 @@ import { IoMdTime } from "react-icons/io";
 import { IoLocationOutline } from "react-icons/io5";
 
 const ViewLatestCamp = ({ open, handleCancel, campDataa }) => {
-  const [campName, setCampName] = useState("");
+  const [, setCampName] = useState("");
   const [date, setDate] = useState("");
-  const [description, setDescription] = useState("");
-  const [content, setContent] = useState("");
-  const [time, setTime] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setDescription] = useState("");
+  const [content] = useState("");
+  const [, setTime] = useState([]);
 
   useEffect(() => {
     if (campDataa) {

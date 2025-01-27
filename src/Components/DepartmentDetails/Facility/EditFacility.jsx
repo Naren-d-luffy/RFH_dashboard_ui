@@ -40,7 +40,6 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
       setContent(facilityData.content || "");
       setVideoHeading(facilityData.video_heading || "");
       setVideoSubHeading(facilityData.video_subHeading || "");
-      // Assume images are stored as URLs
       setUploadedImage(facilityData.video || null);
       setThumbnailImage(facilityData.thumbnail || null);
     }

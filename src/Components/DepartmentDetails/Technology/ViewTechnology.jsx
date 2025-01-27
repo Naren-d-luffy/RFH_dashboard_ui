@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { Button, Modal } from "antd";
 import "react-quill/dist/quill.snow.css";
 import Loader from "../../../Loader";
-import ReactPlayer from "react-player";
 
 const ViewTechnology = ({ open, handleCancel, technologyData }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
 
   return (
     <>

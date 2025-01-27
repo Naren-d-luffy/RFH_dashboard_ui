@@ -33,11 +33,11 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
       ]}
     >
       <div
-        className={`fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center ${
+        className={`fixed inset-0 z-50 flex items-center justify-center ${
           isOpen ? "block" : "hidden"
         }`}
       >
-        <div className="bg-white w-3/4 max-w-5xl rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
+        <div className="w-3/4 max-w-5xl rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
           <div className="p-8">
             <div className="flex items-center space-x-6 border-b border-gray-200 pb-6">
               <div className="view-doctor-detail-doctor-image">
@@ -53,7 +53,7 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
                 <h6>{doctor.position}</h6>
               </div>
             </div>
-            <hr color="var(--border-color)" />
+            <hr style={{color:"var(--black-color)"}} />
 
             {/* Qualifications */}
             <div className="mt-8">
@@ -77,12 +77,13 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
               <h3 className="mt-3">Contact Details</h3>
               <p>{doctor.contactDetails}</p>
             </div>
-            <hr />
-            <div>
+            <hr style={{color:"var(--black-color)"}} />
+            <div className="news-content">
               <h6>About</h6>
 
               {/* <p>{doctor.about} </p> */}
               <p
+              className="news-content"
                 dangerouslySetInnerHTML={{
                   __html: sanitizeContent(doctor.about),
                 }}
@@ -92,7 +93,7 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
             <div className="mt-8">
 
               {/* Areas of Expertise */}
-              <div className="mt-4">
+              <div className="mt-4 news-content">
                 <h6>Areas of Expertise</h6>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {doctor.AreasOfExpertise.map((area, index) => (
@@ -107,7 +108,7 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
 
               {/* Fellowships */}
               {doctor.fellowships?.filter((fellowship) => fellowship).length > 0 && (
-                <div className="mt-4">
+                <div className="mt-4 news-content">
                   <h6>Fellowships</h6>
                   <div className="d-flex flex-column flex-wrap gap-2 mt-2">
                     {doctor.fellowships.map((fellowship, index) => (
@@ -122,7 +123,7 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
               {/* Awards */}
              
                {doctor.awards?.filter((award) => award).length > 0 && (
-                <div className="mt-8">
+                <div className="mt-8 news-content">
                   <h6>Awards</h6>
                   <div className="d-flex flex-column flex-wrap gap-2">
                     {doctor.awards.map((award, index) => (

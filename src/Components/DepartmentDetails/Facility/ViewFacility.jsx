@@ -5,7 +5,7 @@ import Loader from "../../../Loader";
 import ReactPlayer from "react-player";
 
 const ViewFacility = ({ open, handleCancel, facilityData }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   const [playingVideo, setPlayingVideo] = useState(null);
 
   const handlePlayVideo = (videoId) => {
