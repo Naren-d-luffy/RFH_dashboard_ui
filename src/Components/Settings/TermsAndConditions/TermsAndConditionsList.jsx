@@ -86,7 +86,7 @@ export const TermsAndConditionsList = () => {
             + Add Terms
           </button>
         </div>
-        <hr />
+        <hr style={{color:"var(--black-color)"}} />
         {TermsList.map((terms) => (
           <div key={terms._id} >
             <div className="clause d-flex justify-content-between align-items-center">

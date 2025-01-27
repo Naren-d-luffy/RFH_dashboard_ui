@@ -28,10 +28,10 @@ export const FeaturedProgramsList = () => {
   const handleCancel = () => setIsModalOpen(false);
   const showEditModal = () => setIsEditModalOpen(true);
   const handleEditCancel = () => setIsEditModalOpen(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [featureList, setFeatureList] = useState([]);
+  const [, setFeatureList] = useState([]);
   const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
   const FeaturesData = useSelector((state) => state.features.features);
@@ -215,7 +215,7 @@ export const FeaturedProgramsList = () => {
           <div className="mt-4">
             <Slider {...sliderSettings} key={Object.keys(FeaturesData).length}>
               {FeaturesData && Object.keys(FeaturesData).length > 0 ? (
-                Object.values(FeaturesData).map((feature) =>
+                Object.values(FeaturesData)?.map((feature) =>
                   renderFeatureCard(feature)
                 )
               ) : (

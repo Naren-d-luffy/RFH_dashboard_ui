@@ -29,15 +29,6 @@ export const FacilityList = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const facilities = useSelector((state) => state.facility.facilities);
 
-  console.log("facilities", facilities);
-
-  const truncateText = (text, wordLimit) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 

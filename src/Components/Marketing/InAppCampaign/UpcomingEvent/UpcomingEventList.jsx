@@ -217,7 +217,7 @@ export const UpcomingEventList = () => {
           <div className="mt-4">
             <Slider key={Object.keys(eventsData).length} {...sliderSettings}>
               {eventsData && Object.keys(eventsData).length > 0 ? (
-                Object.values(eventsData).map((event) => renderEventCard(event))
+                Object.values(eventsData)?.map((event) => renderEventCard(event))
               ) : (
                 <p>No data available</p>
               )}

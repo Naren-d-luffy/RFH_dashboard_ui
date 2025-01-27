@@ -66,7 +66,7 @@ export const InAppCampaigncards = () => {
         </div>
       </div>
       <div className="row campaign-performance-container">
-        {cardsData.map((card, index) => (
+        {cardsData?.map((card, index) => (
           <div className="col-lg-3 col-md-6 col-sm-12 mt-2" key={index}>
             <div
               className="campaign-performance-card position-relative"

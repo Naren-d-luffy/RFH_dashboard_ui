@@ -29,8 +29,6 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-
-  //   console.log("blogData", blogData);
   useEffect(() => {
     if (open && blogData) {
       setHeading(blogData.heading || "");
@@ -81,7 +79,6 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
         `/discover/blog/${blogData._id}`,
         formData
       );
-      console.log("blog", response);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
 

@@ -92,7 +92,7 @@ const TableEventsList = () => {
 
   const dataSource = useMemo(() => {
     if (!searchText.trim())
-      return Object.values(eventsData).map((event, index) => ({
+      return Object.values(eventsData)?.map((event, index) => ({
         ...event,
         key: index,
       }));
@@ -110,7 +110,7 @@ const TableEventsList = () => {
       title: "Title",
       dataIndex: "title",
       key: "title",
-      sorter: (a, b) => a.title.localeCompare(b.title), // Sorting based on the title alphabetically
+      sorter: (a, b) => a.title.localeCompare(b.title),
     },
     {
       title: "Description",
@@ -122,7 +122,7 @@ const TableEventsList = () => {
       title: "Order",
       dataIndex: "order",
       key: "order",
-      sorter: (a, b) => a.order - b.order, // Sorting numerically by likes
+      sorter: (a, b) => a.order - b.order, 
     },
     {
       title: "Action",
@@ -179,7 +179,7 @@ const TableEventsList = () => {
         <Loader />
       ) : Object.values(eventsData).length > 0 ? (
         <>
-          <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex user-engagement-header justify-content-between align-items-center">
             <h3>Event List</h3>
 
             <div className="d-flex align-items-center gap-3">

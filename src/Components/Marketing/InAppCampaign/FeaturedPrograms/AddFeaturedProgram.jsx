@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, message, Select, Upload } from "antd";
+import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { showSuccessMessage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
@@ -10,7 +10,6 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { addFeature } from "../../../../Features/FeatureSlice";
 const { TextArea } = Input;
-const { Option } = Select;
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -215,7 +214,7 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
             >
               Add +
             </button>
-            {features.map((tag, index) => (
+            {features?.map((tag, index) => (
               <div key={index} className="d-flex align-items-center gap-2">
                 <Form.Item className="mb-0">
                   <input

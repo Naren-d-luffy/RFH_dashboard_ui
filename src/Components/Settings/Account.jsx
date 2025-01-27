@@ -154,7 +154,7 @@ export const Account = () => {
       <div className="container">
         <h4 className="mt-4 mt-lg-0">Account</h4>
         <p>Settings your account details here</p>
-        <hr />
+        <hr style={{color:"var(--black-color)"}} />
         <Form layout="vertical" form={form} onFinish={handleSubmit}>
           <h5>My Profile</h5>
           <div className="row mt-4">

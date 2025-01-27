@@ -32,7 +32,7 @@ export const Preferences = () => {
       <div className="container">
         <h4 className="mt-4 mt-lg-0">Preferences</h4>
         <p>Customisation according to your preferences</p>
-        <hr />
+        <hr style={{color:"var(--black-color)"}} />
         <Form layout="vertical" form={form}>
           <h5>Select Theme</h5>
           <div className="row mt-4">
