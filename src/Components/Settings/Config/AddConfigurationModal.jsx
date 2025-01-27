@@ -39,9 +39,9 @@ const AddConfigurationModal = ({ visible, onClose, refreshList }) => {
     }
   };
   const handleClose = () => {
-    setName(""); 
-    setConfigData([{ key: "", value: "" }]); 
-    onClose(); 
+    setName("");
+    setConfigData([{ key: "", value: "" }]);
+    onClose();
   };
   return (
     <Modal
@@ -51,10 +51,18 @@ const AddConfigurationModal = ({ visible, onClose, refreshList }) => {
       visible={visible}
       onCancel={handleClose}
       footer={[
-        <Button className="create-campaign-cancel-button" key="cancel" onClick={handleClose}>
+        <Button
+          className="create-campaign-cancel-button"
+          key="cancel"
+          onClick={handleClose}
+        >
           Cancel
         </Button>,
-        <Button key="save" className="create-campaign-save-button" onClick={handleSave}>
+        <Button
+          key="save"
+          className="create-campaign-save-button"
+          onClick={handleSave}
+        >
           Save
         </Button>,
       ]}
@@ -82,7 +90,11 @@ const AddConfigurationModal = ({ visible, onClose, refreshList }) => {
           />
         </div>
       ))}
-      <Button type="dashed" className="create-campaign-cancel-button" onClick={handleAddField}>
+      <Button
+        type="dashed"
+        className="create-campaign-cancel-button"
+        onClick={handleAddField}
+      >
         Add Field
       </Button>
     </Modal>

@@ -95,7 +95,7 @@ const EditNews = ({ open, handleCancel, newsData }) => {
       const response = await Instance.put(`/cards/${newsData._id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      console.log("edit",response)
+      console.log("edit", response);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("News Edited successfully!");
@@ -181,7 +181,9 @@ const EditNews = ({ open, handleCancel, newsData }) => {
                 </Button>
               </div>
             )}
-            <span className="create-campaign-input-span">Image</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Image
+            </span>{" "}
           </Form.Item>
           <Form.Item>
             <Input
@@ -189,7 +191,9 @@ const EditNews = ({ open, handleCancel, newsData }) => {
               onChange={(e) => setHeading(e.target.value)}
               placeholder="Add Heading"
             />
-            <span className="create-campaign-input-span">Heading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Heading
+            </span>{" "}
           </Form.Item>
           <Form.Item>
             <Input
@@ -197,7 +201,9 @@ const EditNews = ({ open, handleCancel, newsData }) => {
               onChange={(e) => setSubheading(e.target.value)}
               placeholder="Add Sub Heading"
             />
-            <span className="create-campaign-input-span">Sub Heading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Sub Heading
+            </span>{" "}
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -205,7 +211,9 @@ const EditNews = ({ open, handleCancel, newsData }) => {
               onChange={(e) => setAbout(e.target.value)}
               placeholder="About"
             />
-            <span className="create-campaign-input-span">About</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> About
+            </span>{" "}
           </Form.Item>
           <Row gutter={24}>
             <Col span={6}>
@@ -219,8 +227,9 @@ const EditNews = ({ open, handleCancel, newsData }) => {
                   showText
                   allowClear={false}
                 />
+
                 <span className="create-campaign-input-span">
-                  Background Color
+                  <span style={{ color: "red" }}>*</span> Background Color
                 </span>
               </Form.Item>
             </Col>
@@ -235,7 +244,9 @@ const EditNews = ({ open, handleCancel, newsData }) => {
               placeholder="Your text goes here"
               className="news-content"
             />
-            <span className="create-campaign-input-span">Content Points</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Content Points
+            </span>{" "}
           </Form.Item>
         </Form>
       </Modal>

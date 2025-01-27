@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, Input, message, Col, Row, Upload, Radio } from "antd"; 
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  message,
+  Col,
+  Row,
+  Upload,
+  Radio,
+} from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
 import { showSuccessMessage } from "../../../../globalConstant";
@@ -34,7 +44,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
       setDescription("");
       setTiming("");
       setAddress("");
-      setClinicType(""); 
+      setClinicType("");
       setUploadedImage(null);
     }
   }, [open]);
@@ -49,7 +59,17 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
   };
 
   const handleSave = async () => {
-    if (!clinicName || !rating || !reviews || !patients || !experience || !description || !timing || !address || !clinicType) {
+    if (
+      !clinicName ||
+      !rating ||
+      !reviews ||
+      !patients ||
+      !experience ||
+      !description ||
+      !timing ||
+      !address ||
+      !clinicType
+    ) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -127,7 +147,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               placeholder="Add Clinic Name"
               required
             />
-            <span className="create-campaign-input-span">Clinic Name</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Clinic Name
+            </span>
           </Form.Item>
           <Row gutter={24}>
             <Col span={12}>
@@ -138,7 +160,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                   placeholder="Enter Rating (e.g., 4.5)"
                   required
                 />
-                <span className="create-campaign-input-span">Rating</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span>Rating
+                </span>
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -149,7 +173,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                   placeholder="Enter Number of Reviews"
                   required
                 />
-                <span className="create-campaign-input-span">Reviews</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Reviews
+                </span>
               </Form.Item>
             </Col>
           </Row>
@@ -162,7 +188,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                   placeholder="Enter Number of Patients"
                   required
                 />
-                <span className="create-campaign-input-span">Patients</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Patients
+                </span>
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -173,7 +201,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                   placeholder="Enter Experience (in years)"
                   required
                 />
-                <span className="create-campaign-input-span">Experience</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Experience
+                </span>
               </Form.Item>
             </Col>
           </Row>
@@ -184,7 +214,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">About</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span>About
+            </span>
           </Form.Item>
           <Row gutter={24}>
             <Col span={12}>
@@ -195,11 +227,19 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                   placeholder="Enter Timing (e.g., Mon-Fri 9AM-5PM)"
                   required
                 />
-                <span className="create-campaign-input-span">Timing</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Timing
+                </span>
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Clinic Type">
+              <Form.Item
+                label={
+                  <span>
+                    Clinic Type <span style={{ color: "red" }}>*</span>
+                  </span>
+                }
+              >
                 <div className="radio-group-container">
                   <Radio.Group
                     onChange={(e) => setClinicType(e.target.value)}
@@ -219,7 +259,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               placeholder="Enter Address"
               required
             />
-            <span className="create-campaign-input-span">Address</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Address
+            </span>
           </Form.Item>
           <Form.Item>
             <Upload
@@ -262,7 +304,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                 </Button>
               </div>
             )}
-            <span className="create-campaign-input-span">Image</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Image
+            </span>
           </Form.Item>
         </Form>
       </Modal>
@@ -271,6 +315,3 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
 };
 
 export default AddOutstationClinic;
-
-
-

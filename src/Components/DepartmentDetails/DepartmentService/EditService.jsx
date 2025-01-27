@@ -48,7 +48,10 @@ const EditService = ({ open, handleCancel, serviceData }) => {
       formData.append("thumbnail", thumbnailImage);
       formData.append("content", content);
 
-      const response = await Instance.put(`/depcat/service/${serviceData._id}`, formData);
+      const response = await Instance.put(
+        `/depcat/service/${serviceData._id}`,
+        formData
+      );
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
 
@@ -82,7 +85,9 @@ const EditService = ({ open, handleCancel, serviceData }) => {
       <Modal
         visible={open}
         title={
-          <span className="create-campaign-modal-title">Edit Department Services</span>
+          <span className="create-campaign-modal-title">
+            Edit Department Services
+          </span>
         }
         onCancel={handleCancel}
         width={680}
@@ -112,7 +117,9 @@ const EditService = ({ open, handleCancel, serviceData }) => {
               placeholder="Add Heading"
               required
             />
-            <span className="create-campaign-input-span">heading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Heading
+            </span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -121,7 +128,9 @@ const EditService = ({ open, handleCancel, serviceData }) => {
               placeholder="sub Heading"
               required
             />
-            <span className="create-campaign-input-span">sub Heading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Sub Heading
+            </span>
           </Form.Item>
           <div className="row">
             <div className="col-lg-12">
@@ -169,7 +178,7 @@ const EditService = ({ open, handleCancel, serviceData }) => {
                   </div>
                 )}
                 <span className="create-campaign-input-span">
-                  Thumbnail Image
+                  <span style={{ color: "red" }}>*</span> Thumbnail Image
                 </span>
               </Form.Item>
             </div>
@@ -183,7 +192,9 @@ const EditService = ({ open, handleCancel, serviceData }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Content
+            </span>
           </Form.Item>
         </Form>
       </Modal>

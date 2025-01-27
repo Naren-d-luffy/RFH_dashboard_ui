@@ -30,7 +30,7 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
-//   console.log("blogData", blogData);
+  //   console.log("blogData", blogData);
   useEffect(() => {
     if (open && blogData) {
       setHeading(blogData.heading || "");
@@ -135,7 +135,9 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
               placeholder="Add heading"
               required
             />
-            <span className="create-campaign-input-span">heading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Heading
+            </span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -144,7 +146,9 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
               placeholder="Sub Heading"
               required
             />
-            <span className="create-campaign-input-span">Sub Heading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span>Sub Heading
+            </span>
           </Form.Item>
           <div className="row">
             <div className="col-lg-6">
@@ -193,7 +197,9 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Header Image</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Header Image
+                </span>
               </Form.Item>
             </div>
             <div className="col-lg-6">
@@ -243,7 +249,7 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
                   </div>
                 )}
                 <span className="create-campaign-input-span">
-                  Thumbnail Image
+                  <span style={{ color: "red" }}>*</span> Thumbnail Image
                 </span>
               </Form.Item>
             </div>
@@ -258,7 +264,9 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content Points</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Content Points
+            </span>
           </Form.Item>
         </Form>
       </Modal>

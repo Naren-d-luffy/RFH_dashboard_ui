@@ -127,22 +127,28 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
           </Button>,
         ]}
       >
-        <Form layout="vertical">
-          <Form.Item label="Title">
+        <Form layout="vertical" className="mt-4">
+          <Form.Item>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Add Title"
               required
             />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Title
+            </span>
           </Form.Item>
-          <Form.Item label="Subtitle">
+          <Form.Item>
             <Input
               value={subtitle}
               onChange={(e) => setSubtitle(e.target.value)}
               placeholder="Add Subtitle"
               required
             />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Subtitle
+            </span>
           </Form.Item>
           {/* <Form.Item label="Description">
             <TextArea
@@ -152,7 +158,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
               required
             />
           </Form.Item> */}
-          <Form.Item label="Description">
+          <Form.Item>
             <ReactQuill
               theme="snow"
               modules={modules}
@@ -161,8 +167,11 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
               placeholder="Your text goes here"
               required
             />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Description
+            </span>
           </Form.Item>
-          <Form.Item label="Thumbnail">
+          <Form.Item>
             <Upload
               listType="picture"
               showUploadList={false}
@@ -206,6 +215,9 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
                 </Button>
               </div>
             )}
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Thumbnail Image
+            </span>
           </Form.Item>
 
           <Button
