@@ -284,6 +284,7 @@ body,
 .ant-input-outlined:focus-within,
 .ant-input-outlined:hover {
   border-color: var(--primary-green) !important;
+  background-color: var(--model-background-color);
 }
 
 .readOnly-disabled-bg:disabled {
@@ -384,7 +385,7 @@ body,
   margin-top: 24px;
   font-size: 35px;
   font-weight: bold;
-  color: #2d3748;
+  color: var(--black-color);
 }
 
 .coming-soon-text {
