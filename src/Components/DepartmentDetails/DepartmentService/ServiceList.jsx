@@ -222,7 +222,7 @@ const ServiceList = () => {
           <div className="mt-4">
             <Slider {...sliderSettings} key={servicesList?.length}>
               {servicesList && servicesList.length > 0 ? (
-                servicesList.map((service, index) =>
+                servicesList?.map((service, index) =>
                   renderServiceCard(service, index)
                 )
               ) : (

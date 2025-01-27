@@ -26,7 +26,7 @@ import ViewOutstationClinic from "./ViewOutstationClinic";
 import { useNavigate } from "react-router-dom";
 
 const OutstationClinicList = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -237,7 +237,7 @@ const OutstationClinicList = () => {
           <div className="mt-3">
             <Slider {...sliderSettings} key={clinics?.length}>
               {clinics && clinics.length > 0 ? (
-                clinics.map((clinic) => renderClinicCard(clinic))
+                clinics?.map((clinic) => renderClinicCard(clinic))
               ) : (
                 <p>No data available</p>
               )}

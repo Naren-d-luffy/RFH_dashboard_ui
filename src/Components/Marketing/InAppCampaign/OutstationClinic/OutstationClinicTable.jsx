@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import { Table} from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
@@ -32,7 +31,6 @@ const OutstationClinicTable = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const EventData = useSelector((state) => state.clinics.clinics);
-  console.log(EventData, "Eventdata");
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
@@ -101,8 +99,7 @@ const OutstationClinicTable = () => {
       title: "Name",
       dataIndex: "name",
       className: "campaign-performance-table-column",
-      sorter: (a, b) => a.name.localeCompare(b.name), // Sorting based on the title alphabetically
-
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     // {
     //   title: "About",
@@ -124,14 +121,14 @@ const OutstationClinicTable = () => {
       title: "Rating",
       dataIndex: "rating",
       className: "campaign-performance-table-column",
-      sorter: (a, b) => a.rating - b.rating, // Sorting numerically by likes
+      sorter: (a, b) => a.rating - b.rating, 
 
     },
     {
       title: "Reviews",
       dataIndex: "reviews",
       className: "campaign-performance-table-column",
-      sorter: (a, b) => a.reviews - b.reviews, // Sorting numerically by likes
+      sorter: (a, b) => a.reviews - b.reviews, 
     },
     {
       title: "Location",
@@ -143,7 +140,7 @@ const OutstationClinicTable = () => {
       title: "Patients",
       dataIndex: "patients",
       className: "campaign-performance-table-column",
-      sorter: (a, b) => a.patients - b.patients, // Sorting numerically by likes
+      sorter: (a, b) => a.patients - b.patients, 
     },
     {
       title: "Experience",
@@ -215,7 +212,7 @@ const OutstationClinicTable = () => {
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>OutstationClinic Info</h3>
+              <h3>Outstation/Speciality Clinic Info</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button

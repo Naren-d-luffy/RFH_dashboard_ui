@@ -200,7 +200,7 @@ export const RecommendedVideosList = () => {
           <div className="mt-4">
             <Slider {...sliderSettings} key={recommendedvideos?.length}>
               {recommendedvideos && recommendedvideos.length > 0 ? (
-                recommendedvideos.map((video) => renderRecommendVideo(video))
+                recommendedvideos?.map((video) => renderRecommendVideo(video))
               ) : (
                 <p>No data available</p>
               )}

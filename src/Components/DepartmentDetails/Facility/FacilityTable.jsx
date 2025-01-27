@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import { Table, } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png";
 import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
@@ -52,16 +51,6 @@ const FacilityTable = () => {
     return words.length > wordLimit
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
-  };
-
-  const truncateHTML = (htmlContent, wordLimit) => {
-    if (!htmlContent) return "";
-    const sanitizedContent = DOMPurify.sanitize(htmlContent);
-    const textContent = sanitizedContent.replace(/<[^>]*>/g, "");
-    const words = textContent.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : textContent;
   };
 
   const handleDeleteFacility = (_id) => {

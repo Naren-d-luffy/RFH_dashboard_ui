@@ -18,7 +18,6 @@ const { Option } = Select;
 const AddEventsList = ({ open, handleCancel }) => {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
-  const [order, setOrder] = useState("");
   const [description, setDescription] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [isLoading, setIsLoading] = useState(false);

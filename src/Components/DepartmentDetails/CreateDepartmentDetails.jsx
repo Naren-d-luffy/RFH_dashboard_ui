@@ -18,7 +18,6 @@ const modules = {
     ["clean"],
   ],
 };
-const { TextArea } = Input;
 const CreateDepartmentDetails = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -68,7 +67,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
         requestData.append("thumbnail", uploadedImage);
       }
 
-      const formattedSuccessStories = successStories.map((story) => ({
+      const formattedSuccessStories = successStories?.map((story) => ({
         video_thumbnail_url: story.video_thumbnail_url,
         title: story.title,
         views: parseInt(story.views),
@@ -127,22 +126,28 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
           </Button>,
         ]}
       >
-        <Form layout="vertical">
-          <Form.Item label="Title">
+        <Form layout="vertical" className="mt-4">
+          <Form.Item>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Add Title"
               required
             />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Title
+            </span>
           </Form.Item>
-          <Form.Item label="Subtitle">
+          <Form.Item>
             <Input
               value={subtitle}
               onChange={(e) => setSubtitle(e.target.value)}
               placeholder="Add Subtitle"
               required
             />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Subtitle
+            </span>
           </Form.Item>
           {/* <Form.Item label="Description">
             <TextArea
@@ -152,7 +157,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
               required
             />
           </Form.Item> */}
-          <Form.Item label="Description">
+          <Form.Item>
             <ReactQuill
               theme="snow"
               modules={modules}
@@ -161,8 +166,11 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
               placeholder="Your text goes here"
               required
             />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Description
+            </span>
           </Form.Item>
-          <Form.Item label="Thumbnail">
+          <Form.Item>
             <Upload
               listType="picture"
               showUploadList={false}
@@ -206,6 +214,9 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
                 </Button>
               </div>
             )}
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Thumbnail Image
+            </span>
           </Form.Item>
 
           <Button
@@ -215,7 +226,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
           >
             Add Success Stories
           </Button>
-          {successStories.map((story, index) => (
+          {successStories?.map((story, index) => (
             <div key={index}>
               <h5>Success Story {index + 1}</h5>
               <Row gutter={16}>

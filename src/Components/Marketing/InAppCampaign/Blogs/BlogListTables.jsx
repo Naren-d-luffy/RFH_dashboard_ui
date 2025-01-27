@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import { Table, } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
@@ -13,7 +12,7 @@ import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
 import DOMPurify from "dompurify";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AddBlogs from "./AddBlogs";
 import EditBlogs from "./EditBlog";
 import ViewBlog from "./ViewBlog";
@@ -25,7 +24,7 @@ const BlogsTable = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-  const [totalRows, setTotalRows] = useState(0);
+  const [totalRows] = useState(0);
   const [selectedBlog, setSelectedBlog] = useState(null);
 
   const BlogsList = useSelector((state) => state.blog.blogs || []);
@@ -171,28 +170,6 @@ const BlogsTable = () => {
     },
   ];
 
-//   const items = [
-//     {
-//       label: "Last Day",
-//       key: "1",
-//     },
-//     {
-//       label: "Last week",
-//       key: "2",
-//     },
-//     {
-//       label: "Last Month",
-//       key: "3",
-//     },
-//   ];
-
-//   const handleMenuClick = ({ key }) => {};
-
-//   const menuProps = {
-//     items,
-//     onClick: handleMenuClick,
-//   };
-
   return (
     <div className="container mt-1">
       {isLoading ? (
@@ -225,17 +202,6 @@ const BlogsTable = () => {
                   onChange={(e) => setSearchText(e.target.value)}
                 />
               </div>
-
-              {/* <div className="d-flex gap-2">
-                <Dropdown menu={menuProps}>
-                  <Button>
-                    <Space>
-                      Sort By
-                      <BiSortAlt2 />
-                    </Space>
-                  </Button>
-                </Dropdown>
-              </div> */}
             </div>
             <div className="mt-3">
               <Table

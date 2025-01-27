@@ -496,7 +496,7 @@
 .slick-prev {
   font-size: 0 !important;
   cursor: pointer;
-  color: var(--white-color) !important;
+  color: var(--black-color) !important;
   background-color: var(--background-color) !important;
   border-radius: 50%;
   opacity: 2;
@@ -505,18 +505,26 @@
 .slick-next {
   font-size: 0 !important;
   cursor: pointer;
-  color: var(--white-color) !important;
+  color: var(--black-color) !important;
   background-color: var(--background-color) !important;
   border-radius: 50%;
   opacity: 2;
   right: 0 !important;
 }
-.slick-prev::before {
-  color: var(--background-color);
-}
+/* .slick-prev::before {
+  color: var(--black-color) !important;
+} */
 .slick-prev:hover,
 .slick-next:hover {
-  background-color: var(--primary-green) !important;
+  background-color: var(--white-color) !important;
+  color: var(--primary-green) !important;
+}
+.slick-next:before,
+.slick-prev::before {
+  font-family: 'slick';
+  font-size: 20px;
+  line-height: 1;
+  opacity: .5;
   color: var(--primary-green) !important;
 }
 .recommend-video-card {

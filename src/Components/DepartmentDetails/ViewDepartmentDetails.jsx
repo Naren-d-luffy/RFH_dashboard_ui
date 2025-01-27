@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal } from "antd";
-import { GrLocation } from "react-icons/gr";
 import DOMPurify from "dompurify";
 import { FaEye, FaInfoCircle } from "react-icons/fa";
 import ReactPlayer from "react-player";
@@ -9,7 +8,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
-  const [photo, setPhoto] = useState(null);
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
@@ -24,7 +22,7 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
       const uniqueVideos = departmentData.success_stories
         ? Array.from(
             new Map(
-              departmentData.success_stories.map((video) => [
+              departmentData.success_stories?.map((video) => [
                 video.video_thumbnail_url,
                 video,
               ])
@@ -125,8 +123,8 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
         <h2 className="specialist-heading-name">Our Success Stories</h2>
         <div className="row mt-2">
           <Slider {...sliderSettings}>
-            {videoList.length > 0 ? (
-              videoList.map((video, index) => renderVideoCard(video, index))
+            {videoList?.length > 0 ? (
+              videoList?.map((video, index) => renderVideoCard(video, index))
             ) : (
               <div style={{ padding: "20px", textAlign: "center" }}>
                 <p>No success stories available</p>
