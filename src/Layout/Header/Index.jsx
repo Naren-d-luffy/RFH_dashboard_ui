@@ -174,7 +174,7 @@ const HeaderAdmin = () => {
                   letterSpacing: "0.5px",
                 }}
               >
-                {parsedUserInfo.name}
+                {parsedUserInfo?.name}
               </span>
             </div>
 

@@ -43,7 +43,7 @@ label {
   font-size: 14px;
 }
 
-input:focus {
+.signin-input:focus {
   outline: none;
   border: none;
 }

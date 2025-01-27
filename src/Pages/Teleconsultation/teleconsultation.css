@@ -21,6 +21,10 @@
   letter-spacing: 0.5px;
   border: 1px solid var(--border-color);
 }
+.search-input-table:focus-visible{
+  border: 1px solid var(--border-color);
+  outline: none;
+}
 .table-card-list {
   font-size: 26px;
   font-weight: 600;

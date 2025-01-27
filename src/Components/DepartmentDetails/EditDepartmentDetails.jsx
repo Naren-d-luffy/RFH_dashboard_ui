@@ -7,7 +7,17 @@ import { Instance } from "../../AxiosConfig";
 import { editDepartment } from "../../Features/DepartmentSlice";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import Loader from "../../Loader";
-
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+const modules = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["bold", "italic"],
+    ["link", "image"],
+    ["clean"],
+  ],
+};
 const { TextArea } = Input;
 
 const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
@@ -162,11 +172,14 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
               required
             />
           </Form.Item>
+
           <Form.Item label="Description">
-            <TextArea
+            <ReactQuill
+              theme="snow"
+              modules={modules}
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Add Description"
+              onChange={setDescription}
+              placeholder="Your text goes here"
               required
             />
           </Form.Item>
