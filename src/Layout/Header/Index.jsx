@@ -8,13 +8,12 @@ import { useDarkMode } from "../../DarkMode";
 import { showLogoutMessage } from "../../globalConstant";
 import { allAdminRoutes } from "./allAdminRoutes";
 import { Switch, message, List } from "antd";
+import { useSelector } from "react-redux";
 
 const HeaderAdmin = () => {
   const navigate = useNavigate();
-  const userInfo = localStorage.getItem("userInfo");
-  const parsedUserInfo = JSON.parse(userInfo);
+  const profileData = useSelector((state) => state.settingsprofile.settingsprofile);
   const dropdownRef = useRef(null);
-
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [searchQuery, setSearchQuery] = useState("");
@@ -161,8 +160,8 @@ const HeaderAdmin = () => {
             >
               <img
                 className="profile--icon"
-                src={parsedUserInfo?.profile || DefaultUser}
-                alt="User Profile"
+                src={profileData?.profile || DefaultUser}
+                alt="Profile"
               />
             </button>
             <div className="user-info">
@@ -174,7 +173,7 @@ const HeaderAdmin = () => {
                   letterSpacing: "0.5px",
                 }}
               >
-                {parsedUserInfo?.name}
+                {profileData?.name}
               </span>
             </div>
 

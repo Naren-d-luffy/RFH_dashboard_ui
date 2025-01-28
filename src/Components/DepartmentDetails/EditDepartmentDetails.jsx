@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, message, Row, Col, Upload } from "antd";
+import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { showSuccessMessage } from "../../globalConstant";
@@ -18,7 +18,7 @@ const modules = {
     ["clean"],
   ],
 };
-const { TextArea } = Input;
+// const { TextArea } = Input;
 
 const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -28,30 +28,30 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   const [description, setDescription] = useState("");
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
 
-  const [successStories, setSuccessStories] = useState([]);
+  // const [successStories, setSuccessStories] = useState([]);
   const dispatch = useDispatch();
 
-  const handleAddSuccessStory = () => {
-    setSuccessStories([
-      ...successStories,
-      { title: "", views: 0, video_thumbnail_url: "" },
-    ]);
-  };
+  // const handleAddSuccessStory = () => {
+  //   setSuccessStories([
+  //     ...successStories,
+  //     { title: "", views: 0, video_thumbnail_url: "" },
+  //   ]);
+  // };
 
-  const handleSuccessStoryChange = (index, field, value) => {
-    const updatedStories = [...successStories];
+  // const handleSuccessStoryChange = (index, field, value) => {
+  //   const updatedStories = [...successStories];
 
-    updatedStories[index] = {
-      ...updatedStories[index],
-      [field]: value,
-    };
+  //   updatedStories[index] = {
+  //     ...updatedStories[index],
+  //     [field]: value,
+  //   };
 
-    setSuccessStories(updatedStories);
-  };
+  //   setSuccessStories(updatedStories);
+  // };
 
-  const handleDeleteSuccessStory = (index) => {
-    setSuccessStories(successStories.filter((_, i) => i !== index));
-  };
+  // const handleDeleteSuccessStory = (index) => {
+  //   setSuccessStories(successStories.filter((_, i) => i !== index));
+  // };
 
   useEffect(() => {
     if (departmentData) {
@@ -61,15 +61,15 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
       if (departmentData.thumbnail) {
         setImagePreviewUrl(departmentData.thumbnail);
       }
-      if (Array.isArray(departmentData.success_stories)) {
-        setSuccessStories(
-          departmentData.success_stories?.map((story) => ({
-            title: story.title || "",
-            views: story.views || 0,
-            video_thumbnail_url: story.video_thumbnail_url || "",
-          }))
-        );
-      }
+      // if (Array.isArray(departmentData.success_stories)) {
+      //   setSuccessStories(
+      //     departmentData.success_stories?.map((story) => ({
+      //       title: story.title || "",
+      //       views: story.views || 0,
+      //       video_thumbnail_url: story.video_thumbnail_url || "",
+      //     }))
+      //   );
+      // }
     }
   }, [departmentData]);
 
@@ -84,16 +84,16 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
         requestData.append("thumbnail", uploadedImage);
       }
 
-      const formattedSuccessStories = successStories?.map((story) => ({
-        video_thumbnail_url: story.video_thumbnail_url,
-        title: story.title,
-        views: parseInt(story.views),
-      }));
+      // const formattedSuccessStories = successStories?.map((story) => ({
+      //   video_thumbnail_url: story.video_thumbnail_url,
+      //   title: story.title,
+      //   views: parseInt(story.views),
+      // }));
 
-      requestData.append(
-        "success_stories",
-        JSON.stringify(formattedSuccessStories)
-      );
+      // requestData.append(
+      //   "success_stories",
+      //   JSON.stringify(formattedSuccessStories)
+      // );
       const response = await Instance.put(
         `/department/${departmentData._id}`,
         requestData,
@@ -123,7 +123,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
     setTitle("");
     setSubtitle("");
     setDescription("");
-    setSuccessStories([]);
+    // setSuccessStories([]);
     setUploadedImage(null);
   };
 
@@ -209,7 +209,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline />
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>
@@ -251,7 +251,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
             </span>
           </Form.Item>
 
-          <Button
+          {/* <Button
             onClick={handleAddSuccessStory}
             className="create-campaign-cancel-button"
             style={{ marginBottom: "20px" }}
@@ -313,7 +313,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 Delete Success Story
               </Button>
             </div>
-          ))}
+          ))} */}
         </Form>
       </Modal>
     </>

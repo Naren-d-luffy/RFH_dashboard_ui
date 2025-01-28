@@ -155,7 +155,7 @@ const AddBlogs = ({ open, handleCancel }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
+                    <IoCloudUploadOutline className="image-upload-icon" />{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
@@ -202,7 +202,7 @@ const AddBlogs = ({ open, handleCancel }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
+                    <IoCloudUploadOutline className="image-upload-icon" />{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
@@ -235,7 +235,6 @@ const AddBlogs = ({ open, handleCancel }) => {
                 <span className="create-campaign-input-span">
                   <span style={{ color: "red" }}>*</span>Thumbnail Image
                 </span>
-              
               </Form.Item>
             </div>
           </div>

@@ -70,7 +70,6 @@ const OutstationClinicTable = () => {
       const response = await Instance.get(`/discover/clinic`, {
         params: { page, limit: itemsPerPage }
       });
-      console.log(response.data);
       dispatch(setOutstationClinic(response.data));
       setOutstationClinic(response.data || []);
       setTotalRows(response.data || 0);

@@ -28,7 +28,7 @@ export const InAppCampaigncards = () => {
     },
     {
       title: "Total Clicks",
-      value: "22,500",
+      value: "250",
       percentage: "340",
       description: "Users",
       icon: <img src={clickicon} alt="Click Icon" style={{ width: "20px" }} />,

@@ -31,8 +31,8 @@ const AddTermsModal = ({ visible, onClose }) => {
     }
   };
   const handleClose = () => {
-    form.resetFields(); // Reset form fields
-    onClose(); // Close the modal
+    form.resetFields(); 
+    onClose();
   };
   return (
     <>

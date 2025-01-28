@@ -4,18 +4,15 @@ import { Instance } from "../../AxiosConfig";
 import { FiEdit } from "react-icons/fi";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  editHospital,
-  setHospitalData,
-} from "../../Features/AboutHospitalSlice";
+import { useDispatch } from "react-redux";
+import { setHospitalData } from "../../Features/AboutHospitalSlice";
 import Loader from "../../Loader";
 const AboutHospital = () => {
   const [hospital, setHospital] = useState({});
   const [file, setFile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [thumbnailImage, setThumbnailImage] = useState(null);
-  const [isChanged, setIsChanged] = useState(false);
+  const [, setIsChanged] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
@@ -81,7 +78,8 @@ const AboutHospital = () => {
           },
         }
       );
-      console.log("edit", response);
+      console.log(response);
+      
       // dispatch(editHospital(response.data.data))
       message.success("Hospital data saved successfully");
       fetchHospital();
@@ -117,7 +115,7 @@ const AboutHospital = () => {
             </button>
           </div>
         </div>
-        <hr style={{color:"var(--black-color)"}} />
+        <hr style={{ color: "var(--black-color)" }} />
         <div className="hospital-section mt-4">
           <div className="d-flex justify-content-between">
             <h3 style={{ color: "var(--primary-green)" }}>Basic Information</h3>
@@ -161,7 +159,7 @@ const AboutHospital = () => {
             </div>
           </div>
 
-          <hr style={{color:"var(--black-color)"}} />
+          <hr style={{ color: "var(--black-color)" }} />
           <h3 style={{ color: "var(--primary-green)" }}>Overview</h3>
           <div className="hospital-profile-description">
             <h4>Short Description</h4>
@@ -171,7 +169,7 @@ const AboutHospital = () => {
             <h4> Description</h4>
             <p>{hospital.description}</p>
           </div>
-          <hr style={{color:"var(--black-color)"}} />
+          <hr style={{ color: "var(--black-color)" }} />
           <h3 style={{ color: "var(--primary-green)" }}>History</h3>
           <div className="hospital-profile-description">
             <p>{hospital.history}</p>
@@ -180,7 +178,11 @@ const AboutHospital = () => {
 
         <Modal
           width={600}
-          title="Edit Hospital Information"
+          title={
+            <span className="create-campaign-modal-title">
+              Edit Hospital Information
+            </span>
+          }
           open={isModalOpen}
           onCancel={handleCancel}
           footer={[
@@ -214,7 +216,7 @@ const AboutHospital = () => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />
+                    <IoCloudUploadOutline className="image-upload-icon" />{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>

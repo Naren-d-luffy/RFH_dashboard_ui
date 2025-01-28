@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' 
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
@@ -45,7 +45,16 @@ jobs:
         with:
           name: react-app-build
 
-      # Step 2: SSH into the server and prepare the deployment directory
+      # Step 2: Setup SSH key and known hosts
+      - name: Add SSH Key
+        run: |
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+      - name: Add Server to Known Hosts
+        run: ssh-keyscan -H ${{ secrets.VM_IP }} >> ~/.ssh/known_hosts
+
+      # Step 3: Prepare Deployment Directory
       - name: Prepare Deployment Directory
         uses: appleboy/ssh-action@v0.1.7
         with:
@@ -55,14 +64,15 @@ jobs:
           port: 22
           script: |
             sudo rm -rf /var/www/react-app/*
-            mkdir -p /var/www/react-app
+            sudo mkdir -p /var/www/react-app
+            sudo chown -R $USER:$USER /var/www/react-app
 
-      # Step 3: Copy build files to the server
+      # Step 4: Upload Build Files
       - name: Upload Build Files
         run: |
-          scp -i /path/to/private-key.pem -r build/* ${{ secrets.VM_USER }}@${{ secrets.VM_IP }}:/var/www/react-app
+          scp -i ~/.ssh/deploy_key -r react-app-build/* ${{ secrets.VM_USER }}@${{ secrets.VM_IP }}:/var/www/react-app
 
-      # Step 4: Restart NGINX to serve the new build
+      # Step 5: Restart NGINX
       - name: Restart NGINX
         uses: appleboy/ssh-action@v0.1.7
         with:
@@ -72,4 +82,4 @@ jobs:
           port: 22
           script: |
             sudo systemctl restart nginx
-            sudo systemctl status nginx
+            sleep 5

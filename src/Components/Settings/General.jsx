@@ -9,10 +9,10 @@ const { Option } = Select;
 export const General = () => {
   const [form] = Form.useForm();
   const [previewImage, setPreviewImage] = useState(DefaultUser); 
-  const [profileImage, setProfileImage] = useState(null); 
+  const [, setProfileImage] = useState(null); 
 
 
-  const handleUploadChange = ({ file, fileList }) => {
+  const handleUploadChange = ({ file }) => {
     if (file.status === "done" && file.originFileObj) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -60,7 +60,6 @@ export const General = () => {
             </div>
           </div>
 
-          {/* Form for hospital details */}
           <div className="row mt-4">
             <div className="col-md-6 mt-4">
               <Form.Item>
@@ -84,7 +83,6 @@ export const General = () => {
             </div>
           </div>
 
-          {/* Form for address details */}
           <hr className="line-tag" />
           <h3 className="address-title">Address</h3>
           <div className="row">
@@ -122,7 +120,6 @@ export const General = () => {
             </div>
           </div>
 
-          {/* Submit and cancel buttons */}
           <div className="row mt-4">
             <div className="d-flex justify-content-end gap-2">
               <button className="settings-delete-button" type="button">

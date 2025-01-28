@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Form, Select } from "antd";
+import { Form } from "antd";
 import lightmode from "../../Assets/Images/lightmode.png";
 import darkmode from "../../Assets/Images/darkmode.png";
-
 import "react-international-phone/style.css";
 import { useDarkMode } from "../../DarkMode";
 

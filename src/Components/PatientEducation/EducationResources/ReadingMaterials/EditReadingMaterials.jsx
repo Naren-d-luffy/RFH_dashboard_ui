@@ -155,8 +155,8 @@ const EditReadingMaterials = ({ open, handleCancel,readingmaterialsData }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
-                    <span style={{ color: "#727880" }}>Upload Image</span>
+                  <IoCloudUploadOutline className="image-upload-icon"/>{" "}
+                  <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
                 {uploadedImage && (
@@ -204,8 +204,8 @@ const EditReadingMaterials = ({ open, handleCancel,readingmaterialsData }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
-                    <span style={{ color: "#727880" }}>Upload Image</span>
+                  <IoCloudUploadOutline className="image-upload-icon"/>{" "}
+                  <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
                 {thumbnailImage && (

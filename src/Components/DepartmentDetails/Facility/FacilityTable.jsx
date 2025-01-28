@@ -8,7 +8,6 @@ import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
-import DOMPurify from "dompurify";
 import { useNavigate } from "react-router-dom";
 import AddFacility from "./AddFacility";
 import EditFacility from "./EditFacility";
