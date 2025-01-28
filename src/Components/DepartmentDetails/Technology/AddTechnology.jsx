@@ -142,7 +142,7 @@ const AddTechnology = ({ open, handleCancel }) => {
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
                   </p>
-                  <IoCloudUploadOutline />{" "}
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                   <span style={{ color: "#727880" }}>Upload Thumbnail</span>
                 </Upload>
                 {thumbnailImage && (

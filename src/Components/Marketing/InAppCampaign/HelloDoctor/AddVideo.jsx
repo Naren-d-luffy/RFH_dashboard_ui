@@ -9,7 +9,7 @@ import { addHelloDoctorVideos } from "../../../../Features/HelloDoctorSlice";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 
-const AddVideo = ({ open, handleCancel, refreshList }) => {
+const AddVideo = ({ open, handleCancel }) => {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);

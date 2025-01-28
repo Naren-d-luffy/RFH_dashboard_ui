@@ -26,7 +26,7 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
-  const [uploadedImage, setUploadedImage] = useState(null);
+  const [, setUploadedImage] = useState(null);
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -149,7 +149,7 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
                   </p>
-                  <IoCloudUploadOutline />{" "}
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                   <span style={{ color: "#727880" }}>Upload Thumbnail</span>
                 </Upload>
                 {thumbnailImage && (

@@ -9,12 +9,12 @@ import Loader from "../../../Loader";
 import { useSelector,useDispatch } from "react-redux";
 import { deleteTerm, setTerms } from "../../../Features/TermsSlice";
 export const TermsAndConditionsList = () => {
-  const [termsList, setTermsList] = useState([]);
+  const [, setTermsList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [showModal, setShowModal] = useState(false); // State for modal visibility
+  const [, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false); 
   const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedClause, setSelectedClause] = useState(null); // State for the clause being edited
+  const [selectedClause, setSelectedClause] = useState(null);
   const handleEditClause = (clause) => {
     setSelectedClause(clause);
     setShowEditModal(true);
@@ -26,7 +26,6 @@ export const TermsAndConditionsList = () => {
       setLoading(true);
       try {
         const response = await Instance.get("/terms");
-        // console.log("response", response);
         dispatch(setTerms(response.data))
         setTermsList(response.data);
         setError(null);
@@ -48,7 +47,6 @@ export const TermsAndConditionsList = () => {
         try {
           setLoading(true);
           const response = await Instance.delete(`/terms/${clauseId}`);
-          console.log(response);
           if (response.status === 201 || response.status) {
             dispatch(deleteTerm(clauseId))
             showSuccessMessage("Clause deleted successfully.");

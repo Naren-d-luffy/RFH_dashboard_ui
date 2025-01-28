@@ -29,13 +29,13 @@ const DepartmentDetailsList = () => {
   const [totalRows, setTotalRows] = useState(0);
   const departments = useSelector((state) => state.department.departments);
 
-  const truncateText = (text, wordLimit = 15) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
+  // const truncateText = (text, wordLimit = 15) => {
+  //   if (!text) return "";
+  //   const words = text.split(" ");
+  //   return words.length > wordLimit
+  //     ? words.slice(0, wordLimit).join(" ") + "..."
+  //     : text;
+  // };
   const truncateHTML = (htmlContent, wordLimit) => {
     if (!htmlContent) return "";
     const sanitizedContent = DOMPurify.sanitize(htmlContent);
@@ -97,7 +97,7 @@ const DepartmentDetailsList = () => {
     });
   };
 
-  const fetchDepartmentList = async (page) => {
+  const fetchDepartmentList = async () => {
     setIsLoading(true);
 
     try {

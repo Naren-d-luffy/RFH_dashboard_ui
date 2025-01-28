@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, message, Row, Col, Upload } from "antd";
+import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { Instance } from "../../AxiosConfig";
@@ -24,37 +24,37 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [successStories, setSuccessStories] = useState([]);
+  // const [successStories, setSuccessStories] = useState([]);
   const dispatch = useDispatch();
 
-  const handleAddSuccessStory = () => {
-    setSuccessStories([
-      ...successStories,
-      {
-        title: "",
-        views: 0,
-        video_thumbnail_url: "",
-      },
-    ]);
-  };
+  // const handleAddSuccessStory = () => {
+  //   setSuccessStories([
+  //     ...successStories,
+  //     {
+  //       title: "",
+  //       views: 0,
+  //       video_thumbnail_url: "",
+  //     },
+  //   ]);
+  // };
   const resetForm = () => {
     setUploadedImage(null);
     setTitle("");
     setSubtitle("");
     setDescription("");
 
-    setSuccessStories([]);
+    // setSuccessStories([]);
   };
 
-  const handleSuccessStoryChange = (index, field, value) => {
-    const updatedStories = [...successStories];
-    updatedStories[index][field] = value;
-    setSuccessStories(updatedStories);
-  };
+  // const handleSuccessStoryChange = (index, field, value) => {
+  //   const updatedStories = [...successStories];
+  //   updatedStories[index][field] = value;
+  //   setSuccessStories(updatedStories);
+  // };
 
-  const handleDeleteSuccessStory = (index) => {
-    setSuccessStories(successStories.filter((_, i) => i !== index));
-  };
+  // const handleDeleteSuccessStory = (index) => {
+  //   setSuccessStories(successStories.filter((_, i) => i !== index));
+  // };
 
   const handleSave = async () => {
     setIsLoading(true);
@@ -67,16 +67,16 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
         requestData.append("thumbnail", uploadedImage);
       }
 
-      const formattedSuccessStories = successStories?.map((story) => ({
-        video_thumbnail_url: story.video_thumbnail_url,
-        title: story.title,
-        views: parseInt(story.views),
-      }));
+      // const formattedSuccessStories = successStories?.map((story) => ({
+      //   video_thumbnail_url: story.video_thumbnail_url,
+      //   title: story.title,
+      //   views: parseInt(story.views),
+      // }));
 
-      requestData.append(
-        "success_stories",
-        JSON.stringify(formattedSuccessStories)
-      );
+      // requestData.append(
+      //   "success_stories",
+      //   JSON.stringify(formattedSuccessStories)
+      // );
       const response = await Instance.post("/department", requestData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -184,7 +184,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline />
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>
@@ -218,7 +218,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
               <span style={{ color: "red" }}>*</span> Thumbnail Image
             </span>
           </Form.Item>
-
+{/* 
           <Button
             onClick={handleAddSuccessStory}
             className="create-campaign-cancel-button"
@@ -276,7 +276,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
                 Delete Success Story
               </Button>
             </div>
-          ))}
+          ))} */}
         </Form>
       </Modal>
     </>
