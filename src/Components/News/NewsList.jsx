@@ -76,7 +76,7 @@ const NewsList = () => {
       const response = await Instance.get(`/cards`, {
         params: { page, limit: itemsPerPage },
       });
-      // console.log("cccccc",response);
+      console.log("cccccc",response);
       
       setNewsList(response.data.data || []);
       setTotalRows(response.data.data.length);

@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Modal } from "antd";
 import "react-quill/dist/quill.snow.css";
-import Loader from "../../../../Loader";
 
 const ViewTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
-  const [isLoading, setIsLoading] = useState(false);
   return (
     <>
-      {isLoading && <Loader />}
+     
       <Modal
         visible={open}
         onCancel={handleCancel}

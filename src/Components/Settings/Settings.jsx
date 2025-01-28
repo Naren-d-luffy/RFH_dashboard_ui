@@ -13,7 +13,7 @@ import { FiTool } from "react-icons/fi";
 import AllConfigList from "./Config/AllConfigList";
 
 export const Settings = () => {
-  const [selectedOption, setSelectedOption] = useState("general");
+  const [selectedOption, setSelectedOption] = useState("account");
   const renderContent = () => {
     switch (selectedOption) {
       // case "general":
