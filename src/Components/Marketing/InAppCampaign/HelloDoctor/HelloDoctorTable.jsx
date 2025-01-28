@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table } from "antd";
 import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
@@ -73,7 +73,7 @@ const HelloDoctorTable = () => {
     });
   };
 
-  const fetchHelloDoctorVideoInfo = async (page) => {
+  const fetchHelloDoctorVideoInfo =useCallback(async (page=1) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/videos`, {
@@ -86,11 +86,11 @@ const HelloDoctorTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[itemsPerPage,dispatch]);
 
   useEffect(() => {
     fetchHelloDoctorVideoInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage,fetchHelloDoctorVideoInfo]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return Object.values(EventData);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { GoPlus } from "react-icons/go";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -20,6 +20,7 @@ import {
 import EditFeaturesModal from "./EditFetauredProgram";
 import { deleteFeature, setFeature } from "../../../../Features/FeatureSlice";
 import ViewFeaturedModal from "./ViewFeaturedProgram";
+import Loader from "../../../../Loader";
 
 export const FeaturedProgramsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,10 +29,9 @@ export const FeaturedProgramsList = () => {
   const handleCancel = () => setIsModalOpen(false);
   const showEditModal = () => setIsEditModalOpen(true);
   const handleEditCancel = () => setIsEditModalOpen(false);
-  const [, setIsLoading] = useState(false);
+  const [isLoading,setIsLoading] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [, setFeatureList] = useState([]);
   const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
   const FeaturesData = useSelector((state) => state.features.features);
@@ -103,7 +103,7 @@ export const FeaturedProgramsList = () => {
       },
     });
   };
-  const fetchFeaturesInfo = async (page) => {
+  const fetchFeaturesInfo = useCallback(async (page = 1) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/discover/featuredProgram`, {
@@ -111,18 +111,17 @@ export const FeaturedProgramsList = () => {
         
       });
       dispatch(setFeature(response.data.data));
-      setFeatureList(response.data || []);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching Features:", error);
     } finally {
       setIsLoading(false);
     }
-  };
+  },[dispatch,itemsPerPage]);
 
   useEffect(() => {
     fetchFeaturesInfo();
-  }, []);
+  }, [fetchFeaturesInfo]);
 
   const renderFeatureCard = (feature) => (
     <div className="col-lg-4" key={feature._id}>
@@ -195,6 +194,8 @@ export const FeaturedProgramsList = () => {
   };
 
   return (
+    <>
+    {isLoading && <Loader/>}
     <div className="row mt-4">
       <div className="marketing-categories-section">
         <div className="row mt-4">
@@ -238,5 +239,6 @@ export const FeaturedProgramsList = () => {
         />
       </div>
     </div>
+    </>
   );
 };

@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../Assets/Icons/Empty_survey_image.png";
 import { showDeleteMessage, showSuccessMessage } from "../../globalConstant";
@@ -19,7 +18,6 @@ const NewsList = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewNewsModalOpen, setIsViewNewsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [newsList, setNewsList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedNews, setSelectedNews] = useState({ content: [] });
   const [totalRows, setTotalRows] = useState(0);
@@ -78,7 +76,6 @@ const NewsList = () => {
       });
       console.log("cccccc",response);
       
-      setNewsList(response.data.data || []);
       setTotalRows(response.data.data.length);
       dispatch(setNews(response.data.data));
       setIsLoading(false);

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table, Button } from "antd";
 import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
@@ -31,7 +31,7 @@ const RecommendedVideosTable = () => {
 
   const itemsPerPage = 10;
 
-  const fetchRecommendedVideos = async () => {
+  const fetchRecommendedVideos = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/recommended");
@@ -41,12 +41,11 @@ const RecommendedVideosTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     fetchRecommendedVideos();
-  }, []);
-
+  }, [fetchRecommendedVideos]);
   // const handleDeleteVideo = async (videoId) => {
   //   try {
   //     await Instance.delete(`/recommended/${videoId}`);

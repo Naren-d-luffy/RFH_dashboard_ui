@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -101,22 +101,22 @@ export const LatestCampsList = () => {
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
-  const fetchCampList = async () => {
+  const fetchCampList = useCallback(async () => {
     try {
 
       const response = await Instance.get(`/camp`);
-console.log("camps",response)
+// console.log("camps",response)
       if (response.status === 200 || response.status === 201) {
         dispatch(setCamps(response.data.data));
       }
     } catch (error) {
       console.error("Error fetching camp:", error);
     }
-  };
+  },[dispatch]);
 
   useEffect(() => {
     fetchCampList();
-  }, []);
+  }, [fetchCampList]);
 
   const handleDeleteCamp = (_id) => {
     showDeleteMessage({
@@ -162,6 +162,7 @@ console.log("camps",response)
             <iframe
               src={`https://www.google.com/maps?q=${lat},${lng}&hl=es;z=14&output=embed`}
               allowFullScreen
+              title="camp-location"
               style={{ height: "250px", width: "100%" }}
             ></iframe>
           </div>
