@@ -28,7 +28,6 @@ const EducationCategoriesTreatmentsInfo = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedTreatment, setSelectedTreatment] = useState(null);
-  const [treatmentList, setTreatmentList] = useState([]);
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
   const showEditModal = () => setIsEditModalOpen(true);
@@ -110,7 +109,6 @@ const EducationCategoriesTreatmentsInfo = () => {
         params: { page, limit: itemsPerPage },
       });
       dispatch(setTreatment(response.data.data.educations));
-      setTreatmentList(response.data.educations || []);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching treatments:", error);

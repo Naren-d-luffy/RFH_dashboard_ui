@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, Upload, message } from "antd";
+import { Button, Modal, Form, Input, Upload, message, Select } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -10,6 +10,8 @@ import { showSuccessMessage } from "../../globalConstant";
 import { addNews } from "../../Features/NewsSlice";
 import { useDispatch } from "react-redux";
 import Loader from "../../Loader";
+import { Option } from "antd/es/mentions";
+
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -35,19 +37,15 @@ const CreateNews = ({ open, handleCancel }) => {
     const file = info.file.originFileObj;
     setUploadedImage(file);
   };
-
+  const [type, setType] = useState(""); 
+  const [videoURL, setVideoURL] = useState("");
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
 
   const handleSave = async () => {
     if (
-      !heading ||
-      !subheading ||
-      !content ||
-      !uploadedImage ||
-      !about ||
-      !backgroundColor
+      !heading 
     ) {
       message.error("Please fill in all required fields.");
       return;
@@ -60,6 +58,8 @@ const CreateNews = ({ open, handleCancel }) => {
       formData.append("about", about);
       formData.append("content", content);
       formData.append("backgroundColor", backgroundColor);
+      formData.append("type", type); 
+      formData.append("video_URL", videoURL); 
       if (uploadedImage) {
         formData.append("image", uploadedImage);
       }
@@ -74,6 +74,8 @@ const CreateNews = ({ open, handleCancel }) => {
         setContent("");
         setUploadedImage("");
         setBackgroundColor("");
+        setType(""); 
+        setVideoURL("");
       }
     } catch (error) {
       console.error(error);
@@ -163,27 +165,62 @@ const CreateNews = ({ open, handleCancel }) => {
               <span style={{ color: "red" }}>*</span> Image
             </span>
           </Form.Item>
+          <div className="row">
+            <div className="col-lg-12">
+              <Form.Item>
+                <Input
+                  value={heading}
+                  onChange={(e) => setHeading(e.target.value)}
+                  placeholder="Add Heading"
+                  required
+                />
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Heading
+                </span>{" "}
+              </Form.Item>
+            </div>
+            <div className="col-lg-6">
+              <Form.Item>
+                <Input
+                  value={subheading}
+                  onChange={(e) => setSubheading(e.target.value)}
+                  placeholder="Add Sub Heading"
+                  required
+                />
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Sub Heading
+                </span>{" "}
+              </Form.Item>
+            </div>
+            <div className="col-lg-6">
+              <Form.Item>
+                <Select
+                  className="create-camapign-input-select"
+                  placeholder="Select Type"
+                  style={{ width: "100%" }}
+                  value={type} // Bind state
+                  onChange={(value) => setType(value)}
+                  dropdownClassName="create-campaign-dropdown"
+                >
+                  <Option value="Blog">Blog</Option>
+                  <Option value="Hello Doctor">Hello Doctor</Option>
+                  <Option value="Patient Education">Patient Education</Option>
+                  <Option value="Interview">Interview</Option>
+                </Select>
+                <span className="create-campaign-input-span">Type</span>
+              </Form.Item>
+            </div>
+          </div>
+
           <Form.Item>
             <Input
-              value={heading}
-              onChange={(e) => setHeading(e.target.value)}
-              placeholder="Add Heading"
-              required
+              className="settings-input"
+              placeholder="Enter URL"
+              defaultValue=""
+              value={videoURL} // Bind state
+              onChange={(e) => setVideoURL(e.target.value)} 
             />
-            <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Heading
-            </span>{" "}
-          </Form.Item>
-          <Form.Item>
-            <Input
-              value={subheading}
-              onChange={(e) => setSubheading(e.target.value)}
-              placeholder="Add Sub Heading"
-              required
-            />
-            <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Sub Heading
-            </span>{" "}
+            <span className="create-campaign-input-span">Video URL</span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -196,22 +233,23 @@ const CreateNews = ({ open, handleCancel }) => {
               <span style={{ color: "red" }}>*</span> About
             </span>{" "}
           </Form.Item>
-          <Form.Item>
-            <ColorPicker
-              defaultValue={backgroundColor}
-              onChange={(color) => {
-                const hexColor = color.toHexString();
-                setBackgroundColor(hexColor);
-              }}
-              showText
-              allowClear={false}
-              required
-            />
-            <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Background Color
-            </span>
-          </Form.Item>
-
+          <div className="col-lg-6">
+            <Form.Item>
+              <ColorPicker
+                defaultValue={backgroundColor}
+                onChange={(color) => {
+                  const hexColor = color.toHexString();
+                  setBackgroundColor(hexColor);
+                }}
+                showText
+                allowClear={false}
+                required
+              />
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Background Color
+              </span>
+            </Form.Item>
+          </div>
           <Form.Item>
             <ReactQuill
               theme="snow"

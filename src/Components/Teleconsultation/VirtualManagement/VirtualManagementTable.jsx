@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Instance } from "../../../AxiosConfig";
-import { Table, Dropdown, Button, Modal, Avatar, Tag } from "antd";
+import { Table, Button, Modal, Avatar, Tag } from "antd";
 import { FiSearch, FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
-import { VscSettings } from "react-icons/vsc";
+// import { VscSettings } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { showDeleteMessage } from "../../../globalConstant";
-import { filterDropdown } from "../../../globalConstant";
+// import { filterDropdown } from "../../../globalConstant";
 import defaultUser from "../../../Assets/Images/singleuser.png";
 import DOMPurify from "dompurify";
 
@@ -145,7 +145,6 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
 const VirtualManagementTable = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
