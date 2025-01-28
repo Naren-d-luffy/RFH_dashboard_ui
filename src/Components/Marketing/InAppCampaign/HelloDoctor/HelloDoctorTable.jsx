@@ -149,21 +149,6 @@ const HelloDoctorTable = () => {
     },
   ];
 
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
-
   return (
     <div className="container mt-1">
       {isLoading ? (

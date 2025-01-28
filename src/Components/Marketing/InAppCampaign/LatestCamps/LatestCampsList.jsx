@@ -94,10 +94,6 @@ export const LatestCampsList = () => {
     </Menu>
   );
 
-  useEffect(() => {
-    fetchCampList();
-  }, []);
-
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
