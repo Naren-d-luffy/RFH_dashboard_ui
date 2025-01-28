@@ -60,6 +60,7 @@ const ViewLatestCamp = ({ open, handleCancel, campDataa }) => {
             src={`https://www.google.com/maps?q=${lat},${lng}&hl=es;z=14&output=embed`}
             allowFullScreen
             style={{ height: "250px", width: "100%" }}
+            title="camp location"
           ></iframe>
         </div>
 

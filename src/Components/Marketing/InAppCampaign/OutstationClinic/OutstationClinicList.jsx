@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Dropdown, Menu } from "antd";
 import { FiEye } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
@@ -54,7 +54,7 @@ const OutstationClinicList = () => {
       : text;
   };
 
-  const fetchOutstationClinic = async () => {
+  const fetchOutstationClinic = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/discover/clinic", {
@@ -67,7 +67,7 @@ const OutstationClinicList = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[dispatch]);
 
   const handleDeleteClinic = (_id) => {
     showDeleteMessage({
@@ -88,7 +88,7 @@ const OutstationClinicList = () => {
 
   useEffect(() => {
     fetchOutstationClinic();
-  }, []);
+  }, [fetchOutstationClinic]);
 
   const sortMenu = (clinic) => (
     <Menu>
