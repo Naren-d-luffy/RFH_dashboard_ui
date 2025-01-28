@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal } from "antd";
 import DOMPurify from "dompurify";
+import ReactPlayer from "react-player";
 
 const ViewNews = ({ open, handleCancel, newsData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -12,12 +13,12 @@ const ViewNews = ({ open, handleCancel, newsData }) => {
 
   useEffect(() => {
     if (newsData) {
-      setHeading(newsData.heading || "");
-      setSubheading(newsData.subheading || "");
-      setAbout(newsData.about || "");
-      setContent(DOMPurify.sanitize(newsData.content || ""));
-      setBackgroundColor(newsData.backgroundColor || "#1677ff");
-      setUploadedImage(newsData.image || null);
+      setHeading(newsData?.heading || "");
+      setSubheading(newsData?.subheading || "");
+      setAbout(newsData?.about || "");
+      setContent(DOMPurify.sanitize(newsData?.content || ""));
+      setBackgroundColor(newsData?.backgroundColor || "#1677ff");
+      setUploadedImage(newsData?.image || null);
     }
   }, [newsData]);
 
@@ -62,10 +63,20 @@ const ViewNews = ({ open, handleCancel, newsData }) => {
             dangerouslySetInnerHTML={{ __html: content }}
           /> */}
           <div
-  className="news-content"
-  style={{ color: "var(--text-color)" }} // or replace with your desired color
-  dangerouslySetInnerHTML={{ __html: content }}
-/>
+            className="news-content"
+            style={{ color: "var(--text-color)" }} // or replace with your desired color
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+
+          <div className="video-player-container " style={{ width: "300px" }}>
+            <ReactPlayer
+              url={newsData?.video_URL}
+              controls={true}
+              playing={false}
+              width="100%"
+              height="150px"
+            />
+          </div>
         </div>
       </div>
     </Modal>

@@ -376,8 +376,8 @@ body,
   text-align: center;
 }
 
-.coming-soon-image img {
-  max-width: 300px;
+.coming-soon-image {
+  max-width: 450px;
   width: 100%;
 }
 

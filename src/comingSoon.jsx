@@ -5,10 +5,11 @@ const ComingSoon = () => {
 
   return (
     <div className="coming-soon-container">
-      <div>
+      <div >
         <img
           src={comingsoon}
           alt="Coming Soon"
+          className='coming-soon-image'
         />
       </div>
       <h1 className="coming-soon-title">Coming Soon</h1>

@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
@@ -27,7 +26,6 @@ const TreatmentList = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [treatmentList, setTreatmentList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
   const [selectedTreatment, setSelectedTreatment] = useState(null);
@@ -92,7 +90,6 @@ const TreatmentList = () => {
         params: { page, limit: itemsPerPage },
       });
       dispatch(setTreatment(response?.data?.data?.educations));
-      setTreatmentList(response.data?.data?.educations || []);
       setTotalRows(response.data?.data?.totalEducations || 0);
     } catch (error) {
       console.error("Error fetching treatments:", error);
