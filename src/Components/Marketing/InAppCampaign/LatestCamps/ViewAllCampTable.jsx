@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table} from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
@@ -56,7 +56,7 @@ const ViewAllCampTable = () => {
     return `${day}/${month}/${year}`;
   };
 
-  const fetchFeatureInfo = async (page) => {
+  const fetchFeatureInfo = useCallback(async (page = 1) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/camp`, {
@@ -69,11 +69,11 @@ const ViewAllCampTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch, itemsPerPage]);
 
   useEffect(() => {
     fetchFeatureInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage,fetchFeatureInfo]);
 
   const handleDeleteFeature = (_id) => {
     showDeleteMessage({

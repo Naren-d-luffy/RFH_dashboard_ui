@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
@@ -63,7 +63,7 @@ const BlogsTable = () => {
         : textContent;
     return truncatedText;
   };
-  const fetchBlogs = async (page) => {
+  const fetchBlogs = useCallback(async (page = 1) => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/discover/blog", {
@@ -78,7 +78,7 @@ const BlogsTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch, itemsPerPage]);
 
   const handleDeleteBlog = (_id) => {
     showDeleteMessage({
@@ -99,7 +99,7 @@ const BlogsTable = () => {
 
   useEffect(() => {
     fetchBlogs(currentPage);
-  }, [currentPage]);
+  }, [currentPage,fetchBlogs]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return BlogsList;

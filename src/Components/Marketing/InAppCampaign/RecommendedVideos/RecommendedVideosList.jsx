@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { Dropdown, Menu } from "antd";
 import Slider from "react-slick";
@@ -161,18 +161,18 @@ export const RecommendedVideosList = () => {
     ],
   };
 
-  const fetchVideoList = async () => {
+  const fetchVideoList = useCallback(async () => {
     try {
       const response = await Instance.get("/recommended");
       dispatch(setRecommendedVideos(response.data));
     } catch (error) {
       console.error("Error fetching recommended videos:", error);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     fetchVideoList();
-  }, []);
+  }, [fetchVideoList]);
 
   return (
     <div className="row mt-4">

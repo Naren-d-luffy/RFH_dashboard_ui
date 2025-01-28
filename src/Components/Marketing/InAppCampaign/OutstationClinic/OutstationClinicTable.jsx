@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table} from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
@@ -64,7 +64,7 @@ const OutstationClinicTable = () => {
       },
     });
   };
-  const fetchOutstationClinicInfo = async (page) => {
+  const fetchOutstationClinicInfo = useCallback(async (page=1) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/discover/clinic`, {
@@ -78,11 +78,11 @@ const OutstationClinicTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[itemsPerPage,dispatch]);
 
   useEffect(() => {
     fetchOutstationClinicInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage,fetchOutstationClinicInfo]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return EventData;
