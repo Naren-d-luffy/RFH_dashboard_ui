@@ -62,7 +62,6 @@ const RecommendedVideosTable = () => {
         onDelete: async () => {
           try {
             const response = await Instance.delete(`/recommended/${_id}`);
-            console.log("response received:", response);
             if (response.status === 200 || response.status === 204) {
               showSuccessMessage("Deleted successfully", "Details deleted");
               dispatch(deleteRecommendedVideos(_id));

@@ -8,7 +8,7 @@ import { Instance } from "../../../AxiosConfig";
 import { showSuccessMessage } from "../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../Loader";
-import { addService, editService } from "../../../Features/ServiceSlice";
+import { editService } from "../../../Features/ServiceSlice";
 
 const modules = {
   toolbar: [
@@ -34,7 +34,6 @@ const EditService = ({ open, handleCancel, serviceData }) => {
   const handleDeleteThumbnail = () => {
     setThumbnailImage(null);
   };
-  console.log(serviceData, "sdf");
   const handleSave = async () => {
     if (!heading || !subHeading || !content || !thumbnailImage) {
       message.error("Please fill in all required fields.");
@@ -144,7 +143,7 @@ const EditService = ({ open, handleCancel, serviceData }) => {
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
                   </p>
-                  <IoCloudUploadOutline />{" "}
+                  <IoCloudUploadOutline className="image-upload-icon" />{" "}
                   <span style={{ color: "#727880" }}>Upload Thumbnail</span>
                 </Upload>
                 {thumbnailImage && (

@@ -147,7 +147,7 @@ const EditNews = ({ open, handleCancel, newsData }) => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline />{" "}
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>

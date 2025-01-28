@@ -4,7 +4,6 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { ColorPicker } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { showSuccessMessage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
@@ -57,13 +56,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
   }, [open, EventData]);
 
   const handleSave = async () => {
-    if (
-      !title ||
-      !description ||
-      
-      !uploadedImage ||
-      !thumbnailImage
-    ) {
+    if (!title || !description || !uploadedImage || !thumbnailImage) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -134,7 +127,9 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               placeholder="Add Title"
               required
             />
-            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Title</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Title
+            </span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -143,7 +138,9 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Description</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Description
+            </span>
           </Form.Item>
           <div className="row">
             <div className="col-lg-6">
@@ -158,7 +155,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
+                    <IoCloudUploadOutline className="image-upload-icon" />{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
@@ -192,7 +189,9 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Header Image</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Header Image
+                </span>
               </Form.Item>
             </div>
             <div className="col-lg-6">
@@ -207,7 +206,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
+                    <IoCloudUploadOutline className="image-upload-icon" />{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
@@ -242,7 +241,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                   </div>
                 )}
                 <span className="create-campaign-input-span">
-                <span style={{ color: "red" }}>*</span> Thumbnail Image
+                  <span style={{ color: "red" }}>*</span> Thumbnail Image
                 </span>
               </Form.Item>
             </div>

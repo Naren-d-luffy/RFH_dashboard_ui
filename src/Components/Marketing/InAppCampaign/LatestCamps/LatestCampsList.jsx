@@ -28,7 +28,6 @@ export const LatestCampsList = () => {
     camp: false,
     clinic: false,
   });
-  const [campData, setCampData] = useState([]);
   const navigate = useNavigate();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -108,7 +107,6 @@ export const LatestCampsList = () => {
       const response = await Instance.get(`/camp`);
 console.log("camps",response)
       if (response.status === 200 || response.status === 201) {
-        setCampData(response.data.data);
         dispatch(setCamps(response.data.data));
       }
     } catch (error) {

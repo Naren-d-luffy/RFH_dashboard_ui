@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Table, } from "antd";
+import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
@@ -23,7 +23,7 @@ const BlogsTable = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalRows] = useState(0);
   const [selectedBlog, setSelectedBlog] = useState(null);
 
@@ -101,8 +101,6 @@ const BlogsTable = () => {
     fetchBlogs(currentPage);
   }, [currentPage]);
 
-
-
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return BlogsList;
     return BlogsList.filter((blog) =>
@@ -110,7 +108,6 @@ const BlogsTable = () => {
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
-
   }, [searchText, BlogsList]);
 
   const columns = [
@@ -118,7 +115,7 @@ const BlogsTable = () => {
       title: "Heading",
       dataIndex: "heading",
       className: "campaign-performance-table-column",
-      sorter:(a,b)=>a.heading.localeCompare(b.heading)
+      sorter: (a, b) => a.heading.localeCompare(b.heading),
     },
     {
       title: "Sub Heading",

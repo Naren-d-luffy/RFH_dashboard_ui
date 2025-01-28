@@ -8,18 +8,13 @@ import { editRecommendedVideos } from "../../../../Features/RecommendedVideosSli
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
-const EditRecommendedVideos = ({
-  open,
-  handleCancel,
-  videoData
- 
-}) => {
+const EditRecommendedVideos = ({ open, handleCancel, videoData }) => {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [uploadType, setUploadType] = useState("url"); 
+  const [uploadType, setUploadType] = useState("url");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,7 +30,7 @@ const EditRecommendedVideos = ({
         setUrl("");
         setFile(null);
       }
-      
+
       setThumbnail(videoData.thumbnail || null);
     }
   }, [videoData, open]);
@@ -65,7 +60,12 @@ const EditRecommendedVideos = ({
   };
 
   const handleUpdate = async () => {
-    if (!title || !thumbnail || (uploadType === "url" && !url) || (uploadType === "file" && !file)) {
+    if (
+      !title ||
+      !thumbnail ||
+      (uploadType === "url" && !url) ||
+      (uploadType === "file" && !file)
+    ) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -139,7 +139,9 @@ const EditRecommendedVideos = ({
               placeholder="Enter Title"
               required
             />
-              <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Video Title</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Video Title
+            </span>
           </Form.Item>
           <Form.Item>
             <Upload
@@ -152,7 +154,7 @@ const EditRecommendedVideos = ({
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline />{" "}
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                 <span style={{ color: "#727880" }}>Upload Thumbnail Image</span>
               </span>
             </Upload>
@@ -197,10 +199,18 @@ const EditRecommendedVideos = ({
                 No thumbnail available
               </p>
             )}
-            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Thumbnail</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Thumbnail
+            </span>
           </Form.Item>
-          <Form.Item label={<span>Upload Type <span style={{ color: "red" }}>*</span></span>}>
-          <Radio.Group
+          <Form.Item
+            label={
+              <span>
+                Upload Type <span style={{ color: "red" }}>*</span>
+              </span>
+            }
+          >
+            <Radio.Group
               value={uploadType}
               onChange={(e) => {
                 setUploadType(e.target.value);
@@ -225,7 +235,9 @@ const EditRecommendedVideos = ({
                 placeholder="Enter Video URL"
                 required
               />
-                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Video URL</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Video URL
+              </span>
             </Form.Item>
           ) : (
             <Form.Item>
@@ -263,7 +275,7 @@ const EditRecommendedVideos = ({
                         marginBottom: "10px",
                       }}
                     >
-                      Path: {file.path || 'Local file'}
+                      Path: {file.path || "Local file"}
                     </p>
                   </div>
                   <Button
@@ -291,7 +303,3 @@ const EditRecommendedVideos = ({
 };
 
 export default EditRecommendedVideos;
-
-
-
-

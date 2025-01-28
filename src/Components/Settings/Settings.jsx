@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { General } from "./General";
 import { RiHospitalLine } from "react-icons/ri";
 import { Preferences } from "./Preferences";
 import { Notifications } from "./Notifications";
@@ -9,8 +8,8 @@ import { Account } from "./Account";
 import { MdOutlineAccountBox } from "react-icons/md";
 import { TermsAndConditionsList } from "./TermsAndConditions/TermsAndConditionsList";
 import AboutHospital from "./AboutHospital";
-import { FaHospitalUser, FaRegFileLines } from "react-icons/fa6";
-import { FiGrid, FiTool } from "react-icons/fi";
+import { FaRegFileLines } from "react-icons/fa6";
+import { FiTool } from "react-icons/fi";
 import AllConfigList from "./Config/AllConfigList";
 
 export const Settings = () => {

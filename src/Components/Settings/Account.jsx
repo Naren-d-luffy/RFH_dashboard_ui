@@ -4,14 +4,18 @@ import DefaultUser from "../../Assets/Images/singleuser.png";
 import "react-international-phone/style.css";
 import { Instance } from "../../AxiosConfig";
 import { useNavigate } from "react-router-dom";
+import { editSettingsProfileData, setSettingsProfileData } from "../../Features/SettingsProfileSlice";
+import { useDispatch, useSelector } from "react-redux";
 export const Account = () => {
   const [form] = Form.useForm();
   const fileInputRef = useRef(null);
   const [previewImage, setPreviewImage] = useState("");
-  const [userData, setUserData] = useState(null); // State to store user data
-  const [profileFile, setProfileFile] = useState(null); // Store the file for upload
-  const [isProfileUpdated, setIsProfileUpdated] = useState(false); // Track if profile image was updated
-  const navigate=useNavigate();
+  const dispatch = useDispatch();
+  const [profileFile, setProfileFile] = useState(null); 
+  const [isProfileUpdated, setIsProfileUpdated] = useState(false); 
+  const navigate = useNavigate();
+  const profileData = useSelector((state) => state.settingsprofile.settingsprofile);
+
   // const handleFileChange = (e) => {
   //   const file = e.target.files[0];
   //   if (file) {
@@ -27,14 +31,14 @@ export const Account = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfileFile(file); // Save the file for upload
-      setPreviewImage(URL.createObjectURL(file)); // Show a preview of the image
+      setProfileFile(file); 
+      setPreviewImage(URL.createObjectURL(file)); 
       setIsProfileUpdated(true);
     }
   };
   const handleChangePasswordClick = () => {
-    const email = form.getFieldValue("email"); 
-    navigate("/confirm-password", { state: { email } }); 
+    const email = form.getFieldValue("email");
+    navigate("/confirm-password", { state: { email } });
   };
   const handleEditClick = () => {
     fileInputRef.current.click();
@@ -44,17 +48,19 @@ export const Account = () => {
     const userInfo = localStorage.getItem("userInfo");
     const parsedUserInfo = JSON.parse(userInfo);
     try {
-      const response = await Instance.get(`/admin/getProfile/${parsedUserInfo.uid}`);
-      setUserData(response.data); // Store the user data
+      const response = await Instance.get(
+        `/admin/getProfile/${parsedUserInfo.uid}`
+      );
+      dispatch(setSettingsProfileData(response.data));
       form.setFieldsValue({
         name: response.data.name,
         email: response.data.email,
         phoneNumber: response.data.phoneNumber,
       });
       if (response.data.profile) {
-        setPreviewImage(response.data.profile); // Update preview image with the fetched profile image URL
+        setPreviewImage(response.data.profile);
       } else {
-        setPreviewImage(DefaultUser); // Set default image if no profile image is available
+        setPreviewImage(DefaultUser);
       }
     } catch (error) {
       message.error("Error fetching user data");
@@ -69,21 +75,23 @@ export const Account = () => {
 
     try {
       if (isProfileUpdated) {
-        // If profile picture is updated, make PUT request
         const formData = new FormData();
         formData.append("name", updatedFields.name);
         formData.append("email", updatedFields.email);
         formData.append("phoneNumber", updatedFields.phoneNumber);
         if (profileFile) {
-          formData.append("profile", profileFile); 
-        }; 
+          formData.append("profile", profileFile);
+        }
 
-        const response=await Instance.put(`/admin/profile/${parsedUserInfo.uid}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        console.log(response)
+        const response = await Instance.put(
+          `/admin/profile/${parsedUserInfo.uid}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
         const updatedUserInfo = {
           ...parsedUserInfo,
           name: updatedFields.name,
@@ -93,34 +101,37 @@ export const Account = () => {
         };
         localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
         message.success("Profile updated successfully!");
+        dispatch(editSettingsProfileData(response.data));
+
       } else {
-        // If only fields are updated, make PATCH request
         const updatedData = {};
-        if (updatedFields.name !== userData.name) {
+        if (updatedFields.name !== profileData.name) {
           updatedData.name = updatedFields.name;
         }
-        if (updatedFields.email !== userData.email) {
+        if (updatedFields.email !== profileData.email) {
           updatedData.email = updatedFields.email;
         }
-        if (updatedFields.phoneNumber !== userData.phoneNumber) {
+        if (updatedFields.phoneNumber !== profileData.phoneNumber) {
           updatedData.phoneNumber = updatedFields.phoneNumber;
         }
-      
+
         if (Object.keys(updatedData).length === 0) {
           message.warning("No changes made to the profile.");
           return;
         }
-      
+
         try {
-          // Send PATCH request only with the updated fields
-          const response = await Instance.patch(`/admin/updateProfile/${parsedUserInfo.uid}`, updatedData);
+          const response = await Instance.patch(
+            `/admin/updateProfile/${parsedUserInfo.uid}`,
+            updatedData
+          );
           message.success("Profile updated successfully!");
+          dispatch(editSettingsProfileData(response.data));
           const updatedUserInfo = {
             ...parsedUserInfo,
             ...updatedData,
           };
           localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
-          setUserData({ ...userData, ...updatedData }); 
         } catch (error) {
           message.error("Error updating profile");
           console.error("Error updating profile:", error);
@@ -138,7 +149,6 @@ export const Account = () => {
     try {
       await Instance.delete(`/admin/profile/${parsedUserInfo.uid}`);
       message.success("Profile deleted successfully!");
-      
     } catch (error) {
       message.error("Error deleting profile");
       console.error("Error deleting profile:", error);
@@ -154,7 +164,7 @@ export const Account = () => {
       <div className="container">
         <h4 className="mt-4 mt-lg-0">Account</h4>
         <p>Settings your account details here</p>
-        <hr style={{color:"var(--black-color)"}} />
+        <hr style={{ color: "var(--black-color)" }} />
         <Form layout="vertical" form={form} onFinish={handleSubmit}>
           <h5>My Profile</h5>
           <div className="row mt-4">
@@ -190,12 +200,18 @@ export const Account = () => {
           <div className="row mt-4">
             <div className="col-md-6 mt-4">
               <Form.Item name="name" label="Name">
-                <Input className="settings-input" placeholder="Enter First Name" />
+                <Input
+                  className="settings-input"
+                  placeholder="Enter First Name"
+                />
               </Form.Item>
             </div>
             <div className="col-md-6 mt-4">
               <Form.Item name="phoneNumber" label="Phone Number">
-                <Input className="settings-input" placeholder="Enter Phone Number" />
+                <Input
+                  className="settings-input"
+                  placeholder="Enter Phone Number"
+                />
               </Form.Item>
             </div>
           </div>
@@ -206,7 +222,7 @@ export const Account = () => {
               </Form.Item>
             </div>
             <div className="col-md-6 mt-2">
-            <button
+              <button
                 type="button"
                 className="settings-delete-button ms-3 mt-4"
                 onClick={handleChangePasswordClick}
@@ -215,7 +231,7 @@ export const Account = () => {
               </button>
             </div>
           </div>
-          
+
           <div className="row mt-4">
             <div className="d-flex justify-content-end gap-2">
               <button className="settings-delete-button" type="button">

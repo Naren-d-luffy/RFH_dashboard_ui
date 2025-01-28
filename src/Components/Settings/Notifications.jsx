@@ -1,22 +1,8 @@
-import React, { useState } from "react";
-import {
-  Form,
-  Switch,
-  Checkbox,
-  Row,
-  Col,
-} from "antd";
-
+import React from "react";
 import "react-international-phone/style.css";
 import ComingSoon from "../../comingSoon";
 
 export const Notifications = () => {
-  const [form] = Form.useForm();
-  const [switchState, setSwitchState] = useState(true);
-  const onChange = (checked) => {
-    setSwitchState(checked);
-    console.log(`Switch is now ${checked ? "ON" : "OFF"}`);
-  };
   return (
     <div className="settings-personal-information">
       {/* <div className="container">
@@ -172,8 +158,7 @@ export const Notifications = () => {
           </div>
         </Form>
       </div> */}
-       <ComingSoon/>
+      <ComingSoon />
     </div>
-   
   );
 };

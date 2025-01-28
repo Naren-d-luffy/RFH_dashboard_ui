@@ -28,7 +28,6 @@ const EditTermsModal = ({ visible, onClose,clause }) => {
 
       setIsLoading(true);
       const response = await Instance.put(`/terms/${clause._id}`, payload);
-      console.log("responseeee", response);
       dispatch(editTerm(response.data))
       showSuccessMessage("Terms and conditions edited successfully!");
       onClose();
