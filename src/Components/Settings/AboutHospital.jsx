@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Input, Button, Upload, message, Form, Modal } from "antd";
 import { Instance } from "../../AxiosConfig";
 import { FiEdit } from "react-icons/fi";
@@ -23,7 +23,25 @@ const AboutHospital = () => {
 
   const handleCancel = () => setIsModalOpen(false);
 
-  const fetchHospital = async () => {
+  // const fetchHospital = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await Instance.get("/hospital");
+  //     const hospitalData = response.data.data[0];
+  //     setHospital(hospitalData);
+  //     dispatch(setHospitalData(hospitalData));
+  //     form.setFieldsValue(hospitalData);
+  //     if (hospitalData.headerImage) {
+  //       setThumbnailImage(hospitalData.headerImage);
+  //     }
+  //     setIsLoading(false);
+  //   } catch (error) {
+  //     console.error("Error fetching hospital data:", error);
+  //     message.error("Failed to fetch hospital data");
+  //     setIsLoading(false);
+  //   }
+  // };
+  const fetchHospital = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/hospital");
@@ -34,17 +52,17 @@ const AboutHospital = () => {
       if (hospitalData.headerImage) {
         setThumbnailImage(hospitalData.headerImage);
       }
-      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching hospital data:", error);
       message.error("Failed to fetch hospital data");
+    } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch, form]); 
 
   useEffect(() => {
     fetchHospital();
-  }, [form]);
+  }, [fetchHospital]);
 
   const handleFileChange = (info) => {
     const selectedFile = info.file.originFileObj;

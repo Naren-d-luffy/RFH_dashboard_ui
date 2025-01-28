@@ -39,7 +39,7 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
       setUploadedImage(technologyData.video || null);
       setThumbnailImage(technologyData.thumbnail || null);
     }
-  }, [open && technologyData]);
+  }, [open, technologyData]);
 
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;

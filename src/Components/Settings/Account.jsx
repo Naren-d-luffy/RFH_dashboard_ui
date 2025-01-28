@@ -1,20 +1,25 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Form, Input, message } from "antd";
 import DefaultUser from "../../Assets/Images/singleuser.png";
 import "react-international-phone/style.css";
 import { Instance } from "../../AxiosConfig";
 import { useNavigate } from "react-router-dom";
-import { editSettingsProfileData, setSettingsProfileData } from "../../Features/SettingsProfileSlice";
+import {
+  editSettingsProfileData,
+  setSettingsProfileData,
+} from "../../Features/SettingsProfileSlice";
 import { useDispatch, useSelector } from "react-redux";
 export const Account = () => {
   const [form] = Form.useForm();
   const fileInputRef = useRef(null);
   const [previewImage, setPreviewImage] = useState("");
   const dispatch = useDispatch();
-  const [profileFile, setProfileFile] = useState(null); 
-  const [isProfileUpdated, setIsProfileUpdated] = useState(false); 
+  const [profileFile, setProfileFile] = useState(null);
+  const [isProfileUpdated, setIsProfileUpdated] = useState(false);
   const navigate = useNavigate();
-  const profileData = useSelector((state) => state.settingsprofile.settingsprofile);
+  const profileData = useSelector(
+    (state) => state.settingsprofile.settingsprofile
+  );
 
   // const handleFileChange = (e) => {
   //   const file = e.target.files[0];
@@ -31,8 +36,8 @@ export const Account = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfileFile(file); 
-      setPreviewImage(URL.createObjectURL(file)); 
+      setProfileFile(file);
+      setPreviewImage(URL.createObjectURL(file));
       setIsProfileUpdated(true);
     }
   };
@@ -44,7 +49,30 @@ export const Account = () => {
     fileInputRef.current.click();
   };
 
-  const fetchUser = async () => {
+  // const fetchUser = async () => {
+  //   const userInfo = localStorage.getItem("userInfo");
+  //   const parsedUserInfo = JSON.parse(userInfo);
+  //   try {
+  //     const response = await Instance.get(
+  //       `/admin/getProfile/${parsedUserInfo.uid}`
+  //     );
+  //     dispatch(setSettingsProfileData(response.data));
+  //     form.setFieldsValue({
+  //       name: response.data.name,
+  //       email: response.data.email,
+  //       phoneNumber: response.data.phoneNumber,
+  //     });
+  //     if (response.data.profile) {
+  //       setPreviewImage(response.data.profile);
+  //     } else {
+  //       setPreviewImage(DefaultUser);
+  //     }
+  //   } catch (error) {
+  //     message.error("Error fetching user data");
+  //     console.error("Error fetching user data:", error);
+  //   }
+  // };
+  const fetchUser = useCallback(async () => {
     const userInfo = localStorage.getItem("userInfo");
     const parsedUserInfo = JSON.parse(userInfo);
     try {
@@ -57,16 +85,19 @@ export const Account = () => {
         email: response.data.email,
         phoneNumber: response.data.phoneNumber,
       });
-      if (response.data.profile) {
-        setPreviewImage(response.data.profile);
-      } else {
-        setPreviewImage(DefaultUser);
-      }
+      setPreviewImage(response.data.profile || DefaultUser);
     } catch (error) {
       message.error("Error fetching user data");
       console.error("Error fetching user data:", error);
     }
-  };
+  }, [dispatch, form]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+  // useEffect(() => {
+  //   fetchUser();
+  // }, [fetchUser]);
 
   const handleSubmit = async () => {
     const userInfo = localStorage.getItem("userInfo");
@@ -102,7 +133,6 @@ export const Account = () => {
         localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
         message.success("Profile updated successfully!");
         dispatch(editSettingsProfileData(response.data));
-
       } else {
         const updatedData = {};
         if (updatedFields.name !== profileData.name) {
@@ -154,10 +184,6 @@ export const Account = () => {
       console.error("Error deleting profile:", error);
     }
   };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   return (
     <div className="settings-personal-information">
