@@ -120,7 +120,7 @@ const AboutHospital = () => {
     return;
   }
   return (
-    <div className="settings-personal-information">
+    <>
       <div className="hospital-container">
         <div className="d-flex justify-content-between">
           <div>
@@ -332,7 +332,7 @@ const AboutHospital = () => {
           </Form>
         </Modal>
       </div>
-    </div>
+    </>
   );
 };
 

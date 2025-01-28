@@ -73,7 +73,7 @@ export const TermsAndConditionsList = () => {
   }
 
   return (
-    <div className="settings-personal-information">
+    <>
       <div className="container">
         <div className="d-flex justify-content-between">
           <h4>Terms and Conditions</h4>
@@ -112,6 +112,6 @@ export const TermsAndConditionsList = () => {
         onClose={() => setShowEditModal(false)}
         clause={selectedClause}
       />
-    </div>
+    </>
   );
 };

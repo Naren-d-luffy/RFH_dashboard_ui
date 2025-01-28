@@ -38,7 +38,6 @@ import HelloDoctorPage from "./Pages/HelloDoctor/HelloDoctorPage";
 import NewsPage from "./Pages/News/NewsPage";
 import CommunityPostPage from "./Pages/CommunityPost/CommunityPostPage";
 import { HealthPackagePage } from "./Pages/HealthPackage/HealthPackagePage";
-import SignUp from "./Components/Auth/SignUp";
 import ForgotPassword from "./Components/Auth/ForgotPassword";
 import OtpScreen from "./Components/Auth/OtpScreen";
 import ConfirmPassword from "./Components/Auth/ConfirmPassword";
@@ -51,8 +50,6 @@ import FeaturesTable from "./Components/Marketing/InAppCampaign/FeaturedPrograms
 import HelloDoctorTable from "./Components/Marketing/InAppCampaign/HelloDoctor/HelloDoctorTable";
 import DoctorsTableView from "./Components/Teleconsultation/DoctorsList/DoctorsTableView";
 import ViewAllCampTable from "./Components/Marketing/InAppCampaign/LatestCamps/ViewAllCampTable";
-import Register from "./Components/Auth/Register";
-import SignUpOtpScreen from "./Components/Auth/SignUpOtp";
 import ReadingMaterialsList from "./Components/PatientEducation/EducationResources/ReadingMaterials/ReadingMaterialsTable";
 import FacilityTable from "./Components/DepartmentDetails/Facility/FacilityTable";
 import BlogsTable from "./Components/Marketing/InAppCampaign/Blogs/BlogListTables";
@@ -60,6 +57,9 @@ import ServiceTable from "./Components/DepartmentDetails/DepartmentService/Servi
 import TechnologyTable from "./Components/DepartmentDetails/Technology/TechnologyTable";
 import ConditionWeTreatTable from "./Components/DepartmentDetails/ConditionWeTreat/ConditionWeTreatTable";
 import RecommendedVideosTable from "./Components/Marketing/InAppCampaign/RecommendedVideos/RecommendedVideosTable";
+import { TermsAndConditionsList } from "./Components/Settings/TermsAndConditions/TermsAndConditionsList";
+import AboutHospital from "./Components/Settings/AboutHospital";
+import AllConfigList from "./Components/Settings/Config/AllConfigList";
 
 export const AppRouter = () => {
   return (
@@ -240,6 +240,9 @@ export const AppRouter = () => {
           <Route path="/view-all-technology-list" element={<TechnologyTable />} />
           <Route path="/view-all-condition-we-treat-list" element={<ConditionWeTreatTable />} />
           <Route path="/view-all-recommended-videos-table" element={<RecommendedVideosTable />} />
+          <Route path="/terms-conditions" element={<TermsAndConditionsList />} />
+          <Route path="/about-hospital" element={<AboutHospital />} />
+          <Route path="/configuration" element={<AllConfigList />} />
 
         </Route>
       </Routes>
