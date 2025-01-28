@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
@@ -82,7 +82,8 @@ const GastroIllnessTable = () => {
       },
     });
   };
-  const fetchGastroIllnessInfo = async (page) => {
+  const fetchGastroIllnessInfo = useCallback(
+     async (page) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/gastro`, {
@@ -96,11 +97,13 @@ const GastroIllnessTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  },
+  [dispatch, itemsPerPage]
+);
 
   useEffect(() => {
     fetchGastroIllnessInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage,fetchGastroIllnessInfo]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return EventData;

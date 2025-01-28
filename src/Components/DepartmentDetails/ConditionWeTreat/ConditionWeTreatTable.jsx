@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
@@ -70,7 +70,7 @@ const ConditionWeTreatTable = () => {
     });
   };
 
-  const fetchTechnologyList = async (page) => {
+  const fetchTechnologyList = useCallback( async (page) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/depcat/treat`, {
@@ -85,11 +85,13 @@ const ConditionWeTreatTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  },
+  [dispatch, itemsPerPage]
+);
 
   useEffect(() => {
     fetchTechnologyList(currentPage);
-  }, [currentPage]);
+  }, [currentPage, fetchTechnologyList]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return conditionwetreatList;

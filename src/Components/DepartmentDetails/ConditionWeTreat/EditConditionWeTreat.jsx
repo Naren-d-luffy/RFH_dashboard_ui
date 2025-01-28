@@ -39,7 +39,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
       setUploadedImage(conditionData.video || null);
       setThumbnailImage(conditionData.thumbnail || null);
     }
-  }, [open && conditionData]);
+  }, [open, conditionData]);
 
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;

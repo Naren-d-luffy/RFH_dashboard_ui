@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
@@ -83,24 +83,46 @@ const TreatmentList = () => {
       },
     });
   };
-  const fetchTreatmentsInfo = async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get(`/education`, {
-        params: { page, limit: itemsPerPage },
-      });
-      dispatch(setTreatment(response?.data?.data?.educations));
-      setTotalRows(response.data?.data?.totalEducations || 0);
-    } catch (error) {
-      console.error("Error fetching treatments:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const fetchTreatmentsInfo = async (page) => {
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await Instance.get(`/education`, {
+  //       params: { page, limit: itemsPerPage },
+  //     });
+  //     dispatch(setTreatment(response?.data?.data?.educations));
+  //     setTotalRows(response.data?.data?.totalEducations || 0);
+  //   } catch (error) {
+  //     console.error("Error fetching treatments:", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchTreatmentsInfo(currentPage);
+  // }, [currentPage]);
+
+  const fetchTreatmentsInfo = useCallback(
+    async (page) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/education`, {
+          params: { page, limit: itemsPerPage },
+        });
+        dispatch(setTreatment(response?.data?.data?.educations));
+        setTotalRows(response.data?.data?.totalEducations || 0);
+      } catch (error) {
+        console.error("Error fetching treatments:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch, itemsPerPage]
+  );
 
   useEffect(() => {
     fetchTreatmentsInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage, fetchTreatmentsInfo]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return treatmentData;
@@ -116,8 +138,7 @@ const TreatmentList = () => {
       title: "Title",
       dataIndex: "title",
       className: "campaign-performance-table-column",
-      sorter:(a,b)=>a.title.localeCompare(b.title)
-
+      sorter: (a, b) => a.title.localeCompare(b.title),
     },
     {
       title: "Description",
