@@ -43,7 +43,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
       setUploadedImage(facilityData.video || null);
       setThumbnailImage(facilityData.thumbnail || null);
     }
-  }, [open && facilityData]);
+  }, [open, facilityData]);
 
   const handleUpload = (info) => {
     const file = info.file.originFileObj;

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaPlus } from "react-icons/fa6";
@@ -97,7 +97,8 @@ const DepartmentDetailsList = () => {
     });
   };
 
-  const fetchDepartmentList = async () => {
+  const fetchDepartmentList = useCallback(
+     async () => {
     setIsLoading(true);
 
     try {
@@ -110,8 +111,11 @@ const DepartmentDetailsList = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
+  }, [dispatch]);
+  useEffect(() => {
+    fetchDepartmentList(currentPage);
+  }, [currentPage,fetchDepartmentList]);
+  
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return departments;
     return departments.filter((department) =>
@@ -121,10 +125,7 @@ const DepartmentDetailsList = () => {
     );
   }, [searchText, departments]);
 
-  useEffect(() => {
-    fetchDepartmentList(currentPage);
-  }, [currentPage]);
-  
+
   const columns = [
     {
       title: "Title",

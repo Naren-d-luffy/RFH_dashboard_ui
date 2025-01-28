@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -102,7 +102,8 @@ const EducationCategoriesTreatmentsInfo = () => {
       },
     });
   };
-  const fetchTreatmentsInfo = async (page) => {
+  const fetchTreatmentsInfo = useCallback (
+    async (page) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/education`, {
@@ -115,11 +116,12 @@ const EducationCategoriesTreatmentsInfo = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch, itemsPerPage]
+);
 
   useEffect(() => {
     fetchTreatmentsInfo();
-  }, []);
+  }, [fetchTreatmentsInfo]);
 
   const renderImageCard = (treatment) => (
     <div className="col-lg-4" key={treatment._id}>

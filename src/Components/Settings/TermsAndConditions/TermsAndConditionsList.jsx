@@ -38,7 +38,7 @@ export const TermsAndConditionsList = () => {
       }
     };
     fetchTerms();
-  }, []);
+  }, [dispatch]);
 
   const handleDeleteClause = (clauseId) => {
     showDeleteMessage({

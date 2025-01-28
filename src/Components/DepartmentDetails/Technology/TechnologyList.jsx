@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { Dropdown, Menu } from "antd";
 import Slider from "react-slick";
@@ -162,18 +162,21 @@ export const TechnologyList = () => {
     ],
   };
 
-  const fetchTechnologyList = async () => {
+  const fetchTechnologyList = useCallback(
+     async () => {
     try {
       const response = await Instance.get("/depcat/technology");
       dispatch(setTechnology(response.data));
     } catch (error) {
       console.error("Error fetching technology list:", error);
     }
-  };
+  },
+  [dispatch]
+);
 
   useEffect(() => {
     fetchTechnologyList();
-  }, []);
+  }, [fetchTechnologyList]);
 
   return (
     <div className="row mt-4">
