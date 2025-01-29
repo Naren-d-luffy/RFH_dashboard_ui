@@ -396,3 +396,9 @@ body,
 .news-content h3, .news-content h4, .news-content p, .news-content h1, .news-content h2, .news-content h5, .news-content h6{
   color: var(--black-color) !important;
 }
+.checkbox-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 10px; /* Adjust spacing between checkboxes */
+  padding: 10px 0;
+}

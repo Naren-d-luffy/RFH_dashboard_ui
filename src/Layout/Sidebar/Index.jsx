@@ -276,7 +276,7 @@ const handleLogout = () => {
     },
     {
       id: "rolebased",
-      label: "Role Based",
+      label: "Role Based Access",
       icon: <FiTool className="sidebar-icon" size={14} />,
       to: "/role-based",
     },
