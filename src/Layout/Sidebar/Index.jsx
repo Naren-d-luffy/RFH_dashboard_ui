@@ -275,6 +275,12 @@ const handleLogout = () => {
       to: "/configuration",
     },
     {
+      id: "rolebased",
+      label: "Role Based",
+      icon: <FiTool className="sidebar-icon" size={14} />,
+      to: "/role-based",
+    },
+    {
       id: "community post",
       label: "Community Post",
       icon: <HiOutlineUserGroup className="sidebar-icon" size={14} />,
