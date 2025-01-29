@@ -33,8 +33,13 @@ jobs:
 
       # Step 4: Build the application only if needed
       - name: Build the application
-        if: env.CHANGED_FILES != ''
-        run: CI=false npm run build
+        run: |
+          CI=false npm run build
+          if [ ! -d "build" ]; then
+          echo "Build folder is missing!"
+          exit 1
+          fi
+
 
       # Step 5: Upload build artifacts if built
       - name: Upload Build Artifacts
@@ -43,7 +48,10 @@ jobs:
         with:
           name: react-app-build
           path: build/
-          if-no-files-found: warn
+          if-no-files-found: error
+
+      - name: List Artifacts
+        run: ls -R
 
   deploy:
     name: Deploy Updated Files to Azure VM
@@ -56,6 +64,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: react-app-build
+          path: build
 
       # Step 2: Setup SSH key and known hosts
       - name: Add SSH Key
