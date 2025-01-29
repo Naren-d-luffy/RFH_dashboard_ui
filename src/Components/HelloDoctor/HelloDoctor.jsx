@@ -13,7 +13,7 @@ import AddVideo from "./AddVideo";
 import EditVideo from "./EditVideo";
 
 export const HelloDoctor = () => {
-  const [playingVideo, setPlayingVideo] = useState(null); 
+  const [playingVideo] = useState(null); 
   const [modals, setModals] = useState({ event: false, video: false, edit: false });
   const [videoList, setVideoList] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null); 

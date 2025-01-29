@@ -16,7 +16,6 @@ const ViewDoctorDetail = () => {
   const [doctor, setDoctor] = useState(state || null);
 
   useEffect(() => {
-    // If no data in state, fetch doctor details using record._id
     if (!doctor) {
       const fetchDoctorDetails = async () => {
         try {

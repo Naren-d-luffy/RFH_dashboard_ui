@@ -1,12 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png";
-import {
-  showDeleteMessage,
-  showSuccessMessage,
-} from "../../../globalConstant";
+import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,20 +20,20 @@ const ServiceTable = () => {
     event: false,
     service: false,
     edit: false,
-    view: false
+    view: false,
   });
   const [selectedService, setSelectedService] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const servicesList = useSelector((state) => state.service.services);
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
   const totalRows = servicesList?.length || 0;
-  
+
   const navigate = useNavigate();
-  
+
   const truncateText = (text, wordLimit = 15) => {
     if (!text) return "";
     const words = text.split(" ");
@@ -47,7 +44,7 @@ const ServiceTable = () => {
 
   const truncateHTML = (html, wordLimit = 10) => {
     if (!html) return "";
-    const div = document.createElement('div');
+    const div = document.createElement("div");
     div.innerHTML = html;
     const text = div.textContent || div.innerText;
     return truncateText(text, wordLimit);
@@ -85,7 +82,7 @@ const ServiceTable = () => {
     });
   };
 
-  const fetchServiceList = async () => {
+  const fetchServiceList = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await Instance.get("depcat/service");
@@ -95,11 +92,11 @@ const ServiceTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     fetchServiceList();
-  }, []);
+  }, [fetchServiceList]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return servicesList || [];
@@ -115,7 +112,7 @@ const ServiceTable = () => {
       title: "Heading",
       dataIndex: "heading",
       className: "campaign-performance-table-column",
-      sorter:(a,b)=>a.heading.localeCompare(b.heading)
+      sorter: (a, b) => a.heading.localeCompare(b.heading),
     },
     {
       title: "Sub Heading",

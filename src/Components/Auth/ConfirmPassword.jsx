@@ -1,9 +1,8 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./auth.css";
 import logo from "../../Assets/Images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import { message, Spin, Carousel } from "antd";
+import { Spin, Carousel } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import login1 from "../../Assets/Images/login-1.png";
 import login2 from "../../Assets/Images/login-5.png";
@@ -21,7 +20,6 @@ const ConfirmPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email;

@@ -123,8 +123,8 @@ const AboutHospital = () => {
     <>
       <div className="hospital-container">
         <div className="d-flex justify-content-between">
-          <div>
-            <h4 className="mt-4 mt-lg-0">About Hospital</h4>
+          <div className="marketing-categories-section">
+            <h3 className="mt-4 mt-lg-0">About Hospital</h3>
             <p>Information about the hospital</p>
           </div>
           <div>

@@ -27,8 +27,8 @@ const AllConfigList = () => {
   return (
     <>
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="d-flex justify-content-between mb-4">
-          <h4>All Configurations</h4>
+        <div className="d-flex justify-content-between mb-4 marketing-categories-section">
+          <h3>All Configurations</h3>
           <Button
             className="create-campaign-save-button"
             onClick={() => setAddConfigModalVisible(true)}

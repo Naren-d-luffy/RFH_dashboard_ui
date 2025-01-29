@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -104,7 +104,7 @@ const CategoriesReadingMaterials = () => {
       },
     });
   };
-  const fetchReadingMaterials = async (page) => {
+  const fetchReadingMaterials = useCallback( async (page) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/reading-material`, {
@@ -117,11 +117,13 @@ const CategoriesReadingMaterials = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  },
+  [dispatch]
+);
 
   useEffect(() => {
     fetchReadingMaterials();
-  }, []);
+  }, [fetchReadingMaterials]);
 
   const renderImageCard = (readingmaterial) => (
     <div className="col-lg-4" key={readingmaterial._id}>
