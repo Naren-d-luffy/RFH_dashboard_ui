@@ -18,7 +18,9 @@ jobs:
       - name: Get Changed Files
         id: changed-files
         run: |
-          echo "CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | grep 'src/' | tr '\n' ' ')" >> $GITHUB_ENV
+          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD | grep 'src/' || true)
+          echo "Changed Files: $CHANGED_FILES"
+          echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_ENV
 
       # Step 3: Install Node.js and dependencies
       - name: Setup Node.js
