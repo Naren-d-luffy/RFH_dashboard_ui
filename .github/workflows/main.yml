@@ -43,6 +43,7 @@ jobs:
         with:
           name: react-app-build
           path: build/
+          if-no-files-found: warn
 
   deploy:
     name: Deploy Updated Files to Azure VM
