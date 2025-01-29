@@ -61,6 +61,8 @@ import { TermsAndConditionsList } from "./Components/Settings/TermsAndConditions
 import AboutHospital from "./Components/Settings/AboutHospital";
 import AllConfigList from "./Components/Settings/Config/AllConfigList";
 import RoleBasedPage from "./Pages/RoleBased/RoleBasedPage";
+import { UnAuthorizedPage } from "./UnAuthorizedPage";
+import ProtectedRoute from "./PrivateRoute";
 
 export const AppRouter = () => {
   return (
@@ -91,6 +93,7 @@ export const AppRouter = () => {
             path="/marketing/campaign-performance"
             element={<CampaignPerformancePage />}
           />
+
           <Route
             path="/marketing/patient-acquisition"
             element={<PatientAcquisitionPage />}
@@ -105,18 +108,36 @@ export const AppRouter = () => {
           <Route path="/dashboard/settings" element={<SettingsPage />} />
 
           <Route path="/user-engagement" element={<UserEngagementPage />} />
-          <Route
+          {/* <Route
             path="marketing/in-app-campaign"
             element={<InAppCampaignPage />}
+          /> */}
+          {/* <ProtectedRoute 
+           path="marketing/in-app-campaign" 
+          component={InAppCampaignPage} 
+          requiredCategory="Marketing"
+        /> */}
+          <Route
+            path="/marketing/in-app-campaign"
+            element={<ProtectedRoute element={<InAppCampaignPage />} requiredCategory="Marketing" />}
           />
 
           <Route
             path="/patient-education/overview"
             element={<EducationOverviewPage />}
           />
-          <Route
+          {/* <Route
             path="/patient-education/resources"
             element={<EducationResourcesPage />}
+          /> */}
+          {/* <ProtectedRoute
+            path="/patient-education/resources"
+            element={<EducationResourcesPage />}
+            requiredCategory="Education"
+          /> */}
+ <Route
+            path="/patient-education/resources"
+            element={<ProtectedRoute element={<EducationResourcesPage />} requiredCategory="Education" />}
           />
           <Route
             path="/feedback/create-survey"
@@ -232,20 +253,38 @@ export const AppRouter = () => {
           />
 
           <Route path="/view-all-hello-doctor" element={<HelloDoctorTable />} />
-          <Route path="/teleconsultation/doctors-list" element={<DoctorsTableView />} />
+          <Route
+            path="/teleconsultation/doctors-list"
+            element={<DoctorsTableView />}
+          />
 
           <Route path="/view-all-camp-table" element={<ViewAllCampTable />} />
 
-          <Route path="/view-all-readingmaterials" element={<ReadingMaterialsList />} />
+          <Route
+            path="/view-all-readingmaterials"
+            element={<ReadingMaterialsList />}
+          />
           <Route path="/view-all-facility-list" element={<FacilityTable />} />
-          <Route path="/view-all-technology-list" element={<TechnologyTable />} />
-          <Route path="/view-all-condition-we-treat-list" element={<ConditionWeTreatTable />} />
-          <Route path="/view-all-recommended-videos-table" element={<RecommendedVideosTable />} />
-          <Route path="/terms-conditions" element={<TermsAndConditionsList />} />
+          <Route
+            path="/view-all-technology-list"
+            element={<TechnologyTable />}
+          />
+          <Route
+            path="/view-all-condition-we-treat-list"
+            element={<ConditionWeTreatTable />}
+          />
+          <Route
+            path="/view-all-recommended-videos-table"
+            element={<RecommendedVideosTable />}
+          />
+          <Route
+            path="/terms-conditions"
+            element={<TermsAndConditionsList />}
+          />
           <Route path="/about-hospital" element={<AboutHospital />} />
           <Route path="/configuration" element={<AllConfigList />} />
           <Route path="/role-based" element={<RoleBasedPage />} />
-
+          <Route path="/admin/Unauthorized" element={<UnAuthorizedPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
