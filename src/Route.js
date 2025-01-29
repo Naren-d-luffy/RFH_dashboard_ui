@@ -60,6 +60,7 @@ import RecommendedVideosTable from "./Components/Marketing/InAppCampaign/Recomme
 import { TermsAndConditionsList } from "./Components/Settings/TermsAndConditions/TermsAndConditionsList";
 import AboutHospital from "./Components/Settings/AboutHospital";
 import AllConfigList from "./Components/Settings/Config/AllConfigList";
+import RoleBasedPage from "./Pages/RoleBased/RoleBasedPage";
 
 export const AppRouter = () => {
   return (
@@ -243,6 +244,7 @@ export const AppRouter = () => {
           <Route path="/terms-conditions" element={<TermsAndConditionsList />} />
           <Route path="/about-hospital" element={<AboutHospital />} />
           <Route path="/configuration" element={<AllConfigList />} />
+          <Route path="/role-based" element={<RoleBasedPage />} />
 
         </Route>
       </Routes>
