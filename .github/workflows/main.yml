@@ -51,7 +51,7 @@ jobs:
     steps:
       # Step 1: Download build artifacts if available
       - name: Download Build Artifacts
-        if: success()
+        if: always()
         uses: actions/download-artifact@v3
         with:
           name: react-app-build
