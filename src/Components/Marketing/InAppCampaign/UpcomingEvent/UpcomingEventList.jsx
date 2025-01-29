@@ -38,7 +38,7 @@ export const UpcomingEventList = () => {
   const navigate = useNavigate();
 
   const fetchEvenInfo = useCallback(
-    async (page) => {
+    async (page=1) => {
       setIsLoading(true);
       try {
         const response = await Instance.get(`/discover/card`, {
