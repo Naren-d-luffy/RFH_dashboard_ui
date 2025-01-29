@@ -23,8 +23,6 @@ const SignUpOtpScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email;
-  const [emailError, setEmailError] = useState("");
-  const [responseMessage, setResponseMessage] = useState("");
   const sliderItems = [
     {
       image: login1,

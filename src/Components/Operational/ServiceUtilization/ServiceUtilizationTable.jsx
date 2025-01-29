@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Input, Button, Dropdown } from "antd";
+import { Table, Button, Dropdown } from "antd";
 import { FiSearch } from "react-icons/fi";
 import image from "../../../Assets/Images/image.png";
 import { VscSettings } from "react-icons/vsc";

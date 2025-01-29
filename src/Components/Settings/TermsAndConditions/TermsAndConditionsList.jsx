@@ -75,8 +75,8 @@ export const TermsAndConditionsList = () => {
   return (
     <>
       <div className="container">
-        <div className="d-flex justify-content-between">
-          <h4>Terms and Conditions</h4>
+        <div className="d-flex justify-content-between marketing-categories-section">
+          <h3>Terms and Conditions</h3>
           <button
             className="settings-edit-icon-button"
             onClick={() => setShowModal(true)}

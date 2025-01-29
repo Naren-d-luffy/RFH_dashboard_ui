@@ -289,7 +289,7 @@ const Chat = () => {
                       marginBottom: "20px",
                     }}
                   >
-                    <IoMdArrowBack size={24} color="var(--black-color)"/>
+                    <IoMdArrowBack size={24} color="var(--black-color)" />
                   </button>
                   <h6 style={{ textAlign: "center" }}>Today 10:27am</h6>
                   {demoChat.map((message, index) => (
@@ -323,7 +323,7 @@ const Chat = () => {
             <div className="message-input-container">
               <div className="message-input-box">
                 <button className="emoji-btn">
-                  <FaRegSmile size={24} color="var(--black-color)"/>
+                  <FaRegSmile size={24} color="var(--black-color)" />
                 </button>
                 <input
                   type="text"

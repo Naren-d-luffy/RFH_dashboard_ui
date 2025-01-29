@@ -19,10 +19,13 @@
 .trash-icon-health-package {
   color: var(--primary-green);
   font-size: 20px;
+  cursor: pointer;
+}
+.trash-icon-health-package:hover {
+  color: var(--yellow-color);
 }
 .health-package-modal-header {
   background: linear-gradient(var(--primary-green), #fff);
-  /* height: 200px; */
 }
 .view-health-package-modal .ant-modal-content {
   padding: 0 0 20px 0 !important;

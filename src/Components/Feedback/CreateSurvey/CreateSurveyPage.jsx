@@ -223,7 +223,7 @@ const CreateSurveyPage = () => {
                   className="CreateSurvey-form-close"
                   onClick={() => removeQuestion(question.id)}
                 >
-                  <CloseOutlined className="CreateSurvey-form-close-button"/>
+                  <CloseOutlined className="CreateSurvey-form-close-button" />
                 </button>
               </div>
             </div>
@@ -264,6 +264,7 @@ const CreateSurveyPage = () => {
           <div className="d-flex justify-content-center mb-0">
             <img
               src={success_icon}
+              alt=""
               style={{ width: "100px", height: "100px" }}
             />
           </div>

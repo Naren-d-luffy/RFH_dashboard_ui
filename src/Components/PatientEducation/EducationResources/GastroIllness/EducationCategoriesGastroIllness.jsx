@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Dropdown, Menu } from "antd";
 import { FiEye } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
@@ -89,7 +89,7 @@ const EducationCategoriesGastroIllness = () => {
     </Menu>
   );
 
-  const fetchGastroEvents = async (page) => {
+  const fetchGastroEvents = useCallback( async (page) => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/gastro", {
@@ -102,8 +102,12 @@ const EducationCategoriesGastroIllness = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
+  },
+  [dispatch]
+);
+  useEffect(() => {
+    fetchGastroEvents();
+  }, [fetchGastroEvents]);
   const handleDeleteEvent = (_id) => {
     showDeleteMessage({
       message: "",
@@ -121,9 +125,7 @@ const EducationCategoriesGastroIllness = () => {
     });
   };
 
-  useEffect(() => {
-    fetchGastroEvents();
-  }, []);
+
 
   const renderEventCard = (event) => (
     <div className="col-lg-4" key={event._id}>

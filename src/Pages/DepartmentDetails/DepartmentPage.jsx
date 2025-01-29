@@ -10,9 +10,9 @@ const DepartmentDetailsPage = () => {
     <>
       <div className="container">
         <ServiceList/>
+        <ConditionWeTreatList/>
         <FacilityList/>
         <TechnologyList/>
-        <ConditionWeTreatList/>
         <DepartmentDetailsList/>
       </div>
     </>

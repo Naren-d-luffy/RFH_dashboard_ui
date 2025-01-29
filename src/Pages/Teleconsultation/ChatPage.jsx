@@ -1,6 +1,6 @@
 import React from "react";
 import "./teleconsultation.css";
-import MessageChat from "../../Components/Teleconsultation/TechnicalSupport/Chat";
+// import MessageChat from "../../Components/Teleconsultation/TechnicalSupport/Chat";
 import ComingSoon from "../../comingSoon";
 
 const ChatPage = () => {

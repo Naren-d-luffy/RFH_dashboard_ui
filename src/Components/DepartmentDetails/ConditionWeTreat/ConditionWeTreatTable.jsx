@@ -12,7 +12,10 @@ import { useNavigate } from "react-router-dom";
 import AddConditionWeTreat from "./AddConditionWeTreat";
 import EditConditionWeTreat from "./EditConditionWeTreat";
 import ViewConditionWeTreat from "./ViewConditionWeTreat";
-import { deleteConditionWeTreat, setConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
+import {
+  deleteConditionWeTreat,
+  setConditionWeTreat,
+} from "../../../Features/ConditionWeTreatSlice";
 
 const ConditionWeTreatTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,7 +26,9 @@ const ConditionWeTreatTable = () => {
   const [selectedFacility, setSelectedFacility] = useState(null);
   const [selectedReadingMaterial, setSelectedReadingMaterial] = useState(null);
 
-  const conditionwetreatList = useSelector((state) => state.conditionwetreat.conditionwetreats);
+  const conditionwetreatList = useSelector(
+    (state) => state.conditionwetreat.conditionwetreats
+  );
 
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
@@ -70,24 +75,23 @@ const ConditionWeTreatTable = () => {
     });
   };
 
-  const fetchTechnologyList = useCallback( async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get(`/depcat/treat`, {
-        
-        params: { page, limit: itemsPerPage },
-      });
-      dispatch(setConditionWeTreat(response.data));
-      setTotalRows(response.data.total || 0);
-    } catch (error) {
-      console.error("Error fetching condition list:", error);
-
-    } finally {
-      setIsLoading(false);
-    }
-  },
-  [dispatch, itemsPerPage]
-);
+  const fetchTechnologyList = useCallback(
+    async (page) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/depcat/treat`, {
+          params: { page, limit: itemsPerPage },
+        });
+        dispatch(setConditionWeTreat(response.data));
+        setTotalRows(response.data.total || 0);
+      } catch (error) {
+        console.error("Error fetching condition list:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch, itemsPerPage]
+  );
 
   useEffect(() => {
     fetchTechnologyList(currentPage);
@@ -108,14 +112,12 @@ const ConditionWeTreatTable = () => {
       dataIndex: "heading",
       className: "campaign-performance-table-column",
       render: (text) => truncateText(text),
-      sorter:(a,b)=>a.heading.localeCompare(b.heading)
-
+      sorter: (a, b) => a.heading.localeCompare(b.heading),
     },
     {
       title: "Sub Heading",
       dataIndex: "subHeading",
       className: "campaign-performance-table-column",
-      
     },
     // {
     //   title: "Video Heading",

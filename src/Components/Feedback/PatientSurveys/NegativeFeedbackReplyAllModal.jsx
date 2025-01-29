@@ -18,7 +18,7 @@ const handleClick = () => {
 const NegativeFeedbackReplyAllModal = ({ open, handleCancel }) => {
   return (
     <Modal
-    title={<span className="create-campaign-modal-title">Reply All</span>}
+      title={<span className="create-campaign-modal-title">Reply All</span>}
       visible={open}
       onCancel={handleCancel}
       width={680}
