@@ -5,7 +5,7 @@ import lightLogo from "../../Assets/Images/logo.png";
 import darkLogo from "../../Assets/Images/darkLogo.png"
 import { FiChevronDown, FiChevronUp, FiTool } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
-import { MdAccessible, MdOutlineDashboard } from "react-icons/md";
+import { MdOutlineDashboard } from "react-icons/md";
 import { GoShieldCheck } from "react-icons/go";
 import { TbCirclePercentage } from "react-icons/tb";
 import {
@@ -16,7 +16,7 @@ import {
   MessageSquareMore,
   Settings,
 } from "lucide-react";
-import { SlGraduation } from "react-icons/sl";
+import { SlGraduation, SlLock } from "react-icons/sl";
 import { IoMenu, IoNewspaperOutline, IoTelescopeOutline } from "react-icons/io5";
 import { BiCapsule } from "react-icons/bi";
 import { useDarkMode } from "../../DarkMode";
@@ -277,7 +277,7 @@ const handleLogout = () => {
     {
       id: "rolebased",
       label: "Role Based Access",
-      icon: <MdAccessible className="sidebar-icon" size={14} />,
+      icon: <SlLock className="sidebar-icon" size={14} />,
       to: "/role-based",
     },
     {

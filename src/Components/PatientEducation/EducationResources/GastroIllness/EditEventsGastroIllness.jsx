@@ -23,7 +23,7 @@ const { TextArea } = Input;
 
 const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [thumbnailImage, setThumbnailImage] = useState(null);
+  const [, setThumbnailImage] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
