@@ -1,14 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Form, Input, Row, Col, Button, Select, Checkbox } from "antd";
 import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Instance } from "../../AxiosConfig";
 import { showSuccessMessage } from "../../globalConstant";
 import user from "../../Assets/Images/singleuser.png";
-import { addRoleAccess } from "../../Features/RoleAccessSlice";
+import { addRoleAccess, editRoleAccess } from "../../Features/RoleAccessSlice";
 import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 
-const AddRoleBased = () => {
+const EditRoleBased = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const fileInputRef = useRef(null);
@@ -20,12 +21,12 @@ const AddRoleBased = () => {
     role: "",
     categories: [],
   });
-
+const {id}=useParams();
   const [previewImage, setPreviewImage] = useState("");
   const [profileFile, setProfileFile] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
-
+const[isLoading,setIsLoading]=useState(false)
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -53,13 +54,39 @@ const AddRoleBased = () => {
   const handleCategoryChange = (checkedValues) => {
     setFormData({ ...formData, categories: checkedValues });
   };
-
+  useEffect(() => {
+    const fetchRoleAccessList = async () => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`admin/getProfile/${id}`);
+        const userData = response.data;
+        console.log("response", userData);
+  
+        setFormData({
+          name: userData.name,
+          email: userData.email,
+          phone: userData.phoneNumber,
+          password: "", 
+          role: userData.role,
+          categories: userData.categories || [], 
+        });
+        setPreviewImage(userData.profile || "");
+      } catch (error) {
+        console.error("Error fetching user roles:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    fetchRoleAccessList();
+  }, [id]);
+  
   const handleSubmit = async () => {
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
     formDataToSend.append("email", formData.email);
     formDataToSend.append("phoneNumber", formData.phone);
-    formDataToSend.append("password", formData.password);
+    // formDataToSend.append("password", formData.password);
     formDataToSend.append("role", formData.role);
     formDataToSend.append("categories", JSON.stringify(formData.categories));
     if (profileFile) formDataToSend.append("profile", profileFile);
@@ -68,10 +95,10 @@ const AddRoleBased = () => {
       Object.fromEntries(formDataToSend.entries())
     );
     try {
-      const response = await Instance.post("/admin/signup", formDataToSend);
+      const response = await Instance.put(`/admin/profile/${id}`, formDataToSend);
       console.log(response);
-      dispatch(addRoleAccess(response));
-      showSuccessMessage("Account created Successfully");
+      dispatch(editRoleAccess(response));
+      showSuccessMessage("Edited Successfully");
       navigate("/role-based")
       setFormData({
         name: "",
@@ -92,7 +119,7 @@ const AddRoleBased = () => {
   return (
     <div className="container">
       <div className="mt-4 campaign-performance-head">
-        <h3>Add Employee</h3>
+        <h3>Edit Employee</h3>
       </div>
       <div className="mt-3 doctor-detail-page-head">
         <Form layout="vertical" onFinish={handleSubmit}>
@@ -158,30 +185,6 @@ const AddRoleBased = () => {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Password">
-                <div className="password-input">
-                  <Input
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    className="signin-input"
-                    placeholder="Enter Password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                  />
-                  <button
-                    className="password-toggle"
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                  >
-                    {showPassword ? <FiEye /> : <FiEyeOff />}
-                  </button>
-                </div>
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={24}>
-            <Col span={12}>
               <Form.Item label="Role">
                 <Select
                   placeholder="Select Role"
@@ -194,13 +197,16 @@ const AddRoleBased = () => {
               </Form.Item>
             </Col>
           </Row>
-          {selectedRole === "Editor" && (
+
+          
+          {formData?.role === "Editor" && (
             <>
               <h6>Access</h6>
               <div>
                 <Checkbox.Group
                   onChange={handleCategoryChange}
                   className="checkbox-grid"
+                  value={formData.categories}
                 >
                   {" "}
                   <Checkbox value="Marketing">Marketing</Checkbox>
@@ -239,4 +245,4 @@ const AddRoleBased = () => {
   );
 };
 
-export default AddRoleBased;
+export default EditRoleBased;

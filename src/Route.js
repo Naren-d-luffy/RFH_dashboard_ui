@@ -64,6 +64,7 @@ import RoleBasedPage from "./Pages/RoleBased/RoleBasedPage";
 import { UnAuthorizedPage } from "./UnAuthorizedPage";
 import ProtectedRoute from "./PrivateRoute";
 import AddRoleBased from "./Components/RoleBased/AddRoleBased";
+import EditRoleBased from "./Components/RoleBased/EditRoleAccess";
 
 export const AppRouter = () => {
   return (
@@ -304,6 +305,10 @@ export const AppRouter = () => {
           <Route
             path="/add-role-access"
             element={<AddRoleBased />}
+          />
+          <Route
+            path="/edit-role-access/:id"
+            element={<EditRoleBased />}
           />
         </Route>
       </Routes>
