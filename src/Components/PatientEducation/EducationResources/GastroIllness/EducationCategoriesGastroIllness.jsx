@@ -95,6 +95,7 @@ const EducationCategoriesGastroIllness = () => {
       const response = await Instance.get("/gastro", {
         params: { page, limit: itemsPerPage },
       });
+      console.log("response",response)
       dispatch(setGastroIllness(response.data.data.gastros || []));
       setIsLoading(false);
     } catch (error) {
@@ -139,7 +140,7 @@ const EducationCategoriesGastroIllness = () => {
         </div>
 
         <div className="d-flex justify-content-center align-items-center mb-3">
-          <img src={event.thumbnail} alt={event.title} />
+          <img src={event.headerImage} alt={event.title} />
         </div>
         <div>
           <div className="d-flex justify-content-between mb-2">
@@ -220,7 +221,7 @@ const EducationCategoriesGastroIllness = () => {
 
         <div className="row mt-4">
           <div className="events-header-container">
-            <h6>Gastro Illness</h6>
+            <h6>Overview</h6>
             <div className="events-buttons">
               <button
                 className="rfh-view-all-button"
@@ -229,7 +230,7 @@ const EducationCategoriesGastroIllness = () => {
                 View all
               </button>
               <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} /> Add Events
+                <GoPlus size={20} />  Add 
               </button>
             </div>
           </div>
