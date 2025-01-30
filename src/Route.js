@@ -135,7 +135,7 @@ export const AppRouter = () => {
             element={<EducationResourcesPage />}
             requiredCategory="Education"
           /> */}
- <Route
+          <Route
             path="/patient-education/resources"
             element={<ProtectedRoute element={<EducationResourcesPage />} requiredCategory="Education" />}
           />
@@ -228,13 +228,19 @@ export const AppRouter = () => {
             element={<ChatPage />}
           />
           <Route path="/chat" element={<ChattingPage />} />
-          <Route path="/news" element={<NewsPage />} />
-
+          <Route
+            path="/news"
+            element={<ProtectedRoute element={<NewsPage />} requiredCategory="News" />}
+          />
           <Route path="/community-post" element={<CommunityPostPage />} />
           <Route path="/health-package" element={<HealthPackagePage />} />
-          <Route
+          {/* <Route
             path="/department-details"
             element={<DepartmentDetailsPage />}
+          /> */}
+          <Route
+            path="/department-details"
+            element={<ProtectedRoute element={<DepartmentDetailsPage />} requiredCategory="Department" />}
           />
           <Route path="/view-all-treatments" element={<TreatmentList />} />
           <Route path="/view-all-blog-lists" element={<BlogsTable />} />
@@ -277,13 +283,22 @@ export const AppRouter = () => {
             path="/view-all-recommended-videos-table"
             element={<RecommendedVideosTable />}
           />
-          <Route
+           <Route
             path="/terms-conditions"
-            element={<TermsAndConditionsList />}
+            element={<ProtectedRoute element={<TermsAndConditionsList />} requiredCategory="Terms" />}
           />
-          <Route path="/about-hospital" element={<AboutHospital />} />
-          <Route path="/configuration" element={<AllConfigList />} />
-          <Route path="/role-based" element={<RoleBasedPage />} />
+          <Route
+            path="/about-hospital"
+            element={<ProtectedRoute element={<AboutHospital />} requiredCategory="AboutHospital" />}
+          />
+          <Route
+            path="/configuration"
+            element={<ProtectedRoute element={<AllConfigList />} requiredCategory="Configuration" />}
+          />
+          <Route
+            path="/role-based"
+            element={<ProtectedRoute element={<RoleBasedPage />} requiredCategory="RoleBasedAccess" />}
+          />
           <Route path="/admin/Unauthorized" element={<UnAuthorizedPage />} />
         </Route>
       </Routes>
