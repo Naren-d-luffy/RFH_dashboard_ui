@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
-const ProtectedRoute = ({ element, requiredCategory }) => {
+const ProtectedRoute = ({ element:Element, requiredCategory }) => {
   const auth = useAuth();
 
   if (!auth || !auth.isAuthenticated) {
@@ -14,7 +14,7 @@ const ProtectedRoute = ({ element, requiredCategory }) => {
     return <Navigate to="/admin/Unauthorized" />;
   }
 
-  return element;
+  return <Element/>;
 };
 
 export default ProtectedRoute;
