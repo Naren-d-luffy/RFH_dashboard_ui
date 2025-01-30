@@ -7,21 +7,15 @@ import {
   Button,
   Select,
   Checkbox,
-  Upload,
-  message,
 } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Instance } from "../../AxiosConfig";
 import { showSuccessMessage } from "../../globalConstant";
 
 const RoleBasedList = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const doctorData = location.state || null;
   const fileInputRef = useRef(null);
-
-  // Form State
   const [formData, setFormData] = useState({
     name: "",
     email: "",
