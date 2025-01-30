@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Button, Input, Dropdown } from "antd";
+import { Table, Button, Dropdown } from "antd";
 import { FiSearch, FiEdit, FiEye } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
 import image from "../../Assets/Images/image.png";

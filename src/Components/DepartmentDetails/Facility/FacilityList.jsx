@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { Dropdown, Menu } from "antd";
 import Slider from "react-slick";
@@ -163,18 +163,20 @@ export const FacilityList = () => {
     ],
   };
 
-  const fetchFacilityList = async () => {
+  const fetchFacilityList = useCallback(async () => {
     try {
       const response = await Instance.get("/depcat/facility");
       dispatch(setFacility(response.data));
     } catch (error) {
       console.error("Error fetching facilities:", error);
     }
-  };
+  },
+  [dispatch]
+);
 
   useEffect(() => {
     fetchFacilityList();
-  }, []);
+  }, [fetchFacilityList]);
 
   return (
     <div className="row mt-4">

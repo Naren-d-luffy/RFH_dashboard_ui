@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { IoEllipsisVerticalSharp } from "react-icons/io5";
 import { HiOutlinePlus, HiMinus } from "react-icons/hi";
 import { GoPlus } from "react-icons/go";
@@ -20,8 +20,8 @@ const EducationCategoriesQuestions = () => {
 
   const [activeQuestion, setActiveQuestion] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [faqsList, setFaqsList] = useState([]);
+  const [, setIsLoading] = useState(false);
+  const [, setFaqsList] = useState([]);
   const [selectedFaq, setSelectedFaq] = useState(null);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -86,12 +86,10 @@ const EducationCategoriesQuestions = () => {
     </Menu>
   );
 
-  const fetchFaqsList = async () => {
+  const fetchFaqsList = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/faq`);
-      console.log("ccccccc", response);
-
       setFaqsList(response.data.data || []);
       dispatch(setFaqs(response.data.data));
     } catch (error) {
@@ -99,11 +97,13 @@ const EducationCategoriesQuestions = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  },
+  [dispatch]
+);
 
   useEffect(() => {
     fetchFaqsList();
-  }, []);
+  }, [fetchFaqsList]);
 
   return (
     <div className="container mt-3">

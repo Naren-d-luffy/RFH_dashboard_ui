@@ -6,7 +6,6 @@ import image2 from "../../../Assets/Images/ladydoctor.png";
 import image3 from "../../../Assets/Images/image.png";
 import { Avatar } from "antd";
 import { TbPinned } from "react-icons/tb";
-import chatIcon from "../../../Assets/Icons/chat-header.png";
 import addFile from "../../../Assets/Icons/addFile.png";
 import { FaRegSmile } from "react-icons/fa";
 import { IoMdSend } from "react-icons/io";

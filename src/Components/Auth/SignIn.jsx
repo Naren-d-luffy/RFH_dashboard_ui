@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { message, Spin, Carousel } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Instance, loginInstance } from "../../AxiosConfig";
+import { Instance } from "../../AxiosConfig";
 import login1 from "../../Assets/Images/login-1.png";
 import login2 from "../../Assets/Images/login-5.png";
 import login3 from "../../Assets/Images/login-2.png";
@@ -13,6 +13,7 @@ import login4 from "../../Assets/Images/login-4.png";
 import { showErrorMessage, showSuccessMessage } from "../../globalConstant";
 import { jwtDecode } from "jwt-decode"; // Import jwt-decode
 import { useAuth } from "../../AuthContext";
+
 
 const CustomDot = ({ active }) => (
   <span className={`dot ${active ? "active" : ""}`}></span>
@@ -82,7 +83,7 @@ const SignIn = () => {
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("refreshToken", response.data.refreshToken);
         const decodedAccessToken = jwtDecode(response.data.accessToken);
-        const accessExpirationTime = decodedAccessToken.exp * 1000; // Convert to milliseconds
+        const accessExpirationTime = decodedAccessToken.exp * 1000; 
         localStorage.setItem("accessTokenExpiration", accessExpirationTime);
 
         const decodedRefreshToken = jwtDecode(response.data.refreshToken);
@@ -150,7 +151,7 @@ const SignIn = () => {
             <p className="login--p">Welcome to Institute of Gastro sciences</p>
             <form
               onSubmit={(e) => {
-                e.preventDefault(); // Prevent default form submission behavior
+                e.preventDefault(); 
                 handleLogin();
               }}
             >
@@ -207,9 +208,6 @@ const SignIn = () => {
                 )}
               </button>
             </form>
-            {/* <p className="login-link">
-              Do not have an account? <Link to="/register">Sign Up</Link>
-            </p> */}
             <p className="terms">
               By Continuing you agree to Reliance Terms of Service and Privacy
               Policy

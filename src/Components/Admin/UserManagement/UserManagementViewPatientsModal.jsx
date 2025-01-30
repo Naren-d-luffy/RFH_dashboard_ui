@@ -34,8 +34,9 @@ const UserManagementViewPatientsModal = ({ visible, onClose }) => {
               <FaAngleLeft />
               Back
             </Button>
-          </div>
-        ]}      >
+          </div>,
+        ]}
+      >
         <div className="row mt-4">
           <div className="col-lg-12 mt-3">
             <Form.Item>
@@ -144,7 +145,6 @@ const UserManagementViewPatientsModal = ({ visible, onClose }) => {
               <span className="create-campaign-input-span">Status</span>
             </Form.Item>
           </div>
-          
         </div>
       </Modal>
     </div>

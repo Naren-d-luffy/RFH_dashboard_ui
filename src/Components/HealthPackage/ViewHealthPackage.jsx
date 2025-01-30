@@ -36,18 +36,21 @@ const ViewHealthPackage = ({ open, handleCancel, packageData }) => {
 
         {/* Package Details */}
         <div className="health-package-modal-content">
-          
           <h5>INR {packageData?.price || "N/A"}</h5>
-           <Rate disabled allowHalf value={packageData?.rating || 0} style={{fontSize:"14px"}}/> ({packageData?.rating})
+          <Rate
+            disabled
+            allowHalf
+            value={packageData?.rating || 0}
+            style={{ fontSize: "14px" }}
+          />{" "}
+          ({packageData?.rating})
           <h6 className="mt-4">{packageData?.descriptionOne || "N/A"}</h6>
           <h6>{packageData?.descriptionTwo || "N/A"}</h6>
           <div className="package-detail-item">
             <strong>Features:</strong>
             <ul>
               {features.length > 0 ? (
-                features.map((feature, index) => (
-                  <li key={index}>{feature}</li>
-                ))
+                features.map((feature, index) => <li key={index}>{feature}</li>)
               ) : (
                 <li>N/A</li>
               )}
@@ -57,10 +60,9 @@ const ViewHealthPackage = ({ open, handleCancel, packageData }) => {
             <strong>Duration:</strong> {packageData?.duration || "N/A"}
           </div>
           <div className="package-detail-item">
-            <strong>Billing Cycle:</strong> {packageData?.billingCycle || "N/A"} months
+            <strong>Billing Cycle:</strong> {packageData?.billingCycle || "N/A"}{" "}
+            months
           </div>
-
-          
         </div>
       </div>
     </Modal>

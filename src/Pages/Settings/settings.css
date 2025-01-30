@@ -381,7 +381,8 @@
 h4.hospital-title-heading {
   width: 180px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 900;
+  color: var(--grey-color);
 }
 p.hospital-title-paragraph{
   font-size: 14px;
@@ -389,7 +390,9 @@ p.hospital-title-paragraph{
 }
 .hospital-profile-description h4{
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 900;
+  color: var(--grey-color);
+
 }
 .hospital-profile-description p{
   font-size: 14px;

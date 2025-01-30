@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { Dropdown, Menu } from "antd";
 import Slider from "react-slick";
@@ -15,7 +15,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FiEye } from "react-icons/fi";
 import ViewConditionWeTreat from "./ViewConditionWeTreat";
-import { deleteConditionWeTreat, setConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
+import {
+  deleteConditionWeTreat,
+  setConditionWeTreat,
+} from "../../../Features/ConditionWeTreatSlice";
 
 export const ConditionWeTreatList = () => {
   const [modals, setModals] = useState({
@@ -28,7 +31,9 @@ export const ConditionWeTreatList = () => {
   const navigate = useNavigate();
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
-  const conditionwetreatList = useSelector((state) => state.conditionwetreat.conditionwetreats);
+  const conditionwetreatList = useSelector(
+    (state) => state.conditionwetreat.conditionwetreats
+  );
 
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
@@ -163,18 +168,18 @@ export const ConditionWeTreatList = () => {
     ],
   };
 
-  const fetchTechnologyList = async () => {
+  const fetchConditionList = useCallback(async () => {
     try {
       const response = await Instance.get("/depcat/treat");
       dispatch(setConditionWeTreat(response.data));
     } catch (error) {
       console.error("Error fetching condition list:", error);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
-    fetchTechnologyList();
-  }, []);
+    fetchConditionList();
+  }, [fetchConditionList]);
 
   return (
     <div className="row mt-4">
@@ -198,8 +203,12 @@ export const ConditionWeTreatList = () => {
             </div>
           </div>
           <div className="mt-4">
-            <Slider {...sliderSettings} key={Object.keys(conditionwetreatList).length}>
-              {conditionwetreatList && Object.keys(conditionwetreatList).length > 0 ? (
+            <Slider
+              {...sliderSettings}
+              key={Object.keys(conditionwetreatList).length}
+            >
+              {conditionwetreatList &&
+              Object.keys(conditionwetreatList).length > 0 ? (
                 Object.entries(conditionwetreatList)
                   .filter(([key]) => key !== "status")
                   .map(([key, condition]) => renderConditionCard(condition))

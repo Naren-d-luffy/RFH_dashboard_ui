@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Dropdown, Button, Input } from "antd";
+import { Table, Dropdown, Button } from "antd";
 import { FiSearch } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import { filterDropdown } from "../../../globalConstant"

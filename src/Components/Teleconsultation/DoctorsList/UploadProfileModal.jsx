@@ -12,8 +12,8 @@ const UploadProfileModal = ({ open, handleCancel, doctorData }) => {
   const [doctorId, setDoctorId] = useState("");
   const [doctorName, setDoctorName] = useState("");
   const [designation, setDesignation] = useState("");
-  const [doctorEmail, setDoctorEmail] = useState("");
-  const [doctorMobile, setDoctorMobile] = useState("");
+  const [, setDoctorEmail] = useState("");
+  const [, setDoctorMobile] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const handleUpload = (info) => {

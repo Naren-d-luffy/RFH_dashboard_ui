@@ -70,12 +70,14 @@ const UserManagementGraph = () => {
     },
   };
   function adjustRadius() {
-    const mediaQuery = window.matchMedia('(min-width: 992px) and (max-width: 1150px)');
+    const mediaQuery = window.matchMedia(
+      "(min-width: 992px) and (max-width: 1150px)"
+    );
     options.radius = mediaQuery.matches ? 100 : 128;
   }
 
   adjustRadius();
-  window.addEventListener('resize', adjustRadius);
+  window.addEventListener("resize", adjustRadius);
 
   const actionMenu = {
     items: [
@@ -229,7 +231,10 @@ const UserManagementGraph = () => {
             <div className="d-flex gap-5 justify-content-center">
               <div>
                 <p>Doctors</p>
-                <div className="d-flex gap-2 align-items-center" style={{color:'var(--black-color)'}}>
+                <div
+                  className="d-flex gap-2 align-items-center"
+                  style={{ color: "var(--black-color)" }}
+                >
                   <div
                     className="userAquisition-tooltip-dot"
                     style={{
@@ -241,7 +246,10 @@ const UserManagementGraph = () => {
               </div>
               <div>
                 <p>Patients</p>
-                <div className="d-flex gap-2 align-items-center" style={{color:'var(--black-color)'}}>
+                <div
+                  className="d-flex gap-2 align-items-center"
+                  style={{ color: "var(--black-color)" }}
+                >
                   <div
                     className="userAquisition-tooltip-dot"
                     style={{
