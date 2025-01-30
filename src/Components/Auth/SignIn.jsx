@@ -11,7 +11,9 @@ import login2 from "../../Assets/Images/login-5.png";
 import login3 from "../../Assets/Images/login-2.png";
 import login4 from "../../Assets/Images/login-4.png";
 import { showErrorMessage, showSuccessMessage } from "../../globalConstant";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode"; // Import jwt-decode
+import { useAuth } from "../../AuthContext";
+
 
 const CustomDot = ({ active }) => (
   <span className={`dot ${active ? "active" : ""}`}></span>
@@ -24,6 +26,8 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+  const authContext = useAuth(); 
+  const { syncAuthState } = authContext || {}; // Get syncAuthState safely
 
   const sliderItems = [
     {
@@ -65,6 +69,7 @@ const SignIn = () => {
   };
 
   const loginUser = async (email, password) => {
+    
     try {
       setLoading(true);
       const response = await Instance.post("/admin/login", {
@@ -97,6 +102,10 @@ const SignIn = () => {
           `Welcome, ${response.data.admin.name}!`,
           "You have successfully logged in."
         );
+       
+        // if (typeof syncAuthState === "function") {
+          syncAuthState(); 
+        // } 
         navigate("/user-dashboards/user-aquisition");
       } else {
         console.log("Login failed with error:", response.data.error);

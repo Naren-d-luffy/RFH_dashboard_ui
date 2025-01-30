@@ -13,12 +13,14 @@ const AuthProvider = ({ children }) => {
 
   const syncAuthState = useCallback(() => {
     const token = localStorage.getItem("accessToken");
-    console.log("Token from localStorage:", token);
+
+    // console.log("Token from localStorage:", token);
 
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        console.log("Decoded Token:", decoded);
+
+        // console.log("Decoded Token:", decoded);
         setIsAuthenticated(true);
         setUserCategories((decoded.categories));
         setUserRole(decoded.role);
