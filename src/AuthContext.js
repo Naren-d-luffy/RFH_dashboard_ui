@@ -41,7 +41,8 @@ const AuthProvider = ({ children }) => {
   }, [syncAuthState]);
 
   const hasAccess = (requiredCategory) => {
-    return userCategories.includes(requiredCategory);
+    // return userCategories.includes(requiredCategory);
+    return userRole === "Admin" || userCategories.includes(requiredCategory);
   };
 
   if (loading) {
