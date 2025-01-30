@@ -7,11 +7,13 @@ import { showSuccessMessage } from "../../globalConstant";
 import user from "../../Assets/Images/singleuser.png";
 import { addRoleAccess } from "../../Features/RoleAccessSlice";
 import { useDispatch } from "react-redux";
+import Loader from "../../Loader";
 
 const AddRoleBased = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const fileInputRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -67,12 +69,13 @@ const AddRoleBased = () => {
       "Submitting Data:",
       Object.fromEntries(formDataToSend.entries())
     );
+    setIsLoading(true);
     try {
       const response = await Instance.post("/admin/signup", formDataToSend);
       console.log(response);
       dispatch(addRoleAccess(response));
       showSuccessMessage("Account created Successfully");
-      navigate("/role-based")
+      navigate("/role-based");
       setFormData({
         name: "",
         email: "",
@@ -86,11 +89,14 @@ const AddRoleBased = () => {
       setSelectedRole("");
     } catch (error) {
       console.error("Sign up failed:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="container">
+      {isLoading && <Loader />}
       <div className="mt-4 campaign-performance-head">
         <h3>Add Employee</h3>
       </div>

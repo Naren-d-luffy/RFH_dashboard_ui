@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Form, Input, Row, Col, Button, Select, Checkbox } from "antd";
 import { useNavigate } from "react-router-dom";
-import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Instance } from "../../AxiosConfig";
 import { showSuccessMessage } from "../../globalConstant";
 import user from "../../Assets/Images/singleuser.png";
-import { addRoleAccess, editRoleAccess } from "../../Features/RoleAccessSlice";
+import { editRoleAccess } from "../../Features/RoleAccessSlice";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import Loader from "../../Loader";
 
 const EditRoleBased = () => {
   const navigate = useNavigate();
@@ -21,12 +21,11 @@ const EditRoleBased = () => {
     role: "",
     categories: [],
   });
-const {id}=useParams();
+  const { id } = useParams();
   const [previewImage, setPreviewImage] = useState("");
   const [profileFile, setProfileFile] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
-  const [selectedRole, setSelectedRole] = useState("");
-const[isLoading,setIsLoading]=useState(false)
+  const [, setSelectedRole] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -35,9 +34,6 @@ const[isLoading,setIsLoading]=useState(false)
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
 
   const handleEditClick = () => {
     fileInputRef.current.click();
@@ -60,15 +56,15 @@ const[isLoading,setIsLoading]=useState(false)
       try {
         const response = await Instance.get(`admin/getProfile/${id}`);
         const userData = response.data;
-        console.log("response", userData);
-  
+        console.log("roleaccessData", userData);
+        
         setFormData({
           name: userData.name,
           email: userData.email,
           phone: userData.phoneNumber,
-          password: "", 
+          password: "",
           role: userData.role,
-          categories: userData.categories || [], 
+          categories: JSON.parse(userData.categories) || [],
         });
         setPreviewImage(userData.profile || "");
       } catch (error) {
@@ -77,16 +73,15 @@ const[isLoading,setIsLoading]=useState(false)
         setIsLoading(false);
       }
     };
-  
+
     fetchRoleAccessList();
   }, [id]);
-  
+
   const handleSubmit = async () => {
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
     formDataToSend.append("email", formData.email);
     formDataToSend.append("phoneNumber", formData.phone);
-    // formDataToSend.append("password", formData.password);
     formDataToSend.append("role", formData.role);
     formDataToSend.append("categories", JSON.stringify(formData.categories));
     if (profileFile) formDataToSend.append("profile", profileFile);
@@ -94,12 +89,17 @@ const[isLoading,setIsLoading]=useState(false)
       "Submitting Data:",
       Object.fromEntries(formDataToSend.entries())
     );
+    setIsLoading(true);
+
     try {
-      const response = await Instance.put(`/admin/profile/${id}`, formDataToSend);
+      const response = await Instance.put(
+        `/admin/profile/${id}`,
+        formDataToSend
+      );
       console.log(response);
       dispatch(editRoleAccess(response));
       showSuccessMessage("Edited Successfully");
-      navigate("/role-based")
+      navigate("/role-based");
       setFormData({
         name: "",
         email: "",
@@ -113,11 +113,14 @@ const[isLoading,setIsLoading]=useState(false)
       setSelectedRole("");
     } catch (error) {
       console.error("Sign up failed:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="container">
+      {isLoading && <Loader />}
       <div className="mt-4 campaign-performance-head">
         <h3>Edit Employee</h3>
       </div>
@@ -198,7 +201,6 @@ const[isLoading,setIsLoading]=useState(false)
             </Col>
           </Row>
 
-          
           {formData?.role === "Editor" && (
             <>
               <h6>Access</h6>
@@ -236,7 +238,7 @@ const[isLoading,setIsLoading]=useState(false)
               type="submit"
               onClick={handleSubmit}
             >
-              Save
+              Update
             </Button>
           </div>
         </Form>

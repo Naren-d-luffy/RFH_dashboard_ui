@@ -9,7 +9,6 @@ import { showSuccessMessage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { addGastroIllness } from "../../../../Features/GastroIllnessSlice";
-import { typeImplementation } from "@testing-library/user-event/dist/type/typeImplementation";
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -24,7 +23,7 @@ const { TextArea } = Input;
 
 const AddEventsGastroIllness = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [thumbnailImage, setThumbnailImage] = useState(null);
+  const [, setThumbnailImage] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
