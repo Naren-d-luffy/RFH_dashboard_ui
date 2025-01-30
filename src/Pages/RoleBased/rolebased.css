@@ -13,7 +13,6 @@
 }
 .role-users-profile-card h4 {
   font-size: 12px;
-  color: var(--secondary-text-color);
   font-weight: 600;
   text-align: center;
   margin: 3px;
@@ -29,12 +28,15 @@
   color: var(--white-color);
   background-color: var(--gradient-start-color);
 }
-.edit-button {
-  color: var(--primary-green);
-  border: 1px solid var(--primary-green);
-  background-color: var(--page-background-color);
-}
-.edit-button:hover {
-	background-color: var(--primary-green);
-	color: var(--white-color);
+.inactive-status-button {
+	background-color: var(--red-color);
+	color: var(--white-color) !important;
+  }
+.inactive-status-button:hover {
+	border-color: var(--red-color) !important;
+	color: var(--red-color) !important;
+  }
+.role-users-profile-card.inactive-card {
+	background-color: var(--bg-gray-color);
+	border: 1px solid var(--bg-gray-color);
   }

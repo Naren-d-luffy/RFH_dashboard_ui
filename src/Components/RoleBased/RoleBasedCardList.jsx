@@ -1,44 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import user from "../../Assets/Images/Doctor.png";
-import { Avatar } from "antd";
+import { Avatar, Button, Tag } from "antd";
+import { Instance } from "../../AxiosConfig";
+import { useDispatch, useSelector } from "react-redux";
+import { setRoleAccess } from "../../Features/RoleAccessSlice";
+import { useNavigate } from "react-router-dom";
 
 const RoleBasedCardList = () => {
-  const users = [
-    {
-      id: 1,
-      image: user,
-      name: "Cameron Williamson",
-      memberTag: "Gold Member",
-      email: "cameron@gmai.com",
-      phone: "+91 94464 64964",
-    },
-    {
-      id: 2,
-      image: user,
-      name: "John Doe",
-      memberTag: "Silver Member",
-      email: "john@gmai.com",
-      phone: "+91 94464 64965",
-    },
-    {
-      id: 3,
-      image: user,
-      name: "Jane Smith",
-      memberTag: "Platinum Member",
-      email: "jane@gmai.com",
-      phone: "+91 94464 64966",
-    },
-    {
-      id: 4,
-      image: user,
-      name: "Emma Brown",
-      memberTag: "Gold Member",
-      email: "emma@gmai.com",
-      phone: "+91 94464 64967",
-    },
-  ];
+  const [, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const roleaccessData = useSelector((state) => state.roleAccess.roleAccess);
+  console.log("roleaccessData", roleaccessData);
+
+  useEffect(() => {
+    const fetchRoleAccessList = async () => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/admin/allUser`);
+        dispatch(setRoleAccess(response.data));
+      } catch (error) {
+        console.error("Error fetching user roles:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRoleAccessList();
+  }, [dispatch]);
+  
+  const handleStatusChange = async (id, currentStatus) => {
+    const newStatus = currentStatus === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+  
+    try {
+      await Instance.patch(`/admin/updateStatus/${id}`, { status: newStatus });  
+      dispatch(setRoleAccess(roleaccessData.map(user => 
+        user.id === id ? { ...user, status: newStatus } : user
+      )));
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
+  };
+  
   return (
     <div className="container">
       <div className="d-flex justify-content-between align-items-center">
@@ -48,6 +53,7 @@ const RoleBasedCardList = () => {
         <div className="d-flex align-items-center gap-3">
           <button
             className="d-flex gap-2 align-items-center rfh-basic-button"
+            onClick={() => navigate("/add-role-access")}
           >
             <GoPlus />
             Create Role
@@ -56,42 +62,55 @@ const RoleBasedCardList = () => {
       </div>
 
       <div className="row mt-4">
-        {users.map(({ id, image, name, memberTag, email, phone }) => {
-          let tagClass = "";
-          switch (memberTag) {
-            case "Gold Member":
-              tagClass = "gold-member-tag";
-              break;
-            case "Silver Member":
-              tagClass = "silver-member-tag";
-              break;
-            case "Platinum Member":
-              tagClass = "platinum-member-tag";
-              break;
-            default:
-              tagClass = "default-member-tag";
-          }
+        {Array.isArray(roleaccessData) &&
+          roleaccessData.map(
+            ({ id, profile, name, email, phoneNumber, role, status }) => (
+              <div className="col-lg-4 col-xl-3 mb-4" key={id}>
+                <div   className={`role-users-profile-card ${status === "ACTIVE" ? "active-card" : "inactive-card"}`}
+                >
+                  <div className="d-flex justify-content-center">
+                    <Avatar src={profile || user} shape="square" size={68} />
+                  </div>
+                  <h2 className="mt-3">{name}</h2>
+                  <h4
+                    style={{
+                      maxWidth: "200px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {email}
+                  </h4>
+                  <h4>{phoneNumber}</h4>
+                  <div className="d-flex justify-content-center mt-2">
+                    <Tag
+                      className="most-user-success-tag"
+                      style={{ width: "fit-content" }}
+                    >
+                      {role}
+                    </Tag>
+                  </div>
+                  <div className="d-flex gap-2 mt-2">
+                    <Button className="create-campaign-cancel-button">
+                      Edit
+                    </Button>
+                    <Button
+                      className={
+                        status === "ACTIVE"
+                          ? "create-campaign-save-button"
+                          : "inactive-status-button"
+                      }
+                      onClick={() => handleStatusChange(id, status)}
 
-          return (
-            <div className="col-lg-4 col-xl-3 mb-4" key={id}>
-              <div className="role-users-profile-card">
-                <div className="d-flex justify-content-center">
-                  <Avatar src={image} shape="square" size={68} />
-                </div>
-                <h2 className="mt-3">{name}</h2>
-                <div className="d-flex justify-content-center">
-                  <p className={tagClass}>{memberTag}</p>
-                </div>
-                <h4>{email}</h4>
-                <h4>{phone}</h4>
-                <div className="d-flex gap-2 mt-2">
-                  <button className="edit-button">Edit</button>
-                  <button className="role-active-button">Active</button>
+                    >
+                      {status}
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            )
+          )}
       </div>
     </div>
   );

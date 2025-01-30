@@ -63,6 +63,7 @@ import AllConfigList from "./Components/Settings/Config/AllConfigList";
 import RoleBasedPage from "./Pages/RoleBased/RoleBasedPage";
 import { UnAuthorizedPage } from "./UnAuthorizedPage";
 import ProtectedRoute from "./PrivateRoute";
+import AddRoleBased from "./Components/RoleBased/AddRoleBased";
 
 export const AppRouter = () => {
   return (
@@ -300,6 +301,10 @@ export const AppRouter = () => {
             element={<ProtectedRoute element={<RoleBasedPage />} requiredCategory="RoleBasedAccess" />}
           />
           <Route path="/admin/Unauthorized" element={<UnAuthorizedPage />} />
+          <Route
+            path="/add-role-access"
+            element={<AddRoleBased />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
