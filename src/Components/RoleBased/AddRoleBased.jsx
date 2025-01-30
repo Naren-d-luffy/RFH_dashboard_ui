@@ -1,20 +1,16 @@
 import React, { useState, useRef } from "react";
-import {
-  Form,
-  Input,
-  Row,
-  Col,
-  Button,
-  Select,
-  Checkbox,
-} from "antd";
+import { Form, Input, Row, Col, Button, Select, Checkbox } from "antd";
 import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Instance } from "../../AxiosConfig";
 import { showSuccessMessage } from "../../globalConstant";
+import user from "../../Assets/Images/Doctor.png";
+import { addRoleAccess } from "../../Features/RoleAccessSlice";
+import { useDispatch } from "react-redux";
 
 const AddRoleBased = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -51,8 +47,8 @@ const AddRoleBased = () => {
   };
 
   const handleRoleChange = (value) => {
-    setFormData({ ...formData, role: value }); // Update formData with the role
-    setSelectedRole(value); // Update selectedRole state (important for conditional rendering)
+    setFormData({ ...formData, role: value });
+    setSelectedRole(value);
   };
   const handleCategoryChange = (checkedValues) => {
     setFormData({ ...formData, categories: checkedValues });
@@ -72,10 +68,22 @@ const AddRoleBased = () => {
       Object.fromEntries(formDataToSend.entries())
     );
     try {
-      const response = await Instance.post("/admin/signup", formDataToSend );
+      const response = await Instance.post("/admin/signup", formDataToSend);
       console.log(response);
+      dispatch(addRoleAccess(response));
       showSuccessMessage("Account created Successfully");
-      
+      navigate("/role-based")
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        password: "",
+        role: "",
+        categories: [],
+      });
+      setPreviewImage("");
+      setProfileFile(null);
+      setSelectedRole("");
     } catch (error) {
       console.error("Sign up failed:", error);
     }
@@ -88,11 +96,10 @@ const AddRoleBased = () => {
       </div>
       <div className="mt-3 doctor-detail-page-head">
         <Form layout="vertical" onFinish={handleSubmit}>
-          {/* Profile Upload */}
           <div className="row mt-4">
             <div className="settings-profile-icon-section">
               <img
-                src={previewImage || "default-avatar.png"}
+                src={previewImage || user}
                 alt="Profile"
                 className="settings-profile-image"
               />
@@ -113,7 +120,6 @@ const AddRoleBased = () => {
             </div>
           </div>
 
-          {/* Employee Details */}
           <Row gutter={24} className="mt-4">
             <Col span={12}>
               <Form.Item label="Full Name">
@@ -174,7 +180,6 @@ const AddRoleBased = () => {
             </Col>
           </Row>
 
-          {/* Role & Status */}
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item label="Role">
@@ -188,26 +193,16 @@ const AddRoleBased = () => {
                 </Select>
               </Form.Item>
             </Col>
-            {/* <Col span={12}>
-              <Form.Item label="Status">
-                <Select
-                  placeholder="Select Status"
-                  value={formData.status || undefined}
-                  onChange={handleStatusChange}
-                >
-                  <Select.Option value="active">Active</Select.Option>
-                  <Select.Option value="inactive">Inactive</Select.Option>
-                </Select>
-              </Form.Item>
-            </Col> */}
           </Row>
           {selectedRole === "Editor" && (
             <>
               <h6>Access</h6>
-              <div >
-                <Checkbox.Group onChange={handleCategoryChange} className="checkbox-grid">
+              <div>
+                <Checkbox.Group
+                  onChange={handleCategoryChange}
+                  className="checkbox-grid"
+                >
                   {" "}
-                  {/* Use Checkbox.Group */}
                   <Checkbox value="Marketing">Marketing</Checkbox>
                   <Checkbox value="Recommended">Recommended</Checkbox>
                   <Checkbox value="Department">Department</Checkbox>
@@ -215,7 +210,9 @@ const AddRoleBased = () => {
                   <Checkbox value="Teleconsultation">Teleconsultation</Checkbox>
                   <Checkbox value="News">News</Checkbox>
                   <Checkbox value="Terms">Terms</Checkbox>
-                  <Checkbox value="About Hospital">About Hospital</Checkbox>
+                  <Checkbox value="AboutHospital">About Hospital</Checkbox>
+                  <Checkbox value="Configuration">Configuration</Checkbox>
+                  <Checkbox value="RoleBasedAccess">Role Based Access</Checkbox>
                 </Checkbox.Group>
               </div>
             </>
@@ -224,7 +221,7 @@ const AddRoleBased = () => {
           <div className="mt-5 d-flex justify-content-end gap-3">
             <Button
               className="create-campaign-cancel-button"
-              onClick={() => navigate("/teleconsultation/virtual-management")}
+              onClick={() => navigate("/role-based")}
             >
               Cancel
             </Button>
