@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
-import user from "../../Assets/Images/Doctor.png";
+import user from "../../Assets/Images/singleuser.png";
 import { Avatar, Button, Tag } from "antd";
 import { Instance } from "../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
@@ -64,8 +64,8 @@ const RoleBasedCardList = () => {
       <div className="row mt-4">
         {Array.isArray(roleaccessData) &&
           roleaccessData.map(
-            ({ id, profile, name, email, phoneNumber, role, status }) => (
-              <div className="col-lg-4 col-xl-3 mb-4" key={id}>
+            ({ _id, profile, name, email, phoneNumber, role, status }) => (
+              <div className="col-lg-4 col-xl-3 mb-4" key={_id}>
                 <div   className={`role-users-profile-card ${status === "ACTIVE" ? "active-card" : "inactive-card"}`}
                 >
                   <div className="d-flex justify-content-center">
@@ -92,7 +92,7 @@ const RoleBasedCardList = () => {
                     </Tag>
                   </div>
                   <div className="d-flex gap-2 mt-2">
-                    <Button className="create-campaign-cancel-button">
+                    <Button className="create-campaign-cancel-button"  onClick={() => navigate(`/edit-role-access/${_id}`)}>
                       Edit
                     </Button>
                     <Button
@@ -101,7 +101,7 @@ const RoleBasedCardList = () => {
                           ? "create-campaign-save-button"
                           : "inactive-status-button"
                       }
-                      onClick={() => handleStatusChange(id, status)}
+                      onClick={() => handleStatusChange(_id, status)}
 
                     >
                       {status}
