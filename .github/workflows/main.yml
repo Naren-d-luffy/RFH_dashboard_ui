@@ -24,11 +24,14 @@ jobs:
       - name: Build the application
         run: CI=false npm run build
 
+      - name: Verify Build Output
+        run: ls -lah build  # ✅ Ensure files exist
+
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: react-app-build
-          path: build/
+          path: build/  # ✅ Ensuring correct path
 
   deploy:
     name: Deploy React App to Azure VM
@@ -39,6 +42,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: react-app-build
+          path: react-app-build  # ✅ Ensuring correct extraction
+
+      - name: Verify Downloaded Files
+        run: ls -lah react-app-build  # ✅ Debugging step
 
       - name: Setup SSH Key and Known Hosts
         run: |
@@ -62,7 +69,7 @@ jobs:
 
       - name: Upload Build Files
         run: |
-          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r ./react-app-build/* ${{ secrets.VM_USER }}@${{ secrets.VM_IP }}:/var/www/react-app
+          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r react-app-build/* ${{ secrets.VM_USER }}@${{ secrets.VM_IP }}:/var/www/react-app
 
       - name: Restart NGINX
         uses: appleboy/ssh-action@v0.1.7
