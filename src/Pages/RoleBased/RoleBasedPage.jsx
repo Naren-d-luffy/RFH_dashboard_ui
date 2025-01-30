@@ -1,11 +1,11 @@
 import React from "react";
 import "./rolebased.css";
-import RoleBasedList from "../../Components/RoleBased/RoleBasedList";
+import RoleBasedCardList from "../../Components/RoleBased/RoleBasedCardList";
 
 const RoleBasedPage = () => {
   return (
     <>
-	<RoleBasedList/>
+	<RoleBasedCardList/>
     </>
   );
 };

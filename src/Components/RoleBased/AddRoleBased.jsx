@@ -13,7 +13,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Instance } from "../../AxiosConfig";
 import { showSuccessMessage } from "../../globalConstant";
 
-const RoleBasedList = () => {
+const AddRoleBased = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
@@ -242,4 +242,4 @@ const RoleBasedList = () => {
   );
 };
 
-export default RoleBasedList;
+export default AddRoleBased;
