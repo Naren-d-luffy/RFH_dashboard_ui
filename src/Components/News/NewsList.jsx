@@ -108,6 +108,11 @@ const NewsList = () => {
 
   const columns = [
     {
+      title:"Type",
+      dataIndex: "type",
+      className: "campaign-performance-table-column",
+    },
+    {
       title: "Heading",
       dataIndex: "heading",
       className: "campaign-performance-table-column",
@@ -119,11 +124,11 @@ const NewsList = () => {
       dataIndex: "subheading",
       className: "campaign-performance-table-column",
     },
-    {
-      title: "About",
-      dataIndex: "about",
-      className: "campaign-performance-table-column",
-    },
+    // {
+    //   title: "About",
+    //   dataIndex: "about",
+    //   className: "campaign-performance-table-column",
+    // },
     {
       title: "Action",
       key: "action",

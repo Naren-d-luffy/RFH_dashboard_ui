@@ -6,6 +6,7 @@ import { Instance } from "../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { setRoleAccess } from "../../Features/RoleAccessSlice";
 import { useNavigate } from "react-router-dom";
+import { showErrorMessage, showSuccessMessage } from "../../globalConstant";
 
 const RoleBasedCardList = () => {
   const [, setIsLoading] = useState(false);
@@ -13,7 +14,6 @@ const RoleBasedCardList = () => {
   const navigate = useNavigate();
 
   const roleaccessData = useSelector((state) => state.roleAccess.roleAccess);
-  console.log("roleaccessData", roleaccessData);
 
   useEffect(() => {
     const fetchRoleAccessList = async () => {
@@ -31,16 +31,27 @@ const RoleBasedCardList = () => {
     fetchRoleAccessList();
   }, [dispatch]);
   
-  const handleStatusChange = async (id, currentStatus) => {
+  const handleStatusChange = async (_id, currentStatus) => {
     const newStatus = currentStatus === "ACTIVE" ? "INACTIVE" : "ACTIVE";
   
     try {
-      await Instance.patch(`/admin/updateStatus/${id}`, { status: newStatus });  
-      dispatch(setRoleAccess(roleaccessData.map(user => 
-        user.id === id ? { ...user, status: newStatus } : user
-      )));
+      const response = await Instance.patch(
+        `/admin/updateStatus/${_id}`, 
+        { status: newStatus }, 
+        { headers: { "Content-Type": "application/json" } }
+      );
+  
+      if (response.status === 200) {
+        showSuccessMessage("Status Updated!", `User status changed to ${newStatus}.`);
+        dispatch(setRoleAccess(roleaccessData.map(user => 
+          user._id === _id ? { ...user, status: newStatus } : user
+        )));
+      } else {
+        showErrorMessage("Failed to update status. Unexpected response.");
+      }
     } catch (error) {
       console.error("Error updating status:", error);
+      showErrorMessage("Failed to update status. Please try again.");
     }
   };
   
@@ -91,7 +102,7 @@ const RoleBasedCardList = () => {
                       {role}
                     </Tag>
                   </div>
-                  <div className="d-flex gap-2 mt-2">
+                  <div className="d-flex justify-content-center gap-2 mt-2">
                     <Button className="create-campaign-cancel-button"  onClick={() => navigate(`/edit-role-access/${_id}`)}>
                       Edit
                     </Button>

@@ -22,6 +22,7 @@ import {
 } from "../../../../Features/GastroIllnessSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import DOMPurify from "dompurify";
 
 const EducationCategoriesGastroIllness = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,6 +36,17 @@ const EducationCategoriesGastroIllness = () => {
   const gastroEvents = useSelector(
     (state) => state.gastroIllness.gastroIllness || []
   );
+  console.log("gastroEvents", gastroEvents);
+  const sanitizeContent = (content) => {
+    return DOMPurify.sanitize(content);
+  };
+  const truncateText = (text, wordLimit) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : text;
+  };
   const itemsPerPage = 100;
 
   const showModal = () => setIsModalOpen(true);
@@ -43,14 +55,6 @@ const EducationCategoriesGastroIllness = () => {
   const handleEditCancel = () => setIsEditModalOpen(false);
   const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
-
-  const truncateText = (text, wordLimit) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
 
   const sortMenu = (event) => (
     <Menu>
@@ -89,23 +93,24 @@ const EducationCategoriesGastroIllness = () => {
     </Menu>
   );
 
-  const fetchGastroEvents = useCallback( async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get("/gastro", {
-        params: { page, limit: itemsPerPage },
-      });
-      console.log("response",response)
-      dispatch(setGastroIllness(response.data.data.gastros || []));
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching gastro events:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  },
-  [dispatch]
-);
+  const fetchGastroEvents = useCallback(
+    async (page) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get("/gastro", {
+          params: { page, limit: itemsPerPage },
+        });
+        console.log("response", response);
+        dispatch(setGastroIllness(response.data.data.gastros || []));
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching gastro events:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch]
+  );
   useEffect(() => {
     fetchGastroEvents();
   }, [fetchGastroEvents]);
@@ -126,8 +131,6 @@ const EducationCategoriesGastroIllness = () => {
     });
   };
 
-
-
   const renderEventCard = (event) => (
     <div className="col-lg-4" key={event._id}>
       <div className="upcoming-event-card p-3" style={{ position: "relative" }}>
@@ -147,6 +150,13 @@ const EducationCategoriesGastroIllness = () => {
             <h4>{event.title}</h4>
           </div>
           <p>{truncateText(event.description, 30)}</p>
+          <p>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: sanitizeContent(truncateText(event.content, 10)),
+              }}
+            ></span>
+          </p>
         </div>
       </div>
     </div>
@@ -230,7 +240,7 @@ const EducationCategoriesGastroIllness = () => {
                 View all
               </button>
               <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} />  Add 
+                <GoPlus size={20} /> Add
               </button>
             </div>
           </div>

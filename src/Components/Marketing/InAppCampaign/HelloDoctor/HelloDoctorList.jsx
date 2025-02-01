@@ -34,7 +34,7 @@ export const HelloDoctorList = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const videos = useSelector((state) => state.videos.videos);
+  const videos = useSelector((state) => state.videos.videos);  
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
