@@ -145,7 +145,7 @@ export const LatestCampsList = () => {
     const [lat, lng] = location;
     return (
       <div className="col-lg-4" key={camp._id}>
-        <div className="recommended-latest-camp">
+        <div className="upcoming-event-card">
           <div className="recommended-latest-camp-map position-relative">
             {/* Icon positioned above the iframe */}
             <div className="latest-camp-icon-container">
