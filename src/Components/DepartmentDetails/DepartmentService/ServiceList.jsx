@@ -130,7 +130,7 @@ const ServiceList = () => {
           <p>
             <span
               dangerouslySetInnerHTML={{
-                __html: sanitizeContent(truncateText(service.content, 2)),
+                __html: sanitizeContent(truncateText(service.content, 3)),
               }}
             ></span>
           </p>{" "}

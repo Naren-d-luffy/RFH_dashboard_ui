@@ -19,6 +19,7 @@ import {
   deleteConditionWeTreat,
   setConditionWeTreat,
 } from "../../../Features/ConditionWeTreatSlice";
+import DOMPurify from "dompurify";
 
 export const ConditionWeTreatList = () => {
   const [modals, setModals] = useState({
@@ -34,7 +35,9 @@ export const ConditionWeTreatList = () => {
   const conditionwetreatList = useSelector(
     (state) => state.conditionwetreat.conditionwetreats
   );
-
+  const sanitizeContent = (content) => {
+    return DOMPurify.sanitize(content);
+  };
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
@@ -93,7 +96,13 @@ export const ConditionWeTreatList = () => {
       </Menu.Item>
     </Menu>
   );
-
+  const truncateText = (text, wordLimit) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : text;
+  };
   const renderConditionCard = (condition) => (
     <div className="col-lg-4" key={condition._id}>
       <div className="upcoming-event-card p-3">
@@ -117,6 +126,13 @@ export const ConditionWeTreatList = () => {
             </span>
           </div>
           <p>{condition.subHeading}</p>
+          <p>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: sanitizeContent(truncateText(condition.content, 3)),
+              }}
+            ></span>
+          </p>
         </div>
       </div>
     </div>

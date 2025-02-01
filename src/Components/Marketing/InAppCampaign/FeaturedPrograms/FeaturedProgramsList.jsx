@@ -141,7 +141,7 @@ export const FeaturedProgramsList = () => {
           <div className="d-flex justify-content-between mb-2">
             <h4>{feature.title}</h4>
           </div>
-          <p>{truncateText(feature.description, 30)}</p>
+          <p>{truncateText(feature.description, 40)}</p>
         </div>
       </div>
     </div>
