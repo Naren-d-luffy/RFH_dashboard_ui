@@ -17,14 +17,13 @@ import AddVideo from "./AddVideo";
 import EditVideo from "./EditVideo";
 
 const HelloDoctorTable = () => {
+  const EventData = useSelector((state) => state.videos.videos);  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
   const [selectedVideo, setSelectedVideo] = useState(null);
-
-  const EventData = useSelector((state) => state.videos.videos);
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
@@ -46,16 +45,6 @@ const HelloDoctorTable = () => {
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
   };
-
-  // const truncateHTML = (htmlContent, wordLimit) => {
-  //   if (!htmlContent) return "";
-  //   const sanitizedContent = DOMPurify.sanitize(htmlContent);
-  //   const textContent = sanitizedContent.replace(/<[^>]*>/g, "");
-  //   const words = textContent.split(" ");
-  //   return words.length > wordLimit
-  //     ? words.slice(0, wordLimit).join(" ") + "..."
-  //     : textContent;
-  // };
 
   const handleDeleteHelloDoctorVideo = (_id) => {
     showDeleteMessage({
@@ -115,16 +104,16 @@ const HelloDoctorTable = () => {
       className: "campaign-performance-table-column",
     },
     {
-      title: "Likes",
-      dataIndex: "likes",
-      className: "campaign-performance-table-column",
-      sorter: (a, b) => a.likes - b.likes,
-    },
-    {
       title: "Created At",
       dataIndex: "createdAt",
       className: "campaign-performance-table-column",
-      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt), 
+      render: (text) => {
+        const date = new Date(text);
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      },
     },
     {
       title: "Action",

@@ -14,6 +14,7 @@ const RoleBasedCardList = () => {
   const navigate = useNavigate();
 
   const roleaccessData = useSelector((state) => state.roleAccess.roleAccess);
+  const storedUserInfo = JSON.parse(localStorage.getItem("userInfo")) || {};
 
   useEffect(() => {
     const fetchRoleAccessList = async () => {
@@ -74,7 +75,9 @@ const RoleBasedCardList = () => {
 
       <div className="row mt-4">
         {Array.isArray(roleaccessData) &&
-          roleaccessData.map(
+          roleaccessData
+          .filter(({ _id }) => _id !== storedUserInfo.uid)
+          .map(
             ({ _id, profile, name, email, phoneNumber, role, status }) => (
               <div className="col-lg-4 col-xl-3 mb-4" key={_id}>
                 <div   className={`role-users-profile-card ${status === "ACTIVE" ? "active-card" : "inactive-card"}`}
@@ -103,13 +106,13 @@ const RoleBasedCardList = () => {
                     </Tag>
                   </div>
                   <div className="d-flex justify-content-center gap-2 mt-2">
-                    <Button className="create-campaign-cancel-button"  onClick={() => navigate(`/edit-role-access/${_id}`)}>
+                    <Button className="edit-role-button"  onClick={() => navigate(`/edit-role-access/${_id}`)}>
                       Edit
                     </Button>
                     <Button
                       className={
                         status === "ACTIVE"
-                          ? "create-campaign-save-button"
+                          ? "status-role-button"
                           : "inactive-status-button"
                       }
                       onClick={() => handleStatusChange(_id, status)}

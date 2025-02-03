@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Form, Input, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import DefaultUser from "../../Assets/Images/singleuser.png";
 import "react-international-phone/style.css";
 import { Instance } from "../../AxiosConfig";
@@ -21,18 +21,6 @@ export const Account = () => {
     (state) => state.settingsprofile.settingsprofile
   );
 
-  // const handleFileChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setPreviewImage(reader.result);
-  //       setIsProfileUpdated(true); // Mark that profile image was updated
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -49,29 +37,6 @@ export const Account = () => {
     fileInputRef.current.click();
   };
 
-  // const fetchUser = async () => {
-  //   const userInfo = localStorage.getItem("userInfo");
-  //   const parsedUserInfo = JSON.parse(userInfo);
-  //   try {
-  //     const response = await Instance.get(
-  //       `/admin/getProfile/${parsedUserInfo.uid}`
-  //     );
-  //     dispatch(setSettingsProfileData(response.data));
-  //     form.setFieldsValue({
-  //       name: response.data.name,
-  //       email: response.data.email,
-  //       phoneNumber: response.data.phoneNumber,
-  //     });
-  //     if (response.data.profile) {
-  //       setPreviewImage(response.data.profile);
-  //     } else {
-  //       setPreviewImage(DefaultUser);
-  //     }
-  //   } catch (error) {
-  //     message.error("Error fetching user data");
-  //     console.error("Error fetching user data:", error);
-  //   }
-  // };
   const fetchUser = useCallback(async () => {
     const userInfo = localStorage.getItem("userInfo");
     const parsedUserInfo = JSON.parse(userInfo);
@@ -95,9 +60,6 @@ export const Account = () => {
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
-  // useEffect(() => {
-  //   fetchUser();
-  // }, [fetchUser]);
 
   const handleSubmit = async () => {
     const userInfo = localStorage.getItem("userInfo");
@@ -172,26 +134,33 @@ export const Account = () => {
       console.error("Error updating profile:", error);
     }
   };
-
   const handleDeleteProfile = async () => {
     const userInfo = localStorage.getItem("userInfo");
     const parsedUserInfo = JSON.parse(userInfo);
+  
     try {
       await Instance.delete(`/admin/profile/${parsedUserInfo.uid}`);
-      message.success("Profile deleted successfully!");
+      setPreviewImage(DefaultUser);
+      setProfileFile(null);
+      setIsProfileUpdated(true);
+      dispatch(editSettingsProfileData({ ...profileData, profile: "" }));
+      const updatedUserInfo = { ...parsedUserInfo, profile: "" };
+      localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
+  
+      message.success("Profile image deleted successfully!");
     } catch (error) {
-      message.error("Error deleting profile");
-      console.error("Error deleting profile:", error);
+      message.error("Error deleting profile image");
+      console.error("Error deleting profile image:", error);
     }
   };
-
+  
   return (
     <div className="settings-personal-information">
       <div className="container">
         <h4 className="mt-4 mt-lg-0">Account</h4>
-        <p>Settings your account details here</p>
+        {/* <p>Settings your account details here</p> */}
         <hr style={{ color: "var(--black-color)" }} />
-        <Form layout="vertical" form={form} onFinish={handleSubmit}>
+        <Form layout="vertical" form={form} >
           <h5>My Profile</h5>
           <div className="row mt-4">
             <div className="settings-profile-icon-section">
@@ -225,15 +194,32 @@ export const Account = () => {
           </div>
           <div className="row mt-4">
             <div className="col-md-6 mt-4">
-              <Form.Item name="name" label="Name">
+              <Form.Item
+                name="name"
+                label="Name"
+                rules={[
+                  { required: true, message: "Name is required" },
+                  { min: 3, message: "Name must be at least 3 characters" },
+                ]}
+              >
                 <Input
                   className="settings-input"
-                  placeholder="Enter First Name"
+                  placeholder="Enter Full Name"
                 />
               </Form.Item>
             </div>
             <div className="col-md-6 mt-4">
-              <Form.Item name="phoneNumber" label="Phone Number">
+              <Form.Item
+                name="phoneNumber"
+                label="Phone Number"
+                rules={[
+                  { required: true, message: "Phone number is required" },
+                  {
+                    pattern: /^[0-9]{10,15}$/,
+                    message: "Enter a valid phone number",
+                  },
+                ]}
+              >
                 <Input
                   className="settings-input"
                   placeholder="Enter Phone Number"
@@ -243,29 +229,32 @@ export const Account = () => {
           </div>
           <div className="row">
             <div className="col-md-6 mt-2">
-              <Form.Item name="email" label="Email">
-                <Input className="settings-input" placeholder="Email ID" />
+              <Form.Item name="email" label="Email"
+               rules={[
+                { required: true, message: "Email is required" },
+                { type: "email", message: "Enter a valid email" },
+              ]}>
+                <Input className="settings-input" placeholder="Email ID" 
+                readOnly
+                />
               </Form.Item>
             </div>
             <div className="col-md-6 mt-2">
-              <button
+              <Button
                 type="button"
-                className="settings-delete-button ms-3 mt-4"
+                className="create-campaign-cancel-button ms-3 mt-4"
                 onClick={handleChangePasswordClick}
               >
                 Change Password
-              </button>
+              </Button>
             </div>
           </div>
 
           <div className="row mt-4">
             <div className="d-flex justify-content-end gap-2">
-              <button className="settings-delete-button" type="button">
-                Cancel
-              </button>
-              <button className="settings-edit-icon-button" type="submit">
+              <Button className="status-role-button" onClick={handleSubmit}>
                 Save
-              </button>
+              </Button>
             </div>
           </div>
         </Form>
