@@ -18,6 +18,9 @@ import {
 } from "../../../Features/ConditionWeTreatSlice";
 
 const ConditionWeTreatTable = () => {
+  const conditionwetreatList = useSelector(
+    (state) => state.conditionwetreat.conditionwetreats
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,11 +28,6 @@ const ConditionWeTreatTable = () => {
   const [totalRows, setTotalRows] = useState(0);
   const [selectedFacility, setSelectedFacility] = useState(null);
   const [selectedReadingMaterial, setSelectedReadingMaterial] = useState(null);
-
-  const conditionwetreatList = useSelector(
-    (state) => state.conditionwetreat.conditionwetreats
-  );
-
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
@@ -128,6 +126,13 @@ const ConditionWeTreatTable = () => {
       title: "Created At",
       dataIndex: "createdAt",
       className: "campaign-performance-table-column",
+      render: (text) => {
+        const date = new Date(text);
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      },
     },
     {
       title: "Action",

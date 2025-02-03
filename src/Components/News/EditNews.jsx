@@ -228,7 +228,7 @@ console.log("newsXDTa",newsData)
               className="settings-input"
               placeholder="Enter URL"
               defaultValue=""
-              value={videoURL} // Bind state
+              value={videoURL}
               onChange={(e) => setVideoURL(e.target.value)} 
             />
             <span className="create-campaign-input-span">Video URL</span>
@@ -247,7 +247,7 @@ console.log("newsXDTa",newsData)
           <div className="col-lg-6">
             <Form.Item>
               <ColorPicker
-                defaultValue={backgroundColor}
+                value={backgroundColor}
                 onChange={(color) => {
                   const hexColor = color.toHexString();
                   setBackgroundColor(hexColor);

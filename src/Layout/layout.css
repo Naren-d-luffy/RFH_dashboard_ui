@@ -97,8 +97,10 @@
   position: absolute;
   top: calc(85%);
   right: 15px;
-  background: var(--primary-green);
-  border-radius: 4px;
+  background: var(--page-background-color);
+  color: var(--primary-green);
+  border: 1px solid var(--primary-green) !important;
+  border-radius: 8px;
   z-index: 999;
   display: block;
   visibility: visible;
@@ -123,12 +125,15 @@
 
 .dropdown-item {
   display: block;
-  padding: 8px 0px;
+  /* padding: 8px 0px; */
   text-decoration: none;
-  color: var(--white-color);
-  border-radius: 2px;
+  color: var(--primary-green);
+  border-radius: 4px;
 }
-
+.dropdown-item:hover {
+  color: var(--white-color);
+  background-color: var(--primary-green);
+}
 .profile--icon {
   border-radius: 50%;
   width: 40px;
