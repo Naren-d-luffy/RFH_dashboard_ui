@@ -119,13 +119,13 @@ const ForgotPassword = () => {
                 "Continue"
               )}
             </button>
-            <p className="login-link">
+            {/* <p className="login-link">
               Do not have an account? <Link to="/sign-up">Sign Up</Link>
             </p>
             <p className="terms">
               By Continuing you agree to Reliance Terms of Service and Privacy
               Policy
-            </p>
+            </p> */}
           </div>
           <div className="col-lg-6 col-sm-0 col-md-0 login-image">
             <Carousel

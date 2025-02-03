@@ -60,11 +60,6 @@ const SignIn = () => {
       message.error("Please enter a valid email address.");
       return;
     }
-    if (rememberMe) {
-      localStorage.setItem("rememberedEmail", email);
-    } else {
-      localStorage.removeItem("rememberedEmail");
-    }
     loginUser(email, password);
   };
 
@@ -192,7 +187,7 @@ const SignIn = () => {
               <button
                 className="login-button"
                 onClick={handleLogin}
-                type="submit"
+                type="button"
               >
                 {loading ? (
                   <Spin
@@ -208,10 +203,10 @@ const SignIn = () => {
                 )}
               </button>
             </form>
-            <p className="terms">
+            {/* <p className="terms">
               By Continuing you agree to Reliance Terms of Service and Privacy
               Policy
-            </p>
+            </p> */}
           </div>
           <div className="col-lg-6 col-sm-0 col-md-0 login-image">
             <Carousel
