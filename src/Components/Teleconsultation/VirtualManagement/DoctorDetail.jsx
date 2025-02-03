@@ -48,7 +48,6 @@ const DoctorDetail = () => {
       setUploadedFile(file);
     }
   };
-  
 
   const handleDeleteImage = () => {
     setUploadedFile(null);
@@ -59,7 +58,6 @@ const DoctorDetail = () => {
   };
 
   const handleArrayInputChange = (field, value) => {
-    // Split the input string by commas and trim whitespace
     const arrayValue = value.split(",").map((item) => item.trim());
     handleInputChange(field, arrayValue);
   };
@@ -70,15 +68,14 @@ const DoctorDetail = () => {
       data.append("profile", uploadedFile);
     }
 
-    // Append all other form fields
     Object.keys(formData).forEach((key) => {
       if (Array.isArray(formData[key])) {
-        data.append(key, JSON.stringify(formData[key])); // Convert arrays to JSON strings
+        data.append(key, JSON.stringify(formData[key])); 
       } else {
         data.append(key, formData[key]);
       }
     });
-  
+
     console.log("FormData being sent:");
     for (let [key, value] of data.entries()) {
       console.log(`${key}:`, value);
@@ -230,24 +227,18 @@ const DoctorDetail = () => {
 
           <Row gutter={24}>
             <Col span={12}>
-              {/* <Form.Item>
-                <Input.TextArea
-                  className="create-campaign-input"
-                  placeholder="Enter About"
-                  value={formData.about || ""}
-                  onChange={(e) => handleInputChange("about", e.target.value)}
-                />
-                <span className="create-campaign-input-span">About</span>
-              </Form.Item> */}
               <Form.Item>
-                <ReactQuill
-                  theme="snow"
-                  modules={modules}
-                  placeholder="Enter About"
-                  value={formData.about || ""}
-                  onChange={(value) => handleInputChange("about", value)}
-                  required
-                />
+                <div className="quill-editor">
+                  <ReactQuill
+                    theme="snow"
+                    modules={modules}
+                    placeholder="Enter About"
+                    value={formData.about || ""}
+                    onChange={(value) => handleInputChange("about", value)}
+                    required
+                  />
+                </div>
+
                 <span className="create-campaign-input-span">About</span>
               </Form.Item>
             </Col>

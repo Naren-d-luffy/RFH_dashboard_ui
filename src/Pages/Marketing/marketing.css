@@ -200,7 +200,7 @@
 }
 
 .campaign-performance-table-delete-icon:hover {
-  color: var(--red-color);
+  color: var(--red-color) !important;
   border: 1px solid var(--red-color);
   background-color: var(--white-color);
   font-weight: 600;

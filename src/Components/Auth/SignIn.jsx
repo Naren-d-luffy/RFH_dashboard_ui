@@ -11,7 +11,7 @@ import login2 from "../../Assets/Images/login-5.png";
 import login3 from "../../Assets/Images/login-2.png";
 import login4 from "../../Assets/Images/login-4.png";
 import { showErrorMessage, showSuccessMessage } from "../../globalConstant";
-import { jwtDecode } from "jwt-decode"; // Import jwt-decode
+import { jwtDecode } from "jwt-decode"; 
 import { useAuth } from "../../AuthContext";
 
 
@@ -24,10 +24,10 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [, setRememberMe] = useState(false);
   const navigate = useNavigate();
   const authContext = useAuth(); 
-  const { syncAuthState } = authContext || {}; // Get syncAuthState safely
+  const { syncAuthState } = authContext || {}; 
 
   const sliderItems = [
     {
@@ -98,9 +98,7 @@ const SignIn = () => {
           "You have successfully logged in."
         );
        
-        // if (typeof syncAuthState === "function") {
           syncAuthState(); 
-        // } 
         navigate("/user-dashboards/user-aquisition");
       } else {
         console.log("Login failed with error:", response.data.error);

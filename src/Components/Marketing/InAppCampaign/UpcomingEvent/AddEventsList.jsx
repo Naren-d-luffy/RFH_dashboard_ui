@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, message, Select, Upload } from "antd";
+import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import {
   showErrorMessage,
@@ -13,13 +13,13 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import Loader from "../../../../Loader";
 
 const { TextArea } = Input;
-const { Option } = Select;
+// const { Option } = Select;
 
 const AddEventsList = ({ open, handleCancel }) => {
   const [title, setTitle] = useState("");
-  const [link, setLink] = useState("");
+  // const [link, setLink] = useState("");
   const [description, setDescription] = useState("");
-  const [isActive, setIsActive] = useState(true);
+  // const [isActive, setIsActive] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [features, setFeatures] = useState([]);
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -59,7 +59,7 @@ const AddEventsList = ({ open, handleCancel }) => {
     if (
       !title.trim() ||
       !description.trim() ||
-      !link.trim() ||
+      // !link.trim() ||
       !uploadedImage 
     ) {
       message.error("Please fill in all required fields.");
@@ -69,9 +69,9 @@ const AddEventsList = ({ open, handleCancel }) => {
     const formData = new FormData();
     formData.append("title", title.trim());
     formData.append("description", description.trim());
-    formData.append("link", link.trim());
+    // formData.append("link", link.trim());
     // formData.append("order", parseInt(order, 10));
-    formData.append("isActive", isActive);
+    // formData.append("isActive", isActive);
     formData.append("tags", features);
     formData.append("image", uploadedImage);
     setIsLoading(true);
@@ -86,9 +86,9 @@ const AddEventsList = ({ open, handleCancel }) => {
         showSuccessMessage("Event card added successfully!");
         setTitle("");
         setDescription("");
-        setLink("");
+        // setLink("");
         // setOrder("");
-        setIsActive(true);
+        // setIsActive(true);
         setFeatures([]);
         setUploadedImage(null);
       }
@@ -104,9 +104,9 @@ const AddEventsList = ({ open, handleCancel }) => {
   const handleCancelClick = () => {
     setTitle("");
     setDescription("");
-    setLink("");
+    // setLink("");
     // setOrder("");
-    setIsActive(true);
+    // setIsActive(true);
     setFeatures([]);
     setUploadedImage(null);
     handleCancel();
@@ -150,7 +150,7 @@ const AddEventsList = ({ open, handleCancel }) => {
             />
             <span className="create-campaign-input-span"> <span style={{ color: "red" }}>*</span> Title</span>
           </Form.Item>
-          <Form.Item>
+          {/* <Form.Item>
             <Input
               value={link}
               onChange={(e) => setLink(e.target.value)}
@@ -158,7 +158,7 @@ const AddEventsList = ({ open, handleCancel }) => {
               required
             />
             <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Link</span>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item>
             <Upload
               listType="picture"
@@ -212,7 +212,7 @@ const AddEventsList = ({ open, handleCancel }) => {
             />
             <span className="create-campaign-input-span">Order</span>
           </Form.Item> */}
-          <Form.Item>
+          {/* <Form.Item>
             <Select
               value={isActive}
               onChange={(value) => setIsActive(value)}
@@ -223,7 +223,7 @@ const AddEventsList = ({ open, handleCancel }) => {
               <Option value={false}>Inactive</Option>
             </Select>
             <span className="create-campaign-input-span">Status</span>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item>
             <TextArea
               value={description}
