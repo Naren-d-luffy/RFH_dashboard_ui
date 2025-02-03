@@ -27,7 +27,7 @@ const TableEventsList = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const navigate = useNavigate();
 
-  const eventsData = useSelector((state) => state.discoverevent.events);
+  const eventsData = useSelector((state) => state.discoverevent.events);  
   const [searchText, setSearchText] = useState("");
   const [totalRows] = useState(0);
   const dispatch = useDispatch();
@@ -119,9 +119,9 @@ const TableEventsList = () => {
       render: (text) => truncateText(text),
     },
     {
-      title: "Order",
-      dataIndex: "order",
-      key: "order",
+      title: "Tags",
+      dataIndex: "tags",
+      key: "tags",
       sorter: (a, b) => a.order - b.order, 
     },
     {

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "../layout.css";
 import { Link, useNavigate } from "react-router-dom";
-import DefaultUser from "../../Assets/Images/DefaultUser.png";
+import DefaultUser from "../../Assets/Images/singleuser.png";
 import { GoBell } from "react-icons/go";
 import { FiSearch } from "react-icons/fi";
 import { useDarkMode } from "../../DarkMode";
