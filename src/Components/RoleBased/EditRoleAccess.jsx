@@ -64,7 +64,7 @@ const EditRoleBased = () => {
           phone: userData.phoneNumber,
           password: "",
           role: userData.role,
-          categories: JSON.parse(userData.categories) || [],
+          categories: userData.categories,
         });
         setPreviewImage(userData.profile || "");
       } catch (error) {
@@ -83,7 +83,9 @@ const EditRoleBased = () => {
     formDataToSend.append("email", formData.email);
     formDataToSend.append("phoneNumber", formData.phone);
     formDataToSend.append("role", formData.role);
-    formDataToSend.append("categories", JSON.stringify(formData.categories));
+    formData.categories.forEach((category) => {
+      formDataToSend.append("categories[]", category);
+    });
     if (profileFile) formDataToSend.append("profile", profileFile);
     console.log(
       "Submitting Data:",
