@@ -77,7 +77,7 @@ export const Account = () => {
         }
 
         const response = await Instance.put(
-          `/admin/profile/${parsedUserInfo.uid}`,
+          `/profile/${parsedUserInfo.uid}`,
           formData,
           {
             headers: {
@@ -230,10 +230,7 @@ export const Account = () => {
           <div className="row">
             <div className="col-md-6 mt-2">
               <Form.Item name="email" label="Email"
-               rules={[
-                { required: true, message: "Email is required" },
-                { type: "email", message: "Enter a valid email" },
-              ]}>
+               >
                 <Input className="settings-input" placeholder="Email ID" 
                 readOnly
                 />

@@ -49,7 +49,7 @@ export const TermsAndConditionsList = () => {
           const response = await Instance.delete(`/terms/${clauseId}`);
           if (response.status === 201 || response.status) {
             dispatch(deleteTerm(clauseId))
-            showSuccessMessage("Clause deleted successfully.");
+            showSuccessMessage("Terms and conditions deleted successfully.");
           }
         } catch (err) {
           setError("Failed to delete clause. Please try again later.");
