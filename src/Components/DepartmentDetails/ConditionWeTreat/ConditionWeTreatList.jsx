@@ -31,6 +31,8 @@ export const ConditionWeTreatList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState(null);
 
   const conditionwetreatList = useSelector(
     (state) => state.conditionwetreat.conditionwetreats
@@ -63,31 +65,34 @@ export const ConditionWeTreatList = () => {
     });
   };
 
+  const handleCardClick = (condition, e) => {
+    e.stopPropagation();
+    setSelectedTechnology(condition);
+    setIsViewModalOpen(true);
+  };
+
   const sortMenu = (condition) => (
     <Menu>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => handleEditClick(condition)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          handleEditClick(condition);
+          setIsEditModalOpen(true);
+          setIsViewModalOpen(false);
+        }}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
       <Menu.Item
-        key="view"
-        className="filter-menu-item"
-        onClick={() => {
-          setSelectedTechnology(condition);
-          setIsViewModalOpen(true);
-        }}
-      >
-        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        View
-      </Menu.Item>
-      <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteClick(condition._id)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          handleDeleteClick(condition._id);
+        }}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -105,10 +110,17 @@ export const ConditionWeTreatList = () => {
   };
   const renderConditionCard = (condition) => (
     <div className="col-lg-4" key={condition._id}>
-      <div className="upcoming-event-card p-3">
+      <div
+        className="upcoming-event-card p-3"
+        onClick={(e) => handleCardClick(condition, e)}
+        style={{ cursor: "pointer" }}
+      >
         <div className="action-icon-container">
           <Dropdown overlay={() => sortMenu(condition)} trigger={["click"]}>
-            <button className="action-icon-button">
+            <button
+              className="action-icon-button"
+              onClick={(e) => e.stopPropagation()}
+            >
               <BsThreeDotsVertical />
             </button>
           </Dropdown>
@@ -205,16 +217,16 @@ export const ConditionWeTreatList = () => {
             <h6>Condition We Treat List</h6>
             <div className="events-buttons">
               <button
-                className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-condition-we-treat-list")}
-              >
-                View all
-              </button>
-              <button
                 className="rfh-basic-button"
                 onClick={() => toggleModal("condition")}
               >
                 <GoPlus size={20} /> Add We Treat
+              </button>
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-condition-we-treat-list")}
+              >
+                View all
               </button>
             </div>
           </div>

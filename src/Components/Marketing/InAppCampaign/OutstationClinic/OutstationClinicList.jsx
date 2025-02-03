@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Dropdown, Menu } from "antd";
 import { FiEye } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
@@ -26,11 +26,12 @@ import ViewOutstationClinic from "./ViewOutstationClinic";
 import { useNavigate } from "react-router-dom";
 
 const OutstationClinicList = () => {
-  const [, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedClinic, setSelectedClinic] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -54,7 +55,7 @@ const OutstationClinicList = () => {
       : text;
   };
 
-  const fetchOutstationClinic = useCallback(async () => {
+  const fetchOutstationClinic = async () => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/discover/clinic", {
@@ -67,7 +68,7 @@ const OutstationClinicList = () => {
     } finally {
       setIsLoading(false);
     }
-  },[dispatch]);
+  };
 
   const handleDeleteClinic = (_id) => {
     showDeleteMessage({
@@ -88,14 +89,24 @@ const OutstationClinicList = () => {
 
   useEffect(() => {
     fetchOutstationClinic();
-  }, [fetchOutstationClinic]);
+  }, []);
+
+  const handleCardClick = (clinic) => {
+    if (!isEditModalOpen) {
+      setSelectedClinic(clinic);
+      setSelectedEvent(clinic);
+      setIsViewModalOpen(true);
+    }
+  };
 
   const sortMenu = (clinic) => (
-    <Menu>
+    <Menu onClick={(e) => e.domEvent.stopPropagation()}>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          setIsEditModalOpen(true);
           setSelectedEvent(clinic);
           showEditModal();
         }}
@@ -104,20 +115,12 @@ const OutstationClinicList = () => {
         Edit
       </Menu.Item>
       <Menu.Item
-        key="view"
-        className="filter-menu-item"
-        onClick={() => {
-          setSelectedEvent(clinic);
-          showViewModal();
-        }}
-      >
-        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        View
-      </Menu.Item>
-      <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteClinic(clinic._id)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          handleDeleteClinic(clinic._id);
+        }}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -129,10 +132,20 @@ const OutstationClinicList = () => {
 
   const renderClinicCard = (clinic) => (
     <div className="col-lg-4" key={clinic._id}>
-      <div className="outstation-clinic-upcoming-event-card p-3">
+      <div
+        className="outstation-clinic-upcoming-event-card p-3"
+        style={{ position: "relative", cursor: "pointer" }}
+        onClick={() => {
+          setSelectedClinic(clinic);
+          showViewModal();
+        }}
+      >
         <div className="action-icon-container">
           <Dropdown overlay={sortMenu(clinic)} trigger={["click"]}>
-            <button className="action-icon-button">
+            <button
+              className="action-icon-button"
+              onClick={(e) => e.stopPropagation()}
+            >
               <BsThreeDotsVertical />
             </button>
           </Dropdown>
@@ -220,24 +233,27 @@ const OutstationClinicList = () => {
     <div className="container mt-4">
       <div className="marketing-categories-section">
         <div className="row mt-4">
-          <div className="events-header-container">
+          <div
+            className="events-header-container"
+            onClick={() => handleCardClick(clinics)}
+          >
             <h6>Outstation/Speciality Clinic</h6>
             <div className="events-buttons">
+              <button className="rfh-basic-button" onClick={showModal}>
+                <GoPlus size={20} /> Add Clinic
+              </button>
               <button
                 className="rfh-view-all-button"
                 onClick={() => navigate("/view-all-outstation-clinic")}
               >
                 View all
               </button>
-              <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} /> Add Clinic
-              </button>
             </div>
           </div>
           <div className="mt-3">
             <Slider {...sliderSettings} key={clinics?.length}>
               {clinics && clinics.length > 0 ? (
-                clinics?.map((clinic) => renderClinicCard(clinic))
+                clinics.map((clinic) => renderClinicCard(clinic))
               ) : (
                 <p>No data available</p>
               )}
@@ -254,7 +270,7 @@ const OutstationClinicList = () => {
       <ViewOutstationClinic
         open={isViewModalOpen}
         handleCancel={handleViewCancel}
-        EventData={selectedEvent}
+        EventData={selectedClinic}
       />
     </div>
   );

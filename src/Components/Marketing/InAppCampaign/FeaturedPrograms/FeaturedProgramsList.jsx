@@ -13,7 +13,6 @@ import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { FiEye } from "react-icons/fi";
 import {
-
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -29,7 +28,7 @@ export const FeaturedProgramsList = () => {
   const handleCancel = () => setIsModalOpen(false);
   const showEditModal = () => setIsEditModalOpen(true);
   const handleEditCancel = () => setIsEditModalOpen(false);
-  const [isLoading,setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const showViewModal = () => setIsViewModalOpen(true);
@@ -52,7 +51,8 @@ export const FeaturedProgramsList = () => {
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
           setSelectedFeature(feature);
           showEditModal();
         }}
@@ -60,21 +60,14 @@ export const FeaturedProgramsList = () => {
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
-      <Menu.Item
-        key="view"
-        className="filter-menu-item"
-        onClick={() => {
-          setSelectedFeature(feature);
-          showViewModal();
-        }}
-      >
-        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        View
-      </Menu.Item>
+
       <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteFeature(feature._id)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          handleDeleteFeature(feature._id);
+        }}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -103,49 +96,71 @@ export const FeaturedProgramsList = () => {
       },
     });
   };
-  const fetchFeaturesInfo = useCallback(async (page = 1) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get(`/discover/featuredProgram`, {
-        params: { page, limit: itemsPerPage }
-        
-      });
-      dispatch(setFeature(response.data.data));
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching Features:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  },[dispatch,itemsPerPage]);
+  const fetchFeaturesInfo = useCallback(
+    async (page = 1) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/discover/featuredProgram`, {
+          params: { page, limit: itemsPerPage },
+        });
+        dispatch(setFeature(response.data.data));
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching Features:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch, itemsPerPage]
+  );
 
   useEffect(() => {
     fetchFeaturesInfo();
   }, [fetchFeaturesInfo]);
 
-  const renderFeatureCard = (feature) => (
-    <div className="col-lg-4" key={feature._id}>
-      <div className="upcoming-event-card p-3" style={{ position: "relative" }}>
-        <div className="treatment-info-icon-container">
-          <Dropdown overlay={sortMenu(feature)} trigger={["click"]}>
-            <button className="action-icon-button">
-              <BsThreeDotsVertical />
-            </button>
-          </Dropdown>
-        </div>
-
-        <div className="d-flex justify-content-center align-items-center mb-3">
-          <img src={feature.thumbnail} alt={feature.title} />
-        </div>
-        <div>
-          <div className="d-flex justify-content-between mb-2">
-            <h4>{feature.title}</h4>
+  const renderFeatureCard = (feature) => {
+    return (
+      <div className="col-lg-4" key={feature._id}>
+        <div
+          className="upcoming-event-card p-3"
+          style={{ position: "relative", cursor: "pointer" }}
+          onClick={() => {
+            setSelectedFeature(feature);
+            showViewModal();
+          }}
+        >
+          <div className="treatment-info-icon-container">
+            <Dropdown
+              overlay={sortMenu(feature)}
+              trigger={["click"]}
+              onOpenChange={(open) => {
+                if (open) {
+                  handleViewCancel();
+                }
+              }}
+            >
+              <button
+                className="action-icon-button"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <BsThreeDotsVertical />
+              </button>
+            </Dropdown>
           </div>
-          <p>{truncateText(feature.description, 40)}</p>
+
+          <div className="d-flex justify-content-center align-items-center mb-3">
+            <img src={feature.thumbnail} alt={feature.title} />
+          </div>
+          <div>
+            <div className="d-flex justify-content-between mb-2">
+              <h4>{feature.title}</h4>
+            </div>
+            <p>{truncateText(feature.description, 40)}</p>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const CustomPrevArrow = (props) => {
     const { className, style, onClick } = props;
@@ -195,50 +210,52 @@ export const FeaturedProgramsList = () => {
 
   return (
     <>
-    {isLoading && <Loader/>}
-    <div className="row mt-4">
-      <div className="marketing-categories-section">
-        <div className="row mt-4">
-          <div className="events-header-container">
-            <h6>Featured Programs</h6>
-            <div className="events-buttons">
-              <button
-                className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-features")}
-              >
-                View all
-              </button>
-              <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} /> Add Program
-              </button>
+      {isLoading && <Loader />}
+      <div className="row mt-4">
+        <div className="marketing-categories-section">
+          <div className="row mt-4">
+            <div className="events-header-container">
+              <h6>Featured Programs</h6>
+              <div className="events-buttons">
+                <button className="rfh-basic-button" onClick={showModal}>
+                  <GoPlus size={20} /> Add Program
+                </button>
+                <button
+                  className="rfh-view-all-button"
+                  onClick={() => navigate("/view-all-features")}
+                >
+                  View all
+                </button>
+              </div>
             </div>
+            <div className="mt-4">
+              <Slider
+                {...sliderSettings}
+                key={Object.keys(FeaturesData).length}
+              >
+                {FeaturesData && Object.keys(FeaturesData).length > 0 ? (
+                  Object.values(FeaturesData)?.map((feature) =>
+                    renderFeatureCard(feature)
+                  )
+                ) : (
+                  <p>No data available</p>
+                )}
+              </Slider>
+            </div>
+            <AddFeaturesModal open={isModalOpen} handleCancel={handleCancel} />
           </div>
-          <div className="mt-4">
-            <Slider {...sliderSettings} key={Object.keys(FeaturesData).length}>
-              {FeaturesData && Object.keys(FeaturesData).length > 0 ? (
-                Object.values(FeaturesData)?.map((feature) =>
-                  renderFeatureCard(feature)
-                )
-              ) : (
-                <p>No data available</p>
-
-              )}
-            </Slider>
-          </div>
-          <AddFeaturesModal open={isModalOpen} handleCancel={handleCancel} />
+          <EditFeaturesModal
+            open={isEditModalOpen}
+            handleCancel={handleEditCancel}
+            featuresData={selectedFeature}
+          />
+          <ViewFeaturedModal
+            open={isViewModalOpen}
+            handleCancel={handleViewCancel}
+            featuresData={selectedFeature}
+          />
         </div>
-        <EditFeaturesModal
-          open={isEditModalOpen}
-          handleCancel={handleEditCancel}
-          featuresData={selectedFeature}
-        />
-        <ViewFeaturedModal
-          open={isViewModalOpen}
-          handleCancel={handleViewCancel}
-          featuresData={selectedFeature}
-        />
       </div>
-    </div>
     </>
   );
 };
