@@ -51,14 +51,24 @@ const CategoriesReadingMaterials = () => {
       : text;
   };
 
+  const handleCardClick = (event) => {
+    if (!isEditModalOpen) {
+      setSelectedEvent(event);
+      setIsViewModalOpen(true);
+    }
+  };
+
   const sortMenu = (readingmaterial) => (
-    <Menu>
+    <Menu onClick={(e) => e.domEvent.stopPropagation()}>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
           setSelectedReadingmaterial(readingmaterial);
           showEditModal();
+          setIsEditModalOpen(true);
+          setIsViewModalOpen(false);
         }}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
@@ -67,7 +77,8 @@ const CategoriesReadingMaterials = () => {
       <Menu.Item
         key="view"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
           setSelectedReadingmaterial(readingmaterial);
           showViewModal();
         }}
@@ -104,22 +115,23 @@ const CategoriesReadingMaterials = () => {
       },
     });
   };
-  const fetchReadingMaterials = useCallback( async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get(`/reading-material`, {
-        params: { page, limit: itemsPerPage },
-      });
-      dispatch(setReadingMaterials(response.data));
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching reading materials:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  },
-  [dispatch]
-);
+  const fetchReadingMaterials = useCallback(
+    async (page) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/reading-material`, {
+          params: { page, limit: itemsPerPage },
+        });
+        dispatch(setReadingMaterials(response.data));
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching reading materials:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     fetchReadingMaterials();
@@ -127,10 +139,17 @@ const CategoriesReadingMaterials = () => {
 
   const renderImageCard = (readingmaterial) => (
     <div className="col-lg-4" key={readingmaterial._id}>
-      <div className="upcoming-event-card p-3" style={{ position: "relative" }}>
+      <div
+        className="upcoming-event-card p-3"
+        style={{ position: "relative" }}
+        onClick={() => handleCardClick(readingmaterial)}
+      >
         <div className="treatment-info-icon-container">
           <Dropdown overlay={sortMenu(readingmaterial)} trigger={["click"]}>
-            <button className="action-icon-button">
+            <button
+              className="action-icon-button"
+              onClick={(e) => e.stopPropagation()}
+            >
               <BsThreeDotsVertical />
             </button>
           </Dropdown>
@@ -201,14 +220,14 @@ const CategoriesReadingMaterials = () => {
         <div className="events-header-container">
           <h6>Reading Materials</h6>
           <div className="events-buttons">
+            <button className="rfh-basic-button" onClick={showModal}>
+              <GoPlus size={20} /> Add
+            </button>
             <button
               className="rfh-view-all-button"
               onClick={() => navigate("/view-all-readingmaterials")}
             >
               View all
-            </button>
-            <button className="rfh-basic-button" onClick={showModal}>
-              <GoPlus size={20} /> Add
             </button>
           </div>
         </div>

@@ -23,22 +23,26 @@ const ServiceList = () => {
     event: false,
     service: false,
     edit: false,
-    view:false
+    view: false,
   });
   const [selectedService, setSelectedService] = useState(null);
   const dispatch = useDispatch();
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const navigate = useNavigate();
   const sanitizeContent = (content) => {
     return DOMPurify.sanitize(content);
   };
   const servicesList = useSelector((state) => state.service.services);
-  // const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  // const showViewModal = (service) => {
-  //   setSelectedService(service);
-  //   setIsViewModalOpen(true);
-  // };
-  // const handleViewCancel = () => setIsViewModalOpen(false);
-  // // console.log("servicesList", servicesList);
+
+  const toggleModal = (modalType) =>
+    setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
+
+  const handleEditClick = (service) => {
+    setSelectedService(service);
+    toggleModal("edit");
+  };
 
   const truncateText = (text, wordLimit) => {
     if (!text) return "";
@@ -46,13 +50,6 @@ const ServiceList = () => {
     return words.length > wordLimit
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
-  };
-  const toggleModal = (modalType) =>
-    setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
-
-  const handleEditClick = (service) => {
-    setSelectedService(service);
-    toggleModal("edit");
   };
 
   const handleViewClick = (service) => {
@@ -77,28 +74,34 @@ const ServiceList = () => {
     });
   };
 
+  const handleCardClick = (service, e) => {
+    e.stopPropagation(); 
+    setSelectedService(service);
+    toggleModal("view");
+  };
+
   const sortMenu = (service) => (
     <Menu>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => handleEditClick(service)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation(); 
+          handleEditClick(service);
+          setIsEditModalOpen(true);
+          setIsViewModalOpen(false);
+        }}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
       <Menu.Item
-        key="view"
-        className="filter-menu-item"
-        onClick={() => handleViewClick(service)}
-      >
-        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        View
-      </Menu.Item>
-      <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteClick(service._id)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          handleDeleteClick(service._id);
+        }}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -110,10 +113,17 @@ const ServiceList = () => {
 
   const renderServiceCard = (service) => (
     <div className="col-lg-4" key={service._id}>
-      <div className="upcoming-event-card p-3">
+      <div
+        className="upcoming-event-card p-3"
+        onClick={(e) => handleCardClick(service, e)}  
+        style={{ cursor: "pointer" }}
+      >
         <div className="action-icon-container">
           <Dropdown overlay={() => sortMenu(service)} trigger={["click"]}>
-            <button className="action-icon-button">
+            <button
+              className="action-icon-button"
+              onClick={(e) => e.stopPropagation()}
+            >
               <BsThreeDotsVertical />
             </button>
           </Dropdown>
@@ -185,16 +195,14 @@ const ServiceList = () => {
     ],
   };
 
-  const fetchFacilityList = useCallback( async () => {
+  const fetchFacilityList = useCallback(async () => {
     try {
       const response = await Instance.get("depcat/service");
       dispatch(setService(response.data));
     } catch (error) {
       console.error("Error fetching facilities:", error);
     }
-  },
-  [dispatch]
-);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchFacilityList();
@@ -208,16 +216,16 @@ const ServiceList = () => {
             <h6>Department Services</h6>
             <div className="events-buttons">
               <button
-                className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-service-lists")}
-              >
-                View all
-              </button>
-              <button
                 className="rfh-basic-button"
                 onClick={() => toggleModal("service")}
               >
                 <GoPlus size={20} /> Add Services
+              </button>
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-service-lists")}
+              >
+                View all
               </button>
             </div>
           </div>

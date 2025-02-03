@@ -56,34 +56,37 @@ const EducationCategoriesGastroIllness = () => {
   const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
 
+  const handleCardClick = (event) => {
+    if (!isEditModalOpen) {
+      setSelectedEvent(event);
+      setIsViewModalOpen(true);
+    }
+  };
+
   const sortMenu = (event) => (
-    <Menu>
+    <Menu onClick={(e) => e.domEvent.stopPropagation()}>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
           setSelectedEvent(event);
           showEditModal();
+          setSelectedEvent(event);
+          setIsEditModalOpen(true);
+          setIsViewModalOpen(false);
         }}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
       <Menu.Item
-        key="view"
-        className="filter-menu-item"
-        onClick={() => {
-          setSelectedEvent(event);
-          showViewModal();
-        }}
-      >
-        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        View
-      </Menu.Item>
-      <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteEvent(event._id)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          handleDeleteEvent(event._id);
+        }}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -133,10 +136,17 @@ const EducationCategoriesGastroIllness = () => {
 
   const renderEventCard = (event) => (
     <div className="col-lg-4" key={event._id}>
-      <div className="upcoming-event-card p-3" style={{ position: "relative" }}>
+      <div
+        className="upcoming-event-card p-3"
+        style={{ position: "relative" }}
+        onClick={() => handleCardClick(event)}
+      >
         <div className="treatment-info-icon-container">
           <Dropdown overlay={sortMenu(event)} trigger={["click"]}>
-            <button className="action-icon-button">
+            <button
+              className="action-icon-button"
+              onClick={(e) => e.stopPropagation()}
+            >
               <BsThreeDotsVertical />
             </button>
           </Dropdown>
@@ -149,7 +159,7 @@ const EducationCategoriesGastroIllness = () => {
           <div className="d-flex justify-content-between mb-2">
             <h4>{event.title}</h4>
           </div>
-          <p>{truncateText(event.description, 30)}</p>
+          <p>{truncateText(event.description, 10)}</p>
           <p>
             <span
               dangerouslySetInnerHTML={{
@@ -233,14 +243,14 @@ const EducationCategoriesGastroIllness = () => {
           <div className="events-header-container">
             <h6>Overview</h6>
             <div className="events-buttons">
+              <button className="rfh-basic-button" onClick={showModal}>
+                <GoPlus size={20} /> Add
+              </button>
               <button
                 className="rfh-view-all-button"
                 onClick={() => navigate("/view-all-gastro-illness")}
               >
                 View all
-              </button>
-              <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} /> Add
               </button>
             </div>
           </div>

@@ -49,34 +49,37 @@ const EducationCategoriesTreatmentsInfo = () => {
       : text;
   };
 
+  const handleCardClick = (event) => {
+    if (!isEditModalOpen) {
+      setSelectedTreatment(event);
+      setIsViewModalOpen(true);
+    }
+  };
+
   const sortMenu = (treatment) => (
-    <Menu>
+    <Menu onClick={(e) => e.domEvent.stopPropagation()}>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
           setSelectedTreatment(treatment);
           showEditModal();
+          setSelectedTreatment(treatment);
+          setIsEditModalOpen(true);
+          setIsViewModalOpen(false);
         }}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
       <Menu.Item
-        key="view"
-        className="filter-menu-item"
-        onClick={() => {
-          setSelectedTreatment(treatment);
-          showViewModal();
-        }}
-      >
-        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        View
-      </Menu.Item>
-      <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteTreatment(treatment._id)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          handleDeleteTreatment(treatment._id);
+        }}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -102,22 +105,23 @@ const EducationCategoriesTreatmentsInfo = () => {
       },
     });
   };
-  const fetchTreatmentsInfo = useCallback (
+  const fetchTreatmentsInfo = useCallback(
     async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get(`/education`, {
-        params: { page, limit: itemsPerPage },
-      });
-      dispatch(setTreatment(response.data.data.educations));
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching treatments:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [dispatch, itemsPerPage]
-);
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/education`, {
+          params: { page, limit: itemsPerPage },
+        });
+        dispatch(setTreatment(response.data.data.educations));
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching treatments:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch, itemsPerPage]
+  );
 
   useEffect(() => {
     fetchTreatmentsInfo();
@@ -125,10 +129,25 @@ const EducationCategoriesTreatmentsInfo = () => {
 
   const renderImageCard = (treatment) => (
     <div className="col-lg-4" key={treatment._id}>
-      <div className="upcoming-event-card p-3" style={{ position: "relative" }}>
+      <div className="treatment-info-icon-container">
+        <Dropdown overlay={sortMenu(treatment)} trigger={["click"]}>
+          <button className="action-icon-button">
+            <BsThreeDotsVertical />
+          </button>
+        </Dropdown>
+      </div>
+
+      <div
+        className="upcoming-event-card p-3"
+        style={{ position: "relative", cursor: "pointer" }}
+        onClick={() => handleCardClick(treatment)}
+      >
         <div className="treatment-info-icon-container">
           <Dropdown overlay={sortMenu(treatment)} trigger={["click"]}>
-            <button className="action-icon-button">
+            <button
+              className="action-icon-button"
+              onClick={(e) => e.stopPropagation()}
+            >
               <BsThreeDotsVertical />
             </button>
           </Dropdown>
@@ -199,14 +218,14 @@ const EducationCategoriesTreatmentsInfo = () => {
         <div className="events-header-container">
           <h6>Treatments Info</h6>
           <div className="events-buttons">
+            <button className="rfh-basic-button" onClick={showModal}>
+              <GoPlus size={20} /> Add
+            </button>
             <button
               className="rfh-view-all-button"
               onClick={() => navigate("/view-all-treatments")}
             >
               View all
-            </button>
-            <button className="rfh-basic-button" onClick={showModal}>
-              <GoPlus size={20} /> Add
             </button>
           </div>
         </div>
