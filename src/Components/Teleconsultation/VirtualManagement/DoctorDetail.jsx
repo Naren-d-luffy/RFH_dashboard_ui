@@ -44,8 +44,11 @@ const DoctorDetail = () => {
 
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
-    setUploadedFile(file);
+    if (file) {
+      setUploadedFile(file);
+    }
   };
+  
 
   const handleDeleteImage = () => {
     setUploadedFile(null);
@@ -63,25 +66,23 @@ const DoctorDetail = () => {
 
   const handleSave = async () => {
     const data = new FormData();
-    // if (uploadedFile) {
-    //   data.append("profile", uploadedFile);
-    // }
+    if (uploadedFile) {
+      data.append("profile", uploadedFile);
+    }
 
     // Append all other form fields
     Object.keys(formData).forEach((key) => {
       if (Array.isArray(formData[key])) {
-        // Convert arrays to JSON strings for FormData
-        data.append(key, JSON.stringify(formData[key]));
+        data.append(key, JSON.stringify(formData[key])); // Convert arrays to JSON strings
       } else {
         data.append(key, formData[key]);
       }
     });
-
+  
     console.log("FormData being sent:");
     for (let [key, value] of data.entries()) {
-      console.log(`${key}: ${value}`);
+      console.log(`${key}:`, value);
     }
-  
     try {
       if (doctorData) {
         const response = await Instance.put(`/doctor/${doctorData._id}`, data, {

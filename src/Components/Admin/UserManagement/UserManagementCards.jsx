@@ -8,7 +8,6 @@ import ipd_patient from "../../../Assets/Icons/ipd_patient.png";
 import { Button, Dropdown, Modal, Space } from "antd";
 import { CgDanger } from "react-icons/cg";
 import { showSuccessMessage } from "../../../globalConstant";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { IoIosArrowDown } from "react-icons/io";
 
 const UserManagementCards = () => {
@@ -75,7 +74,7 @@ const UserManagementCards = () => {
     {
       heading: (
         <span className="d-flex align-items-center gap-2">
-         InActive Users
+          InActive Users
           <CgDanger />
         </span>
       ),

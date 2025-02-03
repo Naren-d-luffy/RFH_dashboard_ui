@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Table, Button } from "antd";
 import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,7 +31,7 @@ const RecommendedVideosTable = () => {
 
   const itemsPerPage = 10;
 
-  const fetchRecommendedVideos = async () => {
+  const fetchRecommendedVideos = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/recommended");
@@ -42,12 +41,11 @@ const RecommendedVideosTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     fetchRecommendedVideos();
-  }, []);
-
+  }, [fetchRecommendedVideos]);
   // const handleDeleteVideo = async (videoId) => {
   //   try {
   //     await Instance.delete(`/recommended/${videoId}`);
@@ -63,7 +61,6 @@ const RecommendedVideosTable = () => {
         onDelete: async () => {
           try {
             const response = await Instance.delete(`/recommended/${_id}`);
-            console.log("response received:", response);
             if (response.status === 200 || response.status === 204) {
               showSuccessMessage("Deleted successfully", "Details deleted");
               dispatch(deleteRecommendedVideos(_id));

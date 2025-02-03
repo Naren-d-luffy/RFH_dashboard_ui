@@ -59,20 +59,22 @@ const AddAskedQuestions = ({ open, handleCancel }) => {
         </Button>,
       ]}
     >
-      <Form layout="vertical" className="mt-2">
-        <Form.Item label="Question" required>
+      <Form layout="vertical" className="mt-4">
+        <Form.Item  required>
           <Input
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="Add Question"
           />
+          <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Question</span>
         </Form.Item>
-        <Form.Item label="Answer" required>
+        <Form.Item  required>
           <TextArea
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
             placeholder="Add Answer"
           />
+          <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Answer</span>
         </Form.Item>
       </Form>
     </Modal>

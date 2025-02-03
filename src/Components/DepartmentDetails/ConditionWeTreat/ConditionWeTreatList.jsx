@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { Dropdown, Menu } from "antd";
 import Slider from "react-slick";
@@ -15,7 +15,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FiEye } from "react-icons/fi";
 import ViewConditionWeTreat from "./ViewConditionWeTreat";
-import { deleteConditionWeTreat, setConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
+import {
+  deleteConditionWeTreat,
+  setConditionWeTreat,
+} from "../../../Features/ConditionWeTreatSlice";
+import DOMPurify from "dompurify";
 
 export const ConditionWeTreatList = () => {
   const [modals, setModals] = useState({
@@ -28,8 +32,12 @@ export const ConditionWeTreatList = () => {
   const navigate = useNavigate();
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
-  const conditionwetreatList = useSelector((state) => state.conditionwetreat.conditionwetreats);
-
+  const conditionwetreatList = useSelector(
+    (state) => state.conditionwetreat.conditionwetreats
+  );
+  const sanitizeContent = (content) => {
+    return DOMPurify.sanitize(content);
+  };
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
@@ -88,7 +96,13 @@ export const ConditionWeTreatList = () => {
       </Menu.Item>
     </Menu>
   );
-
+  const truncateText = (text, wordLimit) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : text;
+  };
   const renderConditionCard = (condition) => (
     <div className="col-lg-4" key={condition._id}>
       <div className="upcoming-event-card p-3">
@@ -112,6 +126,13 @@ export const ConditionWeTreatList = () => {
             </span>
           </div>
           <p>{condition.subHeading}</p>
+          <p>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: sanitizeContent(truncateText(condition.content, 3)),
+              }}
+            ></span>
+          </p>
         </div>
       </div>
     </div>
@@ -163,18 +184,18 @@ export const ConditionWeTreatList = () => {
     ],
   };
 
-  const fetchTechnologyList = async () => {
+  const fetchConditionList = useCallback(async () => {
     try {
       const response = await Instance.get("/depcat/treat");
       dispatch(setConditionWeTreat(response.data));
     } catch (error) {
       console.error("Error fetching condition list:", error);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
-    fetchTechnologyList();
-  }, []);
+    fetchConditionList();
+  }, [fetchConditionList]);
 
   return (
     <div className="row mt-4">
@@ -198,8 +219,12 @@ export const ConditionWeTreatList = () => {
             </div>
           </div>
           <div className="mt-4">
-            <Slider {...sliderSettings} key={Object.keys(conditionwetreatList).length}>
-              {conditionwetreatList && Object.keys(conditionwetreatList).length > 0 ? (
+            <Slider
+              {...sliderSettings}
+              key={Object.keys(conditionwetreatList).length}
+            >
+              {conditionwetreatList &&
+              Object.keys(conditionwetreatList).length > 0 ? (
                 Object.entries(conditionwetreatList)
                   .filter(([key]) => key !== "status")
                   .map(([key, condition]) => renderConditionCard(condition))

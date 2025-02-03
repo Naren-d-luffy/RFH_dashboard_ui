@@ -111,7 +111,11 @@ const AddFacility = ({ open, handleCancel }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Add Department Facility</span>}
+        title={
+          <span className="create-campaign-modal-title">
+            Add Department Facility
+          </span>
+        }
         onCancel={handleCancelClick}
         width={680}
         footer={[
@@ -140,7 +144,9 @@ const AddFacility = ({ open, handleCancel }) => {
               placeholder="Add Title"
               required
             />
-            <span className="create-campaign-input-span">Title</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Title
+            </span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -149,7 +155,9 @@ const AddFacility = ({ open, handleCancel }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">Description</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Description
+            </span>
           </Form.Item>
           <div className="row">
             <div className="col-lg-12">
@@ -163,7 +171,7 @@ const AddFacility = ({ open, handleCancel }) => {
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
                   </p>
-                  <IoCloudUploadOutline />{" "}
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                   <span style={{ color: "#727880" }}>Upload Thumbnail</span>
                 </Upload>
                 {thumbnailImage && (
@@ -185,9 +193,11 @@ const AddFacility = ({ open, handleCancel }) => {
                     </Button>
                   </div>
                 )}
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Thumbnail Image
+                </span>
               </Form.Item>
             </div>
-            
           </div>
           <Form.Item>
             <ReactQuill
@@ -198,7 +208,9 @@ const AddFacility = ({ open, handleCancel }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Content
+            </span>
           </Form.Item>
           <Form.Item>
             <Input
@@ -207,7 +219,9 @@ const AddFacility = ({ open, handleCancel }) => {
               placeholder="Video Heading"
               required
             />
-            <span className="create-campaign-input-span">Video Heading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span>Video Heading
+            </span>
           </Form.Item>
           <Form.Item>
             <Input
@@ -216,43 +230,48 @@ const AddFacility = ({ open, handleCancel }) => {
               placeholder="Video Subheading"
               required
             />
-            <span className="create-campaign-input-span">Video Subheading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Video Subheading
+            </span>
           </Form.Item>
           <div className="col-lg-12">
-              <Form.Item>
-                <Upload
-                  listType="picture"
-                  showUploadList={false}
-                  onChange={handleUpload}
-                  className="create-campaign-upload"
-                >
-                  <p className="create-campaign-ant-upload-text">
-                    Drop files here or click to upload
-                  </p>
-                  <IoCloudUploadOutline />{" "}
-                  <span style={{ color: "#727880" }}>Upload Video</span>
-                </Upload>
-                {uploadedImage && (
-                  <div className="uploaded-image-preview">
-                    <img
-                      src={URL.createObjectURL(uploadedImage)}
-                      alt="Video"
-                      style={{
-                        width: "200px",
-                        height: "auto",
-                        marginTop: "10px",
-                      }}
-                    />
-                    <Button
-                      onClick={handleDeleteImage}
-                      className="model-image-upload-delete-icon"
-                    >
-                      <RiDeleteBin5Line />
-                    </Button>
-                  </div>
-                )}
-              </Form.Item>
-            </div>
+            <Form.Item>
+              <Upload
+                listType="picture"
+                showUploadList={false}
+                onChange={handleUpload}
+                className="create-campaign-upload"
+              >
+                <p className="create-campaign-ant-upload-text">
+                  Drop files here or click to upload
+                </p>
+                <IoCloudUploadOutline />{" "}
+                <span style={{ color: "#727880" }}>Upload Video</span>
+              </Upload>
+              {uploadedImage && (
+                <div className="uploaded-image-preview">
+                  <img
+                    src={URL.createObjectURL(uploadedImage)}
+                    alt="Video"
+                    style={{
+                      width: "200px",
+                      height: "auto",
+                      marginTop: "10px",
+                    }}
+                  />
+                  <Button
+                    onClick={handleDeleteImage}
+                    className="model-image-upload-delete-icon"
+                  >
+                    <RiDeleteBin5Line />
+                  </Button>
+                </div>
+              )}
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Upload Video
+              </span>
+            </Form.Item>
+          </div>
         </Form>
       </Modal>
     </>

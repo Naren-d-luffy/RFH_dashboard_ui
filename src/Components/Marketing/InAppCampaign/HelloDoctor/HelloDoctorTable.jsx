@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Table } from "antd";
 import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {  showDeleteMessage } from "../../../../globalConstant";
@@ -9,7 +8,6 @@ import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
-import DOMPurify from "dompurify";
 import { useNavigate } from "react-router-dom";
 import {
   deleteHelloDoctorVideos,
@@ -75,7 +73,7 @@ const HelloDoctorTable = () => {
     });
   };
 
-  const fetchHelloDoctorVideoInfo = async (page) => {
+  const fetchHelloDoctorVideoInfo =useCallback(async (page=1) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/videos`, {
@@ -88,11 +86,11 @@ const HelloDoctorTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[itemsPerPage,dispatch]);
 
   useEffect(() => {
     fetchHelloDoctorVideoInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage,fetchHelloDoctorVideoInfo]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return Object.values(EventData);
@@ -109,7 +107,7 @@ const HelloDoctorTable = () => {
       dataIndex: "title",
       className: "campaign-performance-table-column",
       render: (text) => truncateText(text),
-      sorter: (a, b) => a.title.localeCompare(b.title), // Sorting based on the title alphabetically
+      sorter: (a, b) => a.title.localeCompare(b.title),
     },
     {
       title: "URL",
@@ -120,14 +118,13 @@ const HelloDoctorTable = () => {
       title: "Likes",
       dataIndex: "likes",
       className: "campaign-performance-table-column",
-      sorter: (a, b) => a.likes - b.likes, // Sorting numerically by likes
+      sorter: (a, b) => a.likes - b.likes,
     },
     {
       title: "Created At",
       dataIndex: "createdAt",
       className: "campaign-performance-table-column",
-      // render: (createdAt) => new Date(createdAt).toLocaleDateString(),
-      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt), // Sorting by date
+      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt), 
     },
     {
       title: "Action",
@@ -151,28 +148,6 @@ const HelloDoctorTable = () => {
       className: "campaign-performance-table-column",
     },
   ];
-
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
-
-  // const handleMenuClick = ({ key }) => {};
-
-  // const menuProps = {
-  //   items,
-  //   onClick: handleMenuClick,
-  // };
 
   return (
     <div className="container mt-1">

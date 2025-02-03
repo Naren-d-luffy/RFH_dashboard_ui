@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { Dropdown, Menu } from "antd";
 import Slider from "react-slick";
@@ -16,7 +16,10 @@ import ViewEventList from "./ViewEventList";
 import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
-import {  showDeleteMessage, showSuccessMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 
 export const UpcomingEventList = () => {
   const [modals, setModals] = useState({
@@ -24,7 +27,7 @@ export const UpcomingEventList = () => {
     video: false,
     edit: false,
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -34,25 +37,25 @@ export const UpcomingEventList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const fetchEvenInfo = async (page) => {
-    setIsLoading(true);
-    try {
-
-      const response = await Instance.get(`/discover/card`, { 
-        params: { page, limit: itemsPerPage },
-       
-      });      
-      dispatch(setEvent(response.data.data));
-    } catch (error) {
-      console.error("Error fetching events:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  const fetchEvenInfo = useCallback(
+    async (page=1) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/discover/card`, {
+          params: { page, limit: itemsPerPage },
+        });
+        dispatch(setEvent(response.data.data));
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch, itemsPerPage]
+  );
   useEffect(() => {
     fetchEvenInfo();
-  }, []);
+  }, [fetchEvenInfo]);
 
   const truncateText = (text, wordLimit) => {
     if (!text) return "";
@@ -69,7 +72,6 @@ export const UpcomingEventList = () => {
     showDeleteMessage({
       message: "",
       onDelete: async () => {
-
         try {
           const response = await Instance.delete(`/discover/card/${_id}`);
           if (response.status === 200 || response.status === 204) {
@@ -140,7 +142,7 @@ export const UpcomingEventList = () => {
             <h4>{event.title}</h4>
             <span>{new Date(event.createdAt).toLocaleDateString("en-GB")}</span>
           </div>
-          <p>{truncateText(event.description, 20)}</p>
+          <p>{truncateText(event.description, 30)}</p>
         </div>
       </div>
     </div>
@@ -217,7 +219,9 @@ export const UpcomingEventList = () => {
           <div className="mt-4">
             <Slider key={Object.keys(eventsData).length} {...sliderSettings}>
               {eventsData && Object.keys(eventsData).length > 0 ? (
-                Object.values(eventsData).map((event) => renderEventCard(event))
+                Object.values(eventsData)?.map((event) =>
+                  renderEventCard(event)
+                )
               ) : (
                 <p>No data available</p>
               )}

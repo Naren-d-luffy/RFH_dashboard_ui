@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Dropdown, Menu } from "antd";
 import { FiEye } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
@@ -26,7 +26,7 @@ import ViewOutstationClinic from "./ViewOutstationClinic";
 import { useNavigate } from "react-router-dom";
 
 const OutstationClinicList = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -54,7 +54,7 @@ const OutstationClinicList = () => {
       : text;
   };
 
-  const fetchOutstationClinic = async () => {
+  const fetchOutstationClinic = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/discover/clinic", {
@@ -67,7 +67,7 @@ const OutstationClinicList = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[dispatch]);
 
   const handleDeleteClinic = (_id) => {
     showDeleteMessage({
@@ -88,7 +88,7 @@ const OutstationClinicList = () => {
 
   useEffect(() => {
     fetchOutstationClinic();
-  }, []);
+  }, [fetchOutstationClinic]);
 
   const sortMenu = (clinic) => (
     <Menu>
@@ -237,7 +237,7 @@ const OutstationClinicList = () => {
           <div className="mt-3">
             <Slider {...sliderSettings} key={clinics?.length}>
               {clinics && clinics.length > 0 ? (
-                clinics.map((clinic) => renderClinicCard(clinic))
+                clinics?.map((clinic) => renderClinicCard(clinic))
               ) : (
                 <p>No data available</p>
               )}

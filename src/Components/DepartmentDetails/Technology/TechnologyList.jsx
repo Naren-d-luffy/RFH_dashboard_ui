@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { Dropdown, Menu } from "antd";
 import Slider from "react-slick";
@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { FiEye } from "react-icons/fi";
 import ViewTechnology from "./ViewTechnology";
 import { deleteTechnology, setTechnology } from "../../../Features/TechnologySlice";
+import DOMPurify from "dompurify";
 
 export const TechnologyList = () => {
   const [modals, setModals] = useState({
@@ -29,6 +30,16 @@ export const TechnologyList = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
   const technologyList = useSelector((state) => state.technology.technologies);
+  const sanitizeContent = (content) => {
+    return DOMPurify.sanitize(content);
+  };
+  const truncateText = (text, wordLimit) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : text;
+  };
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
@@ -111,6 +122,13 @@ export const TechnologyList = () => {
             </span>
           </div>
           <p>{technology.subHeading}</p>
+          <p>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: sanitizeContent(truncateText(technology.content, 15)),
+              }}
+            ></span>
+          </p>
         </div>
       </div>
     </div>
@@ -162,18 +180,21 @@ export const TechnologyList = () => {
     ],
   };
 
-  const fetchTechnologyList = async () => {
+  const fetchTechnologyList = useCallback(
+     async () => {
     try {
       const response = await Instance.get("/depcat/technology");
       dispatch(setTechnology(response.data));
     } catch (error) {
       console.error("Error fetching technology list:", error);
     }
-  };
+  },
+  [dispatch]
+);
 
   useEffect(() => {
     fetchTechnologyList();
-  }, []);
+  }, [fetchTechnologyList]);
 
   return (
     <div className="row mt-4">

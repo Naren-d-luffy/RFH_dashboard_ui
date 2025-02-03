@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -28,7 +28,6 @@ const EducationCategoriesTreatmentsInfo = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedTreatment, setSelectedTreatment] = useState(null);
-  const [treatmentList, setTreatmentList] = useState([]);
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
   const showEditModal = () => setIsEditModalOpen(true);
@@ -103,25 +102,26 @@ const EducationCategoriesTreatmentsInfo = () => {
       },
     });
   };
-  const fetchTreatmentsInfo = async (page) => {
+  const fetchTreatmentsInfo = useCallback (
+    async (page) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/education`, {
         params: { page, limit: itemsPerPage },
       });
       dispatch(setTreatment(response.data.data.educations));
-      setTreatmentList(response.data.educations || []);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching treatments:", error);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch, itemsPerPage]
+);
 
   useEffect(() => {
     fetchTreatmentsInfo();
-  }, []);
+  }, [fetchTreatmentsInfo]);
 
   const renderImageCard = (treatment) => (
     <div className="col-lg-4" key={treatment._id}>

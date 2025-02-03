@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, message, Row, Col, Upload } from "antd";
+import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { Instance } from "../../AxiosConfig";
@@ -18,44 +18,43 @@ const modules = {
     ["clean"],
   ],
 };
-const { TextArea } = Input;
 const CreateDepartmentDetails = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [successStories, setSuccessStories] = useState([]);
+  // const [successStories, setSuccessStories] = useState([]);
   const dispatch = useDispatch();
 
-  const handleAddSuccessStory = () => {
-    setSuccessStories([
-      ...successStories,
-      {
-        title: "",
-        views: 0,
-        video_thumbnail_url: "",
-      },
-    ]);
-  };
+  // const handleAddSuccessStory = () => {
+  //   setSuccessStories([
+  //     ...successStories,
+  //     {
+  //       title: "",
+  //       views: 0,
+  //       video_thumbnail_url: "",
+  //     },
+  //   ]);
+  // };
   const resetForm = () => {
     setUploadedImage(null);
     setTitle("");
     setSubtitle("");
     setDescription("");
 
-    setSuccessStories([]);
+    // setSuccessStories([]);
   };
 
-  const handleSuccessStoryChange = (index, field, value) => {
-    const updatedStories = [...successStories];
-    updatedStories[index][field] = value;
-    setSuccessStories(updatedStories);
-  };
+  // const handleSuccessStoryChange = (index, field, value) => {
+  //   const updatedStories = [...successStories];
+  //   updatedStories[index][field] = value;
+  //   setSuccessStories(updatedStories);
+  // };
 
-  const handleDeleteSuccessStory = (index) => {
-    setSuccessStories(successStories.filter((_, i) => i !== index));
-  };
+  // const handleDeleteSuccessStory = (index) => {
+  //   setSuccessStories(successStories.filter((_, i) => i !== index));
+  // };
 
   const handleSave = async () => {
     setIsLoading(true);
@@ -68,16 +67,16 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
         requestData.append("thumbnail", uploadedImage);
       }
 
-      const formattedSuccessStories = successStories.map((story) => ({
-        video_thumbnail_url: story.video_thumbnail_url,
-        title: story.title,
-        views: parseInt(story.views),
-      }));
+      // const formattedSuccessStories = successStories?.map((story) => ({
+      //   video_thumbnail_url: story.video_thumbnail_url,
+      //   title: story.title,
+      //   views: parseInt(story.views),
+      // }));
 
-      requestData.append(
-        "success_stories",
-        JSON.stringify(formattedSuccessStories)
-      );
+      // requestData.append(
+      //   "success_stories",
+      //   JSON.stringify(formattedSuccessStories)
+      // );
       const response = await Instance.post("/department", requestData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -127,22 +126,28 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
           </Button>,
         ]}
       >
-        <Form layout="vertical">
-          <Form.Item label="Title">
+        <Form layout="vertical" className="mt-4">
+          <Form.Item>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Add Title"
               required
             />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Title
+            </span>
           </Form.Item>
-          <Form.Item label="Subtitle">
+          <Form.Item>
             <Input
               value={subtitle}
               onChange={(e) => setSubtitle(e.target.value)}
               placeholder="Add Subtitle"
               required
             />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Subtitle
+            </span>
           </Form.Item>
           {/* <Form.Item label="Description">
             <TextArea
@@ -152,7 +157,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
               required
             />
           </Form.Item> */}
-          <Form.Item label="Description">
+          <Form.Item>
             <ReactQuill
               theme="snow"
               modules={modules}
@@ -161,8 +166,11 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
               placeholder="Your text goes here"
               required
             />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Description
+            </span>
           </Form.Item>
-          <Form.Item label="Thumbnail">
+          <Form.Item>
             <Upload
               listType="picture"
               showUploadList={false}
@@ -176,7 +184,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline />
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>
@@ -206,8 +214,11 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
                 </Button>
               </div>
             )}
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Thumbnail Image
+            </span>
           </Form.Item>
-
+{/* 
           <Button
             onClick={handleAddSuccessStory}
             className="create-campaign-cancel-button"
@@ -215,7 +226,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
           >
             Add Success Stories
           </Button>
-          {successStories.map((story, index) => (
+          {successStories?.map((story, index) => (
             <div key={index}>
               <h5>Success Story {index + 1}</h5>
               <Row gutter={16}>
@@ -265,7 +276,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
                 Delete Success Story
               </Button>
             </div>
-          ))}
+          ))} */}
         </Form>
       </Modal>
     </>

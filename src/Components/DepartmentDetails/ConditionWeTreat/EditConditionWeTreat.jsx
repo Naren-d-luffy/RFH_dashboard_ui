@@ -39,7 +39,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
       setUploadedImage(conditionData.video || null);
       setThumbnailImage(conditionData.thumbnail || null);
     }
-  }, [open && conditionData]);
+  }, [open, conditionData]);
 
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
@@ -55,19 +55,22 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
       message.error("Please fill in all required fields.");
       return;
     }
-  
+
     setIsLoading(true);
     try {
       const formData = new FormData();
       formData.append("heading", title);
       formData.append("subHeading", description);
       formData.append("content", content);
-  
+
       if (thumbnailImage && typeof thumbnailImage !== "string") {
         formData.append("thumbnail", thumbnailImage);
       }
-  
-      const response = await Instance.put(`/depcat/treat/${conditionData._id}`, formData);
+
+      const response = await Instance.put(
+        `/depcat/treat/${conditionData._id}`,
+        formData
+      );
       if (response?.status === 200 || response?.status === 201) {
         showSuccessMessage("Condition we treat updated successfully!");
         handleCancel();
@@ -80,14 +83,17 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
       setIsLoading(false);
     }
   };
-  
 
   return (
     <>
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Edit Condition we treat</span>}
+        title={
+          <span className="create-campaign-modal-title">
+            Edit Condition we treat
+          </span>
+        }
         onCancel={handleCancel}
         width={680}
         footer={[
@@ -139,7 +145,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
                   </p>
-                  <IoCloudUploadOutline />{" "}
+                  <IoCloudUploadOutline className="image-upload-icon" />{" "}
                   <span style={{ color: "#727880" }}>Upload Thumbnail</span>
                 </Upload>
                 {thumbnailImage && (

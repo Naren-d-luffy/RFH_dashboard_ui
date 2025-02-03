@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { Dropdown, Menu } from "antd";
 import Slider from "react-slick";
@@ -34,17 +34,17 @@ export const HelloDoctorList = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const videos = useSelector((state) => state.videos.videos);
+  const videos = useSelector((state) => state.videos.videos);  
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
-  const items = [
-    { label: "Upcoming Events", key: "1" },
-    { label: "Recomended", key: "2" },
-    { label: "Featured Programs", key: "3" },
-    { label: "Latest Camps", key: "4" },
-    { label: "Outstation Clinic", key: "5" },
-  ];
+  // const items = [
+  //   { label: "Upcoming Events", key: "1" },
+  //   { label: "Recomended", key: "2" },
+  //   { label: "Featured Programs", key: "3" },
+  //   { label: "Latest Camps", key: "4" },
+  //   { label: "Outstation Clinic", key: "5" },
+  // ];
 
   const handleEditClick = (video) => {
     setSelectedVideo(video);
@@ -68,20 +68,20 @@ export const HelloDoctorList = () => {
     });
   };
 
-  const filterMenu = (
-    <Menu>
-      <Menu.Item key="edit" className="filter-menu-item">
-        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        Edit
-      </Menu.Item>
-      <Menu.Item key="delete" className="filter-menu-item">
-        <RiDeleteBin7Line
-          style={{ color: "var(--red-color)", marginRight: "4px" }}
-        />
-        Delete
-      </Menu.Item>
-    </Menu>
-  );
+  // const filterMenu = (
+  //   <Menu>
+  //     <Menu.Item key="edit" className="filter-menu-item">
+  //       <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+  //       Edit
+  //     </Menu.Item>
+  //     <Menu.Item key="delete" className="filter-menu-item">
+  //       <RiDeleteBin7Line
+  //         style={{ color: "var(--red-color)", marginRight: "4px" }}
+  //       />
+  //       Delete
+  //     </Menu.Item>
+  //   </Menu>
+  // );
 
   const sortMenu = (video) => (
     <Menu>
@@ -186,7 +186,7 @@ export const HelloDoctorList = () => {
     ],
   };
 
-  const fetchVideoList = async () => {
+  const fetchVideoList = useCallback(async () => {
     try {
       const response = await Instance.get("/videos");
       setVideoList(response.data);
@@ -194,11 +194,11 @@ export const HelloDoctorList = () => {
     } catch (error) {
       console.error("Error fetching videos:", error);
     }
-  };
+  },[dispatch]);
 
   useEffect(() => {
     fetchVideoList();
-  }, []);
+  }, [fetchVideoList]);
 
   return (
     <div className="row mt-4">
@@ -223,7 +223,7 @@ export const HelloDoctorList = () => {
           </div>
           <div className="mt-4">
             <Slider {...sliderSettings} key={Object.keys(videos).length}>
-              {videos && Object.keys(videos).length > 0 ? (
+              {videos && Object.keys(videos)?.length > 0 ? (
                 Object.entries(videos)
                   .filter(([key]) => key !== "status")
                   .map(([key, video]) => renderRecommendVideo(video))

@@ -127,7 +127,9 @@ const AddBlogs = ({ open, handleCancel }) => {
               placeholder="Add heading"
               required
             />
-            <span className="create-campaign-input-span">heading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Heading
+            </span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -136,7 +138,9 @@ const AddBlogs = ({ open, handleCancel }) => {
               placeholder="Sub Heading"
               required
             />
-            <span className="create-campaign-input-span">Sub Heading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Sub Heading
+            </span>
           </Form.Item>
           <div className="row">
             <div className="col-lg-6">
@@ -151,7 +155,7 @@ const AddBlogs = ({ open, handleCancel }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
+                    <IoCloudUploadOutline className="image-upload-icon" />{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
@@ -181,7 +185,9 @@ const AddBlogs = ({ open, handleCancel }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Header Image</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span>Header Image
+                </span>
               </Form.Item>
             </div>
             <div className="col-lg-6">
@@ -196,7 +202,7 @@ const AddBlogs = ({ open, handleCancel }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
+                    <IoCloudUploadOutline className="image-upload-icon" />{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
@@ -227,7 +233,7 @@ const AddBlogs = ({ open, handleCancel }) => {
                   </div>
                 )}
                 <span className="create-campaign-input-span">
-                  Thumbnail Image
+                  <span style={{ color: "red" }}>*</span>Thumbnail Image
                 </span>
               </Form.Item>
             </div>
@@ -242,7 +248,9 @@ const AddBlogs = ({ open, handleCancel }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content Points</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Content Points
+            </span>
           </Form.Item>
         </Form>
       </Modal>

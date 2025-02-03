@@ -130,7 +130,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
               placeholder="Add Title"
               required
             />
-            <span className="create-campaign-input-span">Title</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Title</span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -139,7 +139,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">Description</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Description</span>
           </Form.Item>
           <div className="row">
             <div className="col-lg-6">
@@ -154,7 +154,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
@@ -184,7 +184,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Header Image</span>
+                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Header Image</span>
               </Form.Item>
             </div>
             <div className="col-lg-6">
@@ -199,7 +199,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
@@ -229,7 +229,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Thumbnail Image</span>
+                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Thumbnail Image</span>
               </Form.Item>
             </div>
           </div>
@@ -243,7 +243,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content Points</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Content Points</span>
           </Form.Item>
         </Form>
       </Modal>

@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Table} from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
@@ -57,7 +56,7 @@ const ViewAllCampTable = () => {
     return `${day}/${month}/${year}`;
   };
 
-  const fetchFeatureInfo = async (page) => {
+  const fetchFeatureInfo = useCallback(async (page = 1) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/camp`, {
@@ -70,11 +69,11 @@ const ViewAllCampTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch, itemsPerPage]);
 
   useEffect(() => {
     fetchFeatureInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage,fetchFeatureInfo]);
 
   const handleDeleteFeature = (_id) => {
     showDeleteMessage({
@@ -132,13 +131,13 @@ const ViewAllCampTable = () => {
       dataIndex: "date",
       key: "date",
       render: (text) => formatDate(text),
-      sorter: (a, b) => new Date(a.date) - new Date(b.date), // Sorting by date
+      sorter: (a, b) => new Date(a.date) - new Date(b.date),
     },
     {
       title: "Time",
       dataIndex: "time",
       key: "time",
-      sorter: (a, b) => new Date(a.time) - new Date(b.time), // Sorting by date
+      sorter: (a, b) => new Date(a.time) - new Date(b.time),
     },
     {
       title: "Action",
@@ -174,7 +173,7 @@ const ViewAllCampTable = () => {
         <Loader />
       ) : Object.values(FeaturesData).length > 0 ? (
         <>
-          <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex user-engagement-header justify-content-between align-items-center">
             <h3>Latest Camps</h3>
             <button
               className="d-flex gap-2 align-items-center rfh-basic-button"

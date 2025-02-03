@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Modal, Form, Input } from "antd";
 import "react-quill/dist/quill.snow.css";
 import { showSuccessMessage } from "../../globalConstant";
@@ -11,9 +11,7 @@ const AddVideo = ({ open, handleCancel }) => {
   return (
     <Modal
       open={open}
-      title={
-        <span className="create-campaign-modal-title">Add Video</span>
-      }
+      title={<span className="create-campaign-modal-title">Add Video</span>}
       onCancel={handleCancel}
       width={680}
       footer={[

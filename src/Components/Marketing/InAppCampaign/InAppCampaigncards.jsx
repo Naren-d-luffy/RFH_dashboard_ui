@@ -28,7 +28,7 @@ export const InAppCampaigncards = () => {
     },
     {
       title: "Total Clicks",
-      value: "22,500",
+      value: "250",
       percentage: "340",
       description: "Users",
       icon: <img src={clickicon} alt="Click Icon" style={{ width: "20px" }} />,
@@ -66,7 +66,7 @@ export const InAppCampaigncards = () => {
         </div>
       </div>
       <div className="row campaign-performance-container">
-        {cardsData.map((card, index) => (
+        {cardsData?.map((card, index) => (
           <div className="col-lg-3 col-md-6 col-sm-12 mt-2" key={index}>
             <div
               className="campaign-performance-card position-relative"

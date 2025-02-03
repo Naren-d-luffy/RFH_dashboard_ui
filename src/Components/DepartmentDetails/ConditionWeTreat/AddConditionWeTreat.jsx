@@ -115,7 +115,9 @@ const AddConditionWeTreat = ({ open, handleCancel }) => {
               placeholder="Add Title"
               required
             />
-            <span className="create-campaign-input-span">Title</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Title
+            </span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -124,7 +126,9 @@ const AddConditionWeTreat = ({ open, handleCancel }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">Description</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Description
+            </span>
           </Form.Item>
           <div className="row">
             <div className="col-lg-12">
@@ -138,7 +142,7 @@ const AddConditionWeTreat = ({ open, handleCancel }) => {
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
                   </p>
-                  <IoCloudUploadOutline />{" "}
+                  <IoCloudUploadOutline className="image-upload-icon" />{" "}
                   <span style={{ color: "#727880" }}>Upload Thumbnail</span>
                 </Upload>
                 {thumbnailImage && (
@@ -160,6 +164,9 @@ const AddConditionWeTreat = ({ open, handleCancel }) => {
                     </Button>
                   </div>
                 )}
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Thumbnail Image
+                </span>
               </Form.Item>
             </div>
           </div>
@@ -172,7 +179,9 @@ const AddConditionWeTreat = ({ open, handleCancel }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Content
+            </span>{" "}
           </Form.Item>
         </Form>
       </Modal>

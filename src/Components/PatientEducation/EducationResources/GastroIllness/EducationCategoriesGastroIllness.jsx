@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Dropdown, Menu } from "antd";
 import { FiEye } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
@@ -22,6 +22,7 @@ import {
 } from "../../../../Features/GastroIllnessSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import DOMPurify from "dompurify";
 
 const EducationCategoriesGastroIllness = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,6 +36,17 @@ const EducationCategoriesGastroIllness = () => {
   const gastroEvents = useSelector(
     (state) => state.gastroIllness.gastroIllness || []
   );
+  console.log("gastroEvents", gastroEvents);
+  const sanitizeContent = (content) => {
+    return DOMPurify.sanitize(content);
+  };
+  const truncateText = (text, wordLimit) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : text;
+  };
   const itemsPerPage = 100;
 
   const showModal = () => setIsModalOpen(true);
@@ -43,14 +55,6 @@ const EducationCategoriesGastroIllness = () => {
   const handleEditCancel = () => setIsEditModalOpen(false);
   const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
-
-  const truncateText = (text, wordLimit) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
 
   const sortMenu = (event) => (
     <Menu>
@@ -89,21 +93,27 @@ const EducationCategoriesGastroIllness = () => {
     </Menu>
   );
 
-  const fetchGastroEvents = async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get("/gastro", {
-        params: { page, limit: itemsPerPage },
-      });
-      dispatch(setGastroIllness(response.data.data.gastros || []));
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching gastro events:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  const fetchGastroEvents = useCallback(
+    async (page) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get("/gastro", {
+          params: { page, limit: itemsPerPage },
+        });
+        console.log("response", response);
+        dispatch(setGastroIllness(response.data.data.gastros || []));
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching gastro events:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch]
+  );
+  useEffect(() => {
+    fetchGastroEvents();
+  }, [fetchGastroEvents]);
   const handleDeleteEvent = (_id) => {
     showDeleteMessage({
       message: "",
@@ -121,10 +131,6 @@ const EducationCategoriesGastroIllness = () => {
     });
   };
 
-  useEffect(() => {
-    fetchGastroEvents();
-  }, []);
-
   const renderEventCard = (event) => (
     <div className="col-lg-4" key={event._id}>
       <div className="upcoming-event-card p-3" style={{ position: "relative" }}>
@@ -137,13 +143,20 @@ const EducationCategoriesGastroIllness = () => {
         </div>
 
         <div className="d-flex justify-content-center align-items-center mb-3">
-          <img src={event.thumbnail} alt={event.title} />
+          <img src={event.headerImage} alt={event.title} />
         </div>
         <div>
           <div className="d-flex justify-content-between mb-2">
             <h4>{event.title}</h4>
           </div>
           <p>{truncateText(event.description, 30)}</p>
+          <p>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: sanitizeContent(truncateText(event.content, 10)),
+              }}
+            ></span>
+          </p>
         </div>
       </div>
     </div>
@@ -218,7 +231,7 @@ const EducationCategoriesGastroIllness = () => {
 
         <div className="row mt-4">
           <div className="events-header-container">
-            <h6>Gastro Illness</h6>
+            <h6>Overview</h6>
             <div className="events-buttons">
               <button
                 className="rfh-view-all-button"
@@ -227,7 +240,7 @@ const EducationCategoriesGastroIllness = () => {
                 View all
               </button>
               <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} /> Add Events
+                <GoPlus size={20} /> Add
               </button>
             </div>
           </div>

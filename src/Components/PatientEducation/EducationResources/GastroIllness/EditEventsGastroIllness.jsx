@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, Input, Upload, message } from "antd";
+import { Button, Modal, Form, Input, Upload, message,Select } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { ColorPicker } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { showSuccessMessage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
@@ -24,7 +23,7 @@ const { TextArea } = Input;
 
 const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [thumbnailImage, setThumbnailImage] = useState(null);
+  const [, setThumbnailImage] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -34,36 +33,25 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
     const file = info.file.originFileObj;
     setUploadedImage(file);
   };
+  const [type, setType] = useState("");
 
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
-  const handleUpload1 = (info) => {
-    const file = info.file.originFileObj;
-    setThumbnailImage(file);
-  };
-
-  const handleDeleteImage1 = () => {
-    setThumbnailImage(null);
-  };
+ 
   useEffect(() => {
     if (open && EventData) {
       setTitle(EventData.title || "");
       setDescription(EventData.description || "");
       setContent(EventData.content || "");
       setUploadedImage(EventData.headerImage || null);
-      setThumbnailImage(EventData.thumbnail || null);
+      setType(EventData.type || "")
+      // setThumbnailImage(EventData.thumbnail || null);
     }
   }, [open, EventData]);
 
   const handleSave = async () => {
-    if (
-      !title ||
-      !description ||
-      !content ||
-      !uploadedImage ||
-      !thumbnailImage
-    ) {
+    if (!title || !type) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -74,7 +62,9 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
       formData.append("description", description);
       formData.append("content", content);
       formData.append("headerImage", uploadedImage);
-      formData.append("thumbnail", thumbnailImage);
+      // formData.append("thumbnail", thumbnailImage);
+      formData.append("type", type); // Include type
+
 
       const response = await Instance.put(`/gastro/${EventData._id}`, formData);
       if (response?.status === 200 || response?.status === 201) {
@@ -87,6 +77,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
         setContent("");
         setUploadedImage("");
         setThumbnailImage("");
+        setType("");
       }
     } catch (error) {
       console.error(error);
@@ -134,7 +125,9 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               placeholder="Add Title"
               required
             />
-            <span className="create-campaign-input-span">Title</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Title
+            </span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -143,10 +136,35 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">Description</span>
+            <span className="create-campaign-input-span">
+               Description
+            </span>
+          </Form.Item>
+          <Form.Item>
+            <Select
+              placeholder="Select Type"
+              value={type || undefined}
+              onChange={(value) => setType(value)}
+            >
+              <Select.Option value="Overview of Digestive System">
+                Overview of Digestive System
+              </Select.Option>
+              <Select.Option value="Common Symptoms">
+                Common Symptoms
+              </Select.Option>
+              <Select.Option value="Common Diseases">
+                Common Diseases
+              </Select.Option>
+              <Select.Option value="Common Treatments">
+                Common Treatments
+              </Select.Option>
+            </Select>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Type
+            </span>
           </Form.Item>
           <div className="row">
-            <div className="col-lg-6">
+            <div className="col-lg-12">
               <Form.Item>
                 <Upload
                   listType="picture"
@@ -158,7 +176,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
+                    <IoCloudUploadOutline className="image-upload-icon" />{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
@@ -192,60 +210,12 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Header Image</span>
-              </Form.Item>
-            </div>
-            <div className="col-lg-6">
-              <Form.Item>
-                <Upload
-                  listType="picture"
-                  showUploadList={false}
-                  onChange={handleUpload1}
-                  className="create-campaign-upload"
-                >
-                  <p className="create-campaign-ant-upload-text">
-                    Drop files here or click to upload
-                  </p>
-                  <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
-                    <span style={{ color: "#727880" }}>Upload Image</span>
-                  </span>
-                </Upload>
-                {thumbnailImage && (
-                  <div className="uploaded-image-preview d-flex gap-2">
-                    <img
-                      src={
-                        thumbnailImage instanceof File
-                          ? URL.createObjectURL(thumbnailImage)
-                          : thumbnailImage
-                      }
-                      alt="Thumbnail"
-                      style={{
-                        width: "200px",
-                        height: "auto",
-                        marginTop: "10px",
-                        borderRadius: "5px",
-                      }}
-                    />
-                    <Button
-                      onClick={handleDeleteImage1}
-                      style={{
-                        marginTop: "10px",
-                        backgroundColor: "#e6f2ed",
-                        borderRadius: "50%",
-                        fontSize: "16px",
-                        padding: "4px 12px",
-                      }}
-                    >
-                      <RiDeleteBin5Line className="model-image-upload-delete-icon" />
-                    </Button>
-                  </div>
-                )}
                 <span className="create-campaign-input-span">
-                  Thumbnail Image
+                   Header Image
                 </span>
               </Form.Item>
             </div>
+            
           </div>
           <Form.Item>
             <ReactQuill

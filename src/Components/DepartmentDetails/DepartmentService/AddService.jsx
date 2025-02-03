@@ -78,7 +78,9 @@ const AddService = ({ open, handleCancel }) => {
       <Modal
         visible={open}
         title={
-          <span className="create-campaign-modal-title">Add Department Services</span>
+          <span className="create-campaign-modal-title">
+            Add Department Services
+          </span>
         }
         onCancel={handleCancelClick}
         width={680}
@@ -108,7 +110,9 @@ const AddService = ({ open, handleCancel }) => {
               placeholder="Add Heading"
               required
             />
-            <span className="create-campaign-input-span">heading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Heading
+            </span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -117,7 +121,9 @@ const AddService = ({ open, handleCancel }) => {
               placeholder="sub Heading"
               required
             />
-            <span className="create-campaign-input-span">sub Heading</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span>Sub Heading
+            </span>
           </Form.Item>
           <div className="row">
             <div className="col-lg-12">
@@ -131,7 +137,7 @@ const AddService = ({ open, handleCancel }) => {
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
                   </p>
-                  <IoCloudUploadOutline />{" "}
+                  <IoCloudUploadOutline className="image-upload-icon" />{" "}
                   <span style={{ color: "#727880" }}>Upload Thumbnail</span>
                 </Upload>
                 {thumbnailImage && (
@@ -153,6 +159,9 @@ const AddService = ({ open, handleCancel }) => {
                     </Button>
                   </div>
                 )}
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Thumbnail Image
+                </span>
               </Form.Item>
             </div>
           </div>
@@ -165,7 +174,9 @@ const AddService = ({ open, handleCancel }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Content
+            </span>
           </Form.Item>
         </Form>
       </Modal>

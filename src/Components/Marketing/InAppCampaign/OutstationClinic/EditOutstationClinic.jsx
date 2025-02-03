@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, Input, message, Col, Row, Upload, Radio } from "antd"; 
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  message,
+  Col,
+  Row,
+  Upload,
+  Radio,
+} from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
 import { editOutstationClinic } from "../../../../Features/OutstationClinicSlice";
@@ -58,7 +68,7 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
       !experience ||
       !description ||
       !timing ||
-      !clinicType 
+      !clinicType
     ) {
       message.error("Please fill in all required fields.");
       return;
@@ -75,7 +85,7 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
       formData.append("experience", experience.toString());
       formData.append("about", description);
       formData.append("timing", timing);
-      formData.append("type", clinicType); 
+      formData.append("type", clinicType);
 
       if (uploadedImage) {
         formData.append("image", uploadedImage);
@@ -85,11 +95,11 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
         `/discover/clinic/${EventData._id}`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
-      );      
+      );
       if (response?.status === 200) {
         handleCancel();
         showSuccessMessage("Successfully Updated Clinic");
-        dispatch(editOutstationClinic(response.data));
+        dispatch(editOutstationClinic(response.data.data));
       }
     } catch (error) {
       console.error(
@@ -107,7 +117,11 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Edit Outstation Clinic</span>}
+        title={
+          <span className="create-campaign-modal-title">
+            Edit Outstation Clinic
+          </span>
+        }
         onCancel={handleCancel}
         width={680}
         footer={[
@@ -136,7 +150,9 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
               placeholder="Edit Clinic Name"
               required
             />
-            <span className="create-campaign-input-span">Clinic Name</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Clinic Name
+            </span>
           </Form.Item>
           <Row gutter={24}>
             <Col span={12}>
@@ -147,7 +163,9 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
                   placeholder="Enter Rating (e.g., 4.5)"
                   required
                 />
-                <span className="create-campaign-input-span">Rating</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Rating
+                </span>
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -158,7 +176,9 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
                   placeholder="Enter Number of Reviews"
                   required
                 />
-                <span className="create-campaign-input-span">Reviews</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span>Reviews
+                </span>
               </Form.Item>
             </Col>
           </Row>
@@ -171,7 +191,9 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
                   placeholder="Enter Number of Patients"
                   required
                 />
-                <span className="create-campaign-input-span">Patients</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Patients
+                </span>
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -182,7 +204,9 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
                   placeholder="Enter Experience (in years)"
                   required
                 />
-                <span className="create-campaign-input-span">Experience</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Experience
+                </span>
               </Form.Item>
             </Col>
           </Row>
@@ -193,7 +217,9 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
               placeholder="Edit Description"
               required
             />
-            <span className="create-campaign-input-span">About</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> About
+            </span>
           </Form.Item>
           <Row gutter={24}>
             <Col span={12}>
@@ -204,14 +230,22 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
                   placeholder="Enter Timing (e.g., Mon-Fri 9AM-5PM)"
                   required
                 />
-                <span className="create-campaign-input-span">Timing</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span>Timing
+                </span>
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Clinic Type">
+              <Form.Item
+                label={
+                  <span>
+                    Clinic Type <span style={{ color: "red" }}>*</span>
+                  </span>
+                }
+              >
                 <Radio.Group
                   onChange={(e) => setClinicType(e.target.value)}
-                  value={clinicType} 
+                  value={clinicType}
                 >
                   <Radio value="outstation">Outstation</Radio>
                   <Radio value="speciality">Speciality</Radio>
@@ -226,7 +260,9 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
               placeholder="Enter Address"
               required
             />
-            <span className="create-campaign-input-span">Address</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Address
+            </span>
           </Form.Item>
           <Form.Item>
             <Upload
@@ -239,7 +275,7 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline />{" "}
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>
@@ -273,7 +309,9 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
                 </Button>
               </div>
             )}
-            <span className="create-campaign-input-span">Image</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Image
+            </span>
           </Form.Item>
         </Form>
       </Modal>
@@ -282,4 +320,3 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
 };
 
 export default EditOutstationClinic;
-

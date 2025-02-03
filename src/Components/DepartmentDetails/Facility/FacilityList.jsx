@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { Dropdown, Menu } from "antd";
 import Slider from "react-slick";
@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { deleteFacility, setFacility } from "../../../Features/FacilitySlice";
 import { FiEye } from "react-icons/fi";
 import ViewFacity from "./ViewFacility";
+import DOMPurify from "dompurify";
 
 export const FacilityList = () => {
   const [modals, setModals] = useState({
@@ -29,8 +30,12 @@ export const FacilityList = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const facilities = useSelector((state) => state.facility.facilities);
 
-  console.log("facilities", facilities);
+  const toggleModal = (modalType) =>
+    setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
+  const sanitizeContent = (content) => {
+    return DOMPurify.sanitize(content);
+  };
   const truncateText = (text, wordLimit) => {
     if (!text) return "";
     const words = text.split(" ");
@@ -38,10 +43,6 @@ export const FacilityList = () => {
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
   };
-  const toggleModal = (modalType) =>
-    setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
-
-
   const handleEditClick = (facility) => {
     setSelectedFacility(facility);
     toggleModal("edit");
@@ -121,6 +122,13 @@ export const FacilityList = () => {
             </span>
           </div>
           <p>{facility.subHeading}</p>
+          <p>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: sanitizeContent(truncateText(facility.content, 15)),
+              }}
+            ></span>
+          </p>
         </div>
       </div>
     </div>
@@ -172,18 +180,18 @@ export const FacilityList = () => {
     ],
   };
 
-  const fetchFacilityList = async () => {
+  const fetchFacilityList = useCallback(async () => {
     try {
       const response = await Instance.get("/depcat/facility");
       dispatch(setFacility(response.data));
     } catch (error) {
       console.error("Error fetching facilities:", error);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     fetchFacilityList();
-  }, []);
+  }, [fetchFacilityList]);
 
   return (
     <div className="row mt-4">

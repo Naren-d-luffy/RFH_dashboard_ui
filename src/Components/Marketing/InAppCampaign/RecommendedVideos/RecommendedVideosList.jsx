@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import { Dropdown, Menu } from "antd";
 import Slider from "react-slick";
@@ -50,7 +50,6 @@ export const RecommendedVideosList = () => {
       onDelete: async () => {
         try {
           const response = await Instance.delete(`/recommended/${_id}`);
-          console.log("response received:", response);
           if (response.status === 200 || response.status === 204) {
             showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteRecommendedVideos(_id));
@@ -162,19 +161,18 @@ export const RecommendedVideosList = () => {
     ],
   };
 
-  const fetchVideoList = async () => {
+  const fetchVideoList = useCallback(async () => {
     try {
       const response = await Instance.get("/recommended");
-      console.log("Fetched video data:", response.data);
       dispatch(setRecommendedVideos(response.data));
     } catch (error) {
       console.error("Error fetching recommended videos:", error);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     fetchVideoList();
-  }, []);
+  }, [fetchVideoList]);
 
   return (
     <div className="row mt-4">
@@ -200,7 +198,7 @@ export const RecommendedVideosList = () => {
           <div className="mt-4">
             <Slider {...sliderSettings} key={recommendedvideos?.length}>
               {recommendedvideos && recommendedvideos.length > 0 ? (
-                recommendedvideos.map((video) => renderRecommendVideo(video))
+                recommendedvideos?.map((video) => renderRecommendVideo(video))
               ) : (
                 <p>No data available</p>
               )}

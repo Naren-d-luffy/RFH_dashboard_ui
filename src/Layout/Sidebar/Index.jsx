@@ -3,27 +3,27 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../layout.css";
 import lightLogo from "../../Assets/Images/logo.png";
 import darkLogo from "../../Assets/Images/darkLogo.png"
-import { FiActivity, FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FiChevronDown, FiChevronUp, FiTool } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineDashboard } from "react-icons/md";
 import { GoShieldCheck } from "react-icons/go";
 import { TbCirclePercentage } from "react-icons/tb";
 import {
   Bell,
-  Handshake,
   LogOut,
   LucideHouse,
-  MemoryStick,
   MessageCircleCode,
   MessageSquareMore,
   Settings,
 } from "lucide-react";
-import { SlGraduation } from "react-icons/sl";
+import { SlGraduation, SlLock } from "react-icons/sl";
 import { IoMenu, IoNewspaperOutline, IoTelescopeOutline } from "react-icons/io5";
 import { BiCapsule } from "react-icons/bi";
 import { useDarkMode } from "../../DarkMode";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { showLogoutMessage } from "../../globalConstant";
+import { FaRegFileLines } from "react-icons/fa6";
+import { RiHospitalLine } from "react-icons/ri";
 
 
 function SidebarAdmin() {
@@ -69,7 +69,6 @@ const handleLogout = () => {
       "/patient-education/overview": "education",
       "/patient-education/resources": "education",
       "/view-all-gastro-illness": "education",
-      "/view-all-treatments": "education",
       "/view-all-treatments": "education",
       "/feedback/create-survey": "feedback",
       "/feedback/create-survey-page": "feedback",
@@ -256,6 +255,30 @@ const handleLogout = () => {
       label: "News",
       icon: <IoNewspaperOutline className="sidebar-icon" size={14} />,
       to: "/news",
+    },
+    {
+      id: "tearms",
+      label: "Terms & Conditions",
+      icon: <FaRegFileLines className="sidebar-icon" size={14} />,
+      to: "/terms-conditions",
+    },
+    {
+      id: "hospital",
+      label: "About Hospital",
+      icon: <RiHospitalLine className="sidebar-icon" size={14} />,
+      to: "/about-hospital",
+    },
+    {
+      id: "configuration",
+      label: "Configuration",
+      icon: <FiTool className="sidebar-icon" size={14} />,
+      to: "/configuration",
+    },
+    {
+      id: "rolebased",
+      label: "Role Based Access",
+      icon: <SlLock className="sidebar-icon" size={14} />,
+      to: "/role-based",
     },
     {
       id: "community post",

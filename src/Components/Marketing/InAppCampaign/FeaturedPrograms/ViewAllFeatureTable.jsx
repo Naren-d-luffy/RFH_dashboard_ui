@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Table} from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
@@ -12,7 +11,6 @@ import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
-import DOMPurify from "dompurify";
 import AddFeaturesModal from "./AddFeaturedProgram";
 import EditFeaturesModal from "./EditFetauredProgram";
 import ViewFeaturedModal from "./ViewFeaturedProgram";
@@ -52,7 +50,7 @@ const FeaturesTable = () => {
       : text;
   };
 
-  const fetchFeatureInfo = async (page) => {
+  const fetchFeatureInfo =useCallback(async (page = 1) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/discover/featuredProgram`, {
@@ -65,11 +63,11 @@ const FeaturesTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[itemsPerPage,dispatch]);
 
   useEffect(() => {
     fetchFeatureInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage,fetchFeatureInfo]);
 
   const handleDeleteFeature = (_id) => {
     showDeleteMessage({
@@ -82,7 +80,6 @@ const FeaturesTable = () => {
           if (response.status === 200) {
             showSuccessMessage("Deleted successfully", "Details deleted");
             dispatch(deleteFeature(_id));
-            console.log(response);
           }
         } catch (error) {
           console.error("Error deleting feature:", error);
@@ -168,7 +165,7 @@ const FeaturesTable = () => {
         <Loader />
       ) : FeaturesData.length > 0 ? (
         <>
-          <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex user-engagement-header justify-content-between align-items-center">
             <h3>Feature Programs</h3>
 
             <div className="d-flex align-items-center gap-3">

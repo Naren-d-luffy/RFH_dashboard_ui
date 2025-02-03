@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../Assets/Icons/Empty_survey_image.png";
 import { showDeleteMessage, showSuccessMessage } from "../../globalConstant";
@@ -24,19 +23,19 @@ const DepartmentDetailsList = () => {
   const [isViewDepartmentModalOpen, setIsViewDepartmentModalOpen] =
     useState(false);
 
-  const [departmentList, setDepartmentList] = useState([]);
+  const [, setDepartmentList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedDepartment, setSelectedDepartment] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const departments = useSelector((state) => state.department.departments);
 
-  const truncateText = (text, wordLimit = 15) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
+  // const truncateText = (text, wordLimit = 15) => {
+  //   if (!text) return "";
+  //   const words = text.split(" ");
+  //   return words.length > wordLimit
+  //     ? words.slice(0, wordLimit).join(" ") + "..."
+  //     : text;
+  // };
   const truncateHTML = (htmlContent, wordLimit) => {
     if (!htmlContent) return "";
     const sanitizedContent = DOMPurify.sanitize(htmlContent);
@@ -98,7 +97,8 @@ const DepartmentDetailsList = () => {
     });
   };
 
-  const fetchDepartmentList = async (page) => {
+  const fetchDepartmentList = useCallback(
+     async () => {
     setIsLoading(true);
 
     try {
@@ -111,8 +111,11 @@ const DepartmentDetailsList = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
+  }, [dispatch]);
+  useEffect(() => {
+    fetchDepartmentList(currentPage);
+  }, [currentPage,fetchDepartmentList]);
+  
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return departments;
     return departments.filter((department) =>
@@ -122,10 +125,7 @@ const DepartmentDetailsList = () => {
     );
   }, [searchText, departments]);
 
-  useEffect(() => {
-    fetchDepartmentList(currentPage);
-  }, [currentPage]);
-  
+
   const columns = [
     {
       title: "Title",

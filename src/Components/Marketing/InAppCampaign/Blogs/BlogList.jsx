@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Button, Dropdown, Menu } from "antd";
-import { FiEye, FiSearch } from "react-icons/fi";
+import React, { useState, useEffect, useCallback } from "react";
+import { Dropdown, Menu } from "antd";
+import { FiEye } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
-import { VscSettings } from "react-icons/vsc";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
@@ -21,6 +20,7 @@ import { deleteBlog, setBlogs } from "../../../../Features/BlogSlice";
 import DOMPurify from "dompurify";
 import EditBlogs from "./EditBlog";
 import ViewBlog from "./ViewBlog";
+import Loader from "../../../../Loader";
 
 const BlogsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -90,7 +90,7 @@ const BlogsList = () => {
     </Menu>
   );
 
-  const fetchBlogs = async (page) => {
+  const fetchBlogs = useCallback(async (page = 1) => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/discover/blog", {
@@ -105,7 +105,7 @@ const BlogsList = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch, itemsPerPage]);
 
   const handleDeleteBlog = (_id) => {
     showDeleteMessage({
@@ -126,7 +126,7 @@ const BlogsList = () => {
 
   useEffect(() => {
     fetchBlogs();
-  }, []);
+  }, [fetchBlogs]);
 
   const renderBlogCard = (event) => (
     <div className="col-lg-4" key={event._id}>
@@ -206,6 +206,8 @@ const BlogsList = () => {
   };
 
   return (
+    <>
+    {isLoading && <Loader />}
     <div className="container mt-4">
       <div className="marketing-categories-section">
         {/* <div className="d-flex justify-content-between align-items-center mb-4">
@@ -243,8 +245,7 @@ const BlogsList = () => {
           </div>
           <div className="mt-3">
             <Slider {...sliderSettings} key={BlogsList?.length}>
-              {/* {gastroEvents.map((event) => renderEventCard(event))} */}
-              {BlogsList && BlogsList.length > 0 ? (
+              {BlogsList && BlogsList?.length > 0 ? (
                 BlogsList.map((event, index) => renderBlogCard(event, index))
               ) : (
                 <p>No data available</p>
@@ -266,6 +267,7 @@ const BlogsList = () => {
         blogData={selectedBlog}
       />
     </div>
+    </>
   );
 };
 

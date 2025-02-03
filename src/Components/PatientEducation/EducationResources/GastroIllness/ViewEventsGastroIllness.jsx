@@ -4,7 +4,7 @@ import "react-quill/dist/quill.snow.css";
 import Loader from "../../../../Loader";
 
 const ViewEventsGastroIllness = ({ open, handleCancel, EventData }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   return (
     <>
       {isLoading && <Loader />}

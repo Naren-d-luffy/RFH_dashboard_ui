@@ -18,7 +18,6 @@ const { Option } = Select;
 const AddEventsList = ({ open, handleCancel }) => {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
-  const [order, setOrder] = useState("");
   const [description, setDescription] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -171,7 +170,7 @@ const AddEventsList = ({ open, handleCancel }) => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline />{" "}
+              <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>

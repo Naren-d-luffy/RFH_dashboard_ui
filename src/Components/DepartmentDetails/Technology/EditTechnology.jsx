@@ -26,7 +26,7 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
-  const [uploadedImage, setUploadedImage] = useState(null);
+  const [, setUploadedImage] = useState(null);
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
       setUploadedImage(technologyData.video || null);
       setThumbnailImage(technologyData.thumbnail || null);
     }
-  }, [open && technologyData]);
+  }, [open, technologyData]);
 
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
@@ -55,19 +55,22 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
       message.error("Please fill in all required fields.");
       return;
     }
-  
+
     setIsLoading(true);
     try {
       const formData = new FormData();
       formData.append("heading", title);
       formData.append("subHeading", description);
       formData.append("content", content);
-  
+
       if (thumbnailImage && typeof thumbnailImage !== "string") {
         formData.append("thumbnail", thumbnailImage);
       }
-  
-      const response = await Instance.put(`/depcat/technology/${technologyData._id}`, formData);
+
+      const response = await Instance.put(
+        `/depcat/technology/${technologyData._id}`,
+        formData
+      );
       if (response?.status === 200 || response?.status === 201) {
         showSuccessMessage("Technology updated successfully!");
         handleCancel();
@@ -80,14 +83,17 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
       setIsLoading(false);
     }
   };
-  
 
   return (
     <>
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Edit Department Technology</span>}
+        title={
+          <span className="create-campaign-modal-title">
+            Edit Department Technology
+          </span>
+        }
         onCancel={handleCancel}
         width={680}
         footer={[
@@ -116,7 +122,9 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
               placeholder="Add Title"
               required
             />
-            <span className="create-campaign-input-span">Title</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Title
+            </span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -125,7 +133,9 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">Description</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Description
+            </span>{" "}
           </Form.Item>
           <div className="row">
             <div className="col-lg-12">
@@ -139,7 +149,7 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
                   </p>
-                  <IoCloudUploadOutline />{" "}
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                   <span style={{ color: "#727880" }}>Upload Thumbnail</span>
                 </Upload>
                 {thumbnailImage && (
@@ -165,6 +175,9 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
                     </Button>
                   </div>
                 )}
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Thumbnail Image
+                </span>
               </Form.Item>
             </div>
           </div>
@@ -177,7 +190,9 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Content
+            </span>{" "}
           </Form.Item>
         </Form>
       </Modal>

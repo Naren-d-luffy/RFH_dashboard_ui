@@ -11,7 +11,7 @@ const hospitalSlice = createSlice({
         },
        
         editHospital: (state, action) => {
-            state.hospital = action.payload; // Directly replace the hospital object
+            state.hospital = action.payload;
         },
        
     }

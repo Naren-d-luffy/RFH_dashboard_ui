@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, message, Row, Col, Upload } from "antd";
+import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { showSuccessMessage } from "../../globalConstant";
@@ -7,8 +7,18 @@ import { Instance } from "../../AxiosConfig";
 import { editDepartment } from "../../Features/DepartmentSlice";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import Loader from "../../Loader";
-
-const { TextArea } = Input;
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+const modules = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["bold", "italic"],
+    ["link", "image"],
+    ["clean"],
+  ],
+};
+// const { TextArea } = Input;
 
 const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -18,30 +28,30 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   const [description, setDescription] = useState("");
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
 
-  const [successStories, setSuccessStories] = useState([]);
+  // const [successStories, setSuccessStories] = useState([]);
   const dispatch = useDispatch();
 
-  const handleAddSuccessStory = () => {
-    setSuccessStories([
-      ...successStories,
-      { title: "", views: 0, video_thumbnail_url: "" },
-    ]);
-  };
+  // const handleAddSuccessStory = () => {
+  //   setSuccessStories([
+  //     ...successStories,
+  //     { title: "", views: 0, video_thumbnail_url: "" },
+  //   ]);
+  // };
 
-  const handleSuccessStoryChange = (index, field, value) => {
-    const updatedStories = [...successStories];
+  // const handleSuccessStoryChange = (index, field, value) => {
+  //   const updatedStories = [...successStories];
 
-    updatedStories[index] = {
-      ...updatedStories[index],
-      [field]: value,
-    };
+  //   updatedStories[index] = {
+  //     ...updatedStories[index],
+  //     [field]: value,
+  //   };
 
-    setSuccessStories(updatedStories);
-  };
+  //   setSuccessStories(updatedStories);
+  // };
 
-  const handleDeleteSuccessStory = (index) => {
-    setSuccessStories(successStories.filter((_, i) => i !== index));
-  };
+  // const handleDeleteSuccessStory = (index) => {
+  //   setSuccessStories(successStories.filter((_, i) => i !== index));
+  // };
 
   useEffect(() => {
     if (departmentData) {
@@ -49,17 +59,17 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
       setSubtitle(departmentData.subtitle || "");
       setDescription(departmentData.description || "");
       if (departmentData.thumbnail) {
-        setImagePreviewUrl(departmentData.thumbnail); // Store the URL for preview
+        setImagePreviewUrl(departmentData.thumbnail);
       }
-      if (Array.isArray(departmentData.success_stories)) {
-        setSuccessStories(
-          departmentData.success_stories.map((story) => ({
-            title: story.title || "",
-            views: story.views || 0,
-            video_thumbnail_url: story.video_thumbnail_url || "",
-          }))
-        );
-      }
+      // if (Array.isArray(departmentData.success_stories)) {
+      //   setSuccessStories(
+      //     departmentData.success_stories?.map((story) => ({
+      //       title: story.title || "",
+      //       views: story.views || 0,
+      //       video_thumbnail_url: story.video_thumbnail_url || "",
+      //     }))
+      //   );
+      // }
     }
   }, [departmentData]);
 
@@ -74,16 +84,16 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
         requestData.append("thumbnail", uploadedImage);
       }
 
-      const formattedSuccessStories = successStories.map((story) => ({
-        video_thumbnail_url: story.video_thumbnail_url,
-        title: story.title,
-        views: parseInt(story.views),
-      }));
+      // const formattedSuccessStories = successStories?.map((story) => ({
+      //   video_thumbnail_url: story.video_thumbnail_url,
+      //   title: story.title,
+      //   views: parseInt(story.views),
+      // }));
 
-      requestData.append(
-        "success_stories",
-        JSON.stringify(formattedSuccessStories)
-      );
+      // requestData.append(
+      //   "success_stories",
+      //   JSON.stringify(formattedSuccessStories)
+      // );
       const response = await Instance.put(
         `/department/${departmentData._id}`,
         requestData,
@@ -113,7 +123,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
     setTitle("");
     setSubtitle("");
     setDescription("");
-    setSuccessStories([]);
+    // setSuccessStories([]);
     setUploadedImage(null);
   };
 
@@ -145,33 +155,46 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
           </Button>,
         ]}
       >
-        <Form layout="vertical">
-          <Form.Item label="Title">
+        <Form layout="vertical" className="mt-4">
+          <Form.Item>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Add Title"
               required
             />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Title
+            </span>
           </Form.Item>
-          <Form.Item label="Subtitle">
+          <Form.Item>
             <Input
               value={subtitle}
               onChange={(e) => setSubtitle(e.target.value)}
               placeholder="Add Subtitle"
               required
             />
-          </Form.Item>
-          <Form.Item label="Description">
-            <TextArea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Add Description"
-              required
-            />
+             <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Subtitle
+            </span>
           </Form.Item>
 
-          <Form.Item label="Thumbnail">
+          <Form.Item label="Description">
+            <ReactQuill
+              theme="snow"
+              modules={modules}
+
+              value={description}
+              onChange={setDescription}
+              placeholder="Your text goes here"
+              required
+            />
+             <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Description
+            </span>
+          </Form.Item>
+
+          <Form.Item>
             <Upload
               listType="picture"
               showUploadList={false}
@@ -186,7 +209,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline />
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>
@@ -223,17 +246,19 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 </Button>
               </div>
             )}
-            <span className="create-campaign-input-span">Thumbnail Image</span>
+             <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Thumbnail Image
+            </span>
           </Form.Item>
 
-          <Button
+          {/* <Button
             onClick={handleAddSuccessStory}
             className="create-campaign-cancel-button"
             style={{ marginBottom: "20px" }}
           >
             Add Success Stories
           </Button>
-          {successStories.map((story, index) => (
+          {successStories?.map((story, index) => (
             <div key={index}>
               <h5 className="specialist-heading-name">
                 Success Story {index + 1}
@@ -288,7 +313,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 Delete Success Story
               </Button>
             </div>
-          ))}
+          ))} */}
         </Form>
       </Modal>
     </>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Spin, Button, Card, Modal, message } from "antd";
+import { Spin, Button, Card, Modal } from "antd";
 import { FaPlus } from "react-icons/fa6";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 import { MdDeleteOutline } from "react-icons/md";
@@ -25,10 +25,10 @@ const AllConfigList = () => {
   };
 
   return (
-    <div className="settings-personal-information">
+    <>
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="d-flex justify-content-between mb-4">
-          <h2>All Configurations</h2>
+        <div className="d-flex justify-content-between mb-4 marketing-categories-section">
+          <h3>All Configurations</h3>
           <Button
             className="create-campaign-save-button"
             onClick={() => setAddConfigModalVisible(true)}
@@ -96,7 +96,7 @@ const AllConfigList = () => {
           refreshList={fetchConfigs}
         />
       </div>
-    </div>
+    </>
   );
 };
 

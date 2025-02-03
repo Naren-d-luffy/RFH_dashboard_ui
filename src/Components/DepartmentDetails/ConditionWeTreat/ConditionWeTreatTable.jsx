@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png";
 import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
@@ -13,7 +12,10 @@ import { useNavigate } from "react-router-dom";
 import AddConditionWeTreat from "./AddConditionWeTreat";
 import EditConditionWeTreat from "./EditConditionWeTreat";
 import ViewConditionWeTreat from "./ViewConditionWeTreat";
-import { deleteConditionWeTreat, setConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
+import {
+  deleteConditionWeTreat,
+  setConditionWeTreat,
+} from "../../../Features/ConditionWeTreatSlice";
 
 const ConditionWeTreatTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,7 +26,9 @@ const ConditionWeTreatTable = () => {
   const [selectedFacility, setSelectedFacility] = useState(null);
   const [selectedReadingMaterial, setSelectedReadingMaterial] = useState(null);
 
-  const conditionwetreatList = useSelector((state) => state.conditionwetreat.conditionwetreats);
+  const conditionwetreatList = useSelector(
+    (state) => state.conditionwetreat.conditionwetreats
+  );
 
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
@@ -71,26 +75,27 @@ const ConditionWeTreatTable = () => {
     });
   };
 
-  const fetchTechnologyList = async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get(`/depcat/treat`, {
-        
-        params: { page, limit: itemsPerPage },
-      });
-      dispatch(setConditionWeTreat(response.data));
-      setTotalRows(response.data.total || 0);
-    } catch (error) {
-      console.error("Error fetching condition list:", error);
-
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const fetchTechnologyList = useCallback(
+    async (page) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/depcat/treat`, {
+          params: { page, limit: itemsPerPage },
+        });
+        dispatch(setConditionWeTreat(response.data));
+        setTotalRows(response.data.total || 0);
+      } catch (error) {
+        console.error("Error fetching condition list:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch, itemsPerPage]
+  );
 
   useEffect(() => {
     fetchTechnologyList(currentPage);
-  }, [currentPage]);
+  }, [currentPage, fetchTechnologyList]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return conditionwetreatList;
@@ -107,14 +112,12 @@ const ConditionWeTreatTable = () => {
       dataIndex: "heading",
       className: "campaign-performance-table-column",
       render: (text) => truncateText(text),
-      sorter:(a,b)=>a.heading.localeCompare(b.heading)
-
+      sorter: (a, b) => a.heading.localeCompare(b.heading),
     },
     {
       title: "Sub Heading",
       dataIndex: "subHeading",
       className: "campaign-performance-table-column",
-      
     },
     // {
     //   title: "Video Heading",

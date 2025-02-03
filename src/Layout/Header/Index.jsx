@@ -8,17 +8,23 @@ import { useDarkMode } from "../../DarkMode";
 import { showLogoutMessage } from "../../globalConstant";
 import { allAdminRoutes } from "./allAdminRoutes";
 import { Switch, message, List } from "antd";
+import { useSelector } from "react-redux";
 
 const HeaderAdmin = () => {
   const navigate = useNavigate();
-  const userInfo = localStorage.getItem("userInfo");
-  const parsedUserInfo = JSON.parse(userInfo);
   const dropdownRef = useRef(null);
-
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRoutes, setFilteredRoutes] = useState([]);
+
+  const profileData = useSelector(
+    (state) => state.settingsprofile.settingsprofile
+  );
+  const storedUserInfo = JSON.parse(localStorage.getItem("userInfo")) || {};
+  const userName = storedUserInfo?.name || profileData?.name || "Guest";
+  const profileImage =
+    storedUserInfo?.profile || profileData?.profile || DefaultUser;
 
   const handleNotificationClick = () => {
     navigate("/header/notification");
@@ -56,16 +62,16 @@ const HeaderAdmin = () => {
   };
 
   const handleSearch = (value) => {
-    const searchQuery = value.toLowerCase().trim().replace(/\s+/g, "");
-    setSearchQuery(searchQuery);
+    const query = value.toLowerCase().trim().replace(/\s+/g, "");
+    setSearchQuery(query);
 
-    if (!searchQuery || searchQuery === "") {
+    if (!query) {
       setFilteredRoutes([]);
       return;
     }
     const suggestions = allAdminRoutes.filter((route) =>
       route.keyWords.some((keyword) =>
-        keyword.toLowerCase().replace(/\s+/g, "").includes(searchQuery)
+        keyword.toLowerCase().replace(/\s+/g, "").includes(query)
       )
     );
 
@@ -150,20 +156,14 @@ const HeaderAdmin = () => {
             ref={dropdownRef}
             aria-expanded={isDropdownOpen}
             onClick={toggleDropdown}
-            style={{
-              cursor: "pointer",
-            }}
+            style={{ cursor: "pointer" }}
           >
             <button
               className="user-image"
               type="button"
               aria-controls="user-menu"
             >
-              <img
-                className="profile--icon"
-                src={parsedUserInfo?.profile || DefaultUser}
-                alt="User Profile"
-              />
+              <img className="profile--icon" src={profileImage} alt="Profile" />
             </button>
             <div className="user-info">
               <span
@@ -174,11 +174,10 @@ const HeaderAdmin = () => {
                   letterSpacing: "0.5px",
                 }}
               >
-                {parsedUserInfo.name}
+                {userName}
               </span>
             </div>
 
-            {/* Dropdown Menu */}
             {isDropdownOpen && (
               <div
                 className="dropdown-menu"

@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
@@ -28,7 +27,7 @@ const ReadingMaterialsList = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalRows, setTotalRows] = useState(0);
+  const [setTotalRows] = useState(0);
   const [selectedReadingmaterial, setSelectedReadingmaterial] = useState(null);
   const navigate = useNavigate();
 
@@ -86,24 +85,27 @@ const ReadingMaterialsList = () => {
       },
     });
   };
-  const fetchReadingMaterials = async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get(`/reading-material`, {
-        params: { page, limit: itemsPerPage },
-      });
-      dispatch(setReadingMaterials(response.data));
-      setTotalRows(response.data || 0);
-    } catch (error) {
-      console.error("Error fetching reading materials:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const fetchReadingMaterials = useCallback(
+    async (page) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/reading-material`, {
+          params: { page, limit: itemsPerPage },
+        });
+        dispatch(setReadingMaterials(response.data));
+        setTotalRows(response.data || 0);
+      } catch (error) {
+        console.error("Error fetching reading materials:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch, setTotalRows]
+  );
 
   useEffect(() => {
     fetchReadingMaterials(currentPage);
-  }, [currentPage]);
+  }, [currentPage, fetchReadingMaterials]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return readingMaterialsData;
@@ -119,8 +121,7 @@ const ReadingMaterialsList = () => {
       title: "Title",
       dataIndex: "title",
       className: "campaign-performance-table-column",
-      sorter:(a,b)=>a.title.localeCompare(b.title)
-
+      sorter: (a, b) => a.title.localeCompare(b.title),
     },
     {
       title: "Description",

@@ -9,7 +9,7 @@ import login1 from "../../Assets/Images/login-1.png";
 import login2 from "../../Assets/Images/login-5.png";
 import login3 from "../../Assets/Images/login-2.png";
 import login4 from "../../Assets/Images/login-4.png";
-import { showErrorMessage, showSuccessMessage } from "../../globalConstant";
+import { showErrorMessage } from "../../globalConstant";
 import { Instance } from "../../AxiosConfig";
 
 const CustomDot = ({ active }) => (
@@ -20,7 +20,7 @@ const ForgotPassword = () => {
      
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
   const sliderItems = [

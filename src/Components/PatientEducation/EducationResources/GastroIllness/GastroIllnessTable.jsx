@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
@@ -20,14 +19,13 @@ import {
   deleteGastroIllness,
   setGastroIllness,
 } from "../../../../Features/GastroIllnessSlice";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const GastroIllnessTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [EventList, setEventList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -84,7 +82,8 @@ const GastroIllnessTable = () => {
       },
     });
   };
-  const fetchGastroIllnessInfo = async (page) => {
+  const fetchGastroIllnessInfo = useCallback(
+     async (page) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/gastro`, {
@@ -98,11 +97,13 @@ const GastroIllnessTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  },
+  [dispatch, itemsPerPage]
+);
 
   useEffect(() => {
     fetchGastroIllnessInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage,fetchGastroIllnessInfo]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return EventData;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -28,7 +28,6 @@ export const LatestCampsList = () => {
     camp: false,
     clinic: false,
   });
-  const [campData, setCampData] = useState([]);
   const navigate = useNavigate();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -95,30 +94,25 @@ export const LatestCampsList = () => {
     </Menu>
   );
 
-  useEffect(() => {
-    fetchCampList();
-  }, []);
-
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
-  const fetchCampList = async () => {
+  const fetchCampList = useCallback(async () => {
     try {
 
       const response = await Instance.get(`/camp`);
-console.log("camps",response)
+// console.log("camps",response)
       if (response.status === 200 || response.status === 201) {
-        setCampData(response.data.data);
         dispatch(setCamps(response.data.data));
       }
     } catch (error) {
       console.error("Error fetching camp:", error);
     }
-  };
+  },[dispatch]);
 
   useEffect(() => {
     fetchCampList();
-  }, []);
+  }, [fetchCampList]);
 
   const handleDeleteCamp = (_id) => {
     showDeleteMessage({
@@ -151,7 +145,7 @@ console.log("camps",response)
     const [lat, lng] = location;
     return (
       <div className="col-lg-4" key={camp._id}>
-        <div className="recommended-latest-camp">
+        <div className="upcoming-event-card">
           <div className="recommended-latest-camp-map position-relative">
             {/* Icon positioned above the iframe */}
             <div className="latest-camp-icon-container">
@@ -164,6 +158,7 @@ console.log("camps",response)
             <iframe
               src={`https://www.google.com/maps?q=${lat},${lng}&hl=es;z=14&output=embed`}
               allowFullScreen
+              title="camp-location"
               style={{ height: "250px", width: "100%" }}
             ></iframe>
           </div>
@@ -258,7 +253,7 @@ console.log("camps",response)
           <div className="mt-4">
             <Slider {...sliderSettings} key={Object.keys(camps).length}>
               {camps && Object.keys(camps).length > 0 ? (
-                Object.values(camps).map((camp) => renderLatestCamps(camp))
+                Object.values(camps)?.map((camp) => renderLatestCamps(camp))
               ) : (
                 <p>No data available</p>
               )}

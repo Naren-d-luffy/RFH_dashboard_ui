@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import "./auth.css";
 import logo from "../../Assets/Images/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { message, Spin } from "antd";
-// import {loginInstance} from "../AxiosConfig";
 import signup from "../../Assets/Images/SignUp.png";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Instance } from "../../AxiosConfig";

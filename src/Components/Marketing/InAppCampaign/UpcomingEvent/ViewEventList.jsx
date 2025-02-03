@@ -4,7 +4,7 @@ import "react-quill/dist/quill.snow.css";
 import Loader from "../../../../Loader";
 
 const ViewEventList = ({ open, handleCancel, eventsData }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   return (
     <>
       {isLoading && <Loader />}
@@ -26,7 +26,7 @@ const ViewEventList = ({ open, handleCancel, eventsData }) => {
         <div className="view-treatment-info-modal-container">
           <div className="view-treatment-info-modal-header d-flex justify-content-between align-items-center">
             <h4>{eventsData?.title || "N/A"}</h4>
-            <img src={eventsData?.image} alt="Event Image" />
+            <img src={eventsData?.image} alt="Event" />
           </div>
 
           <div className="view-treatment-info-modal-content">

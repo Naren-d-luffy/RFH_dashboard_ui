@@ -22,6 +22,8 @@ import serviceSlice from "./ServiceSlice"
 import termsSlice from "./TermsSlice"
 import conditionWeTreatSlice from "./ConditionWeTreatSlice"
 import hospitalSlice from "./AboutHospitalSlice"
+import settingsProfileSlice from "./SettingsProfileSlice"
+import roleAccessSlice from "./RoleAccessSlice"
 export default configureStore({
     reducer: {
         videos: hellodoctorSlice,
@@ -46,5 +48,7 @@ export default configureStore({
         term:termsSlice,
         conditionwetreat: conditionWeTreatSlice,
         hospital:hospitalSlice,
+        settingsprofile:settingsProfileSlice,
+        roleAccess:roleAccessSlice,
     },
 });

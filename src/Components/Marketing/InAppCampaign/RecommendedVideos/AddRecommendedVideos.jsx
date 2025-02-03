@@ -3,7 +3,10 @@ import { Button, Modal, Form, Input, message, Radio, Upload } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
-import { showErrorMessage, showSuccessMessage } from "../../../../globalConstant";
+import {
+  showErrorMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { addRecommendedVideos } from "../../../../Features/RecommendedVideosSlice";
@@ -41,7 +44,12 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
   const handleDeleteVideoFile = () => setVideoFile(null);
 
   const handleSave = async () => {
-    if (!title.trim() || !thumbnailFile || (uploadType === "url" && !url.trim()) || (uploadType === "file" && !videoFile)) {
+    if (
+      !title.trim() ||
+      !thumbnailFile ||
+      (uploadType === "url" && !url.trim()) ||
+      (uploadType === "file" && !videoFile)
+    ) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -75,8 +83,10 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
     } catch (error) {
       console.error("Failed to add recommended video:", error);
       const errorMessage =
-      error.response?.data?.message || error.message || "Error adding recommended video";
-    showErrorMessage(errorMessage);
+        error.response?.data?.message ||
+        error.message ||
+        "Error adding recommended video";
+      showErrorMessage(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -87,7 +97,11 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Add Recommended Video</span>}
+        title={
+          <span className="create-campaign-modal-title">
+            Add Recommended Video
+          </span>
+        }
         onCancel={() => {
           setTitle("");
           setUrl("");
@@ -130,7 +144,9 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
               placeholder="Enter Title"
               required
             />
-              <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Video Title</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Video Title
+            </span>
           </Form.Item>
 
           <Form.Item>
@@ -140,11 +156,16 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
               beforeUpload={handleUploadThumbnail}
               className="create-campaign-upload"
             >
-              <p className="create-campaign-ant-upload-text">Drop files here or click to upload</p>
+              <p className="create-campaign-ant-upload-text">
+                Drop files here or click to upload
+              </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline /> <span style={{ color: "#727880" }}>Upload Thumbnail</span>
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
+                <span style={{ color: "#727880" }}>Upload Thumbnail</span>
               </span>
-              <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Thumbnail</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Thumbnail
+              </span>
             </Upload>
             {thumbnailFile && (
               <div className="uploaded-image-preview d-flex gap-2">
@@ -174,8 +195,14 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
             )}
           </Form.Item>
 
-          <Form.Item label={<span>Upload Type <span style={{ color: "red" }}>*</span></span>}>
-          <Radio.Group
+          <Form.Item
+            label={
+              <span>
+                Upload Type <span style={{ color: "red" }}>*</span>
+              </span>
+            }
+          >
+            <Radio.Group
               value={uploadType}
               onChange={(e) => setUploadType(e.target.value)}
               className="mb-3"
@@ -193,7 +220,9 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
                 placeholder="Enter Video URL"
                 required
               />
-                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Video URL</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Video URL
+              </span>
             </Form.Item>
           ) : (
             <Form.Item>
@@ -203,9 +232,12 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
                 beforeUpload={handleUploadVideo}
                 className="create-campaign-upload"
               >
-                <p className="create-campaign-ant-upload-text">Drop files here or click to upload</p>
+                <p className="create-campaign-ant-upload-text">
+                  Drop files here or click to upload
+                </p>
                 <span className="create-campaign-ant-upload-drag-icon">
-                  <IoCloudUploadOutline /> <span style={{ color: "#727880" }}>Upload Video</span>
+                  <IoCloudUploadOutline />{" "}
+                  <span style={{ color: "#727880" }}>Upload Video</span>
                 </span>
               </Upload>
               {videoFile && (
@@ -242,4 +274,3 @@ const AddRecommendedVideos = ({ open, handleCancel }) => {
 };
 
 export default AddRecommendedVideos;
-
