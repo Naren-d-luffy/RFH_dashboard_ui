@@ -229,7 +229,7 @@ const BlogsList = () => {
         </div> */}
 
         <div className="row mt-4">
-          <div className="events-header-container" onClick={() => handleCardClick(BlogsList)}>
+          <div className="events-header-container">
             <h6>Blogs</h6>
             <div className="events-buttons">
               <button className="rfh-basic-button" onClick={showModal}>

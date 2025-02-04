@@ -103,7 +103,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
       );
 
       dispatch(editDepartment(response.data));
-      message.success("Department Updtaed successfully!");
+      // message.success("Department Updtaed successfully!");
       showSuccessMessage("Department Updated successfully!");
       resetForm();
       handleCancel();
