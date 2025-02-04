@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Table, Button } from "antd";
+import { Table, Button, message } from "antd";
 import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import { Instance } from "../../../../AxiosConfig";
@@ -66,6 +66,7 @@ const RecommendedVideosTable = () => {
               dispatch(deleteRecommendedVideos(_id));
             }
           } catch (error) {
+            message.error("Error deleting video",error);
             console.error("Error deleting video:", error);
           }
         },

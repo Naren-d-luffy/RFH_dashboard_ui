@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Table} from "antd";
+import { Table, message} from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
@@ -59,7 +59,8 @@ const OutstationClinicTable = () => {
             dispatch(deleteOutstationClinic(_id));
           }
         } catch (error) {
-          console.error("Error deleting event:", error);
+          message.error("Error deleting clinic",error);
+          console.error("Error deleting clinic:", error);
         }
       },
     });

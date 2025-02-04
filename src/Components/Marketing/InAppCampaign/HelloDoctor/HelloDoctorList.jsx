@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, message} from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -63,6 +63,7 @@ export const HelloDoctorList = () => {
           }
         } catch (error) {
           console.error("Error deleting video:", error);
+          message.error("Error deleting video");
         }
       },
     });
