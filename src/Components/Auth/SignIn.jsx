@@ -145,7 +145,6 @@ const SignIn = () => {
             <form
               onSubmit={(e) => {
                 e.preventDefault(); 
-                handleLogin();
               }}
             >
               <div className="form-group">
@@ -185,7 +184,9 @@ const SignIn = () => {
               <button
                 className="login-button"
                 onClick={handleLogin}
-                type="button"
+                // type="button"
+                type="submit"
+                
               >
                 {loading ? (
                   <Spin
