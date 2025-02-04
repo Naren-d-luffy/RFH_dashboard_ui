@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Dropdown, Menu, message } from "antd";
 import { GoPlus } from "react-icons/go";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -25,12 +25,12 @@ import ViewOutstationClinic from "./ViewOutstationClinic";
 import { useNavigate } from "react-router-dom";
 
 const OutstationClinicList = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedClinic, setSelectedClinic] = useState(null);
+  const [, setSelectedClinic] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ const OutstationClinicList = () => {
       : text;
   };
 
-  const fetchOutstationClinic = async () => {
+  const fetchOutstationClinic = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/discover/clinic", {
@@ -67,7 +67,11 @@ const OutstationClinicList = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch, itemsPerPage]);
+  
+  useEffect(() => {
+    fetchOutstationClinic();
+  }, [fetchOutstationClinic]);
 
   const handleDeleteClinic = (_id) => {
     showDeleteMessage({
@@ -80,16 +84,12 @@ const OutstationClinicList = () => {
             dispatch(deleteOutstationClinic(_id));
           }
         } catch (error) {
-          message.error("Error deleting clinic",error);
+          message.error("Error deleting clinic", error);
           console.error("Error deleting clinic:", error);
         }
       },
     });
   };
-
-  useEffect(() => {
-    fetchOutstationClinic();
-  }, []);
 
   const handleCardClick = (clinic) => {
     if (!isEditModalOpen) {

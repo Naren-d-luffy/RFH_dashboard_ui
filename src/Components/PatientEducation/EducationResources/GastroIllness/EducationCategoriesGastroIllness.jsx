@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Dropdown, Menu } from "antd";
-import { FiEye } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
@@ -53,7 +52,6 @@ const EducationCategoriesGastroIllness = () => {
   const handleCancel = () => setIsModalOpen(false);
   const showEditModal = () => setIsEditModalOpen(true);
   const handleEditCancel = () => setIsEditModalOpen(false);
-  const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
 
   const handleCardClick = (event) => {

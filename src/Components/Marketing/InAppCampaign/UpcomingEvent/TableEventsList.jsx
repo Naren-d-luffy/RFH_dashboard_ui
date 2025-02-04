@@ -61,7 +61,7 @@ const TableEventsList = () => {
         try {
           const response = await Instance.delete(`/discover/card/${_id}`);
           if (response.status === 200) {
-            showSuccessMessage("Deleted successfully", "Details deleted");
+            showSuccessMessage("Deleted successfully event");
             dispatch(deleteEvent(_id));
           }
         } catch (error) {
