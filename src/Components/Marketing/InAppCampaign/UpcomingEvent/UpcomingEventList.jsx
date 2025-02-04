@@ -38,7 +38,7 @@ export const UpcomingEventList = () => {
   const navigate = useNavigate();
 
   const fetchEvenInfo = useCallback(
-    async (page=1) => {
+    async (page = 1) => {
       setIsLoading(true);
       try {
         const response = await Instance.get(`/discover/card`, {
@@ -85,34 +85,35 @@ export const UpcomingEventList = () => {
     });
   };
 
+  const handleCardClick = (event) => {
+    if (!isEditModalOpen) {
+      setSelectedEvent(event);
+      setIsViewModalOpen(true);
+    }
+  };
+
   const filterMenu = (event) => (
-    <Menu>
+    <Menu onClick={(e) => e.domEvent.stopPropagation()}>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
           setSelectedEvent(event);
           setIsEditModalOpen(true);
+          setIsViewModalOpen(false);
         }}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
       <Menu.Item
-        key="view"
-        className="filter-menu-item"
-        onClick={() => {
-          setSelectedEvent(event);
-          setIsViewModalOpen(true);
-        }}
-      >
-        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        View
-      </Menu.Item>
-      <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteEvent(event._id)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          handleDeleteEvent(event._id);
+        }}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -124,10 +125,17 @@ export const UpcomingEventList = () => {
 
   const renderEventCard = (event) => (
     <div className="col-lg-4" key={event._id}>
-      <div className="upcoming-event-card p-3">
+      <div
+        className="upcoming-event-card p-3"
+        onClick={() => handleCardClick(event)}
+        style={{ cursor: "pointer" }}
+      >
         <div className="action-icon-container">
           <Dropdown overlay={() => filterMenu(event)} trigger={["click"]}>
-            <button className="action-icon-button">
+            <button
+              className="action-icon-button"
+              onClick={(e) => e.stopPropagation()}
+            >
               <BsThreeDotsVertical />
             </button>
           </Dropdown>
@@ -202,16 +210,16 @@ export const UpcomingEventList = () => {
             <h6>Upcoming Events</h6>
             <div className="events-buttons">
               <button
-                className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-events")}
-              >
-                View all
-              </button>
-              <button
                 className="rfh-basic-button"
                 onClick={() => toggleModal("event")}
               >
                 <GoPlus size={20} /> Add Events
+              </button>
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-events")}
+              >
+                View all
               </button>
             </div>
           </div>

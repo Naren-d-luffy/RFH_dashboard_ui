@@ -27,7 +27,6 @@ const BlogsList = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);
-  //   const [blogList, setBlogList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const sanitizeContent = (content) => {
@@ -35,7 +34,6 @@ const BlogsList = () => {
   };
   const dispatch = useDispatch();
   const BlogsList = useSelector((state) => state.blog.blogs || []);
-  //   console.log("BlogsList",BlogsList)
   const itemsPerPage = 100;
 
   const showModal = () => setIsModalOpen(true);
@@ -54,28 +52,19 @@ const BlogsList = () => {
   };
 
   const sortMenu = (blog) => (
-    <Menu>
+    <Menu onClick={(e) => e.domEvent.stopPropagation()}>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          setIsEditModalOpen(true);
           setSelectedBlog(blog);
           showEditModal();
         }}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
-      </Menu.Item>
-      <Menu.Item
-        key="view"
-        className="filter-menu-item"
-        onClick={() => {
-          setSelectedBlog(blog);
-          showViewModal();
-        }}
-      >
-        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        View
       </Menu.Item>
       <Menu.Item
         key="delete"
@@ -98,7 +87,6 @@ const BlogsList = () => {
       });
       console.log("Blogs", response);
       dispatch(setBlogs(response.data || []));
-      //   setBlogList(response.data || []);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching blog list :", error);
@@ -128,17 +116,28 @@ const BlogsList = () => {
     fetchBlogs();
   }, [fetchBlogs]);
 
+  const handleCardClick = (blog) => {
+    if (!isEditModalOpen) {
+      setSelectedBlog(blog); 
+      setIsViewModalOpen(true);
+    }
+  };
+
   const renderBlogCard = (event) => (
     <div className="col-lg-4" key={event._id}>
-      <div className="upcoming-event-card p-3" style={{ position: "relative" }}>
+      <div
+        className="upcoming-event-card p-3"
+        style={{ position: "relative", cursor: "pointer" }}
+        onClick={() => handleCardClick(event)} 
+      >
         <div className="treatment-info-icon-container">
           <Dropdown overlay={sortMenu(event)} trigger={["click"]}>
-            <button className="action-icon-button">
+            <button className="action-icon-button" onClick={(e) => e.stopPropagation()}>
               <BsThreeDotsVertical />
             </button>
           </Dropdown>
         </div>
-
+  
         <div className="d-flex justify-content-center align-items-center mb-3">
           <img src={event.thumbnail} alt={event.title} />
         </div>
@@ -153,11 +152,12 @@ const BlogsList = () => {
                 __html: sanitizeContent(truncateText(event.content, 20)),
               }}
             ></span>
-          </p>{" "}
+          </p>
         </div>
       </div>
     </div>
   );
+  
 
   const CustomPrevArrow = (props) => {
     const { className, style, onClick } = props;
@@ -229,17 +229,17 @@ const BlogsList = () => {
         </div> */}
 
         <div className="row mt-4">
-          <div className="events-header-container">
+          <div className="events-header-container" onClick={() => handleCardClick(BlogsList)}>
             <h6>Blogs</h6>
             <div className="events-buttons">
+              <button className="rfh-basic-button" onClick={showModal}>
+                <GoPlus size={20} /> Add Blog
+              </button>
               <button
                 className="rfh-view-all-button"
                 onClick={() => navigate("/view-all-blog-lists")}
               >
                 View all
-              </button>
-              <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} /> Add Blog
               </button>
             </div>
           </div>

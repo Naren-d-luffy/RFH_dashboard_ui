@@ -13,7 +13,6 @@ import { CiCalendarDate, CiLocationOn } from "react-icons/ci";
 import { IoMdTime } from "react-icons/io";
 import EditCamps from "./EditCamp";
 import {
-  
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -55,34 +54,34 @@ export const LatestCampsList = () => {
     setIsViewModalOpen(false);
   };
 
+  const handleCardClick = (camp) => {
+    if (!isEditModalOpen) {
+      setSelectedCamp(camp);
+      setIsViewModalOpen(true);
+    }
+  };
+
   const filterMenu = (camp) => (
-    <Menu>
+    <Menu onClick={(e) => e.domEvent.stopPropagation()}>
+      {" "}
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
           setSelectedCamp(camp);
-          showEditModal(camp);
+          setIsEditModalOpen(true);
+          setIsViewModalOpen(false);
         }}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
       <Menu.Item
-        key="view"
-        className="filter-menu-item"
-        onClick={() => {
-          setSelectedCamp(camp);
-          showViewtModal(camp);
-        }}
-      >
-        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        View
-      </Menu.Item>
-      <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
           handleDeleteCamp(camp._id);
         }}
       >
@@ -99,16 +98,15 @@ export const LatestCampsList = () => {
 
   const fetchCampList = useCallback(async () => {
     try {
-
       const response = await Instance.get(`/camp`);
-// console.log("camps",response)
+      // console.log("camps",response)
       if (response.status === 200 || response.status === 201) {
         dispatch(setCamps(response.data.data));
       }
     } catch (error) {
       console.error("Error fetching camp:", error);
     }
-  },[dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchCampList();
@@ -145,12 +143,17 @@ export const LatestCampsList = () => {
     const [lat, lng] = location;
     return (
       <div className="col-lg-4" key={camp._id}>
-        <div className="upcoming-event-card">
+        <div
+          className="upcoming-event-card"
+          onClick={() => handleCardClick(camp)}
+        >
           <div className="recommended-latest-camp-map position-relative">
-            {/* Icon positioned above the iframe */}
             <div className="latest-camp-icon-container">
               <Dropdown overlay={filterMenu(camp)} trigger={["click"]}>
-                <button className="action-icon-button">
+                <button
+                  className="action-icon-button"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <BsThreeDotsVertical />
                 </button>
               </Dropdown>
@@ -237,16 +240,16 @@ export const LatestCampsList = () => {
 
             <div className="events-buttons">
               <button
-                className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-camp-table")}
-              >
-                View all
-              </button>
-              <button
                 className="rfh-basic-button"
                 onClick={() => toggleModal("camp")}
               >
                 <GoPlus size={20} /> Add Camp
+              </button>
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-camp-table")}
+              >
+                View all
               </button>
             </div>
           </div>

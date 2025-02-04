@@ -95,7 +95,7 @@ const EditRoleBased = () => {
 
     try {
       const response = await Instance.put(
-        `/admin/profile/${id}`,
+        `/profile`,
         formDataToSend
       );
       console.log(response);

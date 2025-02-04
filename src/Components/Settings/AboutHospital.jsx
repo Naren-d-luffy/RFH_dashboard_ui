@@ -9,6 +9,8 @@ import { setHospitalData } from "../../Features/AboutHospitalSlice";
 import Loader from "../../Loader";
 const AboutHospital = () => {
   const [hospital, setHospital] = useState({});
+  console.log("ddd", hospital);
+
   const [file, setFile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [thumbnailImage, setThumbnailImage] = useState(null);
@@ -58,7 +60,7 @@ const AboutHospital = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, form]); 
+  }, [dispatch, form]);
 
   useEffect(() => {
     fetchHospital();
@@ -97,7 +99,7 @@ const AboutHospital = () => {
         }
       );
       console.log(response);
-      
+
       // dispatch(editHospital(response.data.data))
       message.success("Hospital data saved successfully");
       fetchHospital();
@@ -161,10 +163,10 @@ const AboutHospital = () => {
                 <p className="hospital-title-paragraph">: {hospital.year}</p>
               </div>
             </div>
-            <div className="settings-profile-icon-section ">
-              {thumbnailImage && (
+            <div className="settings-profile-icon-section">
+              {hospital.headerImage && (
                 <img
-                  src={thumbnailImage}
+                  src={hospital.headerImage}
                   alt={hospital.name}
                   className="hospital-profile-image"
                   style={{
@@ -306,8 +308,17 @@ const AboutHospital = () => {
                 </Form.Item>
               </div>
               <div className="col-lg-6">
-                <Form.Item name="year" label="Year">
-                  <Input placeholder="Enter established year" />
+                <Form.Item
+                  name="year"
+                  label="Year"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter the established year",
+                    },
+                  ]}
+                >
+                  <Input placeholder="Enter established year" maxLength={4} />
                 </Form.Item>
               </div>
 

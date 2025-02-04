@@ -182,16 +182,16 @@ export const RecommendedVideosList = () => {
             <h6>Recommended Videos</h6>
             <div className="events-buttons">
               <button
-                className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-recommended-videos-table")}
-              >
-                View all
-              </button>
-              <button
                 className="rfh-basic-button"
                 onClick={() => toggleModal("video")}
               >
                 <GoPlus size={20} /> Add Video
+              </button>
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-recommended-videos-table")}
+              >
+                View all
               </button>
             </div>
           </div>
