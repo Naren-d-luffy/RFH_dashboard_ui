@@ -143,20 +143,14 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               value={type || undefined}
               onChange={(value) => setType(value)}
             >
-              <Select.Option value="Overview of Digestive System">
+             <Select.Option value="Overview of Digestive System">
                 Overview of Digestive System
               </Select.Option>
               <Select.Option value="Common Diseases">
                 Common Diseases
               </Select.Option>
-              <Select.Option value="Symptoms to Check">
-                Symptoms to check
-              </Select.Option>
-              <Select.Option value="Common Treatments">
-                Common Treatments
-              </Select.Option>
-              <Select.Option value="Treatment Available">
-                Treatments Available
+<Select.Option value="Common Symptoms">
+                Common Symptoms
               </Select.Option>
             </Select>
             <span className="create-campaign-input-span">

@@ -129,14 +129,6 @@ const EducationCategoriesTreatmentsInfo = () => {
 
   const renderImageCard = (treatment) => (
     <div className="col-lg-4" key={treatment._id}>
-      <div className="treatment-info-icon-container">
-        <Dropdown overlay={sortMenu(treatment)} trigger={["click"]}>
-          <button className="action-icon-button">
-            <BsThreeDotsVertical />
-          </button>
-        </Dropdown>
-      </div>
-
       <div
         className="upcoming-event-card p-3"
         style={{ position: "relative", cursor: "pointer" }}
@@ -231,7 +223,7 @@ const EducationCategoriesTreatmentsInfo = () => {
         </div>
         {isLoading && <Loader />}
         <div className="row mt-3">
-          <Slider {...sliderSettings}>
+          <Slider {...sliderSettings} key={treatmentData.length}>
             {treatmentData && treatmentData.length > 0 ? (
               treatmentData.map((treatment) => renderImageCard(treatment))
             ) : (

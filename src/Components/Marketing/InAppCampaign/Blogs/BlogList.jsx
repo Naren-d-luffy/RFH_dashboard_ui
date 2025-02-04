@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Dropdown, Menu } from "antd";
-import { FiEye } from "react-icons/fi";
+import { Dropdown, Menu, message } from "antd";
 import { GoPlus } from "react-icons/go";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
@@ -106,6 +105,7 @@ const BlogsList = () => {
             dispatch(deleteBlog(_id));
           }
         } catch (error) {
+          message.error("Error deleting blog",error);
           console.error("Error deleting blog:", error);
         }
       },
@@ -229,7 +229,7 @@ const BlogsList = () => {
         </div> */}
 
         <div className="row mt-4">
-          <div className="events-header-container" onClick={() => handleCardClick(BlogsList)}>
+          <div className="events-header-container">
             <h6>Blogs</h6>
             <div className="events-buttons">
               <button className="rfh-basic-button" onClick={showModal}>

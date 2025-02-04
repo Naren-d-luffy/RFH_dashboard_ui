@@ -3,7 +3,7 @@ import { GoPlus } from "react-icons/go";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, message } from "antd";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -91,6 +91,7 @@ export const FeaturedProgramsList = () => {
             console.log(response);
           }
         } catch (error) {
+          message.error("Error deleting feature",error);
           console.error("Error deleting feature:", error);
         }
       },

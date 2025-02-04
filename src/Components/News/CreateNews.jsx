@@ -37,16 +37,14 @@ const CreateNews = ({ open, handleCancel }) => {
     const file = info.file.originFileObj;
     setUploadedImage(file);
   };
-  const [type, setType] = useState(""); 
+  const [type, setType] = useState("");
   const [videoURL, setVideoURL] = useState("");
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
 
   const handleSave = async () => {
-    if (
-      !heading 
-    ) {
+    if (!heading) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -58,8 +56,8 @@ const CreateNews = ({ open, handleCancel }) => {
       formData.append("about", about);
       formData.append("content", content);
       formData.append("backgroundColor", backgroundColor);
-      formData.append("type", type); 
-      formData.append("video_URL", videoURL); 
+      formData.append("type", type);
+      formData.append("video_URL", videoURL);
       if (uploadedImage) {
         formData.append("image", uploadedImage);
       }
@@ -74,7 +72,7 @@ const CreateNews = ({ open, handleCancel }) => {
         setContent("");
         setUploadedImage("");
         setBackgroundColor("");
-        setType(""); 
+        setType("");
         setVideoURL("");
       }
     } catch (error) {
@@ -131,7 +129,7 @@ const CreateNews = ({ open, handleCancel }) => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
+                <IoCloudUploadOutline className="image-upload-icon" />{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>
@@ -196,10 +194,12 @@ const CreateNews = ({ open, handleCancel }) => {
               <Form.Item>
                 <Select
                   className="create-camapign-input-select"
-                  placeholder="Select Type"
+                  placeholder={type ? type : "Select Type"}
                   style={{ width: "100%" }}
-                  value={type} // Bind state
+                  // value={type}
+                  value={type || undefined}
                   onChange={(value) => setType(value)}
+                  allowClear
                   dropdownClassName="create-campaign-dropdown"
                 >
                   <Option value="Blog">Blog</Option>
@@ -218,7 +218,7 @@ const CreateNews = ({ open, handleCancel }) => {
               placeholder="Enter URL"
               defaultValue=""
               value={videoURL} // Bind state
-              onChange={(e) => setVideoURL(e.target.value)} 
+              onChange={(e) => setVideoURL(e.target.value)}
             />
             <span className="create-campaign-input-span">Video URL</span>
           </Form.Item>

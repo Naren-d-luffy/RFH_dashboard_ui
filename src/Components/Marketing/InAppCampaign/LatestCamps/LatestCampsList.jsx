@@ -3,7 +3,7 @@ import { GoPlus } from "react-icons/go";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, message } from "antd";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -33,16 +33,6 @@ export const LatestCampsList = () => {
   const [selectedCamp, setSelectedCamp] = useState([]);
   const dispatch = useDispatch();
   const camps = useSelector((state) => state.camps.camps);
-
-  const showEditModal = (camp) => {
-    setSelectedCamp(camp);
-    setIsEditModalOpen(true);
-  };
-
-  const showViewtModal = (camp) => {
-    setSelectedCamp(camp);
-    setIsViewModalOpen(true);
-  };
 
   const handleCancelEditModal = () => {
     setSelectedCamp(null);
@@ -124,6 +114,7 @@ export const LatestCampsList = () => {
             console.log(response);
           }
         } catch (error) {
+          message.error("Error deleting Camp",error);
           console.error("Error deleting Camp:", error);
         }
       },
@@ -146,6 +137,7 @@ export const LatestCampsList = () => {
         <div
           className="upcoming-event-card"
           onClick={() => handleCardClick(camp)}
+          style={{cursor:"pointer"}}
         >
           <div className="recommended-latest-camp-map position-relative">
             <div className="latest-camp-icon-container">
