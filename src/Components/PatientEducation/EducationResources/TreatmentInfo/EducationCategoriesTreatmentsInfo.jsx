@@ -129,14 +129,6 @@ const EducationCategoriesTreatmentsInfo = () => {
 
   const renderImageCard = (treatment) => (
     <div className="col-lg-4" key={treatment._id}>
-      <div className="treatment-info-icon-container">
-        <Dropdown overlay={sortMenu(treatment)} trigger={["click"]}>
-          <button className="action-icon-button">
-            <BsThreeDotsVertical />
-          </button>
-        </Dropdown>
-      </div>
-
       <div
         className="upcoming-event-card p-3"
         style={{ position: "relative", cursor: "pointer" }}

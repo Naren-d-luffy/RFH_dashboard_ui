@@ -137,6 +137,7 @@ export const LatestCampsList = () => {
         <div
           className="upcoming-event-card"
           onClick={() => handleCardClick(camp)}
+          style={{cursor:"pointer"}}
         >
           <div className="recommended-latest-camp-map position-relative">
             <div className="latest-camp-icon-container">
