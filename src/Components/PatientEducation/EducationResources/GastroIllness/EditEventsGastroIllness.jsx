@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, Input, Upload, message,Select } from "antd";
+import { Button, Modal, Form, Input, Upload, message, Select } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -38,14 +38,14 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
- 
+
   useEffect(() => {
     if (open && EventData) {
       setTitle(EventData.title || "");
       setDescription(EventData.description || "");
       setContent(EventData.content || "");
       setUploadedImage(EventData.headerImage || null);
-      setType(EventData.type || "")
+      setType(EventData.type || "");
       // setThumbnailImage(EventData.thumbnail || null);
     }
   }, [open, EventData]);
@@ -64,7 +64,6 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
       formData.append("headerImage", uploadedImage);
       // formData.append("thumbnail", thumbnailImage);
       formData.append("type", type); // Include type
-
 
       const response = await Instance.put(`/gastro/${EventData._id}`, formData);
       if (response?.status === 200 || response?.status === 201) {
@@ -136,9 +135,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">
-               Description
-            </span>
+            <span className="create-campaign-input-span">Description</span>
           </Form.Item>
           <Form.Item>
             <Select
@@ -149,11 +146,11 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
              <Select.Option value="Overview of Digestive System">
                 Overview of Digestive System
               </Select.Option>
-              <Select.Option value="Common Symptoms">
-                Common Symptoms
-              </Select.Option>
               <Select.Option value="Common Diseases">
                 Common Diseases
+              </Select.Option>
+<Select.Option value="Common Symptoms">
+                Common Symptoms
               </Select.Option>
             </Select>
             <span className="create-campaign-input-span">
@@ -207,12 +204,9 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">
-                   Header Image
-                </span>
+                <span className="create-campaign-input-span">Header Image</span>
               </Form.Item>
             </div>
-            
           </div>
           <Form.Item>
             <ReactQuill

@@ -223,7 +223,7 @@ const EducationCategoriesTreatmentsInfo = () => {
         </div>
         {isLoading && <Loader />}
         <div className="row mt-3">
-          <Slider {...sliderSettings}>
+          <Slider {...sliderSettings} key={treatmentData.length}>
             {treatmentData && treatmentData.length > 0 ? (
               treatmentData.map((treatment) => renderImageCard(treatment))
             ) : (

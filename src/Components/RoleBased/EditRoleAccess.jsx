@@ -95,7 +95,7 @@ const EditRoleBased = () => {
 
     try {
       const response = await Instance.put(
-        `/profile`,
+        `/admin/profile/${id}`,
         formDataToSend
       );
       console.log(response);
@@ -168,10 +168,11 @@ const EditRoleBased = () => {
               <Form.Item label="Email">
                 <Input
                   name="email"
-                  className="create-campaign-input"
+                  className="create-campaign-input disabled-email"
                   placeholder="Enter Email"
                   value={formData.email}
                   onChange={handleInputChange}
+                  readOnly
                 />
               </Form.Item>
             </Col>

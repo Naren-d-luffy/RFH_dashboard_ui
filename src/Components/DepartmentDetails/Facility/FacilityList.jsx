@@ -87,22 +87,13 @@ export const FacilityList = () => {
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
-      <Menu.Item
-        key="view"
-        className="filter-menu-item"
-        onClick={(e) => {
-          e.domEvent.stopPropagation();
-          handleDeleteClick(facility._id);
-          setSelectedFacility(facility);
-        }}
-      >
-        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        View
-      </Menu.Item>
+      
       <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteClick(facility._id)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          handleDeleteClick(facility._id)}}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
