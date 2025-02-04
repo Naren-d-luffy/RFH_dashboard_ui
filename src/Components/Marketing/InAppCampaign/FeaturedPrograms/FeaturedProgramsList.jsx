@@ -11,7 +11,6 @@ import AddFeaturesModal from "./AddFeaturedProgram";
 import { useNavigate } from "react-router-dom";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
-import { FiEye } from "react-icons/fi";
 import {
   showDeleteMessage,
   showSuccessMessage,

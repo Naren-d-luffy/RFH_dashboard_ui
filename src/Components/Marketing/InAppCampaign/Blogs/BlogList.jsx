@@ -39,7 +39,6 @@ const BlogsList = () => {
   const handleCancel = () => setIsModalOpen(false);
   const showEditModal = () => setIsEditModalOpen(true);
   const handleEditCancel = () => setIsEditModalOpen(false);
-  const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
 
   const truncateText = (text, wordLimit) => {
