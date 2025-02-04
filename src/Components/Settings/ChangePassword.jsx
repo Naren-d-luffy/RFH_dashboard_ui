@@ -15,6 +15,7 @@ const ChangePassword = () => {
         newPassword: values.newPassword,
       };
 
+      setIsLoading(true);
       await Instance.post("/admin/change-password", payload);
       showSuccessMessage("Password updated successfully!");
 
