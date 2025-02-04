@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, message } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -13,7 +13,6 @@ import { deleteEvent, setEvent } from "../../../../Features/DiscoverEventsCard";
 import AddEventsList from "./AddEventsList";
 import EditEventsList from "./EditEventsList";
 import ViewEventList from "./ViewEventList";
-import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -79,6 +78,7 @@ export const UpcomingEventList = () => {
             dispatch(deleteEvent(_id));
           }
         } catch (error) {
+          message.error("Error deleting event");
           console.error("Error deleting event:", error);
         }
       },

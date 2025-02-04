@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Dropdown, Menu } from "antd";
-import { FiEye } from "react-icons/fi";
+import { Dropdown, Menu, message } from "antd";
 import { GoPlus } from "react-icons/go";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
@@ -81,6 +80,7 @@ const OutstationClinicList = () => {
             dispatch(deleteOutstationClinic(_id));
           }
         } catch (error) {
+          message.error("Error deleting clinic",error);
           console.error("Error deleting clinic:", error);
         }
       },

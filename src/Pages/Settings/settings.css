@@ -416,3 +416,9 @@ p.hospital-title-paragraph{
   padding: 14px;
   background-color: var(--card-background-color);
 }
+.settings-input.disabled-email,
+.create-campaign-input.disabled-email {
+  background-color: #f5f5f5 !important;
+  cursor: not-allowed; 
+  color: #999;
+}

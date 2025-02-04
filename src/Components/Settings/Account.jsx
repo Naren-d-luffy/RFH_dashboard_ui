@@ -3,7 +3,6 @@ import { Button, Form, Input, message } from "antd";
 import DefaultUser from "../../Assets/Images/singleuser.png";
 import "react-international-phone/style.css";
 import { Instance } from "../../AxiosConfig";
-import { useNavigate } from "react-router-dom";
 import {
   editSettingsProfileData,
   setSettingsProfileData,
@@ -16,7 +15,6 @@ export const Account = () => {
   const dispatch = useDispatch();
   const [profileFile, setProfileFile] = useState(null);
   const [isProfileUpdated, setIsProfileUpdated] = useState(false);
-  const navigate = useNavigate();
   const profileData = useSelector(
     (state) => state.settingsprofile.settingsprofile
   );
@@ -28,10 +26,6 @@ export const Account = () => {
       setPreviewImage(URL.createObjectURL(file));
       setIsProfileUpdated(true);
     }
-  };
-  const handleChangePasswordClick = () => {
-    const email = form.getFieldValue("email");
-    navigate("/confirm-password", { state: { email } });
   };
   const handleEditClick = () => {
     fileInputRef.current.click();
@@ -77,7 +71,7 @@ export const Account = () => {
         }
 
         const response = await Instance.put(
-          `/profile/${parsedUserInfo.uid}`,
+          `/admin/profile/${parsedUserInfo.uid}`,
           formData,
           {
             headers: {
@@ -231,19 +225,10 @@ export const Account = () => {
             <div className="col-md-6 mt-2">
               <Form.Item name="email" label="Email"
                >
-                <Input className="settings-input" placeholder="Email ID" 
+                <Input className="settings-input disabled-email" placeholder="Email ID" 
                 readOnly
                 />
               </Form.Item>
-            </div>
-            <div className="col-md-6 mt-2">
-              <Button
-                type="button"
-                className="create-campaign-cancel-button ms-3 mt-4"
-                onClick={handleChangePasswordClick}
-              >
-                Change Password
-              </Button>
             </div>
           </div>
 
