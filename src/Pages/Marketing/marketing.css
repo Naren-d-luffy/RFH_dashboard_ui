@@ -511,7 +511,7 @@
   font-size: 0 !important;
   cursor: pointer;
   color: var(--black-color) !important;
-  background-color: var(--background-color) !important;
+  background-color: var(--primary-green) !important;
   border-radius: 50%;
   opacity: 2;
   left: 0 !important;
@@ -520,14 +520,14 @@
   font-size: 0 !important;
   cursor: pointer;
   color: var(--black-color) !important;
-  background-color: var(--background-color) !important;
+  background-color: var(--primary-green) !important;
   border-radius: 50%;
   opacity: 2;
   right: 0 !important;
 }
 .slick-prev:hover,
 .slick-next:hover {
-  background-color: var(--white-color) !important;
+  background-color: var(--primary-green) !important;
   color: var(--primary-green) !important;
 }
 .slick-next:before,
@@ -536,7 +536,7 @@
   font-size: 20px;
   line-height: 1;
   opacity: .5;
-  color: var(--primary-green) !important;
+  color: var(--white-color) !important;
 }
 .recommend-video-card {
   background-size: cover;
