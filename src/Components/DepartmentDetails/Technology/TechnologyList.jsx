@@ -79,7 +79,10 @@ export const TechnologyList = () => {
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => handleEditClick(technology)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation()
+          handleEditClick(technology)
+        }}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
@@ -87,7 +90,9 @@ export const TechnologyList = () => {
       <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteClick(technology._id)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          handleDeleteClick(technology._id)}}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
