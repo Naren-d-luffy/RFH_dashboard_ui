@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Instance } from "../../../../AxiosConfig";
 import {
- 
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -55,7 +54,7 @@ export const RecommendedVideosList = () => {
             dispatch(deleteRecommendedVideos(_id));
           }
         } catch (error) {
-          message.error("Error deleting video",error);
+          message.error("Error deleting video", error);
           console.error("Error deleting video:", error);
         }
       },
@@ -109,7 +108,13 @@ export const RecommendedVideosList = () => {
         <div className="video-details mt-2">
           <h4>{video.name}</h4>
           <p style={{ color: "var(--black-color)", fontSize: "13px" }}>
-              {video.createdAt}
+            {(() => {
+              const date = new Date(video.createdAt);
+              const day = String(date.getDate()).padStart(2, "0");
+              const month = String(date.getMonth() + 1).padStart(2, "0"); 
+              const year = date.getFullYear();
+              return `${day}-${month}-${year}`;
+            })()}
           </p>
         </div>
       </div>
@@ -223,4 +228,3 @@ export const RecommendedVideosList = () => {
 };
 
 export default RecommendedVideosList;
-

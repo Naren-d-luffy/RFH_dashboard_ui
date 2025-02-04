@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
-import { Dropdown, Menu, message} from "antd";
+import { Dropdown, Menu, message } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -12,7 +12,6 @@ import ReactPlayer from "react-player";
 import AddVideo from "./AddVideo";
 import EditVideo from "./EditVideo";
 import {
-  
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -34,7 +33,7 @@ export const HelloDoctorList = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const videos = useSelector((state) => state.videos.videos);  
+  const videos = useSelector((state) => state.videos.videos);
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
@@ -109,7 +108,13 @@ export const HelloDoctorList = () => {
 
   const renderRecommendVideo = (video) => {
     const isPlaying = playingVideo === video._id;
-
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+      return `${day}-${month}-${year}`;
+    };
     return (
       <div className="col-lg-4 recommend-video-page" key={video._id}>
         <div className="action-icon-container">
@@ -133,9 +138,10 @@ export const HelloDoctorList = () => {
         </div>
         <div className="video-details mt-2">
           <h4>{video.title}</h4>
-          <p style={{ color: "var(--black-color)", fontSize: "13px" }}>{`${
-            video.likes
-          } Likes | ${new Date(video.createdAt).toLocaleDateString()}`}</p>
+
+          <p style={{ color: "var(--black-color)", fontSize: "13px" }}>
+            {`${video.likes} Likes | ${formatDate(video.createdAt)}`}
+          </p>
         </div>
       </div>
     );
@@ -195,7 +201,7 @@ export const HelloDoctorList = () => {
     } catch (error) {
       console.error("Error fetching videos:", error);
     }
-  },[dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchVideoList();
