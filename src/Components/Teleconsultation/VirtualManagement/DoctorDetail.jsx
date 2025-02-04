@@ -66,13 +66,17 @@ const DoctorDetail = () => {
     const data = new FormData();
     if (uploadedFile) {
       data.append("profile", uploadedFile);
+    } else if (formData.profile && typeof formData.profile === "string") {
+      data.append("profile", formData.profile);
     }
-
+    
     Object.keys(formData).forEach((key) => {
-      if (Array.isArray(formData[key])) {
-        data.append(key, JSON.stringify(formData[key])); 
-      } else {
-        data.append(key, formData[key]);
+      if (key !== "profile") { 
+        if (Array.isArray(formData[key])) {
+          data.append(key, JSON.stringify(formData[key])); // Convert arrays to JSON strings
+        } else {
+          data.append(key, formData[key]);
+        }
       }
     });
 
