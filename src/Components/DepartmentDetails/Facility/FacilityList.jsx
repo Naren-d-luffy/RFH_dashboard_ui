@@ -27,8 +27,9 @@ export const FacilityList = () => {
   const [selectedFacility, setSelectedFacility] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const facilities = useSelector((state) => state.facility.facilities);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
@@ -65,12 +66,23 @@ export const FacilityList = () => {
     });
   };
 
+  const handleCardClick = (facility, e) => {
+    e.stopPropagation();
+    setSelectedFacility(facility);
+    setIsViewModalOpen(true);
+  };
+
   const sortMenu = (facility) => (
     <Menu>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => handleEditClick(facility)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          handleEditClick(facility);
+          setIsEditModalOpen(true);
+          setIsViewModalOpen(false);
+        }}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
@@ -78,9 +90,10 @@ export const FacilityList = () => {
       <Menu.Item
         key="view"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          handleDeleteClick(facility._id);
           setSelectedFacility(facility);
-          setIsViewModalOpen(true);
         }}
       >
         <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
@@ -101,10 +114,17 @@ export const FacilityList = () => {
 
   const renderFacilityCard = (facility) => (
     <div className="col-lg-4" key={facility._id}>
-      <div className="upcoming-event-card p-3">
+      <div
+        className="upcoming-event-card p-3"
+        onClick={(e) => handleCardClick(facility, e)}
+        style={{ cursor: "pointer" }}
+      >
         <div className="action-icon-container">
           <Dropdown overlay={() => sortMenu(facility)} trigger={["click"]}>
-            <button className="action-icon-button">
+            <button
+              className="action-icon-button"
+              onClick={(e) => e.stopPropagation()}
+            >
               <BsThreeDotsVertical />
             </button>
           </Dropdown>
@@ -201,16 +221,16 @@ export const FacilityList = () => {
             <h6>Department Facility</h6>
             <div className="events-buttons">
               <button
-                className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-facility-list")}
-              >
-                View all
-              </button>
-              <button
                 className="rfh-basic-button"
                 onClick={() => toggleModal("facility")}
               >
                 <GoPlus size={20} /> Add Facilities
+              </button>
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-facility-list")}
+              >
+                View all
               </button>
             </div>
           </div>

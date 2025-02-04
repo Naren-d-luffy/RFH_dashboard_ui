@@ -15,7 +15,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FiEye } from "react-icons/fi";
 import ViewTechnology from "./ViewTechnology";
-import { deleteTechnology, setTechnology } from "../../../Features/TechnologySlice";
+import {
+  deleteTechnology,
+  setTechnology,
+} from "../../../Features/TechnologySlice";
 import DOMPurify from "dompurify";
 
 export const TechnologyList = () => {
@@ -65,6 +68,12 @@ export const TechnologyList = () => {
     });
   };
 
+  const handleCardClick = (technology, e) => {
+    e.stopPropagation();
+    setSelectedTechnology(technology);
+    setIsViewModalOpen(true);
+  };
+
   const sortMenu = (technology) => (
     <Menu>
       <Menu.Item
@@ -74,17 +83,6 @@ export const TechnologyList = () => {
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
-      </Menu.Item>
-      <Menu.Item
-        key="view"
-        className="filter-menu-item"
-        onClick={() => {
-          setSelectedTechnology(technology);
-          setIsViewModalOpen(true);
-        }}
-      >
-        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        View
       </Menu.Item>
       <Menu.Item
         key="delete"
@@ -101,10 +99,17 @@ export const TechnologyList = () => {
 
   const renderTechnologyCard = (technology) => (
     <div className="col-lg-4" key={technology._id}>
-      <div className="upcoming-event-card p-3">
+      <div
+        className="upcoming-event-card p-3"
+        onClick={(e) => handleCardClick(technology, e)}
+        style={{ cursor: "pointer" }}
+      >
         <div className="action-icon-container">
           <Dropdown overlay={() => sortMenu(technology)} trigger={["click"]}>
-            <button className="action-icon-button">
+            <button
+              className="action-icon-button"
+              onClick={(e) => e.stopPropagation()}
+            >
               <BsThreeDotsVertical />
             </button>
           </Dropdown>
@@ -180,17 +185,14 @@ export const TechnologyList = () => {
     ],
   };
 
-  const fetchTechnologyList = useCallback(
-     async () => {
+  const fetchTechnologyList = useCallback(async () => {
     try {
       const response = await Instance.get("/depcat/technology");
       dispatch(setTechnology(response.data));
     } catch (error) {
       console.error("Error fetching technology list:", error);
     }
-  },
-  [dispatch]
-);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchTechnologyList();
@@ -204,21 +206,24 @@ export const TechnologyList = () => {
             <h6>Technology List</h6>
             <div className="events-buttons">
               <button
-                className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-technology-list")}
-              >
-                View all
-              </button>
-              <button
                 className="rfh-basic-button"
                 onClick={() => toggleModal("technology")}
               >
                 <GoPlus size={20} /> Add Technology
               </button>
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-technology-list")}
+              >
+                View all
+              </button>
             </div>
           </div>
           <div className="mt-4">
-            <Slider {...sliderSettings} key={Object.keys(technologyList).length}>
+            <Slider
+              {...sliderSettings}
+              key={Object.keys(technologyList).length}
+            >
               {technologyList && Object.keys(technologyList).length > 0 ? (
                 Object.entries(technologyList)
                   .filter(([key]) => key !== "status")

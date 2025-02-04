@@ -208,16 +208,16 @@ export const HelloDoctorList = () => {
             <h6>Hello Doctor</h6>
             <div className="events-buttons">
               <button
-                className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-hello-doctor")}
-              >
-                View all
-              </button>
-              <button
                 className="rfh-basic-button"
                 onClick={() => toggleModal("video")}
               >
                 <GoPlus size={20} /> Add Video
+              </button>
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-hello-doctor")}
+              >
+                View all
               </button>
             </div>
           </div>

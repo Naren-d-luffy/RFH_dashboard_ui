@@ -56,13 +56,13 @@ export const allAdminRoutes = [
 	{
 	  title: "Create Survey",
 	  description: "Develop and distribute surveys to collect feedback and insights from users.",
-	  keyWords: ["create survey", "send notification", "notification system"],
+	  keyWords: ["create survey", "send notification", "notification system","feedback survey form"],
 	  route: "/feedback/create-survey",
 	},
 	{
 	  title: "Patient Survey",
 	  description: "View, analyze, and manage surveys focused on patient satisfaction and feedback.",
-	  keyWords: ["patient survey"],
+	  keyWords: ["patient survey","feedback patient survey"],
 	  route: "/feedback/patient-surveys",
 	},
 	{
@@ -98,8 +98,32 @@ export const allAdminRoutes = [
 	{
 	  title: "Settings",
 	  description: "Adjust account preferences, access hospital details, and configure system settings.",
-	  keyWords: ["settings", "account", "profile", "preferences", "terms and conditions", "about hospital", "hospital", "configurations"],
+	  keyWords: ["settings", "account", "profile", "preferences"],
 	  route: "/dashboard/settings",
 	},
+	{
+		title: "Configuration",
+		description: "configure system settings.",
+		keyWords: ["config", "configurations", "settings"],
+		route: "/configuration",
+	  },
+	  {
+		title: "About Hospital",
+		description: "Access Hospital details",
+		keyWords: ["about hospital", "hospital"],
+		route: "/about-hospital",
+	  },
+	  {
+		title: "Terms And Conditions",
+		description: "Add and edit Terms and conditions",
+		keyWords: ["terms", "conditions","terms and conditions"],
+		route: "/terms-conditions",
+	  },
+	  {
+		title: "Role Based Access",
+		description: "Give access to specific pages based on their roles",
+		keyWords: ["role","access","role based access"],
+		route: "/role-based",
+	  },
   ];
   
