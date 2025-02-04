@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Form, Input, Row, Col, Button, Select, Checkbox } from "antd";
+import { Form, Input, Row, Col, Button, Select, Checkbox, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Instance } from "../../AxiosConfig";
@@ -10,19 +10,11 @@ import { useDispatch } from "react-redux";
 import Loader from "../../Loader";
 
 const AddRoleBased = () => {
+  const [form] = Form.useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const fileInputRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    password: "",
-    role: "",
-    categories: [],
-  });
-
   const [previewImage, setPreviewImage] = useState("");
   const [profileFile, setProfileFile] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -31,64 +23,49 @@ const AddRoleBased = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+      if (!allowedTypes.includes(file.type)) {
+        message.error("Only JPG, JPEG, and PNG files are allowed!");
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        message.error("File size must be less than 2MB!");
+        return;
+      }
       setProfileFile(file);
       setPreviewImage(URL.createObjectURL(file));
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleEditClick = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const handleEditClick = () => fileInputRef.current.click();
   const handleRoleChange = (value) => {
-    setFormData({ ...formData, role: value });
     setSelectedRole(value);
   };
-  const handleCategoryChange = (checkedValues) => {
-    setFormData({ ...formData, categories: checkedValues });
-  };
 
-  const handleSubmit = async () => {
-    const formDataToSend = new FormData();
-    formDataToSend.append("name", formData.name);
-    formDataToSend.append("email", formData.email);
-    formDataToSend.append("phoneNumber", formData.phone);
-    formDataToSend.append("password", formData.password);
-    formDataToSend.append("role", formData.role);
-    formDataToSend.append("categories", JSON.stringify(formData.categories));
-    if (profileFile) formDataToSend.append("profile", profileFile);
-    console.log(
-      "Submitting Data:",
-      Object.fromEntries(formDataToSend.entries())
-    );
+  const handleSubmit = async (values) => {
     setIsLoading(true);
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", values.name);
+    formDataToSend.append("email", values.email);
+    formDataToSend.append("phoneNumber", values.phone);
+    formDataToSend.append("password", values.password);
+    formDataToSend.append("role", values.role);
+    formDataToSend.append("categories", JSON.stringify(values.categories || []));
+    if (profileFile) formDataToSend.append("profile", profileFile);
+
     try {
       const response = await Instance.post("/admin/signup", formDataToSend);
-      console.log(response);
       dispatch(addRoleAccess(response));
-      showSuccessMessage("Account created Successfully");
+      showSuccessMessage("Account created successfully");
       navigate("/role-based");
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        password: "",
-        role: "",
-        categories: [],
-      });
+      form.resetFields();
       setPreviewImage("");
       setProfileFile(null);
       setSelectedRole("");
     } catch (error) {
       console.error("Sign up failed:", error);
+      message.error("Sign-up failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -101,7 +78,7 @@ const AddRoleBased = () => {
         <h3>Add Employee</h3>
       </div>
       <div className="mt-3 doctor-detail-page-head">
-        <Form layout="vertical" onFinish={handleSubmit}>
+        <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <div className="row mt-4">
             <div className="settings-profile-icon-section">
               <img
@@ -128,51 +105,57 @@ const AddRoleBased = () => {
 
           <Row gutter={24} className="mt-4">
             <Col span={12}>
-              <Form.Item label="Full Name">
-                <Input
-                  name="name"
-                  className="create-campaign-input"
-                  placeholder="Enter Full Name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                />
+              <Form.Item
+                label="Full Name"
+                name="name"
+                rules={[
+                  { required: true, message: "Full Name is required" },
+                  { min: 3, message: "Full Name must be at least 3 characters" },
+                ]}
+              >
+                <Input placeholder="Enter Full Name" />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Email">
-                <Input
-                  name="email"
-                  className="create-campaign-input"
-                  placeholder="Enter Email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[
+                  { required: true, message: "Email is required" },
+                  { type: "email", message: "Invalid email format" },
+                ]}
+              >
+                <Input placeholder="Enter Email" />
               </Form.Item>
             </Col>
           </Row>
 
           <Row gutter={24}>
             <Col span={12}>
-              <Form.Item label="Phone Number">
-                <Input
-                  name="phone"
-                  className="create-campaign-input"
-                  placeholder="Enter Phone Number"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                />
+              <Form.Item
+                label="Phone Number"
+                name="phone"
+                rules={[
+                  { required: true, message: "Phone Number is required" },
+                  { pattern: /^\d{10}$/, message: "Must be a 10-digit number" },
+                ]}
+              >
+                <Input placeholder="Enter Phone Number" />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Password">
+              <Form.Item
+                label="Password"
+                name="password"
+                rules={[
+                  { required: true, message: "Password is required" },
+                  { min: 3, message: "Password must be at least 3 characters" },
+                ]}
+              >
                 <div className="password-input">
                   <Input
-                    name="password"
                     type={showPassword ? "text" : "password"}
-                    className="signin-input"
                     placeholder="Enter Password"
-                    value={formData.password}
-                    onChange={handleInputChange}
                   />
                   <button
                     className="password-toggle"
@@ -188,28 +171,24 @@ const AddRoleBased = () => {
 
           <Row gutter={24}>
             <Col span={12}>
-              <Form.Item label="Role">
-                <Select
-                  placeholder="Select Role"
-                  value={formData.role || undefined}
-                  onChange={handleRoleChange}
-                >
+              <Form.Item
+                label="Role"
+                name="role"
+              >
+                <Select placeholder="Select Role" onChange={handleRoleChange}>
                   <Select.Option value="Admin">Admin</Select.Option>
                   <Select.Option value="Editor">Editor</Select.Option>
                 </Select>
               </Form.Item>
             </Col>
           </Row>
+
           {selectedRole === "Editor" && (
             <>
               <h6>Access</h6>
-              <div>
-                <Checkbox.Group
-                  onChange={handleCategoryChange}
-                  className="checkbox-grid"
-                >
-                  {" "}
-                  <Checkbox value="Marketing">Marketing</Checkbox>
+              <Form.Item name="categories">
+                <Checkbox.Group className="checkbox-grid">
+                <Checkbox value="Marketing">Marketing</Checkbox>
                   <Checkbox value="Recommended">Recommended</Checkbox>
                   <Checkbox value="Department">Department</Checkbox>
                   <Checkbox value="Education">Education</Checkbox>
@@ -220,22 +199,13 @@ const AddRoleBased = () => {
                   <Checkbox value="Configuration">Configuration</Checkbox>
                   <Checkbox value="RoleBasedAccess">Role Based Access</Checkbox>
                 </Checkbox.Group>
-              </div>
+              </Form.Item>
             </>
           )}
-          {/* Buttons */}
+
           <div className="mt-5 d-flex justify-content-end gap-3">
-            <Button
-              className="create-campaign-cancel-button"
-              onClick={() => navigate("/role-based")}
-            >
-              Cancel
-            </Button>
-            <Button
-              className="create-campaign-save-button"
-              type="submit"
-              onClick={handleSubmit}
-            >
+            <Button   className="create-campaign-cancel-button" onClick={() => navigate("/role-based")}>Cancel</Button>
+            <Button  className="create-campaign-save-button" type="primary" htmlType="submit">
               Save
             </Button>
           </div>

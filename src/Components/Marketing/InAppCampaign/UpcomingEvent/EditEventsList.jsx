@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, message, Select, Upload } from "antd";
+import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import {  showSuccessMessage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
@@ -10,14 +10,14 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import Loader from "../../../../Loader";
 
 const { TextArea } = Input;
-const { Option } = Select;
+// const { Option } = Select;
 
 const EditEventsList = ({ open, handleCancel, eventsData }) => {
   const [title, setTitle] = useState("");
-  const [link, setLink] = useState("");
+  // const [link, setLink] = useState("");
   // const [order, setOrder] = useState("");
   const [description, setDescription] = useState("");
-  const [isActive, setIsActive] = useState(null);
+  // const [isActive, setIsActive] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [features, setFeatures] = useState([]);
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -59,9 +59,9 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
     if (open && eventsData) {
       setTitle(eventsData?.title || "");
       setDescription(eventsData?.description || "");
-      setLink(eventsData?.link || "");
+      // setLink(eventsData?.link || "");
       // setOrder(eventsData?.order || "");
-      setIsActive(eventsData?.isActive ?? null);
+      // setIsActive(eventsData?.isActive ?? null);
       const parsedTags = eventsData?.tags[0]?.split(",") || [];
       setFeatures(parsedTags);
       setUploadedImage(eventsData?.image || null); 
@@ -69,16 +69,16 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
       
       setTitle("");
       setDescription("");
-      setLink("");
+      // setLink("");
       // setOrder("");
-      setIsActive(null);
+      // setIsActive(null);
       setFeatures([]);
       setUploadedImage(null);
     }
   }, [open, eventsData]);
 
   const handleUpdate = async () => {
-    if (!title.trim() || !description.trim() || !link.trim()  || !uploadedImage ) {
+    if (!title.trim() || !description.trim() || !uploadedImage ) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -86,9 +86,9 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
     const formData = new FormData();
     formData.append("title", title.trim());
     formData.append("description", description.trim());
-    formData.append("link", link.trim());
+    // formData.append("link", link.trim());
     // formData.append("order", parseInt(order, 10));
-    formData.append("isActive", isActive);
+    // formData.append("isActive", isActive);
     formData.append("tags", features.join(","));
     formData.append("image", uploadedImage);
     setIsLoading(true);
@@ -103,9 +103,9 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
         showSuccessMessage("Event updated successfully!");
         setTitle("");
         setDescription("");
-        setLink("");
+        // setLink("");
         // setOrder("");
-        setIsActive(true);
+        // setIsActive(true);
         setFeatures([]);
         setUploadedImage(null);
       }
@@ -139,10 +139,10 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
             <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter Event Title" required />
             <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Title</span>
           </Form.Item>
-          <Form.Item>
+          {/* <Form.Item>
             <Input value={link} onChange={(e) => setLink(e.target.value)} placeholder="Enter Event Link" required />
             <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Link</span>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item>
             <Upload
               listType="picture"
@@ -192,13 +192,13 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
             <Input type="number" value={order} onChange={(e) => setOrder(e.target.value)} placeholder="Enter Display Order" required />
             <span className="create-campaign-input-span">Order</span>
           </Form.Item> */}
-          <Form.Item>
+          {/* <Form.Item>
             <Select value={isActive} onChange={(value) => setIsActive(value)} placeholder="Select Event Status" required>
               <Option value={true}>Active</Option>
               <Option value={false}>Inactive</Option>
             </Select>
             <span className="create-campaign-input-span">Status</span>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item>
             <TextArea
               value={description}
