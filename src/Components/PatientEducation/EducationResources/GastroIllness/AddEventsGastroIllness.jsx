@@ -144,9 +144,6 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
               <Select.Option value="Common Diseases">
                 Common Diseases
               </Select.Option>
-              <Select.Option value="Common Treatments">
-                Common Treatments
-              </Select.Option>
             </Select>
             <span className="create-campaign-input-span">
               <span style={{ color: "red" }}>*</span> Type

@@ -136,7 +136,7 @@ const OutstationClinicList = () => {
         className="outstation-clinic-upcoming-event-card p-3"
         style={{ position: "relative", cursor: "pointer" }}
         onClick={() => {
-          setSelectedClinic(clinic);
+          handleCardClick(clinic);
           showViewModal();
         }}
       >
@@ -233,10 +233,7 @@ const OutstationClinicList = () => {
     <div className="container mt-4">
       <div className="marketing-categories-section">
         <div className="row mt-4">
-          <div
-            className="events-header-container"
-            onClick={() => handleCardClick(clinics)}
-          >
+          <div className="events-header-container">
             <h6>Outstation/Speciality Clinic</h6>
             <div className="events-buttons">
               <button className="rfh-basic-button" onClick={showModal}>
@@ -270,7 +267,7 @@ const OutstationClinicList = () => {
       <ViewOutstationClinic
         open={isViewModalOpen}
         handleCancel={handleViewCancel}
-        EventData={selectedClinic}
+        EventData={selectedEvent}
       />
     </div>
   );
