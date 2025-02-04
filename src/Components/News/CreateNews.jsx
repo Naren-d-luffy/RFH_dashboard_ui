@@ -186,7 +186,7 @@ const CreateNews = ({ open, handleCancel }) => {
                   required
                 />
                 <span className="create-campaign-input-span">
-                  <span style={{ color: "red" }}>*</span> Sub Heading
+                   Sub Heading
                 </span>{" "}
               </Form.Item>
             </div>
@@ -230,7 +230,7 @@ const CreateNews = ({ open, handleCancel }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> About
+               About
             </span>{" "}
           </Form.Item>
           <div className="col-lg-6">
@@ -246,7 +246,7 @@ const CreateNews = ({ open, handleCancel }) => {
                 required
               />
               <span className="create-campaign-input-span">
-                <span style={{ color: "red" }}>*</span> Background Color
+                Background Color
               </span>
             </Form.Item>
           </div>
@@ -260,7 +260,7 @@ const CreateNews = ({ open, handleCancel }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Content Points
+               Content Points
             </span>{" "}
           </Form.Item>
         </Form>

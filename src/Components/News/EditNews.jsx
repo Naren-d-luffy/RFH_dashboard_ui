@@ -173,7 +173,7 @@ console.log("newsXDTa",newsData)
               </div>
             )}
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Image
+              Image
             </span>{" "}
           </Form.Item>
           <div className="row">
@@ -199,7 +199,7 @@ console.log("newsXDTa",newsData)
                   required
                 />
                 <span className="create-campaign-input-span">
-                  <span style={{ color: "red" }}>*</span> Sub Heading
+                 Sub Heading
                 </span>{" "}
               </Form.Item>
             </div>
@@ -241,7 +241,7 @@ console.log("newsXDTa",newsData)
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> About
+               About
             </span>{" "}
           </Form.Item>
           <div className="col-lg-6">
@@ -257,7 +257,7 @@ console.log("newsXDTa",newsData)
                 required
               />
               <span className="create-campaign-input-span">
-                <span style={{ color: "red" }}>*</span> Background Color
+                Background Color
               </span>
             </Form.Item>
           </div>
@@ -272,7 +272,7 @@ console.log("newsXDTa",newsData)
               className="news-content"
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Content Points
+              Content Points
             </span>{" "}
           </Form.Item>
         </Form>
