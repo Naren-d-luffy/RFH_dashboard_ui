@@ -23,9 +23,10 @@ import AddOutstationClinic from "./AddOutstationClinic";
 import EditOutstationClinic from "./EditOutstationClinic";
 import ViewOutstationClinic from "./ViewOutstationClinic";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../../../Loader";
 
 const OutstationClinicList = () => {
-  const [, setIsLoading] = useState(false);
+  const[ isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -230,6 +231,8 @@ const OutstationClinicList = () => {
   };
 
   return (
+    <>
+    {isLoading && <Loader/>}
     <div className="container mt-4">
       <div className="marketing-categories-section">
         <div className="row mt-4">
@@ -270,6 +273,7 @@ const OutstationClinicList = () => {
         EventData={selectedEvent}
       />
     </div>
+    </>
   );
 };
 

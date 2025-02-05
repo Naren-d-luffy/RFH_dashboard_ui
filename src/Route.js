@@ -186,7 +186,7 @@ export const AppRouter = () => {
           />
           <Route
             path="/teleconsultation/virtual-management"
-            element={<VirtualManagementPage />}
+            element={<ProtectedRoute element={<VirtualManagementPage />} requiredCategory="Teleconsultation" />}
           />
           <Route
             path="/teleconsultation/doctor-detail"
