@@ -18,7 +18,6 @@ import {
 } from "../../../../globalConstant";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteCamp, setCamps } from "../../../../Features/CampSlice";
-import { FiEye } from "react-icons/fi";
 import ViewLatestCamp from "./ViewLatestCamp";
 import { useNavigate } from "react-router-dom";
 export const LatestCampsList = () => {

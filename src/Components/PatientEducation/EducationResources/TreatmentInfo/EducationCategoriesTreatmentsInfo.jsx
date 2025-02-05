@@ -10,7 +10,6 @@ import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
 import EditTreatmentsInfo from "./EditTreatmentsInfo";
-import { FiEye } from "react-icons/fi";
 import ViewTreatmentsInfo from "./ViewTreatmentsInfo";
 import {
   showDeleteMessage,
@@ -32,7 +31,6 @@ const EducationCategoriesTreatmentsInfo = () => {
   const handleCancel = () => setIsModalOpen(false);
   const showEditModal = () => setIsEditModalOpen(true);
   const handleEditCancel = () => setIsEditModalOpen(false);
-  const showViewModal = () => setIsViewModalOpen(true);
   const handleViewCancel = () => setIsViewModalOpen(false);
   const [isLoading, setIsLoading] = useState(false);
   const treatmentData = useSelector((state) => state.treatments.treatments);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./auth.css";
 import logo from "../../Assets/Images/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Spin, Carousel } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import login1 from "../../Assets/Images/login-1.png";
@@ -156,13 +156,6 @@ const ConfirmPassword = () => {
                 "Save"
               )}
             </button>
-            <p className="login-link">
-              Do not have an account? <Link to="/sign-up">Sigup</Link>
-            </p>
-            <p className="terms">
-              By Continuing you agree to Reliance Terms of Service and Privacy
-              Policy
-            </p>
           </div>
           <div className="col-lg-6 col-sm-0 col-md-0 login-image">
             <Carousel
