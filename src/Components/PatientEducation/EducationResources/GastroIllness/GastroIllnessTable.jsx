@@ -89,9 +89,10 @@ const GastroIllnessTable = () => {
       const response = await Instance.get(`/gastro`, {
         params: { page, limit: itemsPerPage },
       });
+      console.log("df",response)
       dispatch(setGastroIllness(response?.data?.data?.gastros));
       setGastroIllness(response.data?.gastros || []);
-      setTotalRows(response.data?.totalGastros || 0);
+      setTotalRows(response.data?.data?.totalGastros || 0);
     } catch (error) {
       console.error("Error fetching treatments:", error);
     } finally {

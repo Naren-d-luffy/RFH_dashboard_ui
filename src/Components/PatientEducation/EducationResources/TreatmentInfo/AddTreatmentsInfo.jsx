@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, Upload, message } from "antd";
+import { Button, Modal, Form, Input, Upload, message,Switch } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -28,6 +28,8 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+    const [service, setService] = useState(false);
+    const [conditions, setConditions] = useState(false);
   const dispatch = useDispatch();
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
@@ -65,7 +67,8 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
       formData.append("content", content);
       formData.append("headerImage", uploadedImage);
       formData.append("thumbnail", thumbnailImage);
-      
+      formData.append("service", service);
+      formData.append("condition", conditions);
       const response = await Instance.post("/education", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
@@ -76,6 +79,8 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
         setContent("");
         setUploadedImage("");
         setThumbnailImage("");
+        setConditions(false);
+        setService(false);
       }
     } catch (error) {
       console.error(error);
@@ -142,6 +147,31 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
             <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Description</span>
           </Form.Item>
           <div className="row">
+            
+            <div className="col-lg-12">
+              <div className="mt-2"
+                style={{ display: "flex",gap:"30px", alignItems: "center" }}
+              >
+                <div>
+                  <span>Department Services </span>
+                  <Switch
+                  className="gastro-switch-button"
+                    checked={service}
+                    onChange={(checked) => setService(checked)}
+                  />
+                </div>
+                <div>
+                  <span>Conditions we Treat </span>
+                  <Switch
+                  className="gastro-switch-button"
+                    checked={conditions}
+                    onChange={(checked) => setConditions(checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row mt-5">
             <div className="col-lg-6">
               <Form.Item>
                 <Upload
