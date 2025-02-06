@@ -201,7 +201,7 @@ const TechnologyTable = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add Department Technology
+                Add  Technology
               </button>
             </div>
           </div>

@@ -137,10 +137,10 @@ const AboutHospital = () => {
         </div>
         <hr style={{ color: "var(--black-color)" }} />
         <div className="hospital-section mt-4">
-          <div className="d-flex justify-content-between">
+          <div className="d-flex  justify-content-between">
             <h3 style={{ color: "var(--primary-green)" }}>Basic Information</h3>
           </div>
-          <div className="d-flex justify-content-between">
+          <div className="d-flex flex-lg-row flex-column justify-content-between">
             <div>
               <div className="d-flex mt-4">
                 <h4 className="hospital-title-heading">Hospital Name</h4>

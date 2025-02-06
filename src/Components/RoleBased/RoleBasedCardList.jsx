@@ -86,15 +86,8 @@ const RoleBasedCardList = () => {
                     <Avatar src={profile || user} shape="square" size={68} />
                   </div>
                   <h2 className="mt-3">{name}</h2>
-                  <h4
-                    style={{
-                      maxWidth: "200px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {email}
+                  <h4>
+                  {email?.length > 26 ? `${email.slice(0, 26)}...` : email}
                   </h4>
                   <h4>{phoneNumber}</h4>
                   <div className="d-flex justify-content-center mt-2">
