@@ -13,7 +13,6 @@ import EditTechnology from "./EditTechnology";
 import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { FiEye } from "react-icons/fi";
 import ViewTechnology from "./ViewTechnology";
 import {
   deleteTechnology,

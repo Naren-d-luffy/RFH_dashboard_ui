@@ -14,7 +14,6 @@ import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteFacility, setFacility } from "../../../Features/FacilitySlice";
-import { FiEye } from "react-icons/fi";
 import ViewFacity from "./ViewFacility";
 import DOMPurify from "dompurify";
 
@@ -28,7 +27,7 @@ export const FacilityList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const facilities = useSelector((state) => state.facility.facilities);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
   const toggleModal = (modalType) =>

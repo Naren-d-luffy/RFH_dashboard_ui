@@ -16,7 +16,6 @@ import EditService from "./EditService";
 import AddService from "./AddService";
 import DOMPurify from "dompurify";
 import ViewService from "./ViewService";
-import { FiEye } from "react-icons/fi";
 
 const ServiceList = () => {
   const [modals, setModals] = useState({
@@ -27,9 +26,8 @@ const ServiceList = () => {
   });
   const [selectedService, setSelectedService] = useState(null);
   const dispatch = useDispatch();
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [, setIsEditModalOpen] = useState(false);
+  const [, setIsViewModalOpen] = useState(false);
   const navigate = useNavigate();
   const sanitizeContent = (content) => {
     return DOMPurify.sanitize(content);
@@ -51,12 +49,6 @@ const ServiceList = () => {
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
   };
-
-  const handleViewClick = (service) => {
-    setSelectedService(service);
-    toggleModal("view");
-  };
-
   const handleDeleteClick = (_id) => {
     showDeleteMessage({
       message: "",

@@ -74,7 +74,7 @@ export const UpcomingEventList = () => {
         try {
           const response = await Instance.delete(`/discover/card/${_id}`);
           if (response.status === 200 || response.status === 204) {
-            showSuccessMessage("Deleted successfully", "Details deleted");
+            showSuccessMessage("Deleted successfully event");
             dispatch(deleteEvent(_id));
           }
         } catch (error) {
