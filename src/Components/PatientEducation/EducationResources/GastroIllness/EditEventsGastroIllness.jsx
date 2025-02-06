@@ -48,6 +48,9 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
       setContent(EventData.content || "");
       setUploadedImage(EventData.headerImage || null);
       setType(EventData.type || "");
+      setService(EventData.service)
+      setConditions(EventData.condition)
+
       // setThumbnailImage(EventData.thumbnail || null);
     }
   }, [open, EventData]);
@@ -66,8 +69,8 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
       formData.append("headerImage", uploadedImage);
       // formData.append("thumbnail", thumbnailImage);
       formData.append("type", type); // Include type
-      formData.append("service", service.toString());
-      formData.append("condition", conditions.toString());
+      formData.append("service", service);
+      formData.append("condition", conditions);
       const response = await Instance.put(`/gastro/${EventData._id}`, formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();

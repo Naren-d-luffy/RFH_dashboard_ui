@@ -67,8 +67,8 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
       formData.append("content", content);
       formData.append("headerImage", uploadedImage);
       formData.append("thumbnail", thumbnailImage);
-      formData.append("service", service.toString());
-      formData.append("condition", conditions.toString());
+      formData.append("service", service);
+      formData.append("condition", conditions);
       const response = await Instance.post("/education", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
@@ -79,6 +79,8 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
         setContent("");
         setUploadedImage("");
         setThumbnailImage("");
+        setConditions(false);
+        setService(false);
       }
     } catch (error) {
       console.error(error);

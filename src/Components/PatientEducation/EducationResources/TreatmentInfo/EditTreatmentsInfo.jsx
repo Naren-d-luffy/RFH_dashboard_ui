@@ -54,6 +54,8 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData }) => {
       setContent(treatmentData.content || "");
       setUploadedImage(treatmentData.headerImage || null);
       setThumbnailImage(treatmentData.thumbnail || null);
+      setConditions(treatmentData.condition);
+      setService(treatmentData.service)
     }
   }, [open, treatmentData]);
 
@@ -76,8 +78,8 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData }) => {
       formData.append("content", content);
       formData.append("headerImage", uploadedImage);
       formData.append("thumbnail", thumbnailImage);
-      formData.append("service", service.toString());
-      formData.append("condition", conditions.toString());
+      formData.append("service", service);
+      formData.append("condition", conditions);
       const response = await Instance.put(
         `/education/${treatmentData._id}`,
         formData
