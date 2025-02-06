@@ -9,8 +9,6 @@ import { setHospitalData } from "../../Features/AboutHospitalSlice";
 import Loader from "../../Loader";
 const AboutHospital = () => {
   const [hospital, setHospital] = useState({});
-  console.log("ddd", hospital);
-
   const [file, setFile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [thumbnailImage, setThumbnailImage] = useState(null);
@@ -24,25 +22,6 @@ const AboutHospital = () => {
   };
 
   const handleCancel = () => setIsModalOpen(false);
-
-  // const fetchHospital = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await Instance.get("/hospital");
-  //     const hospitalData = response.data.data[0];
-  //     setHospital(hospitalData);
-  //     dispatch(setHospitalData(hospitalData));
-  //     form.setFieldsValue(hospitalData);
-  //     if (hospitalData.headerImage) {
-  //       setThumbnailImage(hospitalData.headerImage);
-  //     }
-  //     setIsLoading(false);
-  //   } catch (error) {
-  //     console.error("Error fetching hospital data:", error);
-  //     message.error("Failed to fetch hospital data");
-  //     setIsLoading(false);
-  //   }
-  // };
   const fetchHospital = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -98,7 +77,7 @@ const AboutHospital = () => {
           },
         }
       );
-      console.log(response);
+      console.log("responseaaaa",response);
 
       // dispatch(editHospital(response.data.data))
       message.success("Hospital data saved successfully");
