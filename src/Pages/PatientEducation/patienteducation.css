@@ -214,3 +214,9 @@
   color: var(--primary-green) !important;
   text-align: center;
 }
+.gastro-switch-button.ant-switch.ant-switch-checked {
+  background: var(--primary-green);
+}
+.gastro-switch-button.ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
+  background: var(--primary-green);
+}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, Upload, message, Select } from "antd";
+import { Button, Modal, Form, Input, Upload, message, Select,Switch } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -28,6 +28,8 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [service, setService] = useState(false);
+  const [conditions, setConditions] = useState(false);
   const dispatch = useDispatch();
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
@@ -43,7 +45,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
       message.error("Please fill in all required fields.");
       return;
     }
-    setIsLoading(true);
+   
     try {
       const formData = new FormData();
       formData.append("title", title);
@@ -52,11 +54,20 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
       formData.append("headerImage", uploadedImage);
       // formData.append("thumbnail", thumbnailImage);
       formData.append("type", type); // Include type
+      formData.append("service", service.toString());
+      formData.append("condition", conditions.toString());
+  
 
+      console.log("Form Data being sent:");
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+      // return
+      setIsLoading(true);
       const response = await Instance.post("/gastro", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
-
+        console.log("add gastfro",response)
         showSuccessMessage("GastroIllness Added successfully!");
         dispatch(addGastroIllness(response.data.data));
         setTitle("");
@@ -129,27 +140,53 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
             />
             <span className="create-campaign-input-span"> Description</span>
           </Form.Item>
-          <Form.Item>
-            <Select
-              placeholder="Select Type"
-              value={type || undefined}
-              onChange={(value) => setType(value)}
-            >
-              <Select.Option value="Overview of Digestive System">
-                Overview of Digestive System
-              </Select.Option>
-              <Select.Option value="Common Diseases">
-                Common Diseases
-              </Select.Option>
-<Select.Option value="Common Symptoms">
-                Common Symptoms
-              </Select.Option>
+          <div className="row">
+            <div className="col-lg-5">
+              <Form.Item>
+                <Select
+                  placeholder="Select Type"
+                  value={type || undefined}
+                  onChange={(value) => setType(value)}
+                >
+                  <Select.Option value="Overview of Digestive System">
+                    Overview of Digestive System
+                  </Select.Option>
+                  <Select.Option value="Common Diseases">
+                    Common Diseases
+                  </Select.Option>
+                  <Select.Option value="Common Symptoms">
+                    Common Symptoms
+                  </Select.Option>
+                </Select>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Type
+                </span>
+              </Form.Item>
+            </div>
+            <div className="col-lg-7">
+              <div className="mt-2"
+                style={{ display: "flex", gap: "10px", alignItems: "center" }}
+              >
+                <div>
+                  <span>Department Services </span>
+                  <Switch
+                  className="gastro-switch-button"
+                    checked={service}
+                    onChange={(checked) => setService(checked)}
+                  />
+                </div>
+                <div>
+                  <span>Conditions we Treat </span>
+                  <Switch
+                  className="gastro-switch-button"
+                    checked={conditions}
+                    onChange={(checked) => setConditions(checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
 
-            </Select>
-            <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Type
-            </span>
-          </Form.Item>
           <div className="row">
             <div className="col-lg-12">
               <Form.Item>
@@ -193,9 +230,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">
-                  Header Image
-                </span>
+                <span className="create-campaign-input-span">Header Image</span>
               </Form.Item>
             </div>
           </div>
