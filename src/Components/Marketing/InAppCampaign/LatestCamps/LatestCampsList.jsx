@@ -181,7 +181,7 @@ export const LatestCampsList = () => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", zIndex: "1000" }}
+        style={{ ...style, display: "block", zIndex: "100" }}
         onClick={onClick}
       >
         &#8592;
@@ -194,7 +194,7 @@ export const LatestCampsList = () => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", zIndex: "1000" }}
+        style={{ ...style, display: "block", zIndex: "100" }}
         onClick={onClick}
       >
         &#8594;

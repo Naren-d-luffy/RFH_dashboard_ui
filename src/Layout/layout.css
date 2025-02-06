@@ -517,3 +517,6 @@
 .notification-icon{
     color: var(--black-color);
 }
+.sidebar-logo{
+  cursor: pointer;
+}
