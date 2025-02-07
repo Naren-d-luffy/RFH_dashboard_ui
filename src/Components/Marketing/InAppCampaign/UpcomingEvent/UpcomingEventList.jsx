@@ -14,6 +14,8 @@ import AddEventsList from "./AddEventsList";
 import EditEventsList from "./EditEventsList";
 import ViewEventList from "./ViewEventList";
 import { useNavigate } from "react-router-dom";
+import DOMPurify from "dompurify";
+ 
 
 import {
   showDeleteMessage,
@@ -35,7 +37,9 @@ export const UpcomingEventList = () => {
   const itemsPerPage = 10;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const sanitizeContent = (content) => {
+    return DOMPurify.sanitize(content);
+  };
   const fetchEvenInfo = useCallback(
     async (page = 1) => {
       setIsLoading(true);
@@ -150,7 +154,14 @@ export const UpcomingEventList = () => {
             <h4>{event.title}</h4>
             <span>{new Date(event.createdAt).toLocaleDateString("en-GB")}</span>
           </div>
-          <p>{truncateText(event.description, 30)}</p>
+          <p>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: sanitizeContent(truncateText(event.description, 15)),
+              }}
+            ></span>
+          </p>
+          {/* <p>{truncateText(event.description, 30)}</p> */}
         </div>
       </div>
     </div>
