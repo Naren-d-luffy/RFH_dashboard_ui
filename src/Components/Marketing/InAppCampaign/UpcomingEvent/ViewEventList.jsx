@@ -5,6 +5,7 @@ import Loader from "../../../../Loader";
 
 const ViewEventList = ({ open, handleCancel, eventsData }) => {
   const [isLoading] = useState(false);
+  console.log("event",eventsData)
   return (
     <>
       {isLoading && <Loader />}
@@ -30,14 +31,22 @@ const ViewEventList = ({ open, handleCancel, eventsData }) => {
           </div>
 
           <div className="view-treatment-info-modal-content">
-            <h5>{eventsData?.description || "N/A"}</h5>
-            <ul>
+          <h6>{eventsData?.time || "N/A"}</h6>
+          <h6>{eventsData?.date || "N/A"}</h6>
+
+
+            <div
+            className="news-content"
+            style={{ color: "var(--text-color)" }}
+            dangerouslySetInnerHTML={{ __html: eventsData?.description }}
+          />
+            {/* <ul>
               {eventsData?.tags
                 ?.flatMap((tag) => tag.split(",")) 
                 .map((individualTag, index) => (
                   <li key={index}>{individualTag.trim()}</li> 
                 ))}
-            </ul>
+            </ul> */}
           </div>
         </div>
       </Modal>
