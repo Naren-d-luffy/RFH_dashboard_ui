@@ -1,22 +1,15 @@
-import React, { useState } from "react";
-import { GoPlus } from "react-icons/go";
+import React from "react";
 import Acidity from "../../../Assets/Images/Acidity.png";
 import Jaundice from "../../../Assets/Images/Jaundice.png";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import AddReadingMaterials from "./AddReadingMaterials";
-import { IoEllipsisVerticalSharp } from "react-icons/io5";
 import {  Dropdown, Menu } from "antd";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import image1 from "../../../Assets/Images/comingsoon.png"
 const EducationCategoriesReadingMaterials = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const showModal = () => setIsModalOpen(true);
-  const handleCancel = () => setIsModalOpen(false);
 
   const imageData = [
     {

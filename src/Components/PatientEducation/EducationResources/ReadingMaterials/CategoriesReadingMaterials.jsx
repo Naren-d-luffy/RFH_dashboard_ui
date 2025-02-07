@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AddReadingMaterials from "./AddReadingMaterials";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, message } from "antd";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
@@ -111,6 +111,8 @@ const CategoriesReadingMaterials = () => {
           }
         } catch (error) {
           console.error("Error deleting readingmaterial:", error);
+          message.error("Error deleting readingmaterial",error);
+
         }
       },
     });

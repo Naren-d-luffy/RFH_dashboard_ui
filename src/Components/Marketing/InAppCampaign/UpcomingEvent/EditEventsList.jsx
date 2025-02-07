@@ -78,7 +78,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   }, [open, eventsData]);
 
   const handleUpdate = async () => {
-    if (!title.trim() || !description.trim() || !uploadedImage ) {
+    if (!title.trim() || !description.trim()  ) {
       message.error("Please fill in all required fields.");
       return;
     }

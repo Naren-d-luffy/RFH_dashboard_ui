@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Table, message} from "antd";
+import { Table, message } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
-  
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -12,13 +11,14 @@ import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
-import { deleteFeature, setFeature } from "../../../../Features/FeatureSlice";
 import { useNavigate } from "react-router-dom";
 import ViewLatestCamp from "./ViewLatestCamp";
 import EditCamps from "./EditCamp";
 import AddLatestCamps from "./AddLatestCamp";
+import { deleteCamp, setCamps } from "../../../../Features/CampSlice";
 
 const ViewAllCampTable = () => {
+  const CapmpsData = useSelector((state) => state.camps.camps);
   const [modals, setModals] = useState({
     addCamp: false,
     editCamp: false,
@@ -29,7 +29,6 @@ const ViewAllCampTable = () => {
   const [selectedCamp, setSelectedCamp] = useState(null);
   const [totalRows, setTotalRows] = useState(0);
   const [searchText, setSearchText] = useState("");
-  const FeaturesData = useSelector((state) => state.features.features);
   const dispatch = useDispatch();
   const itemsPerPage = 10;
   const navigate = useNavigate();
@@ -56,24 +55,27 @@ const ViewAllCampTable = () => {
     return `${day}/${month}/${year}`;
   };
 
-  const fetchFeatureInfo = useCallback(async (page = 1) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get(`/camp`, {
-        params: { page, limit: itemsPerPage }
-      });
-      setTotalRows(response.data?.data?.length || 0);
-      dispatch(setFeature(response.data.data));
-    } catch (error) {
-      console.error("Error fetching events:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [dispatch, itemsPerPage]);
+  const fetchFeatureInfo = useCallback(
+    async (page = 1) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/camp`, {
+          params: { page, limit: itemsPerPage },
+        });
+        setTotalRows(response.data?.data?.length || 0);
+        dispatch(setCamps(response?.data?.data));
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch, itemsPerPage]
+  );
 
   useEffect(() => {
     fetchFeatureInfo(currentPage);
-  }, [currentPage,fetchFeatureInfo]);
+  }, [currentPage, fetchFeatureInfo]);
 
   const handleDeleteFeature = (_id) => {
     showDeleteMessage({
@@ -83,11 +85,10 @@ const ViewAllCampTable = () => {
           const response = await Instance.delete(`/camp/${_id}`);
           if (response.status === 200) {
             showSuccessMessage("Deleted successfully", "Details deleted");
-            dispatch(deleteFeature(_id));
-            console.log(response);
+            dispatch(deleteCamp(_id));
           }
         } catch (error) {
-          message.error("Error deleting feature",error);
+          message.error("Error deleting feature", error);
           console.error("Error deleting feature:", error);
         }
       },
@@ -95,13 +96,13 @@ const ViewAllCampTable = () => {
   };
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return Object.values(FeaturesData);
-    return Object.values(FeaturesData).filter((camp) =>
+    if (searchText.trim() === "") return Object.values(CapmpsData);
+    return Object.values(CapmpsData).filter((camp) =>
       `${camp.campName} ${camp.hospitalName} ${camp.location} ${camp.pinCode} ${camp.date} ${camp.time}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
-  }, [searchText, FeaturesData]);
+  }, [searchText, CapmpsData]);
 
   const columns = [
     {
@@ -172,7 +173,7 @@ const ViewAllCampTable = () => {
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : Object.values(FeaturesData).length > 0 ? (
+      ) : Object.values(CapmpsData).length > 0 ? (
         <>
           <div className="d-flex user-engagement-header justify-content-between align-items-center">
             <h3>Latest Camps</h3>

@@ -32,6 +32,7 @@ export const LatestCampsList = () => {
   const [selectedCamp, setSelectedCamp] = useState([]);
   const dispatch = useDispatch();
   const camps = useSelector((state) => state.camps.camps);
+console.log("camps",camps);
 
   const handleCancelEditModal = () => {
     setSelectedCamp(null);
@@ -88,9 +89,9 @@ export const LatestCampsList = () => {
   const fetchCampList = useCallback(async () => {
     try {
       const response = await Instance.get(`/camp`);
-      // console.log("camps",response)
+      console.log("camps",response)
       if (response.status === 200 || response.status === 201) {
-        dispatch(setCamps(response.data.data));
+        dispatch(setCamps(response?.data?.data));
       }
     } catch (error) {
       console.error("Error fetching camp:", error);

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, message } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -58,6 +58,8 @@ export const ConditionWeTreatList = () => {
           }
         } catch (error) {
           console.error("Error deleting condition we treat:", error);
+          message.error("Error deleting condition we treat",error);
+
         }
       },
     });
