@@ -8,7 +8,7 @@ import {
   Col,
   Row,
   Upload,
-  Radio,
+  Radio,Switch
 } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
@@ -33,7 +33,7 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-
+const [isActive,setIsActive]=useState(true)
   useEffect(() => {
     if (open && EventData) {
       setClinicName(EventData.name || "");
@@ -46,6 +46,7 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
       setTiming(EventData.timing || "");
       setClinicType(EventData.type || "outstation");
       setUploadedImage(EventData.image || null);
+      setIsActive(EventData?.isActive)
     }
   }, [open, EventData]);
 
@@ -86,7 +87,7 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
       formData.append("about", description);
       formData.append("timing", timing);
       formData.append("type", clinicType);
-
+      formData.append("isActive",isActive);
       if (uploadedImage) {
         formData.append("image", uploadedImage);
       }
@@ -222,7 +223,7 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
             </span>
           </Form.Item>
           <Row gutter={24}>
-            <Col span={12}>
+            <Col span={8}>
               <Form.Item>
                 <Input
                   value={timing}
@@ -231,11 +232,11 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
                   required
                 />
                 <span className="create-campaign-input-span">
-                  <span style={{ color: "red" }}>*</span>Timing
+                  <span style={{ color: "red" }}>*</span> Timing
                 </span>
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={10}>
               <Form.Item
                 label={
                   <span>
@@ -243,14 +244,33 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
                   </span>
                 }
               >
-                <Radio.Group
-                  onChange={(e) => setClinicType(e.target.value)}
-                  value={clinicType}
-                >
-                  <Radio value="outstation">Outstation</Radio>
-                  <Radio value="speciality">Speciality</Radio>
-                </Radio.Group>
+                <div className="radio-group-container">
+                  <Radio.Group
+                    onChange={(e) => setClinicType(e.target.value)}
+                    value={clinicType}
+                  >
+                    <Radio value="outstation">Outstation</Radio>
+                    <Radio value="speciality">Speciality</Radio>
+                  </Radio.Group>
+                </div>
               </Form.Item>
+            </Col>
+            <Col span={6}>
+            
+              <div
+                className="mt-3"
+                style={{ display: "flex", gap: "20px", alignItems: "center" }}
+              >
+                <div>
+                  <span>Active &nbsp;</span>
+                  <Switch
+                    className="gastro-switch-button"
+                    checked={isActive}
+                    onChange={(checked) => setIsActive(checked)}
+                  />
+                </div>
+              </div>
+            
             </Col>
           </Row>
           <Form.Item>
