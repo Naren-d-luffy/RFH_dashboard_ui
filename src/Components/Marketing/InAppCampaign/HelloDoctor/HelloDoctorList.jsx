@@ -140,7 +140,7 @@ export const HelloDoctorList = () => {
           <h4>{video.title}</h4>
 
           <p style={{ color: "var(--black-color)", fontSize: "13px" }}>
-            {`${video.likes} Likes | ${formatDate(video.createdAt)}`}
+            {`${formatDate(video.createdAt)}`}
           </p>
         </div>
       </div>
@@ -152,7 +152,7 @@ export const HelloDoctorList = () => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", zIndex: "1000" }}
+        style={{ ...style, display: "block", zIndex: "100" }}
         onClick={onClick}
       >
         &#8592;
@@ -165,7 +165,7 @@ export const HelloDoctorList = () => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", zIndex: "1000" }}
+        style={{ ...style, display: "block", zIndex: "100" }}
         onClick={onClick}
       >
         &#8594;

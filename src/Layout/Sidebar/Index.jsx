@@ -385,7 +385,7 @@ const handleLogout = () => {
           <img src={isDarkMode ? darkLogo : lightLogo}
               alt="Logo"
               className="sidebar-logo"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/user-dashboards/user-aquisition")}
             />
             <button
               className="close-btn menu-close-button-response"

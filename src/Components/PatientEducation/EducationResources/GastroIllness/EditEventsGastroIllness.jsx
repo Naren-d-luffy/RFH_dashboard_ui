@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, Input, Upload, message, Select } from "antd";
+import { Button, Modal, Form, Input, Upload, message, Select ,Switch} from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -28,6 +28,8 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+    const [service, setService] = useState(false);
+    const [conditions, setConditions] = useState(false);
   const dispatch = useDispatch();
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
@@ -46,6 +48,9 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
       setContent(EventData.content || "");
       setUploadedImage(EventData.headerImage || null);
       setType(EventData.type || "");
+      setService(EventData.service)
+      setConditions(EventData.condition)
+
       // setThumbnailImage(EventData.thumbnail || null);
     }
   }, [open, EventData]);
@@ -64,7 +69,8 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
       formData.append("headerImage", uploadedImage);
       // formData.append("thumbnail", thumbnailImage);
       formData.append("type", type); // Include type
-
+      formData.append("service", service);
+      formData.append("condition", conditions);
       const response = await Instance.put(`/gastro/${EventData._id}`, formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
@@ -137,26 +143,52 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
             />
             <span className="create-campaign-input-span">Description</span>
           </Form.Item>
-          <Form.Item>
-            <Select
-              placeholder="Select Type"
-              value={type || undefined}
-              onChange={(value) => setType(value)}
-            >
-             <Select.Option value="Overview of Digestive System">
-                Overview of Digestive System
-              </Select.Option>
-              <Select.Option value="Common Diseases">
-                Common Diseases
-              </Select.Option>
-<Select.Option value="Common Symptoms">
-                Common Symptoms
-              </Select.Option>
-            </Select>
-            <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Type
-            </span>
-          </Form.Item>
+          <div className="row">
+            <div className="col-lg-5">
+              <Form.Item>
+                <Select
+                  placeholder="Select Type"
+                  value={type || undefined}
+                  onChange={(value) => setType(value)}
+                >
+                  <Select.Option value="Overview of Digestive System">
+                    Overview of Digestive System
+                  </Select.Option>
+                  <Select.Option value="Common Diseases">
+                    Common Diseases
+                  </Select.Option>
+                  <Select.Option value="Common Symptoms">
+                    Common Symptoms
+                  </Select.Option>
+                </Select>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Type
+                </span>
+              </Form.Item>
+            </div>
+            <div className="col-lg-7">
+              <div className="mt-2"
+                style={{ display: "flex", gap: "10px", alignItems: "center" }}
+              >
+                <div>
+                  <span>Department Services </span>
+                  <Switch
+                  className="gastro-switch-button"
+                    checked={service}
+                    onChange={(checked) => setService(checked)}
+                  />
+                </div>
+                <div>
+                  <span>Conditions we Treat </span>
+                  <Switch
+                  className="gastro-switch-button"
+                    checked={conditions}
+                    onChange={(checked) => setConditions(checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="row">
             <div className="col-lg-12">
               <Form.Item>
