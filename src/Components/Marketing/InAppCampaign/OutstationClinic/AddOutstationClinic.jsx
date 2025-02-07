@@ -8,7 +8,7 @@ import {
   Col,
   Row,
   Upload,
-  Radio,
+  Radio,Switch
 } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
@@ -33,7 +33,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
   const [address, setAddress] = useState("");
   const [clinicType, setClinicType] = useState("");
   const dispatch = useDispatch();
-
+const[isActive,setIsActive]=useState(true)
   useEffect(() => {
     if (!open) {
       setClinicName("");
@@ -85,7 +85,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
       formData.append("about", description);
       formData.append("timing", timing);
       formData.append("type", clinicType);
-
+formData.append("isActive",isActive)
       if (uploadedImage) {
         formData.append("image", uploadedImage);
       }
@@ -219,7 +219,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
             </span>
           </Form.Item>
           <Row gutter={24}>
-            <Col span={12}>
+            <Col span={8}>
               <Form.Item>
                 <Input
                   value={timing}
@@ -232,7 +232,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                 </span>
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={10}>
               <Form.Item
                 label={
                   <span>
@@ -250,6 +250,23 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                   </Radio.Group>
                 </div>
               </Form.Item>
+            </Col>
+            <Col span={6}>
+            
+              <div
+                className="mt-3"
+                style={{ display: "flex", gap: "20px", alignItems: "center" }}
+              >
+                <div>
+                  <span>Active &nbsp;</span>
+                  <Switch
+                    className="gastro-switch-button"
+                    checked={isActive}
+                    onChange={(checked) => setIsActive(checked)}
+                  />
+                </div>
+              </div>
+            
             </Col>
           </Row>
           <Form.Item>

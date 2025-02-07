@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, message } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -60,6 +60,7 @@ export const FacilityList = () => {
           }
         } catch (error) {
           console.error("Error deleting facility:", error);
+          message.error("Error deleting facility", error);
         }
       },
     });
@@ -86,13 +87,14 @@ export const FacilityList = () => {
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
-      
+
       <Menu.Item
         key="delete"
         className="filter-menu-item"
         onClick={(e) => {
           e.domEvent.stopPropagation();
-          handleDeleteClick(facility._id)}}
+          handleDeleteClick(facility._id);
+        }}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}

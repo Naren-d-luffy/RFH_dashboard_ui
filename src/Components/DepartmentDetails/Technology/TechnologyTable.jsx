@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Table } from "antd";
+import { Table, message } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png";
@@ -68,31 +68,33 @@ const TechnologyTable = () => {
           }
         } catch (error) {
           console.error("Error deleting technology:", error);
+          message.error("Error deleting technology", error);
         }
       },
     });
   };
 
-  const fetchTechnologyList = useCallback( async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get(`/depcat/technology`, {
-        params: { page, limit: itemsPerPage },
-      });
-      dispatch(setTechnology(response.data));
-      setTotalRows(response.data.total || 0);
-    } catch (error) {
-      console.error("Error fetching technology list:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  },
-  [dispatch]
-);
+  const fetchTechnologyList = useCallback(
+    async (page) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/depcat/technology`, {
+          params: { page, limit: itemsPerPage },
+        });
+        dispatch(setTechnology(response.data));
+        setTotalRows(response.data.total || 0);
+      } catch (error) {
+        console.error("Error fetching technology list:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     fetchTechnologyList(currentPage);
-  }, [currentPage,fetchTechnologyList]);
+  }, [currentPage, fetchTechnologyList]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return technologyList;
@@ -109,8 +111,7 @@ const TechnologyTable = () => {
       dataIndex: "heading",
       className: "campaign-performance-table-column",
       render: (text) => truncateText(text),
-      sorter:(a,b)=>a.heading.localeCompare(b.heading)
-
+      sorter: (a, b) => a.heading.localeCompare(b.heading),
     },
     {
       title: "Sub Heading",
@@ -201,7 +202,7 @@ const TechnologyTable = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add  Technology
+                Add Technology
               </button>
             </div>
           </div>

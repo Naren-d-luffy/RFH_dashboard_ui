@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Table } from "antd";
+import { Table, message } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
@@ -77,7 +77,9 @@ const GastroIllnessTable = () => {
             dispatch(deleteGastroIllness(_id));
           }
         } catch (error) {
-          console.error("Error deleting event:", error);
+          console.error("Error deleting overview:", error);
+          message.error("Error deleting overview",error);
+
         }
       },
     });
@@ -89,12 +91,11 @@ const GastroIllnessTable = () => {
       const response = await Instance.get(`/gastro`, {
         params: { page, limit: itemsPerPage },
       });
-      console.log("df",response)
       dispatch(setGastroIllness(response?.data?.data?.gastros));
       setGastroIllness(response.data?.gastros || []);
       setTotalRows(response.data?.data?.totalGastros || 0);
     } catch (error) {
-      console.error("Error fetching treatments:", error);
+      console.error("Error fetching overview:", error);
     } finally {
       setIsLoading(false);
     }

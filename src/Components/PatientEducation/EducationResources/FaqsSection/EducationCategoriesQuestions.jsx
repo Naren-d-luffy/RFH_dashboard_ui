@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { IoEllipsisVerticalSharp } from "react-icons/io5";
 import { HiOutlinePlus, HiMinus } from "react-icons/hi";
 import { GoPlus } from "react-icons/go";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, message } from "antd";
 import AddAskedQuestions from "./AddAskedQuestions";
 import { deleteFaqs, setFaqs } from "../../../../Features/FaqsSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,6 +56,8 @@ const EducationCategoriesQuestions = () => {
           }
         } catch (error) {
           console.error("Error deleting faqs list:", error);
+          message.error("Error deleting faqs list",error);
+
         }
       },
     });

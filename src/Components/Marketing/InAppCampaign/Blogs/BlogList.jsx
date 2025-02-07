@@ -83,7 +83,6 @@ const BlogsList = () => {
       const response = await Instance.get("/discover/blog", {
         params: { page, limit: itemsPerPage },
       });
-      console.log("Blogs", response);
       dispatch(setBlogs(response.data || []));
       setIsLoading(false);
     } catch (error) {

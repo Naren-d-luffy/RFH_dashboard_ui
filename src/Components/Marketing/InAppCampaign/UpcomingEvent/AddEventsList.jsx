@@ -1,6 +1,15 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, message, Upload, Switch, DatePicker,
-  TimePicker } from "antd";
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  message,
+  Upload,
+  Switch,
+  DatePicker,
+  TimePicker,
+} from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import {
   showErrorMessage,
@@ -13,6 +22,8 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import Loader from "../../../../Loader";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import moment from "moment";
+
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -30,11 +41,10 @@ const AddEventsList = ({ open, handleCancel }) => {
   const [isActive, setIsActive] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [date, setDate] = useState("");
-  const [time,setTime]=useState("")
+  const [time, setTime] = useState("");
   const [uploadedImage, setUploadedImage] = useState(null);
 
   const dispatch = useDispatch();
-
 
   const handleUpload = (file) => {
     const isImage = file.type.startsWith("image/");
@@ -64,13 +74,23 @@ const AddEventsList = ({ open, handleCancel }) => {
     const formData = new FormData();
     formData.append("title", title.trim());
     formData.append("description", description.trim());
-    formData.append("active", isActive);
+    formData.append("isActive", isActive);
+    formData.append("date", date);
+    formData.append("time", time);
+
     formData.append("image", uploadedImage);
+
+    // console.log("Form Data being sent:");
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0], pair[1]);
+    // }
+
+    // return;
     setIsLoading(true);
 
     try {
       const response = await Instance.post("/discover/card", formData);
-
+      console.log(response, "event");
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
 
@@ -78,10 +98,9 @@ const AddEventsList = ({ open, handleCancel }) => {
         showSuccessMessage("Event card added successfully!");
         setTitle("");
         setDescription("");
-        // setLink("");
-        // setOrder("");
+        setTime("");
         setIsActive(true);
-        // setFeatures([]);
+        setDate("");
         setUploadedImage(null);
       }
     } catch (error) {
@@ -198,51 +217,51 @@ const AddEventsList = ({ open, handleCancel }) => {
               <span style={{ color: "red" }}>*</span> Image
             </span>
           </Form.Item>
-         
+
           <div className="row">
-          
-          <div className="col-md-4 mt-2">
-            <Form.Item>
-              <DatePicker
-                className="settings-input w-100"
-                placeholder="Select Date"
-                format="DD-MM-YYYY"
-                value={date}
-                
-              />
-              <span className="create-campaign-input-span">
-                <span style={{ color: "red" }}>*</span> Event Date
-              </span>
-            </Form.Item>
-          </div>
-          <div className="col-md-4 mt-2">
-            <Form.Item>
-              <TimePicker
-                className="settings-input w-100"
-                placeholder="Select Time"
-                format="HH:mm"
-                value={time}
-              />
-              <span className="create-campaign-input-span">
-                <span style={{ color: "red" }}>*</span> Event Time
-              </span>
-            </Form.Item>
-          </div>
-          <div className="col-lg-4 mb-5">
-            <div
-              className="mt-2"
-              style={{ display: "flex", gap: "10px", alignItems: "center" }}
-            >
-              <div>
-                <span>Active </span>
-                <Switch
-                  className="gastro-switch-button"
-                  checked={isActive}
-                  onChange={(checked) => setIsActive(checked)}
+            <div className="col-md-3 mt-2">
+              <Form.Item>
+                <DatePicker
+                  className="settings-input w-100"
+                  placeholder="Select Date"
+                  format="YYYY-MM-DD" // Ensure the correct format
+                  value={date ? moment(date, "YYYY-MM-DD") : null} // Ensure it's in correct format
+                  onChange={(date) => setDate(date ? date.format("YYYY-MM-DD") : "")}
                 />
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Event Date
+                </span>
+              </Form.Item>
+            </div>
+            <div className="col-md-3 mt-2">
+              <Form.Item>
+                <TimePicker
+                  className="settings-input w-100"
+                  placeholder="Select Time"
+                  format="HH:mm"
+                  value={time ? moment(time, "HH:mm") : null} // Convert string to Moment
+                  onChange={(time) => setTime(time ? time.format("HH:mm") : "")} // Convert Moment to string
+                />
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Event Time
+                </span>
+              </Form.Item>
+            </div>
+            <div className="col-lg-4 mb-5">
+              <div
+                className="mt-3"
+                style={{ display: "flex", gap: "20px", alignItems: "center" }}
+              >
+                <div>
+                  <span>Active &nbsp;</span>
+                  <Switch
+                    className="gastro-switch-button"
+                    checked={isActive}
+                    onChange={(checked) => setIsActive(checked)}
+                  />
+                </div>
               </div>
             </div>
-          </div>
           </div>
           <Form.Item>
             <ReactQuill
