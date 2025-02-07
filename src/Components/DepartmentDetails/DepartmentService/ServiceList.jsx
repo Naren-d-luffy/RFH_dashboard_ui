@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, message } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -61,6 +61,7 @@ const ServiceList = () => {
           }
         } catch (error) {
           console.error("Error deleting service:", error);
+          message.error(`${error?.response?.data?.message || "An unexpected error occurred"}`);
         }
       },
     });

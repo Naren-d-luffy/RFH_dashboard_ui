@@ -81,7 +81,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
       }
     } catch (error) {
       console.error(error);
-      message.error("Failed to add event.");
+      message.error("Failed to add overview.");
     } finally {
       setIsLoading(false);
     }
