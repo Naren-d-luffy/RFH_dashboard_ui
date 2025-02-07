@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, message } from "antd";
 import { GoPlus } from "react-icons/go";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
@@ -126,7 +126,9 @@ const EducationCategoriesGastroIllness = () => {
             dispatch(deleteGastroIllness(_id));
           }
         } catch (error) {
-          console.error("Error deleting event:", error);
+          console.error("Error deleting overview:", error);
+          message.error("Error deleting overview",error);
+
         }
       },
     });

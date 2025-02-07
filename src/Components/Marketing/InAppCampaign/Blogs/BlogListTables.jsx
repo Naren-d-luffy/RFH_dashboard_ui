@@ -69,9 +69,7 @@ const BlogsTable = () => {
       const response = await Instance.get("/discover/blog", {
         params: { page, limit: itemsPerPage },
       });
-      console.log("Blogs", response);
       dispatch(setBlogs(response.data || []));
-      //   setBlogList(response.data || []);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching blog list :", error);
