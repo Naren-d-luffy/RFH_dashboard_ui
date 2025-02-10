@@ -101,7 +101,6 @@ const EducationCategoriesGastroIllness = () => {
         const response = await Instance.get("/gastro", {
           params: { page, limit: itemsPerPage },
         });
-        console.log("response", response);
         dispatch(setGastroIllness(response.data.data.gastros || []));
         setIsLoading(false);
       } catch (error) {
@@ -138,7 +137,7 @@ const EducationCategoriesGastroIllness = () => {
     <div className="col-lg-4" key={event._id}>
       <div
         className="upcoming-event-card p-3"
-        style={{ position: "relative" }}
+        style={{ position: "relative", cursor: "pointer" }}
         onClick={() => handleCardClick(event)}
       >
         <div className="treatment-info-icon-container">
