@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage } from "../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../Loader";
 import { editService } from "../../../Features/ServiceSlice";
@@ -29,6 +29,7 @@ const EditService = ({ open, handleCancel, serviceData }) => {
   const dispatch = useDispatch();
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
+    if (!validateImage(file)) return false;
     setThumbnailImage(file);
   };
   const handleDeleteThumbnail = () => {

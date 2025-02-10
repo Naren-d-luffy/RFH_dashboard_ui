@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { FaTrash } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -32,10 +32,13 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
   const handleAddFeatures = () => {
     setFeatures([...features, ""]);
   };
-  const handleUpload = (info) => {
-    const file = info.file.originFileObj;
-    setUploadedImage(file);
-  };
+ const handleUpload = (info) => {
+     const file = info.file.originFileObj;
+     
+     if (!validateImage(file)) return; 
+   
+     setUploadedImage(file);
+   };
 
   const handleDeleteImage = () => {
     setUploadedImage(null);
@@ -62,7 +65,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
   }, [open, featuresData]);
 
   const handleSave = async () => {
-    if (!title || !description || features.length === 0) {
+    if (!title || !description || uploadedImage || content) {
       message.error("Please fill in all required fields.");
       return;
     }

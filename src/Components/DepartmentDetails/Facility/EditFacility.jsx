@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage } from "../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../globalConstant";
 import Loader from "../../../Loader";
 import { useDispatch } from "react-redux";
 import { editFacility } from "../../../Features/FacilitySlice";
@@ -47,6 +47,21 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
 
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
+    const isVideo = file.type.startsWith("video/");
+    const isLt50MB = file.size / 1024 / 1024 < 50;
+
+    if (!isVideo) {
+      message.destroy();
+      message.error("Only video files are allowed!");
+      return;
+    }
+
+    if (!isLt50MB) {
+      message.destroy();
+      message.error("Video size must be less than 50MB!");
+      return;
+    }
+
     setUploadedImage(file);
   };
 
@@ -56,6 +71,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
 
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
+    if (!validateImage(file)) return false;
     setThumbnailImage(file);
   };
 
@@ -68,6 +84,8 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
       !title ||
       !description ||
       !content ||
+      !uploadedImage ||
+      !thumbnailImage ||
       !videoHeading ||
       !videoSubHeading
     ) {
@@ -91,7 +109,10 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
         formData.append("thumbnail", thumbnailImage);
       }
 
-      const response = await Instance.put(`/depcat/facility/${facilityData._id}`, formData);
+      const response = await Instance.put(
+        `/depcat/facility/${facilityData._id}`,
+        formData
+      );
       if (response?.status === 200 || response?.status === 201) {
         showSuccessMessage("Facility updated successfully!");
         handleCancel();
@@ -110,7 +131,11 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Edit Department Facility</span>}
+        title={
+          <span className="create-campaign-modal-title">
+            Edit Department Facility
+          </span>
+        }
         onCancel={handleCancel}
         width={680}
         footer={[
@@ -193,8 +218,8 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
                   </div>
                 )}
                 <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Thumbnail Image
-            </span>
+                  <span style={{ color: "red" }}>*</span> Thumbnail Image
+                </span>
               </Form.Item>
             </div>
             <div className="col-lg-6">
@@ -208,7 +233,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
                   </p>
-                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
+                  <IoCloudUploadOutline className="image-upload-icon" />{" "}
                   <span style={{ color: "#727880" }}>Upload Video</span>
                 </Upload>
                 {uploadedImage && (
@@ -235,8 +260,8 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
                   </div>
                 )}
                 <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Upload video
-            </span>
+                  <span style={{ color: "red" }}>*</span> Upload video
+                </span>
               </Form.Item>
             </div>
           </div>
