@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage } from "../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../Loader";
 import { addFacility } from "../../../Features/FacilitySlice";
@@ -35,8 +35,24 @@ const AddFacility = ({ open, handleCancel }) => {
 
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
+    const isVideo = file.type.startsWith("video/");
+    const isLt50MB = file.size / 1024 / 1024 < 50;
+  
+    if (!isVideo) {
+      message.destroy()
+      message.error("Only video files are allowed!");
+      return;
+    }
+  
+    if (!isLt50MB) {
+      message.destroy()
+      message.error("Video size must be less than 50MB!");
+      return;
+    }
+  
     setUploadedImage(file);
   };
+  
 
   const handleDeleteImage = () => {
     setUploadedImage(null);
@@ -44,6 +60,7 @@ const AddFacility = ({ open, handleCancel }) => {
 
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
+    if (!validateImage(file)) return false;
     setThumbnailImage(file);
   };
 

@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage } from "../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../globalConstant";
 import Loader from "../../../Loader";
 import { useDispatch } from "react-redux";
 import { editTechnology } from "../../../Features/TechnologySlice";
@@ -43,6 +43,8 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
 
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
+        if (!validateImage(file)) return false;
+    
     setThumbnailImage(file);
   };
 
@@ -51,7 +53,7 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
   };
 
   const handleUpdate = async () => {
-    if (!title || !description || !content) {
+    if (!title || !description || !content || !thumbnailImage) {
       message.error("Please fill in all required fields.");
       return;
     }

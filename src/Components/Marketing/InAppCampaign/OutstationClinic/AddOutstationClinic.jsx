@@ -8,11 +8,12 @@ import {
   Col,
   Row,
   Upload,
-  Radio,Switch
+  Radio,
+  Switch,
 } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import Loader from "../../../../Loader";
 import { addOutstationClinic } from "../../../../Features/OutstationClinicSlice";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -33,7 +34,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
   const [address, setAddress] = useState("");
   const [clinicType, setClinicType] = useState("");
   const dispatch = useDispatch();
-const[isActive,setIsActive]=useState(true)
+  const [isActive, setIsActive] = useState(true);
   useEffect(() => {
     if (!open) {
       setClinicName("");
@@ -51,6 +52,7 @@ const[isActive,setIsActive]=useState(true)
 
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
+      if (!validateImage(file)) return false;
     setUploadedImage(file);
   };
 
@@ -85,7 +87,7 @@ const[isActive,setIsActive]=useState(true)
       formData.append("about", description);
       formData.append("timing", timing);
       formData.append("type", clinicType);
-formData.append("isActive",isActive)
+      formData.append("isActive", isActive);
       if (uploadedImage) {
         formData.append("image", uploadedImage);
       }
@@ -157,6 +159,7 @@ formData.append("isActive",isActive)
                 <Input
                   value={rating}
                   onChange={(e) => setRating(e.target.value)}
+                  type="number"
                   placeholder="Enter Rating (e.g., 4.5)"
                   required
                 />
@@ -172,6 +175,7 @@ formData.append("isActive",isActive)
                   onChange={(e) => setReviews(e.target.value)}
                   placeholder="Enter Number of Reviews"
                   required
+                  type="number"
                 />
                 <span className="create-campaign-input-span">
                   <span style={{ color: "red" }}>*</span> Reviews
@@ -187,6 +191,7 @@ formData.append("isActive",isActive)
                   onChange={(e) => setPatients(e.target.value)}
                   placeholder="Enter Number of Patients"
                   required
+                  type="number"
                 />
                 <span className="create-campaign-input-span">
                   <span style={{ color: "red" }}>*</span> Patients
@@ -200,6 +205,7 @@ formData.append("isActive",isActive)
                   onChange={(e) => setExperience(e.target.value)}
                   placeholder="Enter Experience (in years)"
                   required
+                  type="number"
                 />
                 <span className="create-campaign-input-span">
                   <span style={{ color: "red" }}>*</span> Experience
@@ -252,7 +258,6 @@ formData.append("isActive",isActive)
               </Form.Item>
             </Col>
             <Col span={6}>
-            
               <div
                 className="mt-3"
                 style={{ display: "flex", gap: "20px", alignItems: "center" }}
@@ -266,7 +271,6 @@ formData.append("isActive",isActive)
                   />
                 </div>
               </div>
-            
             </Col>
           </Row>
           <Form.Item>
@@ -291,7 +295,7 @@ formData.append("isActive",isActive)
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
+                <IoCloudUploadOutline className="image-upload-icon" />{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>

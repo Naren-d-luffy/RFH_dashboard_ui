@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { FaTrash } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -34,6 +34,9 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
   };
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
+    
+    if (!validateImage(file)) return; 
+  
     setUploadedImage(file);
   };
 
@@ -56,7 +59,6 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
       !title ||
       !description ||
       !content ||
-      features.length === 0 ||
       !uploadedImage
     ) {
       message.error("Please fill in all required fields.");

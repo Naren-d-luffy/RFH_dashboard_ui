@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { addGastroIllness } from "../../../../Features/GastroIllnessSlice";
@@ -33,6 +33,8 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
   const dispatch = useDispatch();
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
+    if (!validateImage(file)) return false;
+
     setUploadedImage(file);
   };
   const [type, setType] = useState("");
@@ -41,7 +43,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
   };
 
   const handleSave = async () => {
-    if (!title || !type) {
+    if (!title || !type ||!description ||!content || !uploadedImage ) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -140,7 +142,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span"> Description</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Description</span>
           </Form.Item>
           <div className="row">
             <div className="col-lg-5">
@@ -232,7 +234,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Header Image</span>
+                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Header Image</span>
               </Form.Item>
             </div>
           </div>
@@ -246,7 +248,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content Points</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Content Points</span>
           </Form.Item>
         </Form>
       </Modal>

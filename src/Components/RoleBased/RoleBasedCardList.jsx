@@ -21,6 +21,7 @@ const RoleBasedCardList = () => {
       setIsLoading(true);
       try {
         const response = await Instance.get(`/admin/allUser`);
+        console.log(response)
         dispatch(setRoleAccess(response.data));
       } catch (error) {
         console.error("Error fetching user roles:", error);
@@ -41,7 +42,7 @@ const RoleBasedCardList = () => {
         { status: newStatus }, 
         { headers: { "Content-Type": "application/json" } }
       );
-  
+  console.log("response",response)
       if (response.status === 200) {
         showSuccessMessage("Status Updated!", `User status changed to ${newStatus}.`);
         dispatch(setRoleAccess(roleaccessData.map(user => 

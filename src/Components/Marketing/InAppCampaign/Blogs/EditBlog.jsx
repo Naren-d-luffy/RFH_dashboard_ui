@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { editBlog } from "../../../../Features/BlogSlice";
@@ -41,6 +41,7 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
 
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
+    if (!validateImage(file)) return false;
     setUploadedImage(file);
   };
 
@@ -49,6 +50,7 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
   };
   const handleUpload1 = (info) => {
     const file = info.file.originFileObj;
+    if (!validateImage(file)) return false;
     setThumbnailImage(file);
   };
 
