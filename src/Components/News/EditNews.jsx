@@ -25,13 +25,13 @@ const modules = {
   ],
 };
 
-const { TextArea } = Input;
+// const { TextArea } = Input;
 
 const EditNews = ({ open, handleCancel, newsData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [heading, setHeading] = useState("");
   const [subheading, setSubheading] = useState("");
-  const [about, setAbout] = useState("");
+  // const [about, setAbout] = useState("");
   const [content, setContent] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +41,7 @@ const EditNews = ({ open, handleCancel, newsData }) => {
     setUploadedImage(file);
   };
   const [type, setType] = useState(""); 
-  const [videoURL, setVideoURL] = useState("");
+  // const [videoURL, setVideoURL] = useState("");
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
