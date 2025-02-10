@@ -8,6 +8,7 @@ import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
 import Loader from "../../../Loader";
 import { useSelector,useDispatch } from "react-redux";
 import { deleteTerm, setTerms } from "../../../Features/TermsSlice";
+import { message } from "antd";
 export const TermsAndConditionsList = () => {
   const [, setTermsList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -26,6 +27,8 @@ export const TermsAndConditionsList = () => {
       setLoading(true);
       try {
         const response = await Instance.get("/terms");
+        console.log("response",response);
+        
         dispatch(setTerms(response.data))
         setTermsList(response.data);
         setError(null);
@@ -40,26 +43,48 @@ export const TermsAndConditionsList = () => {
     fetchTerms();
   }, [dispatch]);
 
-  const handleDeleteClause = (clauseId) => {
+  // const handleDeleteClause = (clauseId) => {
+  //   showDeleteMessage({
+  //     message: "",
+  //     onDelete: async () => {
+  //       try {
+  //         setLoading(true);
+  //         const response = await Instance.delete(`/terms/${clauseId}`);
+  //         if (response.status === 201 || response.status) {
+  //           dispatch(deleteTerm(clauseId))
+  //           showSuccessMessage("Terms and conditions deleted successfully.");
+  //         }
+  //       } catch (err) {
+  //         setError("Failed to delete clause. Please try again later.");
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     },
+  //   });
+  // };
+  const handleDeleteClause = (_id) => {
     showDeleteMessage({
-      message: "",
+      message: "Are you sure you want to delete this clause?",
       onDelete: async () => {
         try {
           setLoading(true);
-          const response = await Instance.delete(`/terms/${clauseId}`);
-          if (response.status === 201 || response.status) {
-            dispatch(deleteTerm(clauseId))
+          const response = await Instance.delete(`/terms/${_id}`);
+          if (response.status === 200 || response.status === 204) {
+            dispatch(deleteTerm(_id)); 
             showSuccessMessage("Terms and conditions deleted successfully.");
           }
         } catch (err) {
-          setError("Failed to delete clause. Please try again later.");
+          console.error("Error deleting clause:", err);
+          const errorMessage = err.response?.data?.error || "Failed to delete clause. Please try again later.";
+          showSuccessMessage(errorMessage);
+          message.error(errorMessage);
         } finally {
           setLoading(false);
         }
       },
     });
   };
-
+  
   if (loading) {
     return <Loader />;
   }

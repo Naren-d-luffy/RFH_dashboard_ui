@@ -63,7 +63,7 @@ const EditService = ({ open, handleCancel, serviceData }) => {
       }
     } catch (error) {
       console.error(error);
-      message.error("Failed to add Service.");
+      message.error("Failed to Update Service.");
     } finally {
       setIsLoading(false);
     }
