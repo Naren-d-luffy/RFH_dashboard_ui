@@ -50,11 +50,11 @@ console.log("newsXDTa",newsData)
     if (newsData) {
       setHeading(newsData.heading || "");
       setSubheading(newsData.subheading || "");
-      setAbout(newsData.about || "");
+      // setAbout(newsData.about || "");
       setContent(DOMPurify.sanitize(newsData.content || ""));
       setBackgroundColor(newsData.backgroundColor || "#1677ff");
       setUploadedImage(newsData.image || null);
-      setVideoURL(newsData.video_URL||"");
+      // setVideoURL(newsData.video_URL||"");
       setType(newsData.type||"");
 
     }
@@ -75,11 +75,11 @@ console.log("newsXDTa",newsData)
       const formData = new FormData();
       formData.append("heading", heading);
       formData.append("subheading", subheading);
-      formData.append("about", about);
+      // formData.append("about", about);
       formData.append("content", content);
       formData.append("backgroundColor", backgroundColor);
       formData.append("type", type); 
-      formData.append("video_URL", videoURL); 
+      // formData.append("video_URL", videoURL); 
       if (uploadedImage) {
         formData.append("image", uploadedImage);
       }
@@ -222,7 +222,7 @@ console.log("newsXDTa",newsData)
               </Form.Item>
             </div>
           </div>
-
+{/* 
           <Form.Item>
             <Input
               className="settings-input"
@@ -232,8 +232,8 @@ console.log("newsXDTa",newsData)
               onChange={(e) => setVideoURL(e.target.value)} 
             />
             <span className="create-campaign-input-span">Video URL</span>
-          </Form.Item>
-          <Form.Item>
+          </Form.Item> */}
+          {/* <Form.Item>
             <TextArea
               value={about}
               onChange={(e) => setAbout(e.target.value)}
@@ -243,7 +243,7 @@ console.log("newsXDTa",newsData)
             <span className="create-campaign-input-span">
                About
             </span>{" "}
-          </Form.Item>
+          </Form.Item> */}
           <div className="col-lg-6">
             <Form.Item>
               <ColorPicker
