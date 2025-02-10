@@ -26,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../../../../Loader";
 
 const OutstationClinicList = () => {
-  const[ isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -69,7 +69,7 @@ const OutstationClinicList = () => {
       setIsLoading(false);
     }
   }, [dispatch, itemsPerPage]);
-  
+
   useEffect(() => {
     fetchOutstationClinic();
   }, [fetchOutstationClinic]);
@@ -167,7 +167,7 @@ const OutstationClinicList = () => {
           </div>
           <p>{clinic.patients} Patients Treated</p>
           <span>{truncateText(clinic.about, 8)}</span>
-          <div className="d-flex justify-content-between">
+          <div className="">
             <p>
               <CiCalendarDate />{" "}
               {new Date(clinic.createdAt).toLocaleDateString()}
@@ -177,7 +177,8 @@ const OutstationClinicList = () => {
             </p>
           </div>
           <span>
-            <CiLocationOn /> {clinic.location}
+            <CiLocationOn />
+            {truncateText(clinic.location, 5)}
           </span>
         </div>
       </div>
@@ -232,47 +233,47 @@ const OutstationClinicList = () => {
 
   return (
     <>
-    {isLoading && <Loader/>}
-    <div className="container mt-4">
-      <div className="marketing-categories-section">
-        <div className="row mt-4">
-          <div className="events-header-container">
-            <h6>Outstation/Speciality Clinic</h6>
-            <div className="events-buttons">
-              <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} /> Add Clinic
-              </button>
-              <button
-                className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-outstation-clinic")}
-              >
-                View all
-              </button>
+      {isLoading && <Loader />}
+      <div className="container mt-4">
+        <div className="marketing-categories-section">
+          <div className="row mt-4">
+            <div className="events-header-container">
+              <h6>Outstation/Speciality Clinic</h6>
+              <div className="events-buttons">
+                <button className="rfh-basic-button" onClick={showModal}>
+                  <GoPlus size={20} /> Add Clinic
+                </button>
+                <button
+                  className="rfh-view-all-button"
+                  onClick={() => navigate("/view-all-outstation-clinic")}
+                >
+                  View all
+                </button>
+              </div>
+            </div>
+            <div className="mt-3">
+              <Slider {...sliderSettings} key={clinics?.length}>
+                {clinics && clinics.length > 0 ? (
+                  clinics.map((clinic) => renderClinicCard(clinic))
+                ) : (
+                  <p>No data available</p>
+                )}
+              </Slider>
             </div>
           </div>
-          <div className="mt-3">
-            <Slider {...sliderSettings} key={clinics?.length}>
-              {clinics && clinics.length > 0 ? (
-                clinics.map((clinic) => renderClinicCard(clinic))
-              ) : (
-                <p>No data available</p>
-              )}
-            </Slider>
-          </div>
         </div>
+        <AddOutstationClinic open={isModalOpen} handleCancel={handleCancel} />
+        <EditOutstationClinic
+          open={isEditModalOpen}
+          handleCancel={handleEditCancel}
+          EventData={selectedEvent}
+        />
+        <ViewOutstationClinic
+          open={isViewModalOpen}
+          handleCancel={handleViewCancel}
+          EventData={selectedEvent}
+        />
       </div>
-      <AddOutstationClinic open={isModalOpen} handleCancel={handleCancel} />
-      <EditOutstationClinic
-        open={isEditModalOpen}
-        handleCancel={handleEditCancel}
-        EventData={selectedEvent}
-      />
-      <ViewOutstationClinic
-        open={isViewModalOpen}
-        handleCancel={handleViewCancel}
-        EventData={selectedEvent}
-      />
-    </div>
     </>
   );
 };

@@ -5,7 +5,6 @@ import { Instance } from "../../../../AxiosConfig";
 import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { editEvent } from "../../../../Features/DiscoverEventsCard";
-import { FaTrash } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import Loader from "../../../../Loader";
@@ -13,7 +12,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import moment from "moment";
 
-const { TextArea } = Input;
+// const { TextArea } = Input;
 // const { Option } = Select;
 
 const EditEventsList = ({ open, handleCancel, eventsData }) => {
@@ -23,7 +22,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   const [description, setDescription] = useState("");
   const [isActive, setIsActive] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [features, setFeatures] = useState([]);
+  const [, setFeatures] = useState([]);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");

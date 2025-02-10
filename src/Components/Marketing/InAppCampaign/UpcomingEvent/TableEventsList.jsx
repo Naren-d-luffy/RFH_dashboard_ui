@@ -17,6 +17,7 @@ import EditEventsList from "./EditEventsList";
 import ViewEventList from "./ViewEventList";
 import { deleteEvent, setEvent } from "../../../../Features/DiscoverEventsCard";
 import { useNavigate } from "react-router-dom";
+import DOMPurify from "dompurify";
 
 const TableEventsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,7 +28,7 @@ const TableEventsList = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const navigate = useNavigate();
 
-  const eventsData = useSelector((state) => state.discoverevent.events);  
+  const eventsData = useSelector((state) => state.discoverevent.events);    
   const [searchText, setSearchText] = useState("");
   const [totalRows] = useState(0);
   const dispatch = useDispatch();
@@ -53,7 +54,9 @@ const TableEventsList = () => {
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
   };
-
+  const sanitizeContent = (content) => {
+    return DOMPurify.sanitize(content);
+  };
   const handleDeleteEvent = (_id) => {
     showDeleteMessage({
       message: "",
@@ -99,7 +102,7 @@ const TableEventsList = () => {
       }));
     return Object.values(eventsData)
       .filter((event) =>
-        `${event.title} ${event.description}`
+        `${event.title} ${event.description} ${event.isActive}`
           .toLowerCase()
           .includes(searchText.toLowerCase())
       )
@@ -113,17 +116,29 @@ const TableEventsList = () => {
       key: "title",
       sorter: (a, b) => a.title.localeCompare(b.title),
     },
+    // {
+    //   title: "Description",
+    //   dataIndex: "description",
+    //   key: "description",
+    //   render: (text) => truncateText(text),
+    // },
     {
       title: "Description",
       dataIndex: "description",
       key: "description",
-      render: (text) => truncateText(text),
-    },
+      render: (text) => (
+        <span
+          dangerouslySetInnerHTML={{
+            __html: sanitizeContent(truncateText(text, 15)),
+          }}
+        ></span>
+      ),
+    },    
     {
-      title: "Tags",
-      dataIndex: "tags",
-      key: "tags",
-      sorter: (a, b) => a.order - b.order, 
+      title: "Active",
+      dataIndex: "isActive",
+      key: "isActive",
+      render: (isActive) => (isActive ? "True" : "False"),  
     },
     {
       title: "Action",
