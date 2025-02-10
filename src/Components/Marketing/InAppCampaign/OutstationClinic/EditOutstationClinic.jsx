@@ -16,7 +16,7 @@ import { editOutstationClinic } from "../../../../Features/OutstationClinicSlice
 import Loader from "../../../../Loader";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 
 const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
   const { TextArea } = Input;
@@ -50,10 +50,11 @@ const [isActive,setIsActive]=useState(true)
     }
   }, [open, EventData]);
 
-  const handleUpload = (info) => {
-    const file = info.file.originFileObj;
-    setUploadedImage(file);
-  };
+   const handleUpload = (info) => {
+     const file = info.file.originFileObj;
+       if (!validateImage(file)) return false;
+     setUploadedImage(file);
+   };
 
   const handleDeleteImage = () => {
     setUploadedImage(null);
@@ -163,6 +164,7 @@ const [isActive,setIsActive]=useState(true)
                   onChange={(e) => setRating(e.target.value)}
                   placeholder="Enter Rating (e.g., 4.5)"
                   required
+                  type="number"
                 />
                 <span className="create-campaign-input-span">
                   <span style={{ color: "red" }}>*</span> Rating
@@ -176,6 +178,7 @@ const [isActive,setIsActive]=useState(true)
                   onChange={(e) => setReviews(e.target.value)}
                   placeholder="Enter Number of Reviews"
                   required
+                  type="number"
                 />
                 <span className="create-campaign-input-span">
                   <span style={{ color: "red" }}>*</span>Reviews
@@ -191,6 +194,7 @@ const [isActive,setIsActive]=useState(true)
                   onChange={(e) => setPatients(e.target.value)}
                   placeholder="Enter Number of Patients"
                   required
+                  type="number"
                 />
                 <span className="create-campaign-input-span">
                   <span style={{ color: "red" }}>*</span> Patients
@@ -204,6 +208,7 @@ const [isActive,setIsActive]=useState(true)
                   onChange={(e) => setExperience(e.target.value)}
                   placeholder="Enter Experience (in years)"
                   required
+                  type="number"
                 />
                 <span className="create-campaign-input-span">
                   <span style={{ color: "red" }}>*</span> Experience
