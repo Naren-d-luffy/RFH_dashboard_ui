@@ -16,7 +16,7 @@ const sanitizeContent = (content) => {
 
 const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
   if (!doctor) return null;
-  console.log(doctor,"doctor")
+  console.log(doctor, "doctor");
   return (
     <Modal
       open={isOpen}
@@ -53,7 +53,7 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
                 <h6>{doctor.position}</h6>
               </div>
             </div>
-            <hr style={{color:"var(--black-color)"}} />
+            <hr style={{ color: "var(--black-color)" }} />
 
             {/* Qualifications */}
             <div className="mt-8">
@@ -77,29 +77,27 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
               <h3 className="mt-3">Contact Details</h3>
               <p>{doctor.contactDetails}</p>
             </div>
-            <hr style={{color:"var(--black-color)"}} />
+            <hr style={{ color: "var(--black-color)" }} />
             <div className="news-content">
               <h6>About</h6>
-
-              {/* <p>{doctor.about} </p> */}
               <p
-              className="news-content"
+                className="news-content"
                 dangerouslySetInnerHTML={{
-                  __html: sanitizeContent(doctor.about),
+                  __html: sanitizeContent(doctor.about)?.replace(
+                    /<img/g,
+                    '<img style="max-width: 100%; max-height: 150px; height: auto; object-fit: cover;"'
+                  ),
                 }}
               ></p>
             </div>
             {/* Main Content */}
             <div className="mt-8">
-
               {/* Areas of Expertise */}
               <div className="mt-4 news-content">
                 <h6>Areas of Expertise</h6>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {doctor.AreasOfExpertise.map((area, index) => (
-
                     <Tag key={index} className="most-user-success-tag p-2 mt-2">
-
                       {area}
                     </Tag>
                   ))}
@@ -107,12 +105,17 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
               </div>
 
               {/* Fellowships */}
-              {doctor.fellowships?.filter((fellowship) => fellowship).length > 0 && (
+              {doctor.fellowships?.filter((fellowship) => fellowship).length >
+                0 && (
                 <div className="mt-4 news-content">
                   <h6>Fellowships</h6>
                   <div className="d-flex flex-column flex-wrap gap-2 mt-2">
                     {doctor.fellowships.map((fellowship, index) => (
-                      <Tag key={index} className="most-user-success-tag p-2" style={{width:"fit-content"}}>
+                      <Tag
+                        key={index}
+                        className="most-user-success-tag p-2"
+                        style={{ width: "fit-content" }}
+                      >
                         {fellowship}
                       </Tag>
                     ))}
@@ -121,13 +124,17 @@ const DoctorDetailsModal = ({ isOpen, onClose, doctor }) => {
               )}
 
               {/* Awards */}
-             
-               {doctor.awards?.filter((award) => award).length > 0 && (
+
+              {doctor.awards?.filter((award) => award).length > 0 && (
                 <div className="mt-8 news-content">
                   <h6>Awards</h6>
                   <div className="d-flex flex-column flex-wrap gap-2">
                     {doctor.awards.map((award, index) => (
-                      <Tag key={index} className="most-user-success-tag p-2" style={{width:"fit-content"}}>
+                      <Tag
+                        key={index}
+                        className="most-user-success-tag p-2"
+                        style={{ width: "fit-content" }}
+                      >
                         {award}
                       </Tag>
                     ))}
@@ -160,13 +167,12 @@ const VirtualManagementTable = () => {
     );
   }, [searchText, doctors]);
 
-
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
         const response = await Instance.get("/doctor");
         setDoctors(response.data);
-        console.log("doctorss",response.data)
+        console.log("doctorss", response.data);
       } catch (error) {
         console.error("Error fetching doctors:", error);
       } finally {
@@ -234,7 +240,7 @@ const VirtualManagementTable = () => {
       className: "campaign-performance-table-column",
       render: (text, record, index) => index + 1,
     },
-    
+
     {
       title: "Doctor Name",
       dataIndex: "name",
@@ -336,7 +342,6 @@ const VirtualManagementTable = () => {
               />
             </div>
             <div className="d-flex gap-3 align-items-center">
-       
               <button
                 className="rfh-basic-button"
                 onClick={() => navigate(`/teleconsultation/doctor-detail`)}

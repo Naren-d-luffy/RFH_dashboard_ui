@@ -63,7 +63,12 @@ const ViewFacility = ({ open, handleCancel, facilityData }) => {
             {facilityData?.content ? (
               <div
                 className="news-content"
-                dangerouslySetInnerHTML={{ __html: facilityData.content }}
+                dangerouslySetInnerHTML={{
+                  __html: facilityData?.content?.replace(
+                    /<img/g,
+                    '<img style="max-width: 100%; max-height: 150px; height: auto; object-fit: cover;"'
+                  ),
+                }}
               />
             ) : (
               <p>No content available</p>
