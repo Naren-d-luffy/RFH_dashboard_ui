@@ -228,7 +228,7 @@ console.log("camps",camps);
       <div className="marketing-categories-section">
         <div className="row mt-4">
           <div className="events-header-container">
-            <h6>Latest Camps</h6>
+            <h6>Health Camps</h6>
 
             <div className="events-buttons">
               <button
