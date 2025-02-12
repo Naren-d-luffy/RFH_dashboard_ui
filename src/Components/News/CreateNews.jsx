@@ -31,7 +31,7 @@ const CreateNews = ({ open, handleCancel }) => {
   };
 
   const handleSave = async () => {
-    if (!heading) {
+    if (!heading || !subheading || !uploadedImage||!type ||backgroundColor) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -172,7 +172,8 @@ const CreateNews = ({ open, handleCancel }) => {
                   placeholder="Add Sub Heading"
                   required
                 />
-                <span className="create-campaign-input-span">Sub Heading</span>{" "}
+                <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span>Sub Heading</span>{" "}
               </Form.Item>
             </div>
             <div className="col-lg-6">
@@ -192,7 +193,8 @@ const CreateNews = ({ open, handleCancel }) => {
                   <Option value="Patient Education">Patient Education</Option>
                   <Option value="Interview">Interview</Option>
                 </Select>
-                <span className="create-campaign-input-span">Type</span>
+                <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span>Type</span>
               </Form.Item>
             </div>
           </div>
@@ -221,6 +223,7 @@ const CreateNews = ({ open, handleCancel }) => {
                 required
               />
               <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span>
                 Background Color
               </span>
             </Form.Item>
