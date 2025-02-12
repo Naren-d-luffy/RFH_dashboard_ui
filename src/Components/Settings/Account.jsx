@@ -56,11 +56,13 @@ export const Account = () => {
   }, [fetchUser]);
 
   const handleSubmit = async () => {
+    
     const userInfo = localStorage.getItem("userInfo");
     const parsedUserInfo = JSON.parse(userInfo);
     const updatedFields = form.getFieldsValue();
 
     try {
+      await form.validateFields();
       if (isProfileUpdated) {
         const formData = new FormData();
         formData.append("name", updatedFields.name);

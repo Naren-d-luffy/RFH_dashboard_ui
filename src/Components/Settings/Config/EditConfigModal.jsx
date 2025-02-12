@@ -36,8 +36,23 @@ const EditConfigModal = ({ config, onClose, refreshList }) => {
       return;
     }
 
-    const content = configData.reduce((acc, { key, value }) => {
-      if (key && value) acc[key] = value;
+    for (const { key, value } of configData) {
+      if (key.trim() && !value.trim()) {
+        message.error("Each key must have a corresponding value.");
+        return;
+      }
+    }
+
+    const validConfigData = configData.filter(
+      ({ key, value }) => key.trim() && value.trim()
+    );
+    if (validConfigData.length === 0) {
+      message.error("At least one key-value pair is required.");
+      return;
+    }
+
+    const content = validConfigData.reduce((acc, { key, value }) => {
+      acc[key] = value;
       return acc;
     }, {});
 
@@ -60,10 +75,18 @@ const EditConfigModal = ({ config, onClose, refreshList }) => {
       visible={!!config}
       onCancel={onClose}
       footer={[
-        <Button key="cancel" className="create-campaign-cancel-button" onClick={onClose}>
+        <Button
+          key="cancel"
+          className="create-campaign-cancel-button"
+          onClick={onClose}
+        >
           Cancel
         </Button>,
-        <Button key="save" className="create-campaign-save-button" onClick={handleSave}>
+        <Button
+          key="save"
+          className="create-campaign-save-button"
+          onClick={handleSave}
+        >
           Save Changes
         </Button>,
       ]}
@@ -91,7 +114,11 @@ const EditConfigModal = ({ config, onClose, refreshList }) => {
           />
         </div>
       ))}
-      <Button type="dashed" className="create-campaign-cancel-button" onClick={handleAddField}>
+      <Button
+        type="dashed"
+        className="create-campaign-cancel-button"
+        onClick={handleAddField}
+      >
         Add Field
       </Button>
     </Modal>
