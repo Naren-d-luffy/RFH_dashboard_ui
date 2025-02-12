@@ -193,7 +193,7 @@ const ServiceList = () => {
       const response = await Instance.get("depcat/service");
       dispatch(setService(response.data));
     } catch (error) {
-      console.error("Error fetching facilities:", error);
+      console.error("Error fetching services:", error);
     }
   }, [dispatch]);
 
@@ -206,7 +206,7 @@ const ServiceList = () => {
       <div className="marketing-categories-section">
         <div className="row mt-4">
           <div className="events-header-container">
-            <h6>Department Services</h6>
+            <h6>Our Services</h6>
             <div className="events-buttons">
               <button
                 className="rfh-basic-button"

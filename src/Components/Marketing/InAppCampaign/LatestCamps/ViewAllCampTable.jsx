@@ -95,15 +95,24 @@ const ViewAllCampTable = () => {
     });
   };
 
+  // const dataSource = useMemo(() => {
+  //   if (searchText.trim() === "") return Object.values(CapmpsData);
+  //   return Object.values(CapmpsData).filter((camp) =>
+  //     `${camp.campName} ${camp.hospitalName} ${camp.location} ${camp.pinCode} ${camp.date} ${camp.time}`
+  //       .toLowerCase()
+  //       .includes(searchText.toLowerCase())
+  //   );
+  // }, [searchText, CapmpsData]);
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return Object.values(CapmpsData);
-    return Object.values(CapmpsData).filter((camp) =>
+    const camps = Object.values(CapmpsData).reverse();
+    if (searchText.trim() === "") return camps;
+    return camps.filter((camp) =>
       `${camp.campName} ${camp.hospitalName} ${camp.location} ${camp.pinCode} ${camp.date} ${camp.time}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, CapmpsData]);
-
+  
   const columns = [
     {
       title: "Camp Name",

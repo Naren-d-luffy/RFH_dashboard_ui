@@ -85,15 +85,24 @@ const OutstationClinicTable = () => {
     fetchOutstationClinicInfo(currentPage);
   }, [currentPage,fetchOutstationClinicInfo]);
 
+  // const dataSource = useMemo(() => {
+  //   if (searchText.trim() === "") return EventData;
+  //   return EventData.filter((Event) =>
+  //     `${Event.name}{}${Event.rating}{} ${Event.reviews}{}${Event.location}{}${Event.patients}{}${Event.experience} `
+  //       .toLowerCase()
+  //       .includes(searchText.toLowerCase())
+  //   );
+  // }, [searchText, EventData]);
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return EventData;
-    return EventData.filter((Event) =>
-      `${Event.name}{}${Event.rating}{} ${Event.reviews}{}${Event.location}{}${Event.patients}{}${Event.experience} `
+    const events = [...EventData].reverse();
+    if (searchText.trim() === "") return events;
+    return events.filter((event) =>
+      `${event.name} ${event.rating} ${event.reviews} ${event.location} ${event.patients} ${event.experience}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, EventData]);
-
+  
   const columns = [
     {
       title: "Name",

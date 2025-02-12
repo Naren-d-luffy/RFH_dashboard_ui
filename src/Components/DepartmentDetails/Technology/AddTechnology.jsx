@@ -86,7 +86,7 @@ const AddTechnology = ({ open, handleCancel }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Add Department Technology
+            Add Technology
           </span>
         }
         onCancel={handleCancelClick}

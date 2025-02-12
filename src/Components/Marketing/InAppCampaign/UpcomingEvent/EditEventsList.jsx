@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, message, Upload,Switch,DatePicker,
-  TimePicker, } from "antd";
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  message,
+  Upload,
+  Switch,
+  DatePicker,
+  TimePicker,
+} from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
@@ -37,11 +46,11 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
     ],
   };
 
-   const handleUpload = (file) => {
-     if (!validateImage(file)) return false;
-     setUploadedImage(file);
-     return false;
-   };
+  const handleUpload = (info) => {
+    const file = info.file.originFileObj;
+    if (!validateImage(file)) return false;
+    setUploadedImage(file);
+  };
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
@@ -52,9 +61,9 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
       setDescription(eventsData?.description || "");
       // setLink(eventsData?.link || "");
       // setOrder(eventsData?.order || "");
-      setIsActive(eventsData?.isActive  || "");
+      setIsActive(eventsData?.isActive || "");
       setTime(eventsData?.time);
-      setDate(eventsData?.date)
+      setDate(eventsData?.date);
       setUploadedImage(eventsData?.image || null);
     } else {
       setTitle("");
@@ -68,17 +77,12 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   }, [open, eventsData]);
 
   const handleUpdate = async () => {
-
-     if (
-          !title ||
-          !description ||
-          !date ||
-          !time ||
-          !uploadedImage
-        ) {
-          message.error("Please fill in all required fields.");
-          return;
-        }
+    const strippedContent = description.replace(/<[^>]*>/g, "").trim();
+    
+    if (!title || !strippedContent || !date || !time || !uploadedImage) {
+      message.error("Please fill in all required fields.");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("title", title.trim());

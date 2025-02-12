@@ -210,7 +210,7 @@ export const FacilityList = () => {
       <div className="marketing-categories-section">
         <div className="row mt-4">
           <div className="events-header-container">
-            <h6>Department Facility</h6>
+            <h6>Facilities</h6>
             <div className="events-buttons">
               <button
                 className="rfh-basic-button"

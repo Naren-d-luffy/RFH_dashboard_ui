@@ -248,7 +248,7 @@ console.log("camps",camps);
           <div className="mt-4">
             <Slider {...sliderSettings} key={Object.keys(camps).length}>
               {camps && Object.keys(camps).length > 0 ? (
-                Object.values(camps)?.map((camp) => renderLatestCamps(camp))
+                Object.values(camps).reverse()?.map((camp) => renderLatestCamps(camp))
               ) : (
                 <p>No data available</p>
               )}

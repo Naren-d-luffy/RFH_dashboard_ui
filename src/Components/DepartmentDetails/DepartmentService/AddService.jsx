@@ -80,7 +80,7 @@ const AddService = ({ open, handleCancel }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Add Department Services
+            Add Our Services
           </span>
         }
         onCancel={handleCancelClick}

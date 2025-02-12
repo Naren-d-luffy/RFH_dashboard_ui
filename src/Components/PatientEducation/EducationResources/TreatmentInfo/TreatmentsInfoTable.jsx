@@ -78,8 +78,8 @@ const TreatmentList = () => {
             dispatch(deleteTreatment(_id));
           }
         } catch (error) {
-          console.error("Error deleting treatment:", error);
-          message.error("Error deleting treatment", error);
+          console.error("Error deleting common procedure:", error);
+          message.error("Error deleting common procedure", error);
         }
       },
     });
@@ -113,7 +113,7 @@ const TreatmentList = () => {
         dispatch(setTreatment(response?.data?.data?.educations));
         setTotalRows(response.data?.data?.totalEducations || 0);
       } catch (error) {
-        console.error("Error fetching treatments:", error);
+        console.error("Error fetching common procedure:", error);
       } finally {
         setIsLoading(false);
       }
@@ -126,14 +126,15 @@ const TreatmentList = () => {
   }, [currentPage, fetchTreatmentsInfo]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return treatmentData;
-    return treatmentData.filter((treatment) =>
-      `${treatment.title}{}${treatment.description}{}${treatment.content}`
+    const treatments = [...treatmentData].reverse();
+    if (searchText.trim() === "") return treatments;
+    return treatments.filter((treatment) =>
+      `${treatment.title} ${treatment.description} ${treatment.content}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, treatmentData]);
-
+  
   const columns = [
     {
       title: "Title",
@@ -221,7 +222,7 @@ const TreatmentList = () => {
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>Treatment Info</h3>
+              <h3>Common procedure</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -229,7 +230,7 @@ const TreatmentList = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add Treatment
+                Add 
               </button>
             </div>
           </div>
