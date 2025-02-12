@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Row, Col, Button, Upload } from "antd";
+import { Form, Input, Row, Col, Button, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -63,6 +63,12 @@ const DoctorDetail = () => {
   };
 
   const handleSave = async () => {
+    if (
+      !uploadedFile
+    ) {
+      message.error("Please fill in all required fields.");
+      return;
+    }
     const data = new FormData();
     if (uploadedFile) {
       data.append("profile", uploadedFile);
@@ -73,7 +79,7 @@ const DoctorDetail = () => {
     Object.keys(formData).forEach((key) => {
       if (key !== "profile") { 
         if (Array.isArray(formData[key])) {
-          data.append(key, JSON.stringify(formData[key])); // Convert arrays to JSON strings
+          data.append(key, JSON.stringify(formData[key])); 
         } else {
           data.append(key, formData[key]);
         }

@@ -174,7 +174,7 @@ const handleLogout = () => {
         onClick={() => navigate("/patient-education/resources")}
           style={{ cursor: "pointer" }}
         >
-          Patient Education
+          MyHealth Library
         </span>
       ),
       to: "/patient-education/resources",

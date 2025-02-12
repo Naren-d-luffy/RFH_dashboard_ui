@@ -58,10 +58,11 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
     setThumbnailImage(null);
   };
   const handleSave = async () => {
+    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
     if (
       !heading ||
       !subHeading ||
-      !content ||
+      !strippedContent ||
       !uploadedImage ||
       !thumbnailImage
     ) {

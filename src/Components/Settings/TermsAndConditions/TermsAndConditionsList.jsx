@@ -64,7 +64,6 @@ export const TermsAndConditionsList = () => {
   // };
   const handleDeleteClause = (_id) => {
     showDeleteMessage({
-      message: "Are you sure you want to delete this clause?",
       onDelete: async () => {
         try {
           setLoading(true);
@@ -74,8 +73,8 @@ export const TermsAndConditionsList = () => {
             showSuccessMessage("Terms and conditions deleted successfully.");
           }
         } catch (err) {
-          console.error("Error deleting clause:", err);
-          const errorMessage = err.response?.data?.error || "Failed to delete clause. Please try again later.";
+          console.error("Error deleting terms and conditions:", err);
+          const errorMessage = err.response?.data?.error || "Failed to delete terms and conditions. Please try again later.";
           showSuccessMessage(errorMessage);
           message.error(errorMessage);
         } finally {

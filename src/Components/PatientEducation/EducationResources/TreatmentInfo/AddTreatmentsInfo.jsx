@@ -75,7 +75,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         dispatch(addTreatment(response.data.data))
-        showSuccessMessage("Treatment Info Added successfully!");
+        showSuccessMessage("Common procedure added successfully!");
         setTitle("");
         setDescription("");
         setContent("");
@@ -86,7 +86,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
       }
     } catch (error) {
       console.error(error);
-      message.error("Failed to add treatment.");
+      message.error("Failed to add common procedure.");
     } finally {
       setIsLoading(false);
     }
@@ -106,7 +106,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Add Treatment Info{" "}
+            Add Common procedure{" "}
           </span>
         }
         onCancel={handleCancelClick}

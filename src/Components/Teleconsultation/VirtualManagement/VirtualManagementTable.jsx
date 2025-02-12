@@ -5,7 +5,7 @@ import { FiSearch, FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
 // import { VscSettings } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
-import { showDeleteMessage } from "../../../globalConstant";
+import { showDeleteMessage, showSuccessMessage } from "../../../globalConstant";
 // import { filterDropdown } from "../../../globalConstant";
 import defaultUser from "../../../Assets/Images/singleuser.png";
 import DOMPurify from "dompurify";
@@ -189,6 +189,7 @@ const VirtualManagementTable = () => {
         try {
           const response = await Instance.delete(`/doctor/${id}`);
           if (response.status === 200) {
+            showSuccessMessage("Deleted successfully Doctor List");
             setDoctors((prevDoctors) =>
               prevDoctors.filter((doctor) => doctor._id !== id)
             );
@@ -228,11 +229,12 @@ const VirtualManagementTable = () => {
 
   const columns = [
     {
-      title: "Doctor ID",
-      dataIndex: "_id",
-      key: "_id",
+      title: "Sl No",
+      key: "id",
       className: "campaign-performance-table-column",
+      render: (text, record, index) => index + 1,
     },
+    
     {
       title: "Doctor Name",
       dataIndex: "name",

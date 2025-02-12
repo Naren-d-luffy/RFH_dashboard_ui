@@ -118,7 +118,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Add Outstation Clinic
+            Add Outstation/Speciality Clinic
           </span>
         }
         onCancel={handleCancel}

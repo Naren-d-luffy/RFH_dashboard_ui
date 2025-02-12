@@ -194,7 +194,7 @@ const ConditionWeTreatTable = () => {
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>Department Conditon We Treat</h3>
+              <h3>Conditons We Treat</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button

@@ -155,7 +155,7 @@ export const FeaturedProgramsList = () => {
             <div className="d-flex justify-content-between mb-2">
               <h4>{feature.title}</h4>
             </div>
-            <p>{truncateText(feature.description, 40)}</p>
+            <p>{truncateText(feature.description, 30)}</p>
           </div>
         </div>
       </div>
@@ -234,7 +234,7 @@ export const FeaturedProgramsList = () => {
                 key={Object.keys(FeaturesData).length}
               >
                 {FeaturesData && Object.keys(FeaturesData).length > 0 ? (
-                  Object.values(FeaturesData)?.map((feature) =>
+                  Object.values(FeaturesData).reverse()?.map((feature) =>
                     renderFeatureCard(feature)
                   )
                 ) : (

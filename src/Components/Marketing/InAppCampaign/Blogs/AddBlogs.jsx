@@ -73,7 +73,7 @@ const AddBlogs = ({ open, handleCancel }) => {
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
 
-        showSuccessMessage("Blog Added successfully!");
+        showSuccessMessage("News Added successfully!");
         dispatch(addBlog(response.data));
         setHeading("");
         setSubHeading("");
@@ -83,7 +83,7 @@ const AddBlogs = ({ open, handleCancel }) => {
       }
     } catch (error) {
       console.error(error);
-      message.error("Failed to add Blog.");
+      message.error("Failed to add news.");
     } finally {
       setIsLoading(false);
     }
@@ -100,7 +100,7 @@ const AddBlogs = ({ open, handleCancel }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Add Blog</span>}
+        title={<span className="create-campaign-modal-title">Add News</span>}
         onCancel={handleCancelClick}
         width={680}
         footer={[

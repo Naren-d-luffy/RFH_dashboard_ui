@@ -14,13 +14,15 @@ import AddEventsList from "./AddEventsList";
 import EditEventsList from "./EditEventsList";
 import ViewEventList from "./ViewEventList";
 import { useNavigate } from "react-router-dom";
-import DOMPurify from "dompurify";
+// import DOMPurify from "dompurify";
  
 
 import {
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
+import { CiCalendarDate } from "react-icons/ci";
+import { IoMdTime } from "react-icons/io";
 
 export const UpcomingEventList = () => {
   const [modals, setModals] = useState({
@@ -33,13 +35,13 @@ export const UpcomingEventList = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const eventsData = useSelector((state) => state.discoverevent.events);
+  const eventsData = useSelector((state) => state.discoverevent.events);  
   const itemsPerPage = 10;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const sanitizeContent = (content) => {
-    return DOMPurify.sanitize(content);
-  };
+  // const sanitizeContent = (content) => {
+  //   return DOMPurify.sanitize(content);
+  // };
   const fetchEvenInfo = useCallback(
     async (page = 1) => {
       setIsLoading(true);
@@ -60,13 +62,13 @@ export const UpcomingEventList = () => {
     fetchEvenInfo();
   }, [fetchEvenInfo]);
 
-  const truncateText = (text, wordLimit) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
+  // const truncateText = (text, wordLimit) => {
+  //   if (!text) return "";
+  //   const words = text.split(" ");
+  //   return words.length > wordLimit
+  //     ? words.slice(0, wordLimit).join(" ") + "..."
+  //     : text;
+  // };
 
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
@@ -152,15 +154,17 @@ export const UpcomingEventList = () => {
         <div>
           <div className="d-flex justify-content-between mb-2">
             <h4>{event.title}</h4>
-            <span>{new Date(event.createdAt).toLocaleDateString("en-GB")}</span>
-          </div>
-          <p>
+            <span>{event.isActive ? "True" : "False"}</span>
+            </div>
+          <p><CiCalendarDate />&nbsp;{new Date(event.createdAt).toLocaleDateString("en-GB")}</p>
+          <p><IoMdTime />&nbsp;{event.time}</p>
+          {/* <p>
             <span
               dangerouslySetInnerHTML={{
                 __html: sanitizeContent(truncateText(event.description, 15)),
               }}
             ></span>
-          </p>
+          </p> */}
           {/* <p>{truncateText(event.description, 30)}</p> */}
         </div>
       </div>
@@ -218,7 +222,7 @@ export const UpcomingEventList = () => {
       <div className="marketing-categories-section">
         <div className="row mt-4">
           <div className="events-header-container">
-            <h6>Upcoming Events</h6>
+            <h6>Events</h6>
             <div className="events-buttons">
               <button
                 className="rfh-basic-button"
@@ -238,9 +242,9 @@ export const UpcomingEventList = () => {
           <div className="mt-4">
             <Slider key={Object.keys(eventsData).length} {...sliderSettings}>
               {eventsData && Object.keys(eventsData).length > 0 ? (
-                Object.values(eventsData)?.map((event) =>
-                  renderEventCard(event)
-                )
+                Object.values(eventsData)
+                  .reverse()
+                  ?.map((event) => renderEventCard(event))
               ) : (
                 <p>No data available</p>
               )}
