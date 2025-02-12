@@ -35,8 +35,11 @@ const EditService = ({ open, handleCancel, serviceData }) => {
   const handleDeleteThumbnail = () => {
     setThumbnailImage(null);
   };
+  
   const handleSave = async () => {
-    if (!heading || !subHeading || !content || !thumbnailImage) {
+    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
+
+    if (!heading || !subHeading || !strippedContent || !thumbnailImage) {
       message.error("Please fill in all required fields.");
       return;
     }

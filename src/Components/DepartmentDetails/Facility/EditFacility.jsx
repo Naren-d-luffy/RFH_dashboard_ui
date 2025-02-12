@@ -80,10 +80,11 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
   };
 
   const handleUpdate = async () => {
+    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
     if (
       !title ||
       !description ||
-      !content ||
+      !strippedContent ||
       !uploadedImage ||
       !thumbnailImage ||
       !videoHeading ||

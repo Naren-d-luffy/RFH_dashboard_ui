@@ -133,13 +133,13 @@ export const TechnologyList = () => {
             </span>
           </div>
           <p>{technology.subHeading}</p>
-          <p>
+          {/* <p>
             <span
               dangerouslySetInnerHTML={{
                 __html: sanitizeContent(truncateText(technology.content, 15)),
               }}
             ></span>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
@@ -233,6 +233,7 @@ export const TechnologyList = () => {
               {technologyList && Object.keys(technologyList).length > 0 ? (
                 Object.entries(technologyList)
                   .filter(([key]) => key !== "status")
+                  .reverse()
                   .map(([key, technology]) => renderTechnologyCard(technology))
               ) : (
                 <p>No data available</p>

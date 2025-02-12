@@ -130,13 +130,13 @@ const ServiceList = () => {
             <h4>{service.heading}</h4>
           </div>
           <p>{service.subHeading}</p>
-          <p>
+          {/* <p>
             <span
               dangerouslySetInnerHTML={{
                 __html: sanitizeContent(truncateText(service.content, 3)),
               }}
             ></span>
-          </p>{" "}
+          </p>{" "} */}
         </div>
       </div>
     </div>
@@ -225,7 +225,7 @@ const ServiceList = () => {
           <div className="mt-4">
             <Slider {...sliderSettings} key={servicesList?.length}>
               {servicesList && servicesList.length > 0 ? (
-                servicesList?.map((service, index) =>
+                [...servicesList].reverse()?.map((service, index) =>
                   renderServiceCard(service, index)
                 )
               ) : (
