@@ -44,7 +44,21 @@ const AddLatestCamps = ({ open, handleCancel }) => {
     });
   };
   const dispatch = useDispatch();
+
   const handleSave = async () => {
+    if (
+      !formData.campName ||
+      !formData.date ||
+      !formData.time ||
+      !formData.description ||
+      !formData.hospitalName ||
+      !formData.location ||
+      !formData.address ||
+      !formData.pinCode
+    ) {
+      message.error("Please fill in all required fields.");
+      return;
+    }
     const formattedData = {
       ...formData,
       date: formData.date?.format("YYYY-MM-DD"),
@@ -56,6 +70,7 @@ const AddLatestCamps = ({ open, handleCancel }) => {
       if (response?.status === 200 || response?.status === 201) {
         dispatch(addCamp(response?.data?.data));
         showSuccessMessage("Successfully Created Camp");
+        resetForm();
         handleCancel();
       }
     } catch (error) {

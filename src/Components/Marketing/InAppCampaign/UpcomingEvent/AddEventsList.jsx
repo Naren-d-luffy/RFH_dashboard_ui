@@ -14,6 +14,7 @@ import { Instance } from "../../../../AxiosConfig";
 import {
   showErrorMessage,
   showSuccessMessage,
+  validateImage,
 } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { addEvent } from "../../../../Features/DiscoverEventsCard";
@@ -46,16 +47,13 @@ const AddEventsList = ({ open, handleCancel }) => {
 
   const dispatch = useDispatch();
 
+ 
+
   const handleUpload = (file) => {
-    const isImage = file.type.startsWith("image/");
-    if (!isImage) {
-      message.error("You can only upload image files!");
-      return false;
-    }
+    if (!validateImage(file)) return false;
     setUploadedImage(file);
     return false;
   };
-
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
@@ -64,7 +62,8 @@ const AddEventsList = ({ open, handleCancel }) => {
     if (
       !title.trim() ||
       !description.trim() ||
-      // !link.trim() ||
+      !date ||
+      !time ||
       !uploadedImage
     ) {
       message.error("Please fill in all required fields.");

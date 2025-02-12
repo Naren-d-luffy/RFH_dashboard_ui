@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Button, Modal, Form, Input, message, Upload,Switch,DatePicker,
   TimePicker, } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { editEvent } from "../../../../Features/DiscoverEventsCard";
-import { FaTrash } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import Loader from "../../../../Loader";
@@ -13,7 +12,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import moment from "moment";
 
-const { TextArea } = Input;
+// const { TextArea } = Input;
 // const { Option } = Select;
 
 const EditEventsList = ({ open, handleCancel, eventsData }) => {
@@ -23,7 +22,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   const [description, setDescription] = useState("");
   const [isActive, setIsActive] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [features, setFeatures] = useState([]);
+  const [, setFeatures] = useState([]);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -38,16 +37,11 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
     ],
   };
 
-  const handleUpload = (info) => {
-    const file = info.file.originFileObj;
-    const isImage = file.type.startsWith("image/");
-    if (!isImage) {
-      message.error("You can only upload image files!");
-      return;
-    }
-    setUploadedImage(file);
-  };
-
+   const handleUpload = (file) => {
+     if (!validateImage(file)) return false;
+     setUploadedImage(file);
+     return false;
+   };
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
@@ -75,17 +69,23 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
 
   const handleUpdate = async () => {
 
-    if (!title) {
-      message.error("Please fill in all required fields.");
-      return;
-    }
+     if (
+          !title ||
+          !description ||
+          !date ||
+          !time ||
+          !uploadedImage
+        ) {
+          message.error("Please fill in all required fields.");
+          return;
+        }
 
     const formData = new FormData();
     formData.append("title", title.trim());
     formData.append("description", description.trim());
     // formData.append("link", link.trim());
     // formData.append("order", parseInt(order, 10));
-    // formData.append("isActive", isActive);
+    formData.append("isActive", isActive);
     formData.append("image", uploadedImage);
     formData.append("date", date);
     formData.append("time", time);
@@ -105,7 +105,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
         setDescription("");
         // setLink("");
         // setOrder("");
-        // setIsActive(true);
+        setIsActive(true);
         setFeatures([]);
         setUploadedImage(null);
       }

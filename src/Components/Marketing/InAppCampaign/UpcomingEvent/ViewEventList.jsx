@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Button, Modal } from "antd";
 import "react-quill/dist/quill.snow.css";
 import Loader from "../../../../Loader";
+import { IoMdTime } from "react-icons/io";
+import { CiCalendarDate } from "react-icons/ci";
 
 const ViewEventList = ({ open, handleCancel, eventsData }) => {
   const [isLoading] = useState(false);
-  console.log("event",eventsData)
+  console.log("event", eventsData);
   return (
     <>
       {isLoading && <Loader />}
@@ -31,15 +33,17 @@ const ViewEventList = ({ open, handleCancel, eventsData }) => {
           </div>
 
           <div className="view-treatment-info-modal-content">
-          <h6>{eventsData?.time || "N/A"}</h6>
-          <h6>{eventsData?.date || "N/A"}</h6>
-
-
+            <h6><IoMdTime />{" "} {eventsData?.time || "N/A"}</h6>
+            <h6><CiCalendarDate /> {" "}
+              {eventsData?.date
+                ? new Date(eventsData.date).toLocaleDateString("en-GB")
+                : "N/A"}
+            </h6>
             <div
-            className="news-content"
-            style={{ color: "var(--text-color)" }}
-            dangerouslySetInnerHTML={{ __html: eventsData?.description }}
-          />
+              className="news-content"
+              style={{ color: "var(--text-color)" }}
+              dangerouslySetInnerHTML={{ __html: eventsData?.description }}
+            />
             {/* <ul>
               {eventsData?.tags
                 ?.flatMap((tag) => tag.split(",")) 

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, Input, Upload, message, Select } from "antd";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -11,18 +10,6 @@ import { addNews } from "../../Features/NewsSlice";
 import { useDispatch } from "react-redux";
 import Loader from "../../Loader";
 import { Option } from "antd/es/mentions";
-
-const modules = {
-  toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["bold", "italic"],
-    ["link", "image"],
-    ["clean"],
-  ],
-};
-
-const { TextArea } = Input;
 
 const CreateNews = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -44,7 +31,7 @@ const CreateNews = ({ open, handleCancel }) => {
   };
 
   const handleSave = async () => {
-    if (!heading) {
+    if (!heading || !subheading || !uploadedImage||!type ||backgroundColor) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -186,8 +173,7 @@ const CreateNews = ({ open, handleCancel }) => {
                   required
                 />
                 <span className="create-campaign-input-span">
-                   Sub Heading
-                </span>{" "}
+                <span style={{ color: "red" }}>*</span>Sub Heading</span>{" "}
               </Form.Item>
             </div>
             <div className="col-lg-6">
@@ -207,7 +193,8 @@ const CreateNews = ({ open, handleCancel }) => {
                   <Option value="Patient Education">Patient Education</Option>
                   <Option value="Interview">Interview</Option>
                 </Select>
-                <span className="create-campaign-input-span">Type</span>
+                <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span>Type</span>
               </Form.Item>
             </div>
           </div>
@@ -217,22 +204,12 @@ const CreateNews = ({ open, handleCancel }) => {
               className="settings-input"
               placeholder="Enter URL"
               defaultValue=""
-              value={videoURL} // Bind state
+              value={videoURL}
               onChange={(e) => setVideoURL(e.target.value)}
             />
             <span className="create-campaign-input-span">Video URL</span>
           </Form.Item>
-          <Form.Item>
-            <TextArea
-              value={about}
-              onChange={(e) => setAbout(e.target.value)}
-              placeholder="About"
-              required
-            />
-            <span className="create-campaign-input-span">
-               About
-            </span>{" "}
-          </Form.Item>
+
           <div className="col-lg-6">
             <Form.Item>
               <ColorPicker
@@ -246,23 +223,11 @@ const CreateNews = ({ open, handleCancel }) => {
                 required
               />
               <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span>
                 Background Color
               </span>
             </Form.Item>
           </div>
-          <Form.Item>
-            <ReactQuill
-              theme="snow"
-              modules={modules}
-              value={content}
-              onChange={setContent}
-              placeholder="Your text goes here"
-              required
-            />
-            <span className="create-campaign-input-span">
-               Content Points
-            </span>{" "}
-          </Form.Item>
         </Form>
       </Modal>
     </>
