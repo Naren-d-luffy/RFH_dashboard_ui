@@ -31,10 +31,14 @@ const ViewService = ({ open, handleCancel, serviceData }) => {
 
           <div className="view-treatment-info-modal-content">
             <h5>{serviceData?.subHeading || "N/A"}</h5>
-
-            <div
+             <div
               className="news-content"
-              dangerouslySetInnerHTML={{ __html: serviceData?.content }}
+              dangerouslySetInnerHTML={{
+                __html: serviceData?.content?.replace(
+                  /<img/g,
+                  '<img style="max-width: 100%; max-height: 150px; height: auto; object-fit: cover;"'
+                ),
+              }}
             />
           </div>
         </div>

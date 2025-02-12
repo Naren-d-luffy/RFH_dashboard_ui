@@ -36,6 +36,8 @@ export const UpcomingEventList = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const eventsData = useSelector((state) => state.discoverevent.events);  
+  console.log("eventsData",eventsData);
+  
   const itemsPerPage = 10;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -154,7 +156,7 @@ export const UpcomingEventList = () => {
         <div>
           <div className="d-flex justify-content-between mb-2">
             <h4>{event.title}</h4>
-            <span>{event.isActive ? "True" : "False"}</span>
+            {/* <span>{event.isActive ? "True" : "False"}</span> */}
             </div>
           <p><CiCalendarDate />&nbsp;{new Date(event.createdAt).toLocaleDateString("en-GB")}</p>
           <p><IoMdTime />&nbsp;{event.time}</p>
