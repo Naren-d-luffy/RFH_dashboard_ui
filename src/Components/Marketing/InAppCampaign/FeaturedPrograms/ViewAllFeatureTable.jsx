@@ -89,15 +89,24 @@ const FeaturesTable = () => {
     });
   };
 
+  // const dataSource = useMemo(() => {
+  //   if (searchText.trim() === "") return FeaturesData;
+  //   return FeaturesData.filter((feature) =>
+  //     `${feature.title}{}${feature.description}`
+  //       .toLowerCase()
+  //       .includes(searchText.toLowerCase())
+  //   );
+  // }, [searchText, FeaturesData]);
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return FeaturesData;
-    return FeaturesData.filter((feature) =>
-      `${feature.title}{}${feature.description}`
+    const features = [...FeaturesData].reverse(); 
+    if (searchText.trim() === "") return features;
+    return features.filter((feature) =>
+      `${feature.title} ${feature.description}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, FeaturesData]);
-
+  
   const columns = [
     {
       title: "Title",

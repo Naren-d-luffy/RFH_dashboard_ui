@@ -108,14 +108,15 @@ const GastroIllnessTable = () => {
   }, [currentPage,fetchGastroIllnessInfo]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return EventData;
-    return EventData.filter((Event) =>
-      `${Event.title}{}${Event.description}{}${Event.content}`
+    const events = [...EventData].reverse();
+    if (searchText.trim() === "") return events;
+    return events.filter((event) =>
+      `${event.title} ${event.description} ${event.content}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, EventData]);
-
+  
   const columns = [
     {
       title: "Title",

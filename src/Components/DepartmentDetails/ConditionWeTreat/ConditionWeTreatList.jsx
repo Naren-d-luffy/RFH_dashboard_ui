@@ -213,7 +213,7 @@ export const ConditionWeTreatList = () => {
       <div className="marketing-categories-section">
         <div className="row mt-4">
           <div className="events-header-container">
-            <h6>Condition We Treat List</h6>
+            <h6>Conditions We Treat List</h6>
             <div className="events-buttons">
               <button
                 className="rfh-basic-button"

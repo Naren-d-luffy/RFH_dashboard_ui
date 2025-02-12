@@ -58,7 +58,9 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
   }, [open, EventData]);
 
   const handleSave = async () => {
-    if (!title || !type ||!description ||!content || !uploadedImage ) {
+    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
+    
+    if (!title || !type ||!description ||!strippedContent || !uploadedImage ) {
          message.error("Please fill in all required fields.");
          return;
        }

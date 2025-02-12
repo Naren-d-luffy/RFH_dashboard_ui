@@ -65,7 +65,9 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
   }, [open, featuresData]);
 
   const handleSave = async () => {
-    if (!title || !description || uploadedImage || content) {
+    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
+    
+    if (!title || !description || !uploadedImage || !strippedContent) {
       message.error("Please fill in all required fields.");
       return;
     }

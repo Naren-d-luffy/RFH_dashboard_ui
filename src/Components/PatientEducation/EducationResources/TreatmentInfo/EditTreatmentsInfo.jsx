@@ -62,10 +62,11 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData }) => {
   }, [open, treatmentData]);
 
   const handleSave = async () => {
+    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
     if (
       !title ||
       !description ||
-      !content ||
+      !strippedContent ||
       !uploadedImage ||
       !thumbnailImage
     ) {
@@ -89,7 +90,7 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData }) => {
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         dispatch(editTreatment(response.data.data));
-        showSuccessMessage("Treatment Info updated successfully!");
+        showSuccessMessage("Common procedure updated successfully!");
         setTitle("");
         setDescription("");
         setContent("");
@@ -111,7 +112,7 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Edit Treatment Info{" "}
+            Edit Common procedure{" "}
           </span>
         }
         onCancel={handleCancel}

@@ -254,7 +254,8 @@ const OutstationClinicList = () => {
             <div className="mt-3">
               <Slider {...sliderSettings} key={clinics?.length}>
                 {clinics && clinics.length > 0 ? (
-                  clinics.map((clinic) => renderClinicCard(clinic))
+                  [...clinics]
+                  .reverse().map((clinic) => renderClinicCard(clinic))
                 ) : (
                   <p>No data available</p>
                 )}

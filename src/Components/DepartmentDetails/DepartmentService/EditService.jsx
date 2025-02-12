@@ -89,7 +89,7 @@ const EditService = ({ open, handleCancel, serviceData }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Edit Department Services
+            Edit Our Services
           </span>
         }
         onCancel={handleCancel}
