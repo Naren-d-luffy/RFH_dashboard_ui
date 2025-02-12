@@ -97,13 +97,18 @@ const ConditionWeTreatTable = () => {
   }, [currentPage, fetchTechnologyList]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return conditionwetreatList;
-    return conditionwetreatList.filter((condition) =>
+    if (!conditionwetreatList) return [];
+    const sortedConditions = [...conditionwetreatList].reverse();
+  
+    if (searchText.trim() === "") return sortedConditions;
+  
+    return sortedConditions.filter((condition) =>
       `${condition.heading} ${condition.subHeading}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, conditionwetreatList]);
+  
 
   const columns = [
     {

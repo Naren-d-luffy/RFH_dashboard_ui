@@ -97,13 +97,18 @@ const TechnologyTable = () => {
   }, [currentPage, fetchTechnologyList]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return technologyList;
-    return technologyList.filter((technology) =>
+    if (!technologyList) return [];
+    const sortedTechnologies = [...technologyList].reverse();
+  
+    if (searchText.trim() === "") return sortedTechnologies;
+  
+    return sortedTechnologies.filter((technology) =>
       `${technology.heading} ${technology.subHeading}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, technologyList]);
+  
 
   const columns = [
     {

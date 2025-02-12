@@ -53,7 +53,8 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
   };
 
   const handleUpdate = async () => {
-    if (!title || !description || !content || !thumbnailImage) {
+    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
+    if (!title || !description || !strippedContent || !thumbnailImage) {
       message.error("Please fill in all required fields.");
       return;
     }
