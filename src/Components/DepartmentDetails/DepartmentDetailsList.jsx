@@ -117,13 +117,18 @@ const DepartmentDetailsList = () => {
   }, [currentPage, fetchDepartmentList]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return departments;
-    return departments.filter((department) =>
+    if (!departments) return [];
+    const sortedDepartments = [...departments].reverse();
+  
+    if (searchText.trim() === "") return sortedDepartments;
+  
+    return sortedDepartments.filter((department) =>
       `${department.title} ${department.subtitle}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, departments]);
+  
 
   const columns = [
     {

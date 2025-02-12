@@ -91,13 +91,18 @@ const FacilityTable = () => {
   }, [currentPage]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return facilities;
-    return facilities.filter((facility) =>
+    if (!facilities) return [];
+    const sortedFacilities = [...facilities].reverse();
+  
+    if (searchText.trim() === "") return sortedFacilities;
+  
+    return sortedFacilities.filter((facility) =>
       `${facility.heading} ${facility.subHeading} ${facility.video_heading}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, facilities]);
+  
 
   const columns = [
     {

@@ -134,13 +134,13 @@ export const FacilityList = () => {
             </span>
           </div>
           <p>{facility.subHeading}</p>
-          <p>
+          {/* <p>
             <span
               dangerouslySetInnerHTML={{
                 __html: sanitizeContent(truncateText(facility.content, 15)),
               }}
             ></span>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
@@ -231,6 +231,7 @@ export const FacilityList = () => {
               {facilities && Object.keys(facilities).length > 0 ? (
                 Object.entries(facilities)
                   .filter(([key]) => key !== "status")
+                  .reverse()
                   .map(([key, facility]) => renderFacilityCard(facility))
               ) : (
                 <p>No data available</p>
