@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Table, message } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../Assets/Icons/Empty_survey_image.png";
 import { showDeleteMessage, showSuccessMessage } from "../../globalConstant";
@@ -16,6 +15,7 @@ import ViewDepartmentDetails from "./ViewDepartmentDetails";
 import EditDepartmentDetails from "./EditDepartmentDetails";
 import CreateDepartmentDetails from "./CreateDepartmentDetails";
 import Loader from "../../Loader";
+import DOMPurify from "dompurify";
 
 const DepartmentDetailsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,13 +23,30 @@ const DepartmentDetailsList = () => {
   const [isViewDepartmentModalOpen, setIsViewDepartmentModalOpen] =
     useState(false);
 
-  const [departmentList, setDepartmentList] = useState([]);
+  const [, setDepartmentList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedDepartment, setSelectedDepartment] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const departments = useSelector((state) => state.department.departments);
-  console.log("khkkj", departments);
 
+  // const truncateText = (text, wordLimit = 15) => {
+  //   if (!text) return "";
+  //   const words = text.split(" ");
+  //   return words.length > wordLimit
+  //     ? words.slice(0, wordLimit).join(" ") + "..."
+  //     : text;
+  // };
+  const truncateHTML = (htmlContent, wordLimit) => {
+    if (!htmlContent) return "";
+    const sanitizedContent = DOMPurify.sanitize(htmlContent);
+    const textContent = sanitizedContent.replace(/<[^>]*>/g, "");
+    const words = textContent.split(" ");
+    const truncatedText =
+      words.length > wordLimit
+        ? words.slice(0, wordLimit).join(" ") + "..."
+        : textContent;
+    return truncatedText;
+  };
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -75,18 +92,18 @@ const DepartmentDetailsList = () => {
           }
         } catch (error) {
           console.error("Error deleting department list:", error);
+          message.error("Error deleting department list", error);
         }
       },
     });
   };
 
-  const fetchDepartmentList = async (page) => {
+  const fetchDepartmentList = useCallback(async () => {
     setIsLoading(true);
 
     try {
       const response = await Instance.get(`/department`, {});
       setDepartmentList(response.data.departments || []);
-      console.log(response.data);
       setTotalRows(response.data.totalDepartments);
       dispatch(setDepartment(response.data));
     } catch (error) {
@@ -94,20 +111,24 @@ const DepartmentDetailsList = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch]);
+  useEffect(() => {
+    fetchDepartmentList(currentPage);
+  }, [currentPage, fetchDepartmentList]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return departments;
-    return departments.filter((department) =>
+    if (!departments) return [];
+    const sortedDepartments = [...departments].reverse();
+  
+    if (searchText.trim() === "") return sortedDepartments;
+  
+    return sortedDepartments.filter((department) =>
       `${department.title} ${department.subtitle}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, departments]);
-
-  useEffect(() => {
-    fetchDepartmentList(currentPage);
-  }, [currentPage]);
+  
 
   const columns = [
     {
@@ -115,6 +136,7 @@ const DepartmentDetailsList = () => {
       dataIndex: "title",
       key: "title",
       className: "campaign-performance-table-column",
+      sorter: (a, b) => a.title.localeCompare(b.title),
     },
     {
       title: "Subtitle",
@@ -123,10 +145,20 @@ const DepartmentDetailsList = () => {
       className: "campaign-performance-table-column",
     },
     {
-      title: "Specialist Name",
-      dataIndex: "specialistName",
-      key: "specialistName",
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
       className: "campaign-performance-table-column",
+      render: (text) => {
+        const truncatedHTML = truncateHTML(text, 15);
+        return (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(truncatedHTML),
+            }}
+          />
+        );
+      },
     },
     {
       title: "Action",
@@ -157,33 +189,33 @@ const DepartmentDetailsList = () => {
     },
   ];
 
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
+  // const items = [
+  //   {
+  //     label: "Last Day",
+  //     key: "1",
+  //   },
+  //   {
+  //     label: "Last week",
+  //     key: "2",
+  //   },
+  //   {
+  //     label: "Last Month",
+  //     key: "3",
+  //   },
+  // ];
 
-  const handleMenuClick = ({ key }) => {};
+  // const handleMenuClick = ({ key }) => {};
 
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+  // const menuProps = {
+  //   items,
+  //   onClick: handleMenuClick,
+  // };
 
   return (
-    <div className="container mt-1">
+    <div className="container mt-5">
       {isLoading ? (
         <Loader />
-      ) : departmentList.length > 0 ? (
+      ) : departments.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
@@ -212,7 +244,7 @@ const DepartmentDetailsList = () => {
                 />
               </div>
 
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -221,7 +253,7 @@ const DepartmentDetailsList = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table

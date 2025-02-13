@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, message } from "antd";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -34,17 +34,16 @@ export const HelloDoctorList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const videos = useSelector((state) => state.videos.videos);
-  useEffect(() => {}, [videos]);
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
-  const items = [
-    { label: "Upcoming Events", key: "1" },
-    { label: "Recomended", key: "2" },
-    { label: "Featured Programs", key: "3" },
-    { label: "Latest Camps", key: "4" },
-    { label: "Outstation Clinic", key: "5" },
-  ];
+  // const items = [
+  //   { label: "Upcoming Events", key: "1" },
+  //   { label: "Recomended", key: "2" },
+  //   { label: "Featured Programs", key: "3" },
+  //   { label: "Latest Camps", key: "4" },
+  //   { label: "Outstation Clinic", key: "5" },
+  // ];
 
   const handleEditClick = (video) => {
     setSelectedVideo(video);
@@ -63,25 +62,26 @@ export const HelloDoctorList = () => {
           }
         } catch (error) {
           console.error("Error deleting video:", error);
+          message.error("Error deleting video");
         }
       },
     });
   };
 
-  const filterMenu = (
-    <Menu>
-      <Menu.Item key="edit" className="filter-menu-item">
-        <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        Edit
-      </Menu.Item>
-      <Menu.Item key="delete" className="filter-menu-item">
-        <RiDeleteBin7Line
-          style={{ color: "var(--red-color)", marginRight: "4px" }}
-        />
-        Delete
-      </Menu.Item>
-    </Menu>
-  );
+  // const filterMenu = (
+  //   <Menu>
+  //     <Menu.Item key="edit" className="filter-menu-item">
+  //       <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
+  //       Edit
+  //     </Menu.Item>
+  //     <Menu.Item key="delete" className="filter-menu-item">
+  //       <RiDeleteBin7Line
+  //         style={{ color: "var(--red-color)", marginRight: "4px" }}
+  //       />
+  //       Delete
+  //     </Menu.Item>
+  //   </Menu>
+  // );
 
   const sortMenu = (video) => (
     <Menu>
@@ -108,7 +108,13 @@ export const HelloDoctorList = () => {
 
   const renderRecommendVideo = (video) => {
     const isPlaying = playingVideo === video._id;
-
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+      return `${day}-${month}-${year}`;
+    };
     return (
       <div className="col-lg-4 recommend-video-page" key={video._id}>
         <div className="action-icon-container">
@@ -132,9 +138,10 @@ export const HelloDoctorList = () => {
         </div>
         <div className="video-details mt-2">
           <h4>{video.title}</h4>
-          <p style={{ color: "var(--black-color)", fontSize: "13px" }}>{`${
-            video.likes
-          } Likes | ${new Date(video.createdAt).toLocaleDateString()}`}</p>
+
+          <p style={{ color: "var(--black-color)", fontSize: "13px" }}>
+            {`${formatDate(video.createdAt)}`}
+          </p>
         </div>
       </div>
     );
@@ -145,7 +152,7 @@ export const HelloDoctorList = () => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", zIndex: "1000" }}
+        style={{ ...style, display: "block", zIndex: "100" }}
         onClick={onClick}
       >
         &#8592;
@@ -158,7 +165,7 @@ export const HelloDoctorList = () => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", zIndex: "1000" }}
+        style={{ ...style, display: "block", zIndex: "100" }}
         onClick={onClick}
       >
         &#8594;
@@ -168,7 +175,7 @@ export const HelloDoctorList = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -186,49 +193,55 @@ export const HelloDoctorList = () => {
     ],
   };
 
-  const fetchVideoList = async () => {
+  const fetchVideoList = useCallback(async () => {
     try {
       const response = await Instance.get("/videos");
       setVideoList(response.data);
-      dispatch(setHelloDoctorVideos(response.data));
+      dispatch(setHelloDoctorVideos(response.data.data));
     } catch (error) {
       console.error("Error fetching videos:", error);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     fetchVideoList();
-  }, []);
+  }, [fetchVideoList]);
 
   return (
     <div className="row mt-4">
       <div className="marketing-categories-section">
         <div className="row mt-4">
-          <div className="d-flex justify-content-between">
+          <div className="events-header-container">
             <h6>Hello Doctor</h6>
-            <div className="d-flex gap-2">
-              <button
-                className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-hello-doctor")}
-              >
-                View all
-              </button>
+            <div className="events-buttons">
               <button
                 className="rfh-basic-button"
                 onClick={() => toggleModal("video")}
               >
                 <GoPlus size={20} /> Add Video
               </button>
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-hello-doctor")}
+              >
+                View all
+              </button>
             </div>
           </div>
           <div className="mt-4">
-            <Slider {...sliderSettings}>
-              {videos.length > 0 ? (
-                videos.map((video) => renderRecommendVideo(video))
+            <Slider {...sliderSettings} key={Object.keys(videos).length}>
+              {videos && Object.keys(videos)?.length > 0 ? (
+                Object.entries(videos)
+                  .filter(([key]) => key !== "status")
+                  .reverse()
+                  .map(([key, video]) => renderRecommendVideo(video))
               ) : (
-                <p>No videos available</p>
+                <p>No data available</p>
               )}
             </Slider>
+            {/* <Slider {...sliderSettings}>
+              {Object.values(videos).map((video) => renderRecommendVideo(video))}
+            </Slider> */}
           </div>
           <AddVideo
             open={modals.video}

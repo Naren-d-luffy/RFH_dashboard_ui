@@ -5,6 +5,24 @@
   padding: 18px 10px;
   border-right: 3px solid var(--primary-green);
 }
+.campaign-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 1;
+  transition: opacity 0.3s ease;
+  border-radius: 10px;
+  opacity: 20;
+}
 
 .campaign-performance-icon {
   border-radius: 5px;
@@ -182,7 +200,7 @@
 }
 
 .campaign-performance-table-delete-icon:hover {
-  color: var(--red-color);
+  color: var(--red-color) !important;
   border: 1px solid var(--red-color);
   background-color: var(--white-color);
   font-weight: 600;
@@ -207,6 +225,7 @@
 .create-campaign-cancel-button {
   color: var(--primary-green) !important;
   border-color: var(--primary-green) !important;
+  font-weight: 600;
 }
 
 .create-campaign-cancel-button:hover {
@@ -420,12 +439,25 @@
   text-align: left;
   color: var(--black-color);
 }
+.marketing-categories-section h3 {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 37.93px;
+  letter-spacing: -0.03em;
+  text-align: left;
+  color: var(--black-color);
+}
+.marketing-categories-section p {
+  line-height: 37.93px;
+  letter-spacing: -0.03em;
+  color: var(--black-color);
+}
 .upcoming-event-card {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   padding: 14px;
   background-color: var(--card-background-color);
-  height: 390px;
+  height: 410px;
 }
 .upcoming-event-card img {
   width: 210px;
@@ -478,8 +510,8 @@
 .slick-prev {
   font-size: 0 !important;
   cursor: pointer;
-  color: var(--white-color) !important;
-  background-color: var(--background-color) !important;
+  color: var(--black-color) !important;
+  background-color: var(--primary-green) !important;
   border-radius: 50%;
   opacity: 2;
   left: 0 !important;
@@ -487,19 +519,24 @@
 .slick-next {
   font-size: 0 !important;
   cursor: pointer;
-  color: var(--white-color) !important;
-  background-color: var(--background-color) !important;
+  color: var(--black-color) !important;
+  background-color: var(--primary-green) !important;
   border-radius: 50%;
   opacity: 2;
   right: 0 !important;
-}
-.slick-prev::before {
-  color: var(--background-color);
 }
 .slick-prev:hover,
 .slick-next:hover {
   background-color: var(--primary-green) !important;
   color: var(--primary-green) !important;
+}
+.slick-next:before,
+.slick-prev::before {
+  font-family: 'slick';
+  font-size: 20px;
+  line-height: 1;
+  opacity: .5;
+  color: var(--white-color) !important;
 }
 .recommend-video-card {
   background-size: cover;
@@ -518,21 +555,6 @@
   height: 400px;
   background-color: var(--card-background-color);
 }
-
-/* .recommend-video-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    180.17deg,
-    rgba(0, 0, 0, 0) 41.5%,
-    rgba(0, 0, 0, 0.6) 99.86%
-  );
-  z-index: 1;
-} */
 
 .recommend-video-card h4 {
   color: var(--text-white-color) !important;
@@ -554,41 +576,9 @@
   text-align: left;
 }
 
-/* .video-preview {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
-  display: none;
-} */
-
 .recommend-video-card:hover .video-preview {
   display: block;
 }
-
-/* .play-button-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2; 
-  transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-.play-button-overlay:hover {
-  transform: translate(-50%, -50%) scale(1.1);
-  background-color: rgba(0, 0, 0, 0.8);
-} */
 
 .feature-program-card {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -747,6 +737,9 @@
   padding: 8px 12px;
   cursor: pointer;
 }
+.filter-menu-item:hover {
+  text-decoration: underline;
+}
 
 /* manju */
 
@@ -813,36 +806,6 @@
   color: var(--black-color);
   background-color: var(--white-color);
 }
-
-/* .video-player-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-} */
-
-/* .video-player-container {
-  position: relative;
-  width: 80%;
-  max-width: 800px;
-}
-
-.close-player-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
-} */
 
 .image-upload-icon {
   color: var(--black-color);
@@ -924,9 +887,9 @@
 
 .latest-camp-icon-container {
   position: absolute;
-  top: 10px; /* Adjust as needed */
-  right: 10px; /* Adjust as needed */
-  z-index: 10; /* Ensure it's above the iframe */
+  top: 10px;
+  right: 10px;
+  z-index: 10;
 }
 
 @media (max-width: 1024px) {
@@ -935,5 +898,28 @@
   }
   .upcoming-event-card {
     height: 520px;
+  }
+}
+
+.events-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.events-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .events-header-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .events-buttons {
+    justify-content: space-between;
   }
 }

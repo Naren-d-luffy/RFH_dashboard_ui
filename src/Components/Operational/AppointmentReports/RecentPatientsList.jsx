@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Dropdown, Button, Input, Avatar } from "antd";
+import { Table, Dropdown, Button, Avatar } from "antd";
 import { FiEye, FiSearch } from "react-icons/fi";
 import { VscSettings } from "react-icons/vsc";
 import defaultUser from "../../../Assets/Images/DefaultUser.png";

@@ -2,7 +2,7 @@
   width: fit-content;
   padding: 4px 8px;
   background-color: var(--white-color);
-  border: 1px solid var(--primary-green);
+  border: 1px dotted var(--primary-green);
   border-radius: 5px;
   color: var(--primary-green);
 }
@@ -19,10 +19,13 @@
 .trash-icon-health-package {
   color: var(--primary-green);
   font-size: 20px;
+  cursor: pointer;
+}
+.trash-icon-health-package:hover {
+  color: var(--yellow-color);
 }
 .health-package-modal-header {
   background: linear-gradient(var(--primary-green), #fff);
-  /* height: 200px; */
 }
 .view-health-package-modal .ant-modal-content {
   padding: 0 0 20px 0 !important;

@@ -1,0 +1,53 @@
+.role-users-profile-card {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 272px;
+}
+.role-users-profile-card h2 {
+  font-size: 14px;
+  color: var(--black-color);
+  font-weight: 900;
+  text-align: center;
+}
+.role-users-profile-card h4 {
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  margin: 3px;
+  color: var(--black-color);
+}
+.inactive-status-button {
+	background-color: var(--red-color);
+	color: var(--white-color) !important;
+  }
+.inactive-status-button:hover {
+	border-color: var(--red-color) !important;
+	color: var(--red-color) !important;
+  }
+.role-users-profile-card.inactive-card {
+  background-color: #e0dbdb; 
+  border: 1px solid #a694f5;
+  opacity: 0.7; 
+  }
+  .status-role-button {
+    background-color: var(--primary-green);
+    color: var(--white-color) !important;
+    width: 80px;
+  }
+  .edit-role-button {
+    color: var(--primary-green) !important;
+    border-color: var(--primary-green) !important;
+    font-weight: 600;
+    width: 80px;
+  }
+  .edit-role-button:hover {
+    color: var(--white-color) !important;
+    background-color: var(--primary-green) !important;
+  }
+  .status-role-button:hover {
+    border-color: var(--primary-green) !important;
+    color: var(--primary-green) !important;
+  }

@@ -8,8 +8,22 @@ const loginInstance = axios.create({
 
 // Instance for Other Requests
 const Instance = axios.create({
-  baseURL: "https://relience-test-backend.onrender.com/api/v1/",
+  baseURL: "http://20.211.48.243:9000/api/v1/",
 });
+
+Instance.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => {
+    // Handle request errors
+    return Promise.reject(error);
+  }
+);
 
 // Instance for LocalHost
 // const Instance = axios.create({

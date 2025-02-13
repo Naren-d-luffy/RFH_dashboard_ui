@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Table } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../Assets/Icons/Empty_survey_image.png";
 import { showDeleteMessage, showSuccessMessage } from "../../globalConstant";
@@ -19,7 +19,6 @@ const NewsList = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewNewsModalOpen, setIsViewNewsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [newsList, setNewsList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedNews, setSelectedNews] = useState({ content: [] });
   const [totalRows, setTotalRows] = useState(0);
@@ -70,35 +69,39 @@ const NewsList = () => {
     });
   };
 
-  const fetchNewsList = async (page) => {
+  const fetchNewsList = useCallback( async (page) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/cards`, {
         params: { page, limit: itemsPerPage },
       });
-      setNewsList(response.data || []);
-      setTotalRows(response.data.length);
-      dispatch(setNews(response.data));
+      
+      setTotalRows(response.data.data.length);
+      dispatch(setNews(response.data.data));
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching news:", error);
     } finally {
       setIsLoading(false);
     }
-  };
+  },
+  [dispatch, itemsPerPage]
+);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return news;
-    return news.filter((news) =>
-      `${news.heading}{}${news.subheading}`
+    const newsList = Object.values(news).reverse();
+    if (searchText.trim() === "") return newsList;
+    return newsList.filter((newsItem) =>
+      `${newsItem.heading} ${newsItem.subheading}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, news]);
+  
 
   useEffect(() => {
     fetchNewsList(currentPage);
-  }, [currentPage]);
+  }, [currentPage,fetchNewsList]);
 
   const handleTableChange = (pagination) => {
     setCurrentPage(pagination.current);
@@ -106,20 +109,27 @@ const NewsList = () => {
 
   const columns = [
     {
+      title:"Type",
+      dataIndex: "type",
+      className: "campaign-performance-table-column",
+    },
+    {
       title: "Heading",
       dataIndex: "heading",
       className: "campaign-performance-table-column",
+      sorter:(a,b)=>a.heading.localeCompare(b.heading)
+
     },
     {
       title: "SubHeading",
       dataIndex: "subheading",
       className: "campaign-performance-table-column",
     },
-    {
-      title: "About",
-      dataIndex: "about",
-      className: "campaign-performance-table-column",
-    },
+    // {
+    //   title: "About",
+    //   dataIndex: "about",
+    //   className: "campaign-performance-table-column",
+    // },
     {
       title: "Action",
       key: "action",
@@ -150,33 +160,33 @@ const NewsList = () => {
     },
   ];
 
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
+  // const items = [
+  //   {
+  //     label: "Last Day",
+  //     key: "1",
+  //   },
+  //   {
+  //     label: "Last week",
+  //     key: "2",
+  //   },
+  //   {
+  //     label: "Last Month",
+  //     key: "3",
+  //   },
+  // ];
 
-  const handleMenuClick = ({ key }) => {};
+  // const handleMenuClick = ({ key }) => {};
 
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+  // const menuProps = {
+  //   items,
+  //   onClick: handleMenuClick,
+  // };
 
   return (
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : newsList.length > 0 ? (
+      ) : Object.values(news).length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
@@ -205,7 +215,7 @@ const NewsList = () => {
                 />
               </div>
 
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -214,7 +224,7 @@ const NewsList = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table

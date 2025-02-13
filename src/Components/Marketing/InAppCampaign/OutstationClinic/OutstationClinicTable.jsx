@@ -1,10 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Table, message} from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
+
   showDeleteMessage,
   showSuccessMessage,
 } from "../../../../globalConstant";
@@ -31,7 +31,6 @@ const OutstationClinicTable = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const EventData = useSelector((state) => state.clinics.clinics);
-  console.log(EventData, "Eventdata");
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
@@ -60,18 +59,18 @@ const OutstationClinicTable = () => {
             dispatch(deleteOutstationClinic(_id));
           }
         } catch (error) {
-          console.error("Error deleting event:", error);
+          message.error("Error deleting clinic",error);
+          console.error("Error deleting clinic:", error);
         }
       },
     });
   };
-  const fetchOutstationClinicInfo = async (page) => {
+  const fetchOutstationClinicInfo = useCallback(async (page=1) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/discover/clinic`, {
-        params: { page, limit: itemsPerPage },
+        params: { page, limit: itemsPerPage }
       });
-      console.log(response.data);
       dispatch(setOutstationClinic(response.data));
       setOutstationClinic(response.data || []);
       setTotalRows(response.data || 0);
@@ -80,26 +79,36 @@ const OutstationClinicTable = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[itemsPerPage,dispatch]);
 
   useEffect(() => {
     fetchOutstationClinicInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage,fetchOutstationClinicInfo]);
 
+  // const dataSource = useMemo(() => {
+  //   if (searchText.trim() === "") return EventData;
+  //   return EventData.filter((Event) =>
+  //     `${Event.name}{}${Event.rating}{} ${Event.reviews}{}${Event.location}{}${Event.patients}{}${Event.experience} `
+  //       .toLowerCase()
+  //       .includes(searchText.toLowerCase())
+  //   );
+  // }, [searchText, EventData]);
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return EventData;
-    return EventData.filter((Event) =>
-      `${Event.title}{}${Event.description}`
+    const events = [...EventData].reverse();
+    if (searchText.trim() === "") return events;
+    return events.filter((event) =>
+      `${event.name} ${event.rating} ${event.reviews} ${event.location} ${event.patients} ${event.experience}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, EventData]);
-
+  
   const columns = [
     {
       title: "Name",
       dataIndex: "name",
       className: "campaign-performance-table-column",
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     // {
     //   title: "About",
@@ -121,21 +130,26 @@ const OutstationClinicTable = () => {
       title: "Rating",
       dataIndex: "rating",
       className: "campaign-performance-table-column",
+      sorter: (a, b) => a.rating - b.rating, 
+
     },
     {
       title: "Reviews",
       dataIndex: "reviews",
       className: "campaign-performance-table-column",
+      sorter: (a, b) => a.reviews - b.reviews, 
     },
     {
       title: "Location",
       dataIndex: "location",
       className: "campaign-performance-table-column",
+      sorter: (a, b) => a.location.localeCompare(b.location),
     },
     {
       title: "Patients",
       dataIndex: "patients",
       className: "campaign-performance-table-column",
+      sorter: (a, b) => a.patients - b.patients, 
     },
     {
       title: "Experience",
@@ -146,6 +160,7 @@ const OutstationClinicTable = () => {
       title: "Timing",
       dataIndex: "timing",
       className: "campaign-performance-table-column",
+
     },
     {
       title: "Action",
@@ -176,37 +191,37 @@ const OutstationClinicTable = () => {
     },
   ];
 
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
+  // const items = [
+  //   {
+  //     label: "Last Day",
+  //     key: "1",
+  //   },
+  //   {
+  //     label: "Last week",
+  //     key: "2",
+  //   },
+  //   {
+  //     label: "Last Month",
+  //     key: "3",
+  //   },
+  // ];
 
-  const handleMenuClick = ({ key }) => {};
+  // const handleMenuClick = ({ key }) => {};
 
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+  // const menuProps = {
+  //   items,
+  //   onClick: handleMenuClick,
+  // };
 
   return (
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : EventData.length > 0 ? (
+      ) : EventData?.length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>OutstationClinic Info</h3>
+              <h3>Outstation/Speciality Clinic Info</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -231,7 +246,7 @@ const OutstationClinicTable = () => {
                 />
               </div>
 
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -240,7 +255,7 @@ const OutstationClinicTable = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table

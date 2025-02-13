@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, Input, DatePicker, TimePicker, message } from "antd";
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  DatePicker,
+  TimePicker,
+  message,
+} from "antd";
 import "react-quill/dist/quill.snow.css";
 import { EnvironmentOutlined } from "@ant-design/icons";
 import { showSuccessMessage } from "../../../../globalConstant";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
-import dayjs from "dayjs"
+import dayjs from "dayjs";
 import { editCamp } from "../../../../Features/CampSlice";
 const { TextArea } = Input;
 
 const EditCamps = ({ open, handleCancel, campDataa }) => {
-    const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     campName: "",
     date: null,
@@ -42,17 +50,33 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
   };
 
   const handleSave = async () => {
+    if (
+          !formData.campName ||
+          !formData.date ||
+          !formData.time ||
+          !formData.description ||
+          !formData.hospitalName ||
+          !formData.location ||
+          !formData.address ||
+          !formData.pinCode
+        ) {
+          message.error("Please fill in all required fields.");
+          return;
+        }
     const formattedData = {
       ...formData,
-      date: formData.date?.format("YYYY-MM-DD"), 
-      time: formData.time?.format("hh:mm A"),  
+      date: formData.date?.format("YYYY-MM-DD"),
+      time: formData.time?.format("hh:mm A"),
     };
 
     try {
-      const response = await Instance.put(`/camp/${campDataa._id}`, formattedData);
+      const response = await Instance.put(
+        `/camp/${campDataa._id}`,
+        formattedData
+      );      
       if (response?.status === 200 || response?.status === 201) {
-        dispatch(editCamp(response.data))
-        showSuccessMessage("Successfully Updated", "");
+        dispatch(editCamp(response.data.data))
+        showSuccessMessage("Successfully Updated Camp");
         handleCancel();
       }
     } catch (error) {
@@ -68,11 +92,19 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
       onCancel={handleCancel}
       width={680}
       footer={[
-        <Button key="back" onClick={handleCancel} className="create-campaign-cancel-button">
+        <Button
+          key="back"
+          onClick={handleCancel}
+          className="create-campaign-cancel-button"
+        >
           Cancel
         </Button>,
-        <Button key="save" onClick={handleSave} className="create-campaign-save-button">
-          Save
+        <Button
+          key="save"
+          onClick={handleSave}
+          className="create-campaign-save-button"
+        >
+          Update
         </Button>,
       ]}
     >
@@ -86,7 +118,9 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
                 value={formData.campName}
                 onChange={(e) => handleInputChange("campName", e.target.value)}
               />
-              <span className="settings-input-span">Camp Name</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Camp Name
+              </span>
             </Form.Item>
           </div>
           <div className="col-md-3 mt-2">
@@ -98,7 +132,9 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
                 value={formData.date}
                 onChange={(date) => handleInputChange("date", date)}
               />
-              <span className="settings-input-span">Camp Date</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Camp Date
+              </span>
             </Form.Item>
           </div>
           <div className="col-md-3 mt-2">
@@ -110,7 +146,9 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
                 value={formData.time}
                 onChange={(time) => handleInputChange("time", time)}
               />
-              <span className="settings-input-span">Camp Time</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Camp Time
+              </span>
             </Form.Item>
           </div>
         </div>
@@ -120,9 +158,13 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
               <TextArea
                 placeholder="Description"
                 value={formData.description}
-                onChange={(e) => handleInputChange("description", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("description", e.target.value)
+                }
               />
-              <span className="create-campaign-input-span">Description</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Description
+              </span>
             </Form.Item>
           </div>
           <div className="col-md-6 mt-2">
@@ -131,9 +173,13 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
                 className="settings-input"
                 placeholder="Hospital Name"
                 value={formData.hospitalName}
-                onChange={(e) => handleInputChange("hospitalName", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("hospitalName", e.target.value)
+                }
               />
-              <span className="settings-input-span">Hospital Name</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Hospital Name
+              </span>
             </Form.Item>
           </div>
           <div className="col-md-6 mt-2">
@@ -144,7 +190,9 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
                 value={formData.location}
                 onChange={(e) => handleInputChange("location", e.target.value)}
               />
-              <span className="settings-input-span">Location</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Location
+              </span>
             </Form.Item>
           </div>
         </div>
@@ -154,11 +202,17 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
               <Input
                 className="settings-input"
                 placeholder="Enter Address"
-                prefix={<EnvironmentOutlined style={{ color: "#00963F", fontSize: "14px" }} />}
+                prefix={
+                  <EnvironmentOutlined
+                    style={{ color: "#00963F", fontSize: "14px" }}
+                  />
+                }
                 value={formData.address}
                 onChange={(e) => handleInputChange("address", e.target.value)}
               />
-              <span className="settings-input-span">Address</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Address
+              </span>
             </Form.Item>
           </div>
           <div className="col-md-6 mt-2">
@@ -169,7 +223,9 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
                 value={formData.pinCode}
                 onChange={(e) => handleInputChange("pinCode", e.target.value)}
               />
-              <span className="settings-input-span">Pin Code</span>
+              <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Pin Code
+              </span>
             </Form.Item>
           </div>
         </div>

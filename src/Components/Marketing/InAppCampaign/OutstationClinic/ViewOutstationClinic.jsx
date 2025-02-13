@@ -3,7 +3,7 @@ import { Button, Modal } from "antd";
 import Loader from "../../../../Loader";
 
 const ViewOutstationClinic = ({ open, handleCancel, EventData }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
 
   return (
     <>
@@ -50,6 +50,9 @@ const ViewOutstationClinic = ({ open, handleCancel, EventData }) => {
               </p>
               <p>
                 <strong>Timing:</strong> {EventData?.timing || "N/A"}
+              </p>
+              <p>
+                <strong>Clinic Type:</strong> {EventData?.type || "N/A"}
               </p>
             </div>
           </div>

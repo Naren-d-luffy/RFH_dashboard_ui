@@ -1,12 +1,11 @@
-import React, { useState,useEffect } from "react";
-import { Button, Modal, Form, Input, Upload, message } from "antd";
+import React, { useState, useEffect } from "react";
+import { Button, Modal, Form, Input, Upload, message,Switch } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { ColorPicker } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { editTreatment } from "../../../../Features/TreatmentInfoSlice";
@@ -22,7 +21,7 @@ const modules = {
 
 const { TextArea } = Input;
 
-const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
+const EditTreatmentsInfo = ({ open, handleCancel, treatmentData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -30,8 +29,11 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const [service, setService] = useState(false);
+  const [conditions, setConditions] = useState(false);
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
+    if (!validateImage(file)) return false;
     setUploadedImage(file);
   };
 
@@ -40,6 +42,7 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
   };
   const handleUpload1 = (info) => {
     const file = info.file.originFileObj;
+    if (!validateImage(file)) return false;
     setThumbnailImage(file);
   };
 
@@ -53,16 +56,19 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
       setContent(treatmentData.content || "");
       setUploadedImage(treatmentData.headerImage || null);
       setThumbnailImage(treatmentData.thumbnail || null);
+      setConditions(treatmentData.condition);
+      setService(treatmentData.service)
     }
   }, [open, treatmentData]);
 
   const handleSave = async () => {
+    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
     if (
       !title ||
       !description ||
-      !content ||
+      !strippedContent ||
       !uploadedImage ||
-      !thumbnailImage 
+      !thumbnailImage
     ) {
       message.error("Please fill in all required fields.");
       return;
@@ -75,12 +81,16 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
       formData.append("content", content);
       formData.append("headerImage", uploadedImage);
       formData.append("thumbnail", thumbnailImage);
-      
-      const response = await Instance.put(`/education/${treatmentData._id}`, formData);
+      formData.append("service", service);
+      formData.append("condition", conditions);
+      const response = await Instance.put(
+        `/education/${treatmentData._id}`,
+        formData
+      );
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
-        dispatch(editTreatment(response.data))
-        showSuccessMessage("Treatment Info Added successfully!");
+        dispatch(editTreatment(response.data.data));
+        showSuccessMessage("Common procedure updated successfully!");
         setTitle("");
         setDescription("");
         setContent("");
@@ -102,7 +112,7 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Edit Treatment Info{" "}
+            Edit Common procedure{" "}
           </span>
         }
         onCancel={handleCancel}
@@ -121,14 +131,21 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
             className="create-campaign-save-button"
             loading={isLoading}
           >
-            Save
+            Update
           </Button>,
         ]}
       >
         <Form layout="vertical" className="mt-4">
           <Form.Item>
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Add Title" required />
-            <span className="create-campaign-input-span">Title</span>
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Add Title"
+              required
+            />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Title
+            </span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -137,9 +154,36 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">Description</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Description
+            </span>
           </Form.Item>
           <div className="row">
+            <div className="col-lg-12">
+              <div
+                className="mt-2"
+                style={{ display: "flex", gap: "30px", alignItems: "center" }}
+              >
+                <div>
+                  <span>Department Services </span>
+                  <Switch
+                    className="gastro-switch-button"
+                    checked={service}
+                    onChange={(checked) => setService(checked)}
+                  />
+                </div>
+                <div>
+                  <span>Conditions we Treat </span>
+                  <Switch
+                    className="gastro-switch-button"
+                    checked={conditions}
+                    onChange={(checked) => setConditions(checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row mt-5">
             <div className="col-lg-6">
               <Form.Item>
                 <Upload
@@ -152,7 +196,7 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
+                    <IoCloudUploadOutline className="image-upload-icon" />{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
@@ -186,7 +230,9 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Header Image</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Header Image
+                </span>
               </Form.Item>
             </div>
             <div className="col-lg-6">
@@ -201,7 +247,7 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
+                    <IoCloudUploadOutline className="image-upload-icon" />{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
@@ -235,7 +281,9 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Thumbnail Image</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Thumbnail Image
+                </span>
               </Form.Item>
             </div>
           </div>
@@ -248,7 +296,9 @@ const EditTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content Points</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Content Points
+            </span>
           </Form.Item>
         </Form>
       </Modal>

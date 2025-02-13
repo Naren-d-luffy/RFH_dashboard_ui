@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Table, message } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
 import {
@@ -20,20 +19,18 @@ import {
   deleteGastroIllness,
   setGastroIllness,
 } from "../../../../Features/GastroIllnessSlice";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const GastroIllnessTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [EventList, setEventList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const EventData = useSelector((state) => state.gastroIllness.gastroIllness);
-  console.log(EventData, "Eventdata");
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
@@ -80,46 +77,53 @@ const GastroIllnessTable = () => {
             dispatch(deleteGastroIllness(_id));
           }
         } catch (error) {
-          console.error("Error deleting event:", error);
+          console.error("Error deleting overview:", error);
+          message.error("Error deleting overview",error);
+
         }
       },
     });
   };
-  const fetchGastroIllnessInfo = async (page) => {
+  const fetchGastroIllnessInfo = useCallback(
+     async (page) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/gastro`, {
         params: { page, limit: itemsPerPage },
       });
-      console.log(response.data);
-      dispatch(setGastroIllness(response?.data?.gastros));
+      dispatch(setGastroIllness(response?.data?.data?.gastros));
       setGastroIllness(response.data?.gastros || []);
-      setTotalRows(response.data?.totalGastros || 0);
+      setTotalRows(response.data?.data?.totalGastros || 0);
     } catch (error) {
-      console.error("Error fetching treatments:", error);
+      console.error("Error fetching overview:", error);
     } finally {
       setIsLoading(false);
     }
-  };
+  },
+  [dispatch, itemsPerPage]
+);
 
   useEffect(() => {
     fetchGastroIllnessInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage,fetchGastroIllnessInfo]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return EventData;
-    return EventData.filter((Event) =>
-      `${Event.title}{}${Event.description}`
+    const events = [...EventData].reverse();
+    if (searchText.trim() === "") return events;
+    return events.filter((event) =>
+      `${event.title} ${event.description} ${event.content}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, EventData]);
-
+  
   const columns = [
     {
       title: "Title",
       dataIndex: "title",
       className: "campaign-performance-table-column",
+      sorter:(a,b)=>a.title.localeCompare(b.title)
+
     },
     {
       title: "Description",
@@ -171,27 +175,27 @@ const GastroIllnessTable = () => {
     },
   ];
 
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
+  // const items = [
+  //   {
+  //     label: "Last Day",
+  //     key: "1",
+  //   },
+  //   {
+  //     label: "Last week",
+  //     key: "2",
+  //   },
+  //   {
+  //     label: "Last Month",
+  //     key: "3",
+  //   },
+  // ];
 
-  const handleMenuClick = ({ key }) => {};
+  // const handleMenuClick = ({ key }) => {};
 
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+  // const menuProps = {
+  //   items,
+  //   onClick: handleMenuClick,
+  // };
 
   return (
     <div className="container mt-1">
@@ -226,7 +230,7 @@ const GastroIllnessTable = () => {
                 />
               </div>
 
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -235,7 +239,7 @@ const GastroIllnessTable = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table

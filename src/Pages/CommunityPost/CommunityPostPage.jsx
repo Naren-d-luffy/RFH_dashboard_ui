@@ -1,10 +1,12 @@
 import React from 'react'
-import CommunityPost from '../../Components/CommunityPost/CommunityPost'
+// import CommunityPost from '../../Components/CommunityPost/CommunityPost'
+import ComingSoon from '../../comingSoon'
 
 const CommunityPostPage = () => {
   return (
     <div>
-      <CommunityPost />
+      <ComingSoon/>
+      {/* <CommunityPost /> */}
     </div>
   )
 }

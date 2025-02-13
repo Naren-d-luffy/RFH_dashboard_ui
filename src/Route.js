@@ -38,7 +38,6 @@ import HelloDoctorPage from "./Pages/HelloDoctor/HelloDoctorPage";
 import NewsPage from "./Pages/News/NewsPage";
 import CommunityPostPage from "./Pages/CommunityPost/CommunityPostPage";
 import { HealthPackagePage } from "./Pages/HealthPackage/HealthPackagePage";
-import SignUp from "./Components/Auth/SignUp";
 import ForgotPassword from "./Components/Auth/ForgotPassword";
 import OtpScreen from "./Components/Auth/OtpScreen";
 import ConfirmPassword from "./Components/Auth/ConfirmPassword";
@@ -51,19 +50,32 @@ import FeaturesTable from "./Components/Marketing/InAppCampaign/FeaturedPrograms
 import HelloDoctorTable from "./Components/Marketing/InAppCampaign/HelloDoctor/HelloDoctorTable";
 import DoctorsTableView from "./Components/Teleconsultation/DoctorsList/DoctorsTableView";
 import ViewAllCampTable from "./Components/Marketing/InAppCampaign/LatestCamps/ViewAllCampTable";
-import Register from "./Components/Auth/Register";
-import SignUpOtpScreen from "./Components/Auth/SignUpOtp";
+import ReadingMaterialsList from "./Components/PatientEducation/EducationResources/ReadingMaterials/ReadingMaterialsTable";
+import FacilityTable from "./Components/DepartmentDetails/Facility/FacilityTable";
+import BlogsTable from "./Components/Marketing/InAppCampaign/Blogs/BlogListTables";
+import ServiceTable from "./Components/DepartmentDetails/DepartmentService/ServiceTable";
+import TechnologyTable from "./Components/DepartmentDetails/Technology/TechnologyTable";
+import ConditionWeTreatTable from "./Components/DepartmentDetails/ConditionWeTreat/ConditionWeTreatTable";
+import RecommendedVideosTable from "./Components/Marketing/InAppCampaign/RecommendedVideos/RecommendedVideosTable";
+import { TermsAndConditionsList } from "./Components/Settings/TermsAndConditions/TermsAndConditionsList";
+import AboutHospital from "./Components/Settings/AboutHospital";
+import AllConfigList from "./Components/Settings/Config/AllConfigList";
+import RoleBasedPage from "./Pages/RoleBased/RoleBasedPage";
+import { UnAuthorizedPage } from "./UnAuthorizedPage";
+import ProtectedRoute from "./PrivateRoute";
+import AddRoleBased from "./Components/RoleBased/AddRoleBased";
+import EditRoleBased from "./Components/RoleBased/EditRoleAccess";
 
 export const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/register" element={<Register />} />
+        {/* <Route path="/sign-up" element={<SignUp />} /> */}
+        {/* <Route path="/register" element={<Register />} /> */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/otp-verification" element={<OtpScreen />} />
-        <Route path="/signup-otp" element={<SignUpOtpScreen />} />
+        {/* <Route path="/signup-otp" element={<SignUpOtpScreen />} /> */}
         <Route path="/confirm-password" element={<ConfirmPassword />} />
 
         <Route element={<Layout />}>
@@ -83,6 +95,7 @@ export const AppRouter = () => {
             path="/marketing/campaign-performance"
             element={<CampaignPerformancePage />}
           />
+
           <Route
             path="/marketing/patient-acquisition"
             element={<PatientAcquisitionPage />}
@@ -97,18 +110,36 @@ export const AppRouter = () => {
           <Route path="/dashboard/settings" element={<SettingsPage />} />
 
           <Route path="/user-engagement" element={<UserEngagementPage />} />
-          <Route
+          {/* <Route
             path="marketing/in-app-campaign"
             element={<InAppCampaignPage />}
+          /> */}
+          {/* <ProtectedRoute 
+           path="marketing/in-app-campaign" 
+          component={InAppCampaignPage} 
+          requiredCategory="Marketing"
+        /> */}
+          <Route
+            path="/marketing/in-app-campaign"
+            element={<ProtectedRoute element={<InAppCampaignPage />} requiredCategory="Marketing" />}
           />
 
           <Route
             path="/patient-education/overview"
             element={<EducationOverviewPage />}
           />
-          <Route
+          {/* <Route
             path="/patient-education/resources"
             element={<EducationResourcesPage />}
+          /> */}
+          {/* <ProtectedRoute
+            path="/patient-education/resources"
+            element={<EducationResourcesPage />}
+            requiredCategory="Education"
+          /> */}
+          <Route
+            path="/patient-education/resources"
+            element={<ProtectedRoute element={<EducationResourcesPage />} requiredCategory="Education" />}
           />
           <Route
             path="/feedback/create-survey"
@@ -155,7 +186,7 @@ export const AppRouter = () => {
           />
           <Route
             path="/teleconsultation/virtual-management"
-            element={<VirtualManagementPage />}
+            element={<ProtectedRoute element={<VirtualManagementPage />} requiredCategory="Teleconsultation" />}
           />
           <Route
             path="/teleconsultation/doctor-detail"
@@ -199,15 +230,24 @@ export const AppRouter = () => {
             element={<ChatPage />}
           />
           <Route path="/chat" element={<ChattingPage />} />
-          <Route path="/news" element={<NewsPage />} />
-
+          <Route
+            path="/news"
+            element={<ProtectedRoute element={<NewsPage />} requiredCategory="News" />}
+          />
           <Route path="/community-post" element={<CommunityPostPage />} />
           <Route path="/health-package" element={<HealthPackagePage />} />
-          <Route
+          {/* <Route
             path="/department-details"
             element={<DepartmentDetailsPage />}
+          /> */}
+          <Route
+            path="/department-details"
+            element={<ProtectedRoute element={<DepartmentDetailsPage />} requiredCategory="Department" />}
           />
           <Route path="/view-all-treatments" element={<TreatmentList />} />
+          <Route path="/view-all-blog-lists" element={<BlogsTable />} />
+          <Route path="/view-all-service-lists" element={<ServiceTable />} />
+
           <Route
             path="/view-all-gastro-illness"
             element={<GastroIllnessTable />}
@@ -221,11 +261,55 @@ export const AppRouter = () => {
           />
 
           <Route path="/view-all-hello-doctor" element={<HelloDoctorTable />} />
-          <Route path="/teleconsultation/doctors-list" element={<DoctorsTableView />} />
+          <Route
+            path="/teleconsultation/doctors-list"
+            element={<DoctorsTableView />}
+          />
 
           <Route path="/view-all-camp-table" element={<ViewAllCampTable />} />
 
-
+          <Route
+            path="/view-all-readingmaterials"
+            element={<ReadingMaterialsList />}
+          />
+          <Route path="/view-all-facility-list" element={<FacilityTable />} />
+          <Route
+            path="/view-all-technology-list"
+            element={<TechnologyTable />}
+          />
+          <Route
+            path="/view-all-condition-we-treat-list"
+            element={<ConditionWeTreatTable />}
+          />
+          <Route
+            path="/view-all-recommended-videos-table"
+            element={<RecommendedVideosTable />}
+          />
+           <Route
+            path="/terms-conditions"
+            element={<ProtectedRoute element={<TermsAndConditionsList />} requiredCategory="Terms" />}
+          />
+          <Route
+            path="/about-hospital"
+            element={<ProtectedRoute element={<AboutHospital />} requiredCategory="AboutHospital" />}
+          />
+          <Route
+            path="/configuration"
+            element={<ProtectedRoute element={<AllConfigList />} requiredCategory="Configuration" />}
+          />
+          <Route
+            path="/role-based"
+            element={<ProtectedRoute element={<RoleBasedPage />} requiredCategory="RoleBasedAccess" />}
+          />
+          <Route path="/admin/Unauthorized" element={<UnAuthorizedPage />} />
+          <Route
+            path="/add-role-access"
+            element={<AddRoleBased />}
+          />
+          <Route
+            path="/edit-role-access/:id"
+            element={<EditRoleBased />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

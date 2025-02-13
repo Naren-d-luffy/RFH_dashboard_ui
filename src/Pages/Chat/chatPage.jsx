@@ -1,11 +1,13 @@
 import React from "react";
-import Chat from "../../Components/Chat/Chat";
+// import Chat from "../../Components/Chat/Chat";
+import ComingSoon from "../../comingSoon";
 
 const ChattingPage = () => {
   return (
     <>
       <div className="container">
-        <Chat />
+        <ComingSoon/>
+        {/* <Chat /> */}
       </div>
     </>
   );

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, Input, Upload, message } from "antd";
+import { Button, Modal, Form, Input, Upload, message, Select ,Switch} from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { ColorPicker } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { editGastroIllness } from "../../../../Features/GastroIllnessSlice";
@@ -24,49 +23,47 @@ const { TextArea } = Input;
 
 const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [thumbnailImage, setThumbnailImage] = useState(null);
+  const [, setThumbnailImage] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+    const [service, setService] = useState(false);
+    const [conditions, setConditions] = useState(false);
   const dispatch = useDispatch();
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
+    if (!validateImage(file)) return false;
+
     setUploadedImage(file);
   };
+  const [type, setType] = useState("");
 
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
-  const handleUpload1 = (info) => {
-    const file = info.file.originFileObj;
-    setThumbnailImage(file);
-  };
 
-  const handleDeleteImage1 = () => {
-    setThumbnailImage(null);
-  };
   useEffect(() => {
     if (open && EventData) {
       setTitle(EventData.title || "");
       setDescription(EventData.description || "");
       setContent(EventData.content || "");
       setUploadedImage(EventData.headerImage || null);
-      setThumbnailImage(EventData.thumbnail || null);
+      setType(EventData.type || "");
+      setService(EventData.service)
+      setConditions(EventData.condition)
+
+      // setThumbnailImage(EventData.thumbnail || null);
     }
   }, [open, EventData]);
 
   const handleSave = async () => {
-    if (
-      !title ||
-      !description ||
-      !content ||
-      !uploadedImage ||
-      !thumbnailImage
-    ) {
-      message.error("Please fill in all required fields.");
-      return;
-    }
+    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
+    
+    if (!title || !type ||!description ||!strippedContent || !uploadedImage ) {
+         message.error("Please fill in all required fields.");
+         return;
+       }
     setIsLoading(true);
     try {
       const formData = new FormData();
@@ -74,19 +71,22 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
       formData.append("description", description);
       formData.append("content", content);
       formData.append("headerImage", uploadedImage);
-      formData.append("thumbnail", thumbnailImage);
-
+      // formData.append("thumbnail", thumbnailImage);
+      formData.append("type", type); // Include type
+      formData.append("service", service);
+      formData.append("condition", conditions);
       const response = await Instance.put(`/gastro/${EventData._id}`, formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("GastroIllness Info Updated successfully!");
-        dispatch(editGastroIllness(response.data));
+        dispatch(editGastroIllness(response.data.data));
 
         setTitle("");
         setDescription("");
         setContent("");
         setUploadedImage("");
         setThumbnailImage("");
+        setType("");
       }
     } catch (error) {
       console.error(error);
@@ -134,7 +134,9 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               placeholder="Add Title"
               required
             />
-            <span className="create-campaign-input-span">Title</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Title
+            </span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -143,10 +145,56 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">Description</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Description</span>
           </Form.Item>
           <div className="row">
-            <div className="col-lg-6">
+            <div className="col-lg-5">
+              <Form.Item>
+                <Select
+                  placeholder="Select Type"
+                  value={type || undefined}
+                  onChange={(value) => setType(value)}
+                >
+                  <Select.Option value="Overview of Digestive System">
+                    Overview of Digestive System
+                  </Select.Option>
+                  <Select.Option value="Common Diseases">
+                    Common Diseases
+                  </Select.Option>
+                  <Select.Option value="Common Symptoms">
+                    Common Symptoms
+                  </Select.Option>
+                </Select>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Type
+                </span>
+              </Form.Item>
+            </div>
+            <div className="col-lg-7">
+              <div className="mt-2"
+                style={{ display: "flex", gap: "10px", alignItems: "center" }}
+              >
+                <div>
+                  <span>Department Services </span>
+                  <Switch
+                  className="gastro-switch-button"
+                    checked={service}
+                    onChange={(checked) => setService(checked)}
+                  />
+                </div>
+                <div>
+                  <span>Conditions we Treat </span>
+                  <Switch
+                  className="gastro-switch-button"
+                    checked={conditions}
+                    onChange={(checked) => setConditions(checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-lg-12">
               <Form.Item>
                 <Upload
                   listType="picture"
@@ -158,7 +206,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
+                    <IoCloudUploadOutline className="image-upload-icon" />{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
@@ -192,58 +240,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Header Image</span>
-              </Form.Item>
-            </div>
-            <div className="col-lg-6">
-              <Form.Item>
-                <Upload
-                  listType="picture"
-                  showUploadList={false}
-                  onChange={handleUpload1}
-                  className="create-campaign-upload"
-                >
-                  <p className="create-campaign-ant-upload-text">
-                    Drop files here or click to upload
-                  </p>
-                  <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
-                    <span style={{ color: "#727880" }}>Upload Image</span>
-                  </span>
-                </Upload>
-                {thumbnailImage && (
-                  <div className="uploaded-image-preview d-flex gap-2">
-                    <img
-                      src={
-                        thumbnailImage instanceof File
-                          ? URL.createObjectURL(thumbnailImage)
-                          : thumbnailImage
-                      }
-                      alt="Thumbnail"
-                      style={{
-                        width: "200px",
-                        height: "auto",
-                        marginTop: "10px",
-                        borderRadius: "5px",
-                      }}
-                    />
-                    <Button
-                      onClick={handleDeleteImage1}
-                      style={{
-                        marginTop: "10px",
-                        backgroundColor: "#e6f2ed",
-                        borderRadius: "50%",
-                        fontSize: "16px",
-                        padding: "4px 12px",
-                      }}
-                    >
-                      <RiDeleteBin5Line className="model-image-upload-delete-icon" />
-                    </Button>
-                  </div>
-                )}
-                <span className="create-campaign-input-span">
-                  Thumbnail Image
-                </span>
+                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Header Image</span>
               </Form.Item>
             </div>
           </div>
@@ -256,7 +253,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content Points</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Content Points</span>
           </Form.Item>
         </Form>
       </Modal>

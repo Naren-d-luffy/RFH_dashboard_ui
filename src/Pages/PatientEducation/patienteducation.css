@@ -71,7 +71,8 @@
   font-weight: 600;
   line-height: 37.93px;
   letter-spacing: -0.03em;
-  color: var(--black-color);
+  color: var(--primary-green);
+  text-decoration: underline;
 }
 
 .education-categories-faq-menu {
@@ -122,87 +123,100 @@
   line-height: 30px;
   color: var(--faq-ans-color);
 }
-.treatment-info-icon-container{
+.treatment-info-icon-container {
   position: absolute;
   z-index: 2;
   top: 15px;
   right: 10px;
 }
-.health-package-modal-header{
-  background: linear-gradient(var(--primary-green),#fff);
+.health-package-modal-header {
+  background: linear-gradient(var(--primary-green), #fff);
   /* height: 200px; */
-
 }
-.view-health-package-modal .ant-modal-content{
+.view-health-package-modal .ant-modal-content {
   padding: 0 0 20px 0 !important;
 }
-.health-package-modal-header{
+.health-package-modal-header {
   padding: 40px;
 }
-.health-package-modal-header img{
+.health-package-modal-header img {
   height: 200px;
   width: 200px;
 }
-.health-package-modal-header h4{
+.health-package-modal-header h4 {
   font-size: 24px;
   color: var(--black-color);
   font-weight: 700;
 }
-.health-package-modal-content{
+.health-package-modal-content {
   padding: 20px;
 }
-.health-package-modal-content h5{
-font-size: 16px;
-font-weight: 700;
+.health-package-modal-content h5 {
+  font-size: 16px;
+  font-weight: 700;
 }
-.health-package-modal-content h6{
+.health-package-modal-content h6 {
   font-size: 14px;
   color: var(--black-color);
 }
 
-.view-treatment-info-modal-header{
-  background: linear-gradient(var(--primary-green),#fff);
+.view-treatment-info-modal-header {
+  background: linear-gradient(var(--primary-green), #fff);
 }
-.view-treatment-info-modal .ant-modal-content{
+.view-treatment-info-modal .ant-modal-content {
   padding: 0 0 20px 0 !important;
 }
-.view-treatment-info-modal-header{
+.view-treatment-info-modal-header {
   padding: 40px;
 }
-.view-treatment-info-modal-header img{
+.view-treatment-info-modal-header img {
   height: 200px;
   width: 200px;
 }
-.view-treatment-info-modal-header h4{
+.view-treatment-info-modal-header h4 {
   font-size: 24px;
   color: var(--black-color);
   font-weight: 700;
 }
-.view-treatment-info-modal-content{
+.view-treatment-info-modal-content {
   padding: 20px;
 }
-.view-treatment-info-modal-content h5{
-font-size: 16px;
-font-weight: 700;
-color: var(--black-color);
+.view-treatment-info-modal-content h5 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--black-color);
 }
-.view-treatment-info-modal-content h6{
+.view-treatment-info-modal-content h6 {
   font-size: 14px;
   color: var(--black-color);
 }
 
-.rfh-view-all-button{
+.rfh-view-all-button {
   background-color: transparent;
-  border: none;
+  border: 1px solid var(--primary-green);
   color: var(--primary-green);
-  text-decoration: underline;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  /* text-decoration: underline; */
 }
-.readig-material-coming-soon img{
+.rfh-view-all-button:hover {
+    background-color: var(--primary-green);
+  color: var(--white-color);
+}
+.readig-material-coming-soon img {
   width: 200px;
   height: 200px;
 }
-.readig-material-coming-soon h4{
+.readig-material-coming-soon h4 {
   font-size: 20px;
   color: var(--primary-green) !important;
   text-align: center;
+}
+.gastro-switch-button.ant-switch.ant-switch-checked {
+  background: var(--primary-green);
+}
+.gastro-switch-button.ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
+  background: var(--primary-green);
 }

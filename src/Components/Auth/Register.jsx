@@ -1,9 +1,9 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./auth.css";
 import logo from "../../Assets/Images/logo.png";
 import {  Link, useNavigate } from "react-router-dom";
-import { message, Spin, Carousel } from "antd";
+import { Spin, Carousel } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import login1 from "../../Assets/Images/login-1.png";
 import login2 from "../../Assets/Images/login-5.png";
@@ -19,8 +19,8 @@ const CustomDot = ({ active }) => (
 const Register = () => {
      
     const [email, setEmail] = useState("");
-    const [emailError, setEmailError] = useState("");
-    const [responseMessage, setResponseMessage] = useState("");
+    const [, setEmailError] = useState("");
+    const [, setResponseMessage] = useState("");
     const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -96,6 +96,7 @@ const Register = () => {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="signin-input"
               />
             </div>
             <button className="login-button" onClick={handleContinue}>
@@ -103,7 +104,7 @@ const Register = () => {
                 <Spin
                   indicator={
                     <LoadingOutlined
-                      style={{ fontSize: 24, color: "#00963f" }}
+                      style={{ fontSize: 24, color: "#fff" }}
                       spin
                     />
                   }

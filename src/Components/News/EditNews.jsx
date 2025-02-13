@@ -1,34 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, Upload, message, Row, Col } from "antd";
-import ReactQuill from "react-quill";
+import { Button, Modal, Form, Input, Upload, message, Select} from "antd";
+// import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { ColorPicker } from "antd";
 import { Instance } from "../../AxiosConfig";
-
 import { showSuccessMessage } from "../../globalConstant";
 import DOMPurify from "dompurify";
 import { editNews } from "../../Features/NewsSlice";
 import { useDispatch } from "react-redux";
 import Loader from "../../Loader";
-const modules = {
-  toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["bold", "italic"],
-    ["link", "image"],
-    ["clean"],
-  ],
-};
+import { Option } from "antd/es/mentions";
 
-const { TextArea } = Input;
+
+// const modules = {
+//   toolbar: [
+//     [{ header: "1" }, { header: "2" }, { font: [] }],
+//     [{ list: "ordered" }, { list: "bullet" }],
+//     ["bold", "italic"],
+//     ["link", "image"],
+//     ["clean"],
+//   ],
+// };
+
+// const { TextArea } = Input;
 
 const EditNews = ({ open, handleCancel, newsData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [heading, setHeading] = useState("");
   const [subheading, setSubheading] = useState("");
-  const [about, setAbout] = useState("");
+  // const [about, setAbout] = useState("");
   const [content, setContent] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -37,31 +39,27 @@ const EditNews = ({ open, handleCancel, newsData }) => {
     const file = info.file.originFileObj;
     setUploadedImage(file);
   };
-
+  const [type, setType] = useState(""); 
+  const [videoURL, setVideoURL] = useState("");
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
-
   useEffect(() => {
     if (newsData) {
       setHeading(newsData.heading || "");
       setSubheading(newsData.subheading || "");
-      setAbout(newsData.about || "");
+      // setAbout(newsData.about || "");
       setContent(DOMPurify.sanitize(newsData.content || ""));
       setBackgroundColor(newsData.backgroundColor || "#1677ff");
       setUploadedImage(newsData.image || null);
+      setVideoURL(newsData.video_URL||"");
+      setType(newsData.type||"");
+
     }
   }, [newsData]);
 
   const handleUpdate = async () => {
-    if (
-      !heading ||
-      !subheading ||
-      !content ||
-      !uploadedImage ||
-      !about ||
-      !backgroundColor
-    ) {
+    if (!heading || !subheading ) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -69,39 +67,27 @@ const EditNews = ({ open, handleCancel, newsData }) => {
     setIsLoading(true);
 
     try {
+
       const formData = new FormData();
-
-      const data = {
-        heading: heading || "",
-        subheading: subheading || "",
-        about: about || "",
-        content: content || "",
-        backgroundColor: backgroundColor || "#1677ff",
-      };
-
-      formData.append("data", JSON.stringify(data));
-
+      formData.append("heading", heading);
+      formData.append("subheading", subheading);
+      // formData.append("about", about);
+      formData.append("content", content);
+      formData.append("backgroundColor", backgroundColor);
+      formData.append("type", type); 
+      formData.append("video_URL", videoURL); 
       if (uploadedImage) {
         formData.append("image", uploadedImage);
-      } else if (newsData.image) {
-        formData.append("image", newsData.image);
       }
-
-      console.log("Form data being sent:", formData);
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-      }
-
       const response = await Instance.put(`/cards/${newsData._id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-
+      console.log("edit", response);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("News Edited successfully!");
-        dispatch(editNews(response.data));
+        dispatch(editNews(response?.data?.data));
       }
-      console.log("response", response);
     } catch (error) {
       console.error("Error updating news:", error);
       message.error("Failed to update news.");
@@ -148,7 +134,7 @@ const EditNews = ({ open, handleCancel, newsData }) => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline />{" "}
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>
@@ -182,52 +168,97 @@ const EditNews = ({ open, handleCancel, newsData }) => {
                 </Button>
               </div>
             )}
-            <span className="create-campaign-input-span">Image</span>
+            <span className="create-campaign-input-span">
+              Image
+            </span>{" "}
           </Form.Item>
+          <div className="row">
+            <div className="col-lg-12">
+              <Form.Item>
+                <Input
+                  value={heading}
+                  onChange={(e) => setHeading(e.target.value)}
+                  placeholder="Add Heading"
+                  required
+                />
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Heading
+                </span>{" "}
+              </Form.Item>
+            </div>
+            <div className="col-lg-6">
+              <Form.Item>
+                <Input
+                  value={subheading}
+                  onChange={(e) => setSubheading(e.target.value)}
+                  placeholder="Add Sub Heading"
+                  required
+                />
+                <span className="create-campaign-input-span">
+                <span style={{ color: "red" }}>*</span> Sub Heading
+                </span>{" "}
+              </Form.Item>
+            </div>
+            <div className="col-lg-6">
+              <Form.Item>
+                <Select
+                  className="create-camapign-input-select"
+                  placeholder="Select Type"
+                  style={{ width: "100%" }}
+                  value={type} // Bind state
+                  onChange={(value) => setType(value)}
+                  dropdownClassName="create-campaign-dropdown"
+                >
+                  <Option value="Blog">Blog</Option>
+                  <Option value="Hello Doctor">Hello Doctor</Option>
+                  <Option value="Patient Education">Patient Education</Option>
+                  <Option value="Interview">Interview</Option>
+                </Select>
+                <span className="create-campaign-input-span">Type</span>
+              </Form.Item>
+            </div>
+          </div>
+
           <Form.Item>
             <Input
-              value={heading}
-              onChange={(e) => setHeading(e.target.value)}
-              placeholder="Add Heading"
+              className="settings-input"
+              placeholder="Enter URL"
+              defaultValue=""
+              value={videoURL}
+              onChange={(e) => setVideoURL(e.target.value)} 
             />
-            <span className="create-campaign-input-span">Heading</span>
+            <span className="create-campaign-input-span">Video URL</span>
           </Form.Item>
-          <Form.Item>
-            <Input
-              value={subheading}
-              onChange={(e) => setSubheading(e.target.value)}
-              placeholder="Add Sub Heading"
-            />
-            <span className="create-campaign-input-span">Sub Heading</span>
-          </Form.Item>
-          <Form.Item>
+          {/* <Form.Item>
             <TextArea
               value={about}
               onChange={(e) => setAbout(e.target.value)}
               placeholder="About"
+              required
             />
-            <span className="create-campaign-input-span">About</span>
-          </Form.Item>
-          <Row gutter={24}>
-            <Col span={6}>
-              <Form.Item>
-                <ColorPicker
-                  value={backgroundColor}
-                  onChange={(color) => {
-                    const hexColor = color.toHexString();
-                    setBackgroundColor(hexColor);
-                  }}
-                  showText
-                  allowClear={false}
-                />
-                <span className="create-campaign-input-span">
-                  Background Color
-                </span>
-              </Form.Item>
-            </Col>
-          </Row>
+            <span className="create-campaign-input-span">
+               About
+            </span>{" "}
+          </Form.Item> */}
+          <div className="col-lg-6">
+            <Form.Item>
+              <ColorPicker
+                value={backgroundColor}
+                onChange={(color) => {
+                  const hexColor = color.toHexString();
+                  setBackgroundColor(hexColor);
+                }}
+                showText
+                allowClear={false}
+                required
+              />
+              <span className="create-campaign-input-span">
+                Background Color
+              </span>
+            </Form.Item>
+          </div>
 
-          <Form.Item>
+          {/* <Form.Item>
             <ReactQuill
               theme="snow"
               modules={modules}
@@ -236,8 +267,10 @@ const EditNews = ({ open, handleCancel, newsData }) => {
               placeholder="Your text goes here"
               className="news-content"
             />
-            <span className="create-campaign-input-span">Content Points</span>
-          </Form.Item>
+            <span className="create-campaign-input-span">
+              Content Points
+            </span>{" "}
+          </Form.Item> */}
         </Form>
       </Modal>
     </>

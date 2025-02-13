@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, Upload, message } from "antd";
+import { Button, Modal, Form, Input, Upload, message,Switch } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { addTreatment } from "../../../../Features/TreatmentInfoSlice";
@@ -28,9 +28,12 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+    const [service, setService] = useState(false);
+    const [conditions, setConditions] = useState(false);
   const dispatch = useDispatch();
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
+    if (!validateImage(file)) return false;
     setUploadedImage(file);
   };
 
@@ -39,6 +42,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
   };
   const handleUpload1 = (info) => {
     const file = info.file.originFileObj;
+    if (!validateImage(file)) return false;
     setThumbnailImage(file);
   };
 
@@ -65,26 +69,36 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
       formData.append("content", content);
       formData.append("headerImage", uploadedImage);
       formData.append("thumbnail", thumbnailImage);
-      
+      formData.append("service", service);
+      formData.append("condition", conditions);
       const response = await Instance.post("/education", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
-        dispatch(addTreatment(response.data))
-        showSuccessMessage("Treatment Info Added successfully!");
+        dispatch(addTreatment(response.data.data))
+        showSuccessMessage("Common procedure added successfully!");
         setTitle("");
         setDescription("");
         setContent("");
         setUploadedImage("");
         setThumbnailImage("");
+        setConditions(false);
+        setService(false);
       }
     } catch (error) {
       console.error(error);
-      message.error("Failed to add treatment.");
+      message.error("Failed to add common procedure.");
     } finally {
       setIsLoading(false);
     }
   };
-
+  const handleCancelClick = () => {
+    setTitle("");
+    setDescription("");
+    setContent("");
+    setUploadedImage(null);
+    setThumbnailImage(null);
+    handleCancel();
+  };
   return (
     <>
       {isLoading && <Loader />}
@@ -92,15 +106,15 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Add Treatment Info{" "}
+            Add Common procedure{" "}
           </span>
         }
-        onCancel={handleCancel}
+        onCancel={handleCancelClick}
         width={680}
         footer={[
           <Button
             key="back"
-            onClick={handleCancel}
+            onClick={handleCancelClick}
             className="create-campaign-cancel-button"
           >
             Cancel
@@ -123,7 +137,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
               placeholder="Add Title"
               required
             />
-            <span className="create-campaign-input-span">Title</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Title</span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -132,9 +146,34 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">Description</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Description</span>
           </Form.Item>
           <div className="row">
+            
+            <div className="col-lg-12">
+              <div className="mt-2"
+                style={{ display: "flex",gap:"30px", alignItems: "center" }}
+              >
+                <div>
+                  <span>Department Services </span>
+                  <Switch
+                  className="gastro-switch-button"
+                    checked={service}
+                    onChange={(checked) => setService(checked)}
+                  />
+                </div>
+                <div>
+                  <span>Conditions we Treat </span>
+                  <Switch
+                  className="gastro-switch-button"
+                    checked={conditions}
+                    onChange={(checked) => setConditions(checked)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row mt-5">
             <div className="col-lg-6">
               <Form.Item>
                 <Upload
@@ -147,7 +186,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
@@ -177,7 +216,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Header Image</span>
+                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Header Image</span>
               </Form.Item>
             </div>
             <div className="col-lg-6">
@@ -192,7 +231,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
                     Drop files here or click to upload
                   </p>
                   <span className="create-campaign-ant-upload-drag-icon">
-                    <IoCloudUploadOutline />{" "}
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                     <span style={{ color: "#727880" }}>Upload Image</span>
                   </span>
                 </Upload>
@@ -222,7 +261,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">Thumbnail Image</span>
+                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Thumbnail Image</span>
               </Form.Item>
             </div>
           </div>
@@ -236,7 +275,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">Content Points</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Content Points</span>
           </Form.Item>
         </Form>
       </Modal>

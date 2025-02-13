@@ -6,12 +6,11 @@ import { IoMdTime } from "react-icons/io";
 import { IoLocationOutline } from "react-icons/io5";
 
 const ViewLatestCamp = ({ open, handleCancel, campDataa }) => {
-  const [campName, setCampName] = useState("");
+  const [, setCampName] = useState("");
   const [date, setDate] = useState("");
-  const [description, setDescription] = useState("");
-  const [content, setContent] = useState("");
-  const [time, setTime] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setDescription] = useState("");
+  const [content] = useState("");
+  const [, setTime] = useState([]);
 
   useEffect(() => {
     if (campDataa) {
@@ -61,6 +60,7 @@ const ViewLatestCamp = ({ open, handleCancel, campDataa }) => {
             src={`https://www.google.com/maps?q=${lat},${lng}&hl=es;z=14&output=embed`}
             allowFullScreen
             style={{ height: "250px", width: "100%" }}
+            title="camp location"
           ></iframe>
         </div>
 
@@ -105,11 +105,15 @@ const ViewLatestCamp = ({ open, handleCancel, campDataa }) => {
             <strong>PinCode:</strong>
             <h6>{campDataa?.pinCode || "N/A"}</h6>
           </div>
-
           <div
             className="news-content"
             style={{ color: "var(--text-color)" }}
-            dangerouslySetInnerHTML={{ __html: content }}
+            dangerouslySetInnerHTML={{
+              __html: content?.replace(
+                /<img/g,
+                '<img style="max-width: 100%; max-height: 150px; height: auto; object-fit: cover;"'
+              ),
+            }}
           />
         </div>
       </div>

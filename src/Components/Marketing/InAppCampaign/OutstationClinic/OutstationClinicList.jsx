@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Dropdown, Menu } from "antd";
-import { FiEye } from "react-icons/fi";
+import React, { useState, useEffect, useCallback } from "react";
+import { Dropdown, Menu, message } from "antd";
 import { GoPlus } from "react-icons/go";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
@@ -24,24 +23,30 @@ import AddOutstationClinic from "./AddOutstationClinic";
 import EditOutstationClinic from "./EditOutstationClinic";
 import ViewOutstationClinic from "./ViewOutstationClinic";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../../../Loader";
 
 const OutstationClinicList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const handleViewCancel = () => setIsViewModalOpen(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [, setSelectedClinic] = useState(null);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const clinics = useSelector((state) => state.clinics.clinics || []);
 
   const handleCancel = () => setIsModalOpen(false);
   const handleEditCancel = () => setIsEditModalOpen(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const handleViewCancel = () => setIsViewModalOpen(false);
+
   const showEditModal = () => setIsEditModalOpen(true);
   const showViewModal = () => setIsViewModalOpen(true);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const showModal = () => setIsModalOpen(true);
-  const clinics = useSelector((state) => state.clinics.clinics || []);
+
   const itemsPerPage = 100;
+
   const truncateText = (text, wordLimit) => {
     if (!text) return "";
     const words = text.split(" ");
@@ -50,19 +55,24 @@ const OutstationClinicList = () => {
       : text;
   };
 
-  const fetchOutstationClinic = async (page) => {
+  const fetchOutstationClinic = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await Instance.get("/discover/clinic", {
-        params: { page, limit: itemsPerPage },
+        params: { page: 1, limit: itemsPerPage },
       });
-      dispatch(setOutstationClinic(response.data || []));
+      console.log("API response received:", response);
+      dispatch(setOutstationClinic(response.data));
     } catch (error) {
       console.error("Error fetching clinics:", error);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch, itemsPerPage]);
+
+  useEffect(() => {
+    fetchOutstationClinic();
+  }, [fetchOutstationClinic]);
 
   const handleDeleteClinic = (_id) => {
     showDeleteMessage({
@@ -75,22 +85,29 @@ const OutstationClinicList = () => {
             dispatch(deleteOutstationClinic(_id));
           }
         } catch (error) {
+          message.error("Error deleting clinic", error);
           console.error("Error deleting clinic:", error);
         }
       },
     });
   };
 
-  useEffect(() => {
-    fetchOutstationClinic();
-  }, []);
+  const handleCardClick = (clinic) => {
+    if (!isEditModalOpen) {
+      setSelectedClinic(clinic);
+      setSelectedEvent(clinic);
+      setIsViewModalOpen(true);
+    }
+  };
 
   const sortMenu = (clinic) => (
-    <Menu>
+    <Menu onClick={(e) => e.domEvent.stopPropagation()}>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          setIsEditModalOpen(true);
           setSelectedEvent(clinic);
           showEditModal();
         }}
@@ -99,20 +116,12 @@ const OutstationClinicList = () => {
         Edit
       </Menu.Item>
       <Menu.Item
-        key="view"
-        className="filter-menu-item"
-        onClick={() => {
-          setSelectedEvent(clinic);
-          showViewModal();
-        }}
-      >
-        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        View
-      </Menu.Item>
-      <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteClinic(clinic._id)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          handleDeleteClinic(clinic._id);
+        }}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -126,23 +135,28 @@ const OutstationClinicList = () => {
     <div className="col-lg-4" key={clinic._id}>
       <div
         className="outstation-clinic-upcoming-event-card p-3"
-        style={{ position: "relative" }}
+        style={{ position: "relative", cursor: "pointer" }}
+        onClick={() => {
+          handleCardClick(clinic);
+          showViewModal();
+        }}
       >
-        <div className="treatment-info-icon-container">
+        <div className="action-icon-container">
           <Dropdown overlay={sortMenu(clinic)} trigger={["click"]}>
-            <button className="action-icon-button">
+            <button
+              className="action-icon-button"
+              onClick={(e) => e.stopPropagation()}
+            >
               <BsThreeDotsVertical />
             </button>
           </Dropdown>
         </div>
-
         <div className="d-flex justify-content-center align-items-center mb-3">
           <img
             src={clinic.image || "https://via.placeholder.com/150"}
             alt={clinic.name}
           />
         </div>
-
         <div className="outstation-clinic-data">
           <h4>{clinic.name}</h4>
           <div className="d-flex justify-content-between">
@@ -152,10 +166,8 @@ const OutstationClinicList = () => {
             <p>{clinic.experience} years experience</p>
           </div>
           <p>{clinic.patients} Patients Treated</p>
-          <div>
-            <span>{truncateText(clinic.about, 8)}</span>
-          </div>
-          <div className="d-flex justify-content-between">
+          <span>{truncateText(clinic.about, 8)}</span>
+          <div className="">
             <p>
               <CiCalendarDate />{" "}
               {new Date(clinic.createdAt).toLocaleDateString()}
@@ -165,7 +177,8 @@ const OutstationClinicList = () => {
             </p>
           </div>
           <span>
-            <CiLocationOn /> {clinic.location}
+            <CiLocationOn />
+            {truncateText(clinic.location, 5)}
           </span>
         </div>
       </div>
@@ -177,7 +190,7 @@ const OutstationClinicList = () => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", zIndex: "1000" }}
+        style={{ ...style, display: "block", zIndex: "100" }}
         onClick={onClick}
       >
         &#8592;
@@ -190,7 +203,7 @@ const OutstationClinicList = () => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", zIndex: "1000" }}
+        style={{ ...style, display: "block", zIndex: "100" }}
         onClick={onClick}
       >
         &#8594;
@@ -200,7 +213,7 @@ const OutstationClinicList = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -217,43 +230,52 @@ const OutstationClinicList = () => {
       },
     ],
   };
+
   return (
-    <div className="container mt-4">
-      <div className="marketing-categories-section">
-        <div className="row mt-4">
-          <div className="d-flex justify-content-between">
-            <h6>Outstation Clinic</h6>
-            <div className="d-flex gap-2">
-              <button
-                className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-outstation-clinic")}
-              >
-                View all
-              </button>
-              <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} /> Add Clinic
-              </button>
+    <>
+      {isLoading && <Loader />}
+      <div className="container mt-4">
+        <div className="marketing-categories-section">
+          <div className="row mt-4">
+            <div className="events-header-container">
+              <h6>Outstation/Speciality Clinic</h6>
+              <div className="events-buttons">
+                <button className="rfh-basic-button" onClick={showModal}>
+                  <GoPlus size={20} /> Add Clinic
+                </button>
+                <button
+                  className="rfh-view-all-button"
+                  onClick={() => navigate("/view-all-outstation-clinic")}
+                >
+                  View all
+                </button>
+              </div>
+            </div>
+            <div className="mt-3">
+              <Slider {...sliderSettings} key={clinics?.length}>
+                {clinics && clinics.length > 0 ? (
+                  [...clinics]
+                  .reverse().map((clinic) => renderClinicCard(clinic))
+                ) : (
+                  <p>No data available</p>
+                )}
+              </Slider>
             </div>
           </div>
-          <div className="mt-3">
-            <Slider {...sliderSettings}>
-              {clinics.map((clinic) => renderClinicCard(clinic))}
-            </Slider>
-          </div>
         </div>
+        <AddOutstationClinic open={isModalOpen} handleCancel={handleCancel} />
+        <EditOutstationClinic
+          open={isEditModalOpen}
+          handleCancel={handleEditCancel}
+          EventData={selectedEvent}
+        />
+        <ViewOutstationClinic
+          open={isViewModalOpen}
+          handleCancel={handleViewCancel}
+          EventData={selectedEvent}
+        />
       </div>
-      <AddOutstationClinic open={isModalOpen} handleCancel={handleCancel} />
-      <EditOutstationClinic
-        open={isEditModalOpen}
-        handleCancel={handleEditCancel}
-        EventData={selectedEvent}
-      />
-      <ViewOutstationClinic
-        open={isViewModalOpen}
-        handleCancel={handleViewCancel}
-        EventData={selectedEvent}
-      />
-    </div>
+    </>
   );
 };
 

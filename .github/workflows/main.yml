@@ -1,0 +1,83 @@
+name: Deploy React App to Azure VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build React App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the application
+        run: CI=false npm run build
+
+      - name: Verify Build Output
+        run: ls -lah build  # ✅ Ensure files exist
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: react-app-build
+          path: build/  # ✅ Ensuring correct path
+
+  deploy:
+    name: Deploy React App to Azure VM
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: react-app-build
+          path: react-app-build  # ✅ Ensuring correct extraction
+
+      - name: Verify Downloaded Files
+        run: ls -lah react-app-build  # ✅ Debugging step
+
+      - name: Setup SSH Key and Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.VM_IP }} >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Prepare Deployment Directory
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.VM_IP }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: 22
+          script: |
+            sudo rm -rf /var/www/react-app/*
+            sudo mkdir -p /var/www/react-app
+            sudo chown -R $USER:$USER /var/www/react-app
+
+      - name: Upload Build Files
+        run: |
+          scp -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -r react-app-build/* ${{ secrets.VM_USER }}@${{ secrets.VM_IP }}:/var/www/react-app
+
+      - name: Restart NGINX
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.VM_IP }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: 22
+          script: |
+            sudo systemctl restart nginx
+            sleep 5

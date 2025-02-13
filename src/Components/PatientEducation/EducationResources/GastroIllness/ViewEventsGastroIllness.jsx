@@ -4,7 +4,7 @@ import "react-quill/dist/quill.snow.css";
 import Loader from "../../../../Loader";
 
 const ViewEventsGastroIllness = ({ open, handleCancel, EventData }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   return (
     <>
       {isLoading && <Loader />}
@@ -32,10 +32,19 @@ const ViewEventsGastroIllness = ({ open, handleCancel, EventData }) => {
           <div className="view-treatment-info-modal-content">
             <h5>{EventData?.description || "N/A"}</h5>
 
-            <div
+            {/* <div
               className="news-content"
               dangerouslySetInnerHTML={{ __html: EventData?.content }}
-            />
+            /> */}
+            <div
+             className="news-content"
+             dangerouslySetInnerHTML={{
+               __html: EventData?.content?.replace(
+                 /<img/g,
+                 '<img style="max-width: 100%; max-height: 150px; height: auto; object-fit: cover;"'
+               ),
+             }}
+           />
           </div>
         </div>
       </Modal>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table } from "antd";
 import { FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,7 @@ import { FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../Assets/Icons/Empty_survey_image.png";
 
 const CommunityPost = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
   const [searchText, setSearchText] = useState("");
@@ -27,13 +27,12 @@ const CommunityPost = () => {
     setIsModalOpen(true);
   };
 
-  const fetchPostList = async (page) => {
+  const fetchPostList = useCallback (async (page) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/post`, {
         params: { page, limit: itemsPerPage },
       });
-
       if (response.status === 200) {
         const { data, total } = response.data;
         dispatch(setPost(data));
@@ -44,7 +43,12 @@ const CommunityPost = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  },
+  [dispatch]
+);
+  useEffect(() => {
+    fetchPostList(currentPage);
+  }, [currentPage, fetchPostList]);
 
   const ShowNewsModal = (post) => {
     setSelectedPost(post);
@@ -81,9 +85,6 @@ const CommunityPost = () => {
     );
   }, [searchText, posts]);
 
-  useEffect(() => {
-    fetchPostList(currentPage);
-  }, [currentPage]);
 
   const handleTableChange = (pagination) => {
     setCurrentPage(pagination.current);

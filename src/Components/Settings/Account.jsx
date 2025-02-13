@@ -1,50 +1,167 @@
-import React, { useState, useRef } from "react";
-import { Form, Input, DatePicker } from "antd";
-import DefaultUser from "../../Assets/Images/DefaultUser.png";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { Button, Form, Input, message } from "antd";
+import DefaultUser from "../../Assets/Images/singleuser.png";
 import "react-international-phone/style.css";
-import { FiEyeOff } from "react-icons/fi";
-import { FaRegEye } from "react-icons/fa6";
-import {showLogoutMessage} from "../../globalConstant"
-
-
+import { Instance } from "../../AxiosConfig";
+import {
+  editSettingsProfileData,
+  setSettingsProfileData,
+} from "../../Features/SettingsProfileSlice";
+import { useDispatch, useSelector } from "react-redux";
 export const Account = () => {
   const [form] = Form.useForm();
   const fileInputRef = useRef(null);
   const [previewImage, setPreviewImage] = useState("");
-  const [, setProfileImage] = useState(null);
+  const dispatch = useDispatch();
+  const [profileFile, setProfileFile] = useState(null);
+  const [isProfileUpdated, setIsProfileUpdated] = useState(false);
+  const profileData = useSelector(
+    (state) => state.settingsprofile.settingsprofile
+  );
 
-  const [passwordVisible, setPasswordVisible] = useState(false);
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfileImage(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setProfileFile(file);
+      setPreviewImage(URL.createObjectURL(file));
+      setIsProfileUpdated(true);
     }
-  };
-
-  const handleDelete = () => {
-    showLogoutMessage({ message: "" });
   };
   const handleEditClick = () => {
     fileInputRef.current.click();
   };
 
+  const fetchUser = useCallback(async () => {
+    const userInfo = localStorage.getItem("userInfo");
+    const parsedUserInfo = JSON.parse(userInfo);
+    try {
+      const response = await Instance.get(
+        `/admin/getProfile/${parsedUserInfo.uid}`
+      );
+      dispatch(setSettingsProfileData(response.data));
+      form.setFieldsValue({
+        name: response.data.name,
+        email: response.data.email,
+        phoneNumber: response.data.phoneNumber,
+      });
+      setPreviewImage(response.data.profile || DefaultUser);
+    } catch (error) {
+      message.error("Error fetching user data");
+      console.error("Error fetching user data:", error);
+    }
+  }, [dispatch, form]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
+  const handleSubmit = async () => {
+    
+    const userInfo = localStorage.getItem("userInfo");
+    const parsedUserInfo = JSON.parse(userInfo);
+    const updatedFields = form.getFieldsValue();
+
+    try {
+      await form.validateFields();
+      if (isProfileUpdated) {
+        const formData = new FormData();
+        formData.append("name", updatedFields.name);
+        formData.append("email", updatedFields.email);
+        formData.append("phoneNumber", updatedFields.phoneNumber);
+        if (profileFile) {
+          formData.append("profile", profileFile);
+        }
+
+        const response = await Instance.put(
+          `/admin/profile/${parsedUserInfo.uid}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        const updatedUserInfo = {
+          ...parsedUserInfo,
+          name: updatedFields.name,
+          email: updatedFields.email,
+          phoneNumber: updatedFields.phoneNumber,
+          profile: previewImage,
+        };
+        localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
+        message.success("Profile updated successfully!");
+        dispatch(editSettingsProfileData(response.data));
+      } else {
+        const updatedData = {};
+        if (updatedFields.name !== profileData.name) {
+          updatedData.name = updatedFields.name;
+        }
+        if (updatedFields.email !== profileData.email) {
+          updatedData.email = updatedFields.email;
+        }
+        if (updatedFields.phoneNumber !== profileData.phoneNumber) {
+          updatedData.phoneNumber = updatedFields.phoneNumber;
+        }
+
+        if (Object.keys(updatedData).length === 0) {
+          message.warning("No changes made to the profile.");
+          return;
+        }
+
+        try {
+          const response = await Instance.patch(
+            `/admin/updateProfile/${parsedUserInfo.uid}`,
+            updatedData
+          );
+          message.success("Profile updated successfully!");
+          dispatch(editSettingsProfileData(response.data));
+          const updatedUserInfo = {
+            ...parsedUserInfo,
+            ...updatedData,
+          };
+          localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
+        } catch (error) {
+          message.error("Error updating profile");
+          console.error("Error updating profile:", error);
+        }
+      }
+    } catch (error) {
+      message.error("Error updating profile");
+      console.error("Error updating profile:", error);
+    }
+  };
+  const handleDeleteProfile = async () => {
+    const userInfo = localStorage.getItem("userInfo");
+    const parsedUserInfo = JSON.parse(userInfo);
+  
+    try {
+      await Instance.delete(`/admin/profile/${parsedUserInfo.uid}`);
+      setPreviewImage(DefaultUser);
+      setProfileFile(null);
+      setIsProfileUpdated(true);
+      dispatch(editSettingsProfileData({ ...profileData, profile: "" }));
+      const updatedUserInfo = { ...parsedUserInfo, profile: "" };
+      localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
+  
+      message.success("Profile image deleted successfully!");
+    } catch (error) {
+      message.error("Error deleting profile image");
+      console.error("Error deleting profile image:", error);
+    }
+  };
+  
   return (
     <div className="settings-personal-information">
       <div className="container">
         <h4 className="mt-4 mt-lg-0">Account</h4>
-        <p>Settings you details account here</p>
-        <hr />
-        <Form layout="vertical" form={form}>
+        {/* <p>Settings your account details here</p> */}
+        <hr style={{ color: "var(--black-color)" }} />
+        <Form layout="vertical" form={form} >
           <h5>My Profile</h5>
           <div className="row mt-4">
             <div className="settings-profile-icon-section">
               <img
-                src={previewImage ? previewImage : DefaultUser}
+                src={previewImage || DefaultUser}
                 alt="Profile"
                 className="settings-profile-image"
               />
@@ -62,120 +179,66 @@ export const Account = () => {
               >
                 Upload new
               </button>
-              <button type="button" className="settings-delete-button ms-3">
+              <button
+                type="button"
+                className="settings-delete-button ms-3"
+                onClick={handleDeleteProfile}
+              >
                 Delete
               </button>
             </div>
           </div>
           <div className="row mt-4">
             <div className="col-md-6 mt-4">
-              <Form.Item>
+              <Form.Item
+                name="name"
+                label="Name"
+                rules={[
+                  { required: true, message: "Name is required" },
+                  { min: 3, message: "Name must be at least 3 characters" },
+                ]}
+              >
                 <Input
                   className="settings-input"
-                  placeholder="Enter Fisrt Name"
-                  defaultValue="Alexandro"
+                  placeholder="Enter Full Name"
                 />
-                <span className="settings-input-span">First Name</span>
               </Form.Item>
             </div>
             <div className="col-md-6 mt-4">
-              <Form.Item>
-                <Input
-                  className="settings-input"
-                  placeholder="Enter Last Name"
-                  defaultValue="Bernard"
-                />
-                <span className="settings-input-span">Last Name</span>
-              </Form.Item>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-6 mt-2">
-              <Form.Item>
+              <Form.Item
+                name="phoneNumber"
+                label="Phone Number"
+                rules={[
+                  { required: true, message: "Phone number is required" },
+                  {
+                    pattern: /^[0-9]{10,15}$/,
+                    message: "Enter a valid phone number",
+                  },
+                ]}
+              >
                 <Input
                   className="settings-input"
                   placeholder="Enter Phone Number"
-                  defaultValue="123456789"
                 />
-                <span className="settings-input-span">Phone Number</span>
-              </Form.Item>
-            </div>
-            <div className="col-md-6 mt-2">
-              <Form.Item>
-                <Input
-                  className="settings-input"
-                  placeholder="Email ID"
-                  defaultValue="Alexandrobern@mail.com"
-                />
-                <span className="settings-input-span">Email Address</span>
               </Form.Item>
             </div>
           </div>
           <div className="row">
             <div className="col-md-6 mt-2">
-              <Form.Item>
-                <DatePicker
-                  className="settings-input w-100"
-                  placeholder="Enter DOB"
-                  format="DD-MM-YYYY"
+              <Form.Item name="email" label="Email"
+               >
+                <Input className="settings-input disabled-email" placeholder="Email ID" 
+                readOnly
                 />
-                <span className="settings-input-span">Birth Date</span>
-              </Form.Item>
-            </div>
-            <div className="col-md-6 mt-2">
-              <Form.Item>
-                <Input
-                  type={passwordVisible ? "text" : "password"}
-                  className="settings-input"
-                  placeholder="*******"
-                  defaultValue="458767"
-                  suffix={
-                    passwordVisible ? (
-                      <FaRegEye
-                        onClick={() => setPasswordVisible(false)}
-                        style={{ cursor: "pointer" }}
-                      />
-                    ) : (
-                      <FiEyeOff
-                        onClick={() => setPasswordVisible(true)}
-                        style={{ cursor: "pointer" }}
-                      />
-                    )
-                  }
-                />
-                <span className="settings-input-span">Password</span>
               </Form.Item>
             </div>
           </div>
-          <div className="row align-items-center">
-            <div className="col-md-6 mt-4 theme-select-option">
-              <p>Delete account</p>
-              <h6>
-                When you delete your account, you lose access to Front account
-                services, and we permanently delete your personal data. You can
-                cancel the deletion for 14 days.
-              </h6>
-            </div>
-            <div className="col-lg-6 mt-4">
-              <div className="d-flex gap-2">
-                <button className="settings-delete-account" type="button" onClick={handleDelete}>
-                  Delete Account
-                </button>
-                <button className="settings-learn-button" type="submit">
-                  Learn More
-                </button>
-              </div>
-            </div>
-          </div>
-          <hr />
+
           <div className="row mt-4">
             <div className="d-flex justify-content-end gap-2">
-              <button className="settings-delete-button" type="button">
-                Cancel
-              </button>
-              <button className="settings-edit-icon-button" type="submit">
+              <Button className="status-role-button" onClick={handleSubmit}>
                 Save
-              </button>
+              </Button>
             </div>
           </div>
         </Form>

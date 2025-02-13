@@ -16,7 +16,6 @@ const ViewDoctorDetail = () => {
   const [doctor, setDoctor] = useState(state || null);
 
   useEffect(() => {
-    // If no data in state, fetch doctor details using record._id
     if (!doctor) {
       const fetchDoctorDetails = async () => {
         try {
@@ -46,9 +45,9 @@ const ViewDoctorDetail = () => {
         <div className="col-lg-4">
           <div className="doctor-detail-page">
             <div className="view-doctor-detail-doctor-card">
-              <div className="view-doctor-detail-doctor-image">
+             <div className="view-doctor-detail-doctor-image">
                 <Avatar
-                  size={74}
+                  siz e={74}
                   src={doctor.image || "/default-doctor.png"} // Default image fallback
                   className="view-doctor-profile-image"
                 />

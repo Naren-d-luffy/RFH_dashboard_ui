@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, message, Row, Col, Upload } from "antd";
+import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { showSuccessMessage } from "../../globalConstant";
@@ -7,8 +7,18 @@ import { Instance } from "../../AxiosConfig";
 import { editDepartment } from "../../Features/DepartmentSlice";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import Loader from "../../Loader";
-
-const { TextArea } = Input;
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+const modules = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["bold", "italic"],
+    ["link", "image"],
+    ["clean"],
+  ],
+};
+// const { TextArea } = Input;
 
 const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -16,111 +26,104 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   const [subtitle, setSubtitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState("");
-  const [specialist, setSpecialist] = useState("");
-  const [specialistDesignation, setSpecialistDesignation] = useState("");
-  const [specialistLocation, setSpecialistLocation] = useState("");
-  const [photo_url, setPhoto_url] = useState("");
-  const [successStories, setSuccessStories] = useState([]);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+
+  // const [successStories, setSuccessStories] = useState([]);
   const dispatch = useDispatch();
 
-  const handleAddSuccessStory = () => {
-    setSuccessStories([
-      ...successStories,
-      { title: "", views: 0, video_thumbnail_url: "" },
-    ]);
-  };
+  // const handleAddSuccessStory = () => {
+  //   setSuccessStories([
+  //     ...successStories,
+  //     { title: "", views: 0, video_thumbnail_url: "" },
+  //   ]);
+  // };
 
-  const handleSuccessStoryChange = (index, field, value) => {
-    const updatedStories = [...successStories];
+  // const handleSuccessStoryChange = (index, field, value) => {
+  //   const updatedStories = [...successStories];
 
-    updatedStories[index] = {
-      ...updatedStories[index],
-      [field]: value,
-    };
+  //   updatedStories[index] = {
+  //     ...updatedStories[index],
+  //     [field]: value,
+  //   };
 
-    setSuccessStories(updatedStories);
-  };
+  //   setSuccessStories(updatedStories);
+  // };
 
-  const handleDeleteSuccessStory = (index) => {
-    setSuccessStories(successStories.filter((_, i) => i !== index));
-  };
+  // const handleDeleteSuccessStory = (index) => {
+  //   setSuccessStories(successStories.filter((_, i) => i !== index));
+  // };
 
   useEffect(() => {
     if (departmentData) {
       setTitle(departmentData.title || "");
       setSubtitle(departmentData.subtitle || "");
       setDescription(departmentData.description || "");
-      setSpecialist(departmentData.specialistName || "");
-      setSpecialistDesignation(departmentData.specialistDesignation || "");
-      setSpecialistLocation(departmentData.specialistLocation || "");
-      setPhoto_url(departmentData.photo_url || "");
-
-      if (Array.isArray(departmentData.success_stories)) {
-        setSuccessStories(
-          departmentData.success_stories.map((story) => ({
-            title: story.title || "",
-            views: story.views || 0,
-            video_thumbnail_url: story.video_thumbnail_url || "",
-          }))
-        );
+      if (departmentData.thumbnail) {
+        setImagePreviewUrl(departmentData.thumbnail);
       }
+      // if (Array.isArray(departmentData.success_stories)) {
+      //   setSuccessStories(
+      //     departmentData.success_stories?.map((story) => ({
+      //       title: story.title || "",
+      //       views: story.views || 0,
+      //       video_thumbnail_url: story.video_thumbnail_url || "",
+      //     }))
+      //   );
+      // }
     }
   }, [departmentData]);
 
   const handleUpdate = async () => {
     setIsLoading(true);
-    if (!title || !subtitle || !description) {
-      message.error("Please fill in all required fields.");
-      setIsLoading(false);
-      return;
-    }
-
-    const updatedDepartmentData = {
-      _id: departmentData?._id,
-      title,
-      subtitle,
-      description,
-      specialist,
-      specialistDesignation,
-      specialistLocation,
-      photo_url,
-
-      success_stories: successStories.map((story) => ({
-        ...story,
-        views: Number(story.views) || 0,
-      })),
-    };
-
     try {
+      const requestData = new FormData();
+      requestData.append("title", title);
+      requestData.append("subtitle", subtitle);
+      requestData.append("description", description);
+      if (uploadedImage) {
+        requestData.append("thumbnail", uploadedImage);
+      }
+
+      // const formattedSuccessStories = successStories?.map((story) => ({
+      //   video_thumbnail_url: story.video_thumbnail_url,
+      //   title: story.title,
+      //   views: parseInt(story.views),
+      // }));
+
+      // requestData.append(
+      //   "success_stories",
+      //   JSON.stringify(formattedSuccessStories)
+      // );
       const response = await Instance.put(
-        `/department/${updatedDepartmentData._id}`,
-        updatedDepartmentData,
+        `/department/${departmentData._id}`,
+        requestData,
         {
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      if ([200, 201, 204].includes(response.status)) {
-        showSuccessMessage("Department updated successfully!");
-        dispatch(editDepartment(updatedDepartmentData));
-        resetForm();
-        handleCancel();
-      } else {
-        message.error("Failed to update department.");
-      }
+
+      dispatch(editDepartment(response.data));
+      // message.success("Department Updtaed successfully!");
+      showSuccessMessage("Department Updated successfully!");
+      resetForm();
+      handleCancel();
     } catch (error) {
-      console.error("Error during department update:", error);
-      message.error("Failed to update department.");
+      console.error("Error during department creation:", {
+        error: error,
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
+      message.error("Failed to create department.");
     } finally {
       setIsLoading(false);
     }
   };
-
   const resetForm = () => {
     setTitle("");
     setSubtitle("");
     setDescription("");
-    setSpecialist("");
-    setSuccessStories([]);
+    // setSuccessStories([]);
     setUploadedImage(null);
   };
 
@@ -152,72 +155,52 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
           </Button>,
         ]}
       >
-        <Form layout="vertical">
-          <Form.Item label="Title">
+        <Form layout="vertical" className="mt-4">
+          <Form.Item>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Add Title"
               required
             />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Title
+            </span>
           </Form.Item>
-          <Form.Item label="Subtitle">
+          <Form.Item>
             <Input
               value={subtitle}
               onChange={(e) => setSubtitle(e.target.value)}
               placeholder="Add Subtitle"
               required
             />
-          </Form.Item>
-          <Form.Item label="Description">
-            <TextArea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Add Description"
-              required
-            />
+             <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Subtitle
+            </span>
           </Form.Item>
 
-          <h5 className="specialist-heading-name">Specialist Details</h5>
-          <Row gutter={16}>
-            <Col span={8}>
-              <Form.Item label="Name">
-                <Input
-                  value={specialist}
-                  onChange={(e) => setSpecialist(e.target.value)}
-                  placeholder="Add Name"
-                  required
-                />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item label="Designation">
-                <Input
-                  value={specialistDesignation}
-                  onChange={(e) => setSpecialistDesignation(e.target.value)}
-                  placeholder="Add Designation"
-                  required
-                />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item label="Location">
-                <Input
-                  value={specialistLocation}
-                  onChange={(e) => setSpecialistLocation(e.target.value)}
-                  placeholder="Add Location"
-                  required
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Form.Item label="Photo URL">
+          <Form.Item label="Description">
+            <ReactQuill
+              theme="snow"
+              modules={modules}
+
+              value={description}
+              onChange={setDescription}
+              placeholder="Your text goes here"
+              required
+            />
+             <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Description
+            </span>
+          </Form.Item>
+
+          <Form.Item>
             <Upload
               listType="picture"
               showUploadList={false}
               beforeUpload={(file) => {
                 setUploadedImage(file);
-                setPhoto_url(URL.createObjectURL(file));
+                setImagePreviewUrl(URL.createObjectURL(file));
                 return false;
               }}
               className="upload-users-image"
@@ -226,15 +209,19 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline />
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>
-            {photo_url && (
+            {(uploadedImage || imagePreviewUrl) && (
               <div className="uploaded-image-preview d-flex gap-2">
                 <img
-                  src={photo_url}
-                  alt="Uploaded"
+                  src={
+                    uploadedImage
+                      ? URL.createObjectURL(uploadedImage)
+                      : imagePreviewUrl
+                  }
+                  alt="Thumbnail"
                   style={{
                     width: "200px",
                     height: "auto",
@@ -244,8 +231,8 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 />
                 <Button
                   onClick={() => {
-                    setPhoto_url("");
                     setUploadedImage(null);
+                    setImagePreviewUrl("");
                   }}
                   style={{
                     marginTop: "10px",
@@ -259,16 +246,19 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 </Button>
               </div>
             )}
+             <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Thumbnail Image
+            </span>
           </Form.Item>
 
-          <Button
+          {/* <Button
             onClick={handleAddSuccessStory}
             className="create-campaign-cancel-button"
             style={{ marginBottom: "20px" }}
           >
             Add Success Stories
           </Button>
-          {successStories.map((story, index) => (
+          {successStories?.map((story, index) => (
             <div key={index}>
               <h5 className="specialist-heading-name">
                 Success Story {index + 1}
@@ -323,7 +313,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 Delete Success Story
               </Button>
             </div>
-          ))}
+          ))} */}
         </Form>
       </Modal>
     </>

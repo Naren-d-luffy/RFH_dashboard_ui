@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Modal } from "antd";
 import "react-quill/dist/quill.snow.css";
-import Loader from "../../../../Loader";
 
 const ViewTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
-  const [isLoading, setIsLoading] = useState(false);
   return (
     <>
-      {isLoading && <Loader />}
+     
       <Modal
         visible={open}
         onCancel={handleCancel}
@@ -36,9 +34,14 @@ const ViewTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
           <h5>{treatmentData?.description || "N/A"}</h5>
           
           <div
-            className="news-content"
-            dangerouslySetInnerHTML={{ __html: treatmentData?.content }}
-          />
+             className="news-content"
+             dangerouslySetInnerHTML={{
+               __html: treatmentData?.content?.replace(
+                 /<img/g,
+                 '<img style="max-width: 100%; max-height: 150px; height: auto; object-fit: cover;"'
+               ),
+             }}
+           />
         </div>
       </div>
         

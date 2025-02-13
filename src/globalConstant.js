@@ -1,8 +1,7 @@
 import Swal from "sweetalert2";
 import deleteIcon from "./Assets/Icons/delete-warning-icon.png";
 import success from "./Assets/Icons/success.png";
-
-import { Button, Card, Checkbox, Input, Modal } from "antd";
+import { Button, Card, Checkbox, Input, message, Modal } from "antd";
 import { FiSearch } from "react-icons/fi";
 // export const IMG_URL = `https://digitalcard-bucket.s3.amazonaws.com`;
 
@@ -94,7 +93,7 @@ export const showDeleteMessage = ({
 							if (onDelete && typeof onDelete === "function") {
 								onDelete();
 							}
-							showSuccessMessage("Deleted successfully", "Details deleted");
+							
 							Modal.destroyAll();
 						}}
 					>
@@ -226,3 +225,23 @@ export const filterDropdown = (
 		</div>
 	</Card>
 );
+
+
+
+export const validateImage = (file, maxSizeMB = 50) => {
+	message.destroy();
+  const isImage = file.type.startsWith("image/");
+  const isSizeValid = file.size / 1024 / 1024 < maxSizeMB; // Convert bytes to MB
+
+  if (!isImage) {
+    message.error("You can only upload image files!");
+    return false;
+  }
+
+  if (!isSizeValid) {
+    message.error(`Image size must be less than ${maxSizeMB}MB!`);
+    return false;
+  }
+
+  return true; // Validation passed
+};

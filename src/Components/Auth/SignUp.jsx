@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import "./auth.css";
 import logo from "../../Assets/Images/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { message, Spin } from "antd";
-// import {loginInstance} from "../AxiosConfig";
 import signup from "../../Assets/Images/SignUp.png";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Instance } from "../../AxiosConfig";
@@ -90,6 +89,7 @@ const SignUp = () => {
                 placeholder="Enter your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                className="signin-input"
               />
             </div>
             <div className="form-group">
@@ -100,6 +100,7 @@ const SignUp = () => {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="signin-input"
               />
             </div>
             <div className="form-group">
@@ -110,6 +111,7 @@ const SignUp = () => {
                 placeholder="Enter your Phone Number"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
+                className="signin-input"
               />
             </div>
             <div className="form-group">
@@ -121,6 +123,7 @@ const SignUp = () => {
                   placeholder="Create a password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  className="signin-input"
                 />
                 <button
                   className="password-toggle"

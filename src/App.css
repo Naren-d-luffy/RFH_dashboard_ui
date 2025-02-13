@@ -284,6 +284,7 @@ body,
 .ant-input-outlined:focus-within,
 .ant-input-outlined:hover {
   border-color: var(--primary-green) !important;
+  background-color: var(--model-background-color);
 }
 
 .readOnly-disabled-bg:disabled {
@@ -294,7 +295,7 @@ body,
   color: var(--black-color);
   background: transparent;
   font-size: 12px;
-  padding: 12px
+  padding: 10px
 }
 
 .ant-form-vertical
@@ -362,4 +363,60 @@ body,
 
 .ant-color-picker-trigger{
   padding: 10px 18px;
+}
+
+.coming-soon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  /* background-color: #f7fafc; */
+  padding: 16px;
+  text-align: center;
+}
+
+.coming-soon-image {
+  max-width: 450px;
+  width: 100%;
+}
+
+.coming-soon-title {
+  margin-top: 24px;
+  font-size: 35px;
+  font-weight: bold;
+  color: var(--black-color);
+}
+
+.coming-soon-text {
+  margin-top: 8px;
+  color: #718096;
+  font-size: 14px;
+}
+.news-content h3, .news-content h4, .news-content p, .news-content h1, .news-content h2, .news-content h5, .news-content h6{
+  color: var(--black-color) !important;
+}
+.checkbox-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 10px; 
+  padding: 10px 0;
+}
+.unauthorized-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.unauthorized-image {
+  max-width: 600px;
+}
+
+.unauthorized-text {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--black-color);
 }

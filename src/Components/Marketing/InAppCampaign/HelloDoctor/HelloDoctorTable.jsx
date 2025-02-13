@@ -1,15 +1,16 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Table, message } from "antd";
 import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
-import DOMPurify from "dompurify";
 import { useNavigate } from "react-router-dom";
 import {
   deleteHelloDoctorVideos,
@@ -19,14 +20,13 @@ import AddVideo from "./AddVideo";
 import EditVideo from "./EditVideo";
 
 const HelloDoctorTable = () => {
+  const EventData = useSelector((state) => state.videos.videos);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
   const [selectedVideo, setSelectedVideo] = useState(null);
-
-  const EventData = useSelector((state) => state.videos.videos);
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
@@ -49,16 +49,6 @@ const HelloDoctorTable = () => {
       : text;
   };
 
-  const truncateHTML = (htmlContent, wordLimit) => {
-    if (!htmlContent) return "";
-    const sanitizedContent = DOMPurify.sanitize(htmlContent);
-    const textContent = sanitizedContent.replace(/<[^>]*>/g, "");
-    const words = textContent.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : textContent;
-  };
-
   const handleDeleteHelloDoctorVideo = (_id) => {
     showDeleteMessage({
       message: "",
@@ -66,38 +56,44 @@ const HelloDoctorTable = () => {
         try {
           const response = await Instance.delete(`/videos/${_id}`);
           if (response.status === 200 || response.status === 204) {
+            showSuccessMessage("Deleted successfully video");
             dispatch(deleteHelloDoctorVideos(_id));
           }
         } catch (error) {
           console.error("Error deleting video:", error);
+          message.error("Error deleting video");
         }
       },
     });
   };
 
-  const fetchHelloDoctorVideoInfo = async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get(`/videos`, {
-        params: { page, limit: itemsPerPage },
-      });
-      dispatch(setHelloDoctorVideos(response.data));
-      setTotalRows(response.data.total || 0);
-    } catch (error) {
-      console.error("Error fetching videos:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const fetchHelloDoctorVideoInfo = useCallback(
+    async (page = 1) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/videos`, {
+          params: { page, limit: itemsPerPage },
+        });
+        dispatch(setHelloDoctorVideos(response.data.data));
+        setTotalRows(response.data.total || 0);
+      } catch (error) {
+        console.error("Error fetching videos:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [itemsPerPage, dispatch]
+  );
 
   useEffect(() => {
     fetchHelloDoctorVideoInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage, fetchHelloDoctorVideoInfo]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return EventData;
-    return EventData.filter((video) =>
-      `${video.title} ${video.description}`
+    const events = Object.values(EventData).reverse(); 
+    if (searchText.trim() === "") return events;
+    return events.filter((video) =>
+      `${video.title} ${video.url} ${video.likes}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
@@ -109,6 +105,7 @@ const HelloDoctorTable = () => {
       dataIndex: "title",
       className: "campaign-performance-table-column",
       render: (text) => truncateText(text),
+      sorter: (a, b) => a.title.localeCompare(b.title),
     },
     {
       title: "URL",
@@ -116,14 +113,16 @@ const HelloDoctorTable = () => {
       className: "campaign-performance-table-column",
     },
     {
-      title: "Likes",
-      dataIndex: "likes",
-      className: "campaign-performance-table-column",
-    },
-    {
       title: "Created At",
       dataIndex: "createdAt",
       className: "campaign-performance-table-column",
+      render: (text) => {
+        const date = new Date(text);
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      },
     },
     {
       title: "Action",
@@ -148,33 +147,11 @@ const HelloDoctorTable = () => {
     },
   ];
 
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
-
-  const handleMenuClick = ({ key }) => {};
-
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
-
   return (
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : EventData.length > 0 ? (
+      ) : Object.values(EventData).length > 0 ? (
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
@@ -203,7 +180,7 @@ const HelloDoctorTable = () => {
                 />
               </div>
 
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -212,7 +189,7 @@ const HelloDoctorTable = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table

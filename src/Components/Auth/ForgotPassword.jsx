@@ -2,14 +2,14 @@
 import React, { useEffect, useState } from "react";
 import "./auth.css";
 import logo from "../../Assets/Images/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { message, Spin, Carousel } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import login1 from "../../Assets/Images/login-1.png";
 import login2 from "../../Assets/Images/login-5.png";
 import login3 from "../../Assets/Images/login-2.png";
 import login4 from "../../Assets/Images/login-4.png";
-import { showErrorMessage, showSuccessMessage } from "../../globalConstant";
+import { showErrorMessage } from "../../globalConstant";
 import { Instance } from "../../AxiosConfig";
 
 const CustomDot = ({ active }) => (
@@ -20,7 +20,7 @@ const ForgotPassword = () => {
      
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
   const sliderItems = [
@@ -65,6 +65,7 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       const response = await Instance.post("/admin/sendForgotPasswordOtp", { email });
+      console.log("response",response)
       message.success("otp sent to mail")
       navigate("/otp-verification", { state: { email } });
     } catch (error) {
@@ -100,14 +101,16 @@ const ForgotPassword = () => {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="signin-input"
               />
             </div>
+            
             <button className="login-button" onClick={handleContinue}>
               {loading ? (
                 <Spin
                   indicator={
                     <LoadingOutlined
-                      style={{ fontSize: 24, color: "#00963f" }}
+                      style={{ fontSize: 24, color: "#fff" }}
                       spin
                     />
                   }
@@ -116,13 +119,13 @@ const ForgotPassword = () => {
                 "Continue"
               )}
             </button>
-            <p className="login-link">
+            {/* <p className="login-link">
               Do not have an account? <Link to="/sign-up">Sign Up</Link>
             </p>
             <p className="terms">
               By Continuing you agree to Reliance Terms of Service and Privacy
               Policy
-            </p>
+            </p> */}
           </div>
           <div className="col-lg-6 col-sm-0 col-md-0 login-image">
             <Carousel

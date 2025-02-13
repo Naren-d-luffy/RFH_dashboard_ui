@@ -1,9 +1,8 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./auth.css";
 import logo from "../../Assets/Images/logo.png";
-import { Link, useNavigate } from "react-router-dom";
-import { message, Spin, Carousel } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Spin, Carousel } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import login1 from "../../Assets/Images/login-1.png";
 import login2 from "../../Assets/Images/login-5.png";
@@ -21,10 +20,12 @@ const ConfirmPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email;
+  const token=location.state?.token;
+  console.log(token)
+  console.log(email)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const sliderItems = [
     {
@@ -73,7 +74,9 @@ const ConfirmPassword = () => {
       const response = await Instance.post("/admin/forgotpassword", {
         email,
         newPassword: password,
+        token
       });
+      console.log("reset password",response)
       if (response.status === 200) {
        showSuccessMessage("Password reset successful!");
         navigate("/");
@@ -110,6 +113,7 @@ const ConfirmPassword = () => {
                   placeholder="Enter your Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  className="signin-input"
                 />
                 <button
                   className="password-toggle"
@@ -128,6 +132,7 @@ const ConfirmPassword = () => {
                   placeholder="Confirm your Password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="signin-input"
                 />
                 <button
                   className="password-toggle"
@@ -142,7 +147,7 @@ const ConfirmPassword = () => {
                 <Spin
                   indicator={
                     <LoadingOutlined
-                      style={{ fontSize: 24, color: "#00963f" }}
+                      style={{ fontSize: 24, color: "#fff" }}
                       spin
                     />
                   }
@@ -151,13 +156,6 @@ const ConfirmPassword = () => {
                 "Save"
               )}
             </button>
-            <p className="login-link">
-              Do not have an account? <Link to="/sign-up">Sigup</Link>
-            </p>
-            <p className="terms">
-              By Continuing you agree to Reliance Terms of Service and Privacy
-              Policy
-            </p>
           </div>
           <div className="col-lg-6 col-sm-0 col-md-0 login-image">
             <Carousel

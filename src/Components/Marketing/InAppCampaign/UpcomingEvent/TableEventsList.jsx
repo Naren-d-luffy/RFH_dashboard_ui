@@ -1,21 +1,23 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Table, Dropdown, Button, Space } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Table, message } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
-import { showDeleteMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
-import DOMPurify from "dompurify";
 
 import AddEventsList from "./AddEventsList";
 import EditEventsList from "./EditEventsList";
 import ViewEventList from "./ViewEventList";
 import { deleteEvent, setEvent } from "../../../../Features/DiscoverEventsCard";
 import { useNavigate } from "react-router-dom";
+// import DOMPurify from "dompurify";
 
 const TableEventsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,9 +28,9 @@ const TableEventsList = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const navigate = useNavigate();
 
-  const eventsData = useSelector((state) => state.discoverevent.events);
+  const eventsData = useSelector((state) => state.discoverevent.events);    
   const [searchText, setSearchText] = useState("");
-  const [totalRows, setTotalRows] = useState(0);
+  const [totalRows] = useState(0);
   const dispatch = useDispatch();
   const itemsPerPage = 10;
 
@@ -45,14 +47,16 @@ const TableEventsList = () => {
   };
   const handleViewCancel = () => setIsViewModalOpen(false);
 
-  const truncateText = (text, wordLimit = 15) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
-
+  // const truncateText = (text, wordLimit = 15) => {
+  //   if (!text) return "";
+  //   const words = text.split(" ");
+  //   return words.length > wordLimit
+  //     ? words.slice(0, wordLimit).join(" ") + "..."
+  //     : text;
+  // };
+  // const sanitizeContent = (content) => {
+  //   return DOMPurify.sanitize(content);
+  // };
   const handleDeleteEvent = (_id) => {
     showDeleteMessage({
       message: "",
@@ -60,39 +64,45 @@ const TableEventsList = () => {
         try {
           const response = await Instance.delete(`/discover/card/${_id}`);
           if (response.status === 200) {
+            showSuccessMessage("Deleted successfully event");
             dispatch(deleteEvent(_id));
           }
         } catch (error) {
           console.error("Error deleting event:", error);
+          message.error("Error deleting event");
         }
       },
     });
   };
 
-  const fetchEventInfo = async (page) => {
+  const fetchEventInfo =useCallback(async (page=1) => {
     setIsLoading(true);
     try {
       const response = await Instance.get(`/discover/card`, {
         params: { page, limit: itemsPerPage },
+       
       });
-      dispatch(setEvent(response.data));
+      dispatch(setEvent(response.data.data));
     } catch (error) {
       console.error("Error fetching events:", error);
     } finally {
       setIsLoading(false);
     }
-  };
+  },[itemsPerPage,dispatch]);
 
   useEffect(() => {
     fetchEventInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage,fetchEventInfo]);
 
   const dataSource = useMemo(() => {
     if (!searchText.trim())
-      return eventsData.map((event, index) => ({ ...event, key: index }));
-    return eventsData
+      return Object.values(eventsData).reverse()?.map((event, index) => ({
+        ...event,
+        key: index,
+      }));
+    return Object.values(eventsData)
       .filter((event) =>
-        `${event.title} ${event.description}`
+        `${event.title} ${event.description} ${event.isActive}`
           .toLowerCase()
           .includes(searchText.toLowerCase())
       )
@@ -104,17 +114,48 @@ const TableEventsList = () => {
       title: "Title",
       dataIndex: "title",
       key: "title",
+      sorter: (a, b) => a.title.localeCompare(b.title),
+    },
+    // {
+    //   title: "Description",
+    //   dataIndex: "description",
+    //   key: "description",
+    //   render: (text) => truncateText(text),
+    // },
+    // {
+    //   title: "Description",
+    //   dataIndex: "description",
+    //   key: "description",
+    //   render: (text) => (
+    //     <span
+    //       dangerouslySetInnerHTML={{
+    //         __html: sanitizeContent(truncateText(text, 15)),
+    //       }}
+    //     ></span>
+    //   ),
+    // },  
+    {
+      title: "Date",
+      dataIndex: "createdAt",
+      className: "campaign-performance-table-column",
+      render: (text) => {
+        const date = new Date(text);
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      },
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      render: (text) => truncateText(text),
-    },
+      title: "Time",
+      dataIndex: "time",
+      key: "time",
+    },  
     {
-      title: "Order",
-      dataIndex: "order",
-      key: "order",
+      title: "Active",
+      dataIndex: "isActive",
+      key: "isActive",
+      render: (isActive) => (isActive ? "True" : "False"),  
     },
     {
       title: "Action",
@@ -145,34 +186,34 @@ const TableEventsList = () => {
       className: "campaign-performance-table-column",
     },
   ];
-  const items = [
-    {
-      label: "Last Day",
-      key: "1",
-    },
-    {
-      label: "Last week",
-      key: "2",
-    },
-    {
-      label: "Last Month",
-      key: "3",
-    },
-  ];
+  // const items = [
+  //   {
+  //     label: "Last Day",
+  //     key: "1",
+  //   },
+  //   {
+  //     label: "Last week",
+  //     key: "2",
+  //   },
+  //   {
+  //     label: "Last Month",
+  //     key: "3",
+  //   },
+  // ];
 
-  const handleMenuClick = ({ key }) => {};
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
+  // const handleMenuClick = ({ key }) => {};
+  // const menuProps = {
+  //   items,
+  //   onClick: handleMenuClick,
+  // };
   return (
     <div className="container mt-1">
       {isLoading ? (
         <Loader />
-      ) : eventsData.length > 0 ? (
+      ) : Object.values(eventsData).length > 0 ? (
         <>
-          <div className="d-flex justify-content-between align-items-center">
-            <h3>Event List</h3>
+          <div className="d-flex user-engagement-header justify-content-between align-items-center">
+            <h3>Events</h3>
 
             <div className="d-flex align-items-center gap-3">
               <button
@@ -196,7 +237,7 @@ const TableEventsList = () => {
                   onChange={(e) => setSearchText(e.target.value)}
                 />
               </div>
-              <div className="d-flex gap-2">
+              {/* <div className="d-flex gap-2">
                 <Dropdown menu={menuProps}>
                   <Button>
                     <Space>
@@ -205,7 +246,7 @@ const TableEventsList = () => {
                     </Space>
                   </Button>
                 </Dropdown>
-              </div>
+              </div> */}
             </div>
             <div className="mt-3">
               <Table

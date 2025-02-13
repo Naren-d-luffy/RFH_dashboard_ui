@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Form, Select } from "antd";
+import { Form } from "antd";
 import lightmode from "../../Assets/Images/lightmode.png";
 import darkmode from "../../Assets/Images/darkmode.png";
-
 import "react-international-phone/style.css";
 import { useDarkMode } from "../../DarkMode";
 
@@ -32,7 +31,7 @@ export const Preferences = () => {
       <div className="container">
         <h4 className="mt-4 mt-lg-0">Preferences</h4>
         <p>Customisation according to your preferences</p>
-        <hr />
+        <hr style={{color:"var(--black-color)"}} />
         <Form layout="vertical" form={form}>
           <h5>Select Theme</h5>
           <div className="row mt-4">
@@ -63,7 +62,7 @@ export const Preferences = () => {
             </div> */}
           </div>
 
-          <div className="row mt-4">
+          {/* <div className="row mt-4">
             <div className="col-md-4 mt-4 theme-select-option">
               <p>Time Zone</p>
             </div>
@@ -115,7 +114,7 @@ export const Preferences = () => {
                 </Select>
               </Form.Item>
             </div>
-          </div>
+          </div> */}
           <div className="row mt-4">
             <div className="d-flex justify-content-end gap-2">
               <button className="settings-delete-button" type="button">

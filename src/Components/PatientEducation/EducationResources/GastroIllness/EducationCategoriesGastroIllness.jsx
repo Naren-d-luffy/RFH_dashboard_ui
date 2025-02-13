@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Button, Dropdown, Menu } from "antd";
-import { FiEye, FiSearch } from "react-icons/fi";
+import React, { useState, useEffect, useCallback } from "react";
+import { Dropdown, Menu, message } from "antd";
 import { GoPlus } from "react-icons/go";
-import { VscSettings } from "react-icons/vsc";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
@@ -23,29 +21,23 @@ import {
 } from "../../../../Features/GastroIllnessSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+// import DOMPurify from "dompurify";
 
 const EducationCategoriesGastroIllness = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [gastroIllnessList, setGastroIllnessList] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const gastroEvents = useSelector(
     (state) => state.gastroIllness.gastroIllness || []
   );
-  const itemsPerPage = 100;
-
-  const showModal = () => setIsModalOpen(true);
-  const handleCancel = () => setIsModalOpen(false);
-  const showEditModal = () => setIsEditModalOpen(true);
-  const handleEditCancel = () => setIsEditModalOpen(false);
-  const showViewModal = () => setIsViewModalOpen(true);
-  const handleViewCancel = () => setIsViewModalOpen(false);
-
+  // const sanitizeContent = (content) => {
+  //   return DOMPurify.sanitize(content);
+  // };
   const truncateText = (text, wordLimit) => {
     if (!text) return "";
     const words = text.split(" ");
@@ -53,35 +45,45 @@ const EducationCategoriesGastroIllness = () => {
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text;
   };
+  const itemsPerPage = 100;
+
+  const showModal = () => setIsModalOpen(true);
+  const handleCancel = () => setIsModalOpen(false);
+  const showEditModal = () => setIsEditModalOpen(true);
+  const handleEditCancel = () => setIsEditModalOpen(false);
+  const handleViewCancel = () => setIsViewModalOpen(false);
+
+  const handleCardClick = (event) => {
+    if (!isEditModalOpen) {
+      setSelectedEvent(event);
+      setIsViewModalOpen(true);
+    }
+  };
 
   const sortMenu = (event) => (
-    <Menu>
+    <Menu onClick={(e) => e.domEvent.stopPropagation()}>
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
           setSelectedEvent(event);
           showEditModal();
+          setSelectedEvent(event);
+          setIsEditModalOpen(true);
+          setIsViewModalOpen(false);
         }}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
       <Menu.Item
-        key="view"
-        className="filter-menu-item"
-        onClick={() => {
-          setSelectedEvent(event);
-          showViewModal();
-        }}
-      >
-        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        View
-      </Menu.Item>
-      <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => handleDeleteEvent(event._id)}
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
+          handleDeleteEvent(event._id);
+        }}
       >
         <RiDeleteBin7Line
           style={{ color: "var(--red-color)", marginRight: "4px" }}
@@ -91,23 +93,26 @@ const EducationCategoriesGastroIllness = () => {
     </Menu>
   );
 
-  const fetchGastroEvents = async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get("/gastro", {
-        params: { page, limit: itemsPerPage },
-      });
-      console.log("gastroIllness:", response.data.gastros);
-      dispatch(setGastroIllness(response.data.gastros || []));
-      setGastroIllnessList(response.data.gastros || []);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching gastro events:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  const fetchGastroEvents = useCallback(
+    async (page) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get("/gastro", {
+          params: { page, limit: itemsPerPage },
+        });
+        dispatch(setGastroIllness(response.data.data.gastros || []));
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching gastro events:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch]
+  );
+  useEffect(() => {
+    fetchGastroEvents();
+  }, [fetchGastroEvents]);
   const handleDeleteEvent = (_id) => {
     showDeleteMessage({
       message: "",
@@ -119,35 +124,47 @@ const EducationCategoriesGastroIllness = () => {
             dispatch(deleteGastroIllness(_id));
           }
         } catch (error) {
-          console.error("Error deleting event:", error);
+          console.error("Error deleting overview:", error);
+          message.error("Error deleting overview",error);
+
         }
       },
     });
   };
 
-  useEffect(() => {
-    fetchGastroEvents();
-  }, []);
-
   const renderEventCard = (event) => (
     <div className="col-lg-4" key={event._id}>
-      <div className="upcoming-event-card p-3" style={{ position: "relative" }}>
+      <div
+        className="upcoming-event-card p-3"
+        style={{ position: "relative", cursor: "pointer" }}
+        onClick={() => handleCardClick(event)}
+      >
         <div className="treatment-info-icon-container">
           <Dropdown overlay={sortMenu(event)} trigger={["click"]}>
-            <button className="action-icon-button">
+            <button
+              className="action-icon-button"
+              onClick={(e) => e.stopPropagation()}
+            >
               <BsThreeDotsVertical />
             </button>
           </Dropdown>
         </div>
 
         <div className="d-flex justify-content-center align-items-center mb-3">
-          <img src={event.thumbnail} alt={event.title} />
+          <img src={event.headerImage} alt={event.title} />
         </div>
         <div>
           <div className="d-flex justify-content-between mb-2">
             <h4>{event.title}</h4>
           </div>
-          <p>{truncateText(event.description, 30)}</p>
+          <p>{truncateText(event.description, 10)}</p>
+          {/* <p>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: sanitizeContent(truncateText(event.content, 10)),
+              }}
+            ></span>
+          </p> */}
         </div>
       </div>
     </div>
@@ -158,7 +175,7 @@ const EducationCategoriesGastroIllness = () => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", zIndex: "1000" }}
+        style={{ ...style, display: "block", zIndex: "100" }}
         onClick={onClick}
       >
         &#8592;
@@ -171,7 +188,7 @@ const EducationCategoriesGastroIllness = () => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", zIndex: "1000" }}
+        style={{ ...style, display: "block", zIndex: "100" }}
         onClick={onClick}
       >
         &#8594;
@@ -181,7 +198,7 @@ const EducationCategoriesGastroIllness = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -221,23 +238,30 @@ const EducationCategoriesGastroIllness = () => {
         </div> */}
 
         <div className="row mt-4">
-          <div className="d-flex justify-content-between">
-            <h6>Gastro Illness</h6>
-            <div className="d-flex gap-2">
+          <div className="events-header-container">
+            <h6>Overview</h6>
+            <div className="events-buttons">
+              <button className="rfh-basic-button" onClick={showModal}>
+                <GoPlus size={20} /> Add
+              </button>
               <button
                 className="rfh-view-all-button"
                 onClick={() => navigate("/view-all-gastro-illness")}
               >
                 View all
               </button>
-              <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} /> Add Events
-              </button>
             </div>
           </div>
           <div className="mt-3">
-            <Slider {...sliderSettings}>
-              {gastroEvents.map((event) => renderEventCard(event))}
+            <Slider {...sliderSettings} key={Object.keys(gastroEvents).length}>
+              {/* {gastroEvents.map((event) => renderEventCard(event))} */}
+              {gastroEvents && Object.keys(gastroEvents).length > 0 ? (
+                Object.values(gastroEvents).reverse()?.map((event, index) =>
+                  renderEventCard(event, index)
+                )
+              ) : (
+                <p>No data available</p>
+              )}
             </Slider>
           </div>
         </div>

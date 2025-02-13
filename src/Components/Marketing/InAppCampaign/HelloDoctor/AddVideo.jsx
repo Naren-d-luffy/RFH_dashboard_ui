@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, Input, message } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import {
+  showErrorMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import { addHelloDoctorVideos } from "../../../../Features/HelloDoctorSlice";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 
-const AddVideo = ({ open, handleCancel, refreshList }) => {
+const AddVideo = ({ open, handleCancel }) => {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -31,28 +34,34 @@ const AddVideo = ({ open, handleCancel, refreshList }) => {
         handleCancel();
         setTitle("");
         setUrl("");
-        dispatch(addHelloDoctorVideos(response.data));
+        dispatch(addHelloDoctorVideos(response.data.data));
       }
     } catch (error) {
       console.error("Failed to add video:", error);
-      message.error("Failed to add video.");
+      const errorMessage =
+        error.response?.data?.message || error.message || "Error adding video";
+      showErrorMessage(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
-
+  const handleCancelClick = () => {
+    setTitle("");
+    setUrl("");
+    handleCancel();
+  };
   return (
     <>
       {isLoading && <Loader />}
       <Modal
         visible={open}
         title={<span className="create-campaign-modal-title">Add Video</span>}
-        onCancel={handleCancel}
+        onCancel={handleCancelClick}
         width={680}
         footer={[
           <Button
             key="back"
-            onClick={handleCancel}
+            onClick={handleCancelClick}
             className="create-campaign-cancel-button"
           >
             Cancel
@@ -75,7 +84,7 @@ const AddVideo = ({ open, handleCancel, refreshList }) => {
               placeholder="Enter Title"
               required
             />
-            <span className="create-campaign-input-span">Video Title</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Video Title</span>
           </Form.Item>
           <Form.Item>
             <Input
@@ -84,7 +93,7 @@ const AddVideo = ({ open, handleCancel, refreshList }) => {
               placeholder="Enter URL"
               required
             />
-            <span className="create-campaign-input-span">Video URL</span>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Video URL</span>
           </Form.Item>
         </Form>
       </Modal>

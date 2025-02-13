@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button, Modal, Form, Input, message, Select, Upload } from "antd";
+import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { FaTrash } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -10,7 +10,6 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { addFeature } from "../../../../Features/FeatureSlice";
 const { TextArea } = Input;
-const { Option } = Select;
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -35,6 +34,9 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
   };
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
+    
+    if (!validateImage(file)) return; 
+  
     setUploadedImage(file);
   };
 
@@ -57,7 +59,6 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
       !title ||
       !description ||
       !content ||
-      features.length === 0 ||
       !uploadedImage
     ) {
       message.error("Please fill in all required fields.");
@@ -71,7 +72,6 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
       content: content,
       thumbnail: uploadedImage,
     };
-    console.log(payload);
     setIsLoading(true);
     try {
       const response = await Instance.post(
@@ -86,7 +86,7 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("Feature added successfully!");
-        dispatch(addFeature(response.data));
+        dispatch(addFeature(response.data.data));
         setTitle("");
         setDescription("");
         setFeatures([]);
@@ -100,7 +100,14 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
       setIsLoading(false);
     }
   };
-
+  const handleCancelClick = () => {
+    setTitle("");
+    setDescription("");
+    setFeatures([]);
+    setContent("");
+    setUploadedImage(null);
+    handleCancel();
+  };
   return (
     <Modal
       visible={open}
@@ -109,12 +116,12 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
           Create Feature Program
         </span>
       }
-      onCancel={handleCancel}
+      onCancel={handleCancelClick}
       width={680}
       footer={[
         <Button
           key="back"
-          onClick={handleCancel}
+          onClick={handleCancelClick}
           className="create-campaign-cancel-button"
         >
           Cancel
@@ -141,7 +148,7 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
               Drop files here or click to upload
             </p>
             <span className="create-campaign-ant-upload-drag-icon">
-              <IoCloudUploadOutline />{" "}
+                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
               <span style={{ color: "#727880" }}>Upload Image</span>
             </span>
           </Upload>
@@ -171,24 +178,32 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
               </Button>
             </div>
           )}
-          <span className="create-campaign-input-span">Image</span>
+          <span className="create-campaign-input-span">
+            <span style={{ color: "red" }}>*</span> Image
+          </span>
         </Form.Item>
-        <Form.Item label="Feature Title">
+        <Form.Item>
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Title"
             required
           />
+          <span className="create-campaign-input-span">
+            <span style={{ color: "red" }}>*</span> Feature Title
+          </span>
         </Form.Item>
 
-        <Form.Item label="Description ">
+        <Form.Item>
           <TextArea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Description "
             required
           />
+          <span className="create-campaign-input-span">
+            <span style={{ color: "red" }}>*</span> Description
+          </span>
         </Form.Item>
 
         <h6 style={{ color: "var(--black-color)" }}>Features</h6>
@@ -201,7 +216,7 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
             >
               Add +
             </button>
-            {features.map((tag, index) => (
+            {features?.map((tag, index) => (
               <div key={index} className="d-flex align-items-center gap-2">
                 <Form.Item className="mb-0">
                   <input
@@ -230,7 +245,9 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
             placeholder="Your text goes here"
             required
           />
-          <span className="create-campaign-input-span">Content</span>
+          <span className="create-campaign-input-span">
+            <span style={{ color: "red" }}>*</span> Content
+          </span>
         </Form.Item>
       </Form>
     </Modal>

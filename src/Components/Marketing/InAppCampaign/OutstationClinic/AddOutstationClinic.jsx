@@ -1,8 +1,19 @@
-import React, { useState } from "react";
-import { Button, Modal, Form, Input, message, Col, Row, Upload } from "antd";
+import React, { useState, useEffect } from "react";
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  message,
+  Col,
+  Row,
+  Upload,
+  Radio,
+  Switch,
+} from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import Loader from "../../../../Loader";
 import { addOutstationClinic } from "../../../../Features/OutstationClinicSlice";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -21,17 +32,50 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
   const [description, setDescription] = useState("");
   const [timing, setTiming] = useState("");
   const [address, setAddress] = useState("");
+  const [clinicType, setClinicType] = useState("");
   const dispatch = useDispatch();
+  const [isActive, setIsActive] = useState(true);
+  useEffect(() => {
+    if (!open) {
+      setClinicName("");
+      setRating("");
+      setReviews("");
+      setPatients("");
+      setExperience("");
+      setDescription("");
+      setTiming("");
+      setAddress("");
+      setClinicType("");
+      setUploadedImage(null);
+    }
+  }, [open]);
 
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
+      if (!validateImage(file)) return false;
     setUploadedImage(file);
   };
+
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
 
   const handleSave = async () => {
+    if (
+      !clinicName ||
+      !rating ||
+      !reviews ||
+      !patients ||
+      !experience ||
+      !description ||
+      !timing ||
+      !address ||
+      !clinicType
+    ) {
+      message.error("Please fill in all required fields.");
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append("name", clinicName);
@@ -42,7 +86,8 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
       formData.append("experience", experience);
       formData.append("about", description);
       formData.append("timing", timing);
-
+      formData.append("type", clinicType);
+      formData.append("isActive", isActive);
       if (uploadedImage) {
         formData.append("image", uploadedImage);
       }
@@ -53,20 +98,10 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
           "Content-Type": "multipart/form-data",
         },
       });
-
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("Outstation Clinic added successfully!");
         dispatch(addOutstationClinic(response.data));
-        setClinicName("");
-        setRating("");
-        setReviews("");
-        setPatients("");
-        setExperience("");
-        setDescription("");
-        setTiming("");
-        setAddress("");
-        setUploadedImage(null);
       }
     } catch (error) {
       console.error("Error while submitting: ", error?.response?.data || error);
@@ -83,7 +118,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Add Outstation Clinic
+            Add Outstation/Speciality Clinic
           </span>
         }
         onCancel={handleCancel}
@@ -114,7 +149,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               placeholder="Add Clinic Name"
               required
             />
-            <span className="create-campaign-input-span">Clinic Name</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Clinic Name
+            </span>
           </Form.Item>
           <Row gutter={24}>
             <Col span={12}>
@@ -122,10 +159,13 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                 <Input
                   value={rating}
                   onChange={(e) => setRating(e.target.value)}
+                  type="number"
                   placeholder="Enter Rating (e.g., 4.5)"
                   required
                 />
-                <span className="create-campaign-input-span">Rating</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span>Rating
+                </span>
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -135,8 +175,11 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                   onChange={(e) => setReviews(e.target.value)}
                   placeholder="Enter Number of Reviews"
                   required
+                  type="number"
                 />
-                <span className="create-campaign-input-span">Reviews</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Reviews
+                </span>
               </Form.Item>
             </Col>
           </Row>
@@ -148,8 +191,11 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                   onChange={(e) => setPatients(e.target.value)}
                   placeholder="Enter Number of Patients"
                   required
+                  type="number"
                 />
-                <span className="create-campaign-input-span">Patients</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Patients
+                </span>
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -159,8 +205,11 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                   onChange={(e) => setExperience(e.target.value)}
                   placeholder="Enter Experience (in years)"
                   required
+                  type="number"
                 />
-                <span className="create-campaign-input-span">Experience</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Experience
+                </span>
               </Form.Item>
             </Col>
           </Row>
@@ -171,10 +220,12 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">About</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span>About
+            </span>
           </Form.Item>
           <Row gutter={24}>
-            <Col span={12}>
+            <Col span={8}>
               <Form.Item>
                 <Input
                   value={timing}
@@ -182,8 +233,44 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                   placeholder="Enter Timing (e.g., Mon-Fri 9AM-5PM)"
                   required
                 />
-                <span className="create-campaign-input-span">Timing</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Timing
+                </span>
               </Form.Item>
+            </Col>
+            <Col span={10}>
+              <Form.Item
+                label={
+                  <span>
+                    Clinic Type <span style={{ color: "red" }}>*</span>
+                  </span>
+                }
+              >
+                <div className="radio-group-container">
+                  <Radio.Group
+                    onChange={(e) => setClinicType(e.target.value)}
+                    value={clinicType}
+                  >
+                    <Radio value="outstation">Outstation</Radio>
+                    <Radio value="speciality">Speciality</Radio>
+                  </Radio.Group>
+                </div>
+              </Form.Item>
+            </Col>
+            <Col span={6}>
+              <div
+                className="mt-3"
+                style={{ display: "flex", gap: "20px", alignItems: "center" }}
+              >
+                <div>
+                  <span>Active &nbsp;</span>
+                  <Switch
+                    className="gastro-switch-button"
+                    checked={isActive}
+                    onChange={(checked) => setIsActive(checked)}
+                  />
+                </div>
+              </div>
             </Col>
           </Row>
           <Form.Item>
@@ -193,7 +280,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               placeholder="Enter Address"
               required
             />
-            <span className="create-campaign-input-span">Address</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Address
+            </span>
           </Form.Item>
           <Form.Item>
             <Upload
@@ -206,7 +295,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline />{" "}
+                <IoCloudUploadOutline className="image-upload-icon" />{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>
@@ -236,7 +325,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                 </Button>
               </div>
             )}
-            <span className="create-campaign-input-span">Image</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Image
+            </span>
           </Form.Item>
         </Form>
       </Modal>

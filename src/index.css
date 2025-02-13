@@ -68,7 +68,7 @@
   --primary-green:#14e16a;
   --table-head-bg-color : #6e6e6e;
   --table-data-bg-color: #393939;
-  --rfh-button-text-color: #fff;
+  --rfh-button-text-color: #353535;
   --graph-text-color: #fafafa;
   --faq-ans-color:#c9c7c7;
   --bg-gray-color: #b5b2b2;
@@ -77,6 +77,7 @@
   --model-background-color: #333;
   --graph-field-color: #5e5d5d;
   --dark-blue: #251736;
-
+  --border-color: #ffffff;
+  --card-bg-color: #353535;
 }
 

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Dropdown, Menu } from "antd";
+import { Dropdown, Menu, message } from "antd";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -18,7 +18,6 @@ import {
 } from "../../../../globalConstant";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteCamp, setCamps } from "../../../../Features/CampSlice";
-import { FiEye } from "react-icons/fi";
 import ViewLatestCamp from "./ViewLatestCamp";
 import { useNavigate } from "react-router-dom";
 export const LatestCampsList = () => {
@@ -27,23 +26,13 @@ export const LatestCampsList = () => {
     camp: false,
     clinic: false,
   });
-  const [campData, setCampData] = useState([]);
   const navigate = useNavigate();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedCamp, setSelectedCamp] = useState([]);
   const dispatch = useDispatch();
   const camps = useSelector((state) => state.camps.camps);
-
-  const showEditModal = (camp) => {
-    setSelectedCamp(camp);
-    setIsEditModalOpen(true);
-  };
-
-  const showViewtModal = (camp) => {
-    setSelectedCamp(camp);
-    setIsViewModalOpen(true);
-  };
+console.log("camps",camps);
 
   const handleCancelEditModal = () => {
     setSelectedCamp(null);
@@ -55,34 +44,34 @@ export const LatestCampsList = () => {
     setIsViewModalOpen(false);
   };
 
+  const handleCardClick = (camp) => {
+    if (!isEditModalOpen) {
+      setSelectedCamp(camp);
+      setIsViewModalOpen(true);
+    }
+  };
+
   const filterMenu = (camp) => (
-    <Menu>
+    <Menu onClick={(e) => e.domEvent.stopPropagation()}>
+      {" "}
       <Menu.Item
         key="edit"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
           setSelectedCamp(camp);
-          showEditModal(camp);
+          setIsEditModalOpen(true);
+          setIsViewModalOpen(false);
         }}
       >
         <BiEdit style={{ color: "var(--primary-green)", marginRight: "4px" }} />
         Edit
       </Menu.Item>
       <Menu.Item
-        key="view"
-        className="filter-menu-item"
-        onClick={() => {
-          setSelectedCamp(camp);
-          showViewtModal(camp);
-        }}
-      >
-        <FiEye style={{ color: "var(--primary-green)", marginRight: "4px" }} />
-        View
-      </Menu.Item>
-      <Menu.Item
         key="delete"
         className="filter-menu-item"
-        onClick={() => {
+        onClick={(e) => {
+          e.domEvent.stopPropagation();
           handleDeleteCamp(camp._id);
         }}
       >
@@ -94,28 +83,24 @@ export const LatestCampsList = () => {
     </Menu>
   );
 
-  useEffect(() => {
-    fetchCampList();
-  }, []);
-
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
-  const fetchCampList = async () => {
+  const fetchCampList = useCallback(async () => {
     try {
       const response = await Instance.get(`/camp`);
+      console.log("camps",response)
       if (response.status === 200 || response.status === 201) {
-        setCampData(response.data);
-        dispatch(setCamps(response.data));
+        dispatch(setCamps(response?.data?.data));
       }
     } catch (error) {
       console.error("Error fetching camp:", error);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     fetchCampList();
-  }, []);
+  }, [fetchCampList]);
 
   const handleDeleteCamp = (_id) => {
     showDeleteMessage({
@@ -129,6 +114,7 @@ export const LatestCampsList = () => {
             console.log(response);
           }
         } catch (error) {
+          message.error("Error deleting Camp",error);
           console.error("Error deleting Camp:", error);
         }
       },
@@ -144,15 +130,22 @@ export const LatestCampsList = () => {
   };
 
   const renderLatestCamps = (camp) => {
-    const [lat, lng] = camp.location.split(",");
+    const location = camp.location ? camp.location.split(",") : [];
+    const [lat, lng] = location;
     return (
       <div className="col-lg-4" key={camp._id}>
-        <div className="recommended-latest-camp">
+        <div
+          className="upcoming-event-card"
+          onClick={() => handleCardClick(camp)}
+          style={{cursor:"pointer"}}
+        >
           <div className="recommended-latest-camp-map position-relative">
-            {/* Icon positioned above the iframe */}
             <div className="latest-camp-icon-container">
               <Dropdown overlay={filterMenu(camp)} trigger={["click"]}>
-                <button className="action-icon-button">
+                <button
+                  className="action-icon-button"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <BsThreeDotsVertical />
                 </button>
               </Dropdown>
@@ -160,6 +153,7 @@ export const LatestCampsList = () => {
             <iframe
               src={`https://www.google.com/maps?q=${lat},${lng}&hl=es;z=14&output=embed`}
               allowFullScreen
+              title="camp-location"
               style={{ height: "250px", width: "100%" }}
             ></iframe>
           </div>
@@ -188,7 +182,7 @@ export const LatestCampsList = () => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", zIndex: "1000" }}
+        style={{ ...style, display: "block", zIndex: "100" }}
         onClick={onClick}
       >
         &#8592;
@@ -201,7 +195,7 @@ export const LatestCampsList = () => {
     return (
       <div
         className={className}
-        style={{ ...style, display: "block", zIndex: "1000" }}
+        style={{ ...style, display: "block", zIndex: "100" }}
         onClick={onClick}
       >
         &#8594;
@@ -211,7 +205,7 @@ export const LatestCampsList = () => {
 
   const sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -233,27 +227,31 @@ export const LatestCampsList = () => {
     <div className="row mt-4">
       <div className="marketing-categories-section">
         <div className="row mt-4">
-          <div className="d-flex justify-content-between">
-            <h6>Latest Camps</h6>
+          <div className="events-header-container">
+            <h6>Health Camps</h6>
 
-            <div className="d-flex gap-2">
-              <button
-                className="rfh-view-all-button"
-                onClick={() => navigate("/view-all-camp-table")}
-              >
-                View all
-              </button>
+            <div className="events-buttons">
               <button
                 className="rfh-basic-button"
                 onClick={() => toggleModal("camp")}
               >
                 <GoPlus size={20} /> Add Camp
               </button>
+              <button
+                className="rfh-view-all-button"
+                onClick={() => navigate("/view-all-camp-table")}
+              >
+                View all
+              </button>
             </div>
           </div>
           <div className="mt-4">
-            <Slider {...sliderSettings}>
-              {camps.map((camp) => renderLatestCamps(camp))}
+            <Slider {...sliderSettings} key={Object.keys(camps).length}>
+              {camps && Object.keys(camps).length > 0 ? (
+                Object.values(camps).reverse()?.map((camp) => renderLatestCamps(camp))
+              ) : (
+                <p>No data available</p>
+              )}
             </Slider>
           </div>
           <AddLatestCamps

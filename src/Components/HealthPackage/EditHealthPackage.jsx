@@ -40,7 +40,7 @@ const EditHealthPackage = ({ open, handleCancel, packageData }) => {
       setFeatures(packageData.features || []);
     }
   }, [packageData]);
-  
+
   const handleAddFeatures = () => {
     setFeatures([...features, ""]);
   };
@@ -87,11 +87,17 @@ const EditHealthPackage = ({ open, handleCancel, packageData }) => {
   return (
     <Modal
       visible={open}
-      title={<span className="create-campaign-modal-title">Edit Health Package</span>}
+      title={
+        <span className="create-campaign-modal-title">Edit Health Package</span>
+      }
       onCancel={handleCancel}
       width={680}
       footer={[
-        <Button key="back" onClick={handleCancel} className="create-campaign-cancel-button">
+        <Button
+          key="back"
+          onClick={handleCancel}
+          className="create-campaign-cancel-button"
+        >
           Cancel
         </Button>,
         <Button
@@ -136,7 +142,9 @@ const EditHealthPackage = ({ open, handleCancel, packageData }) => {
         <Form.Item label="Description 1">
           <TextArea
             value={formData.descriptionOne}
-            onChange={(e) => handleInputChange("descriptionOne", e.target.value)}
+            onChange={(e) =>
+              handleInputChange("descriptionOne", e.target.value)
+            }
             placeholder="Description 1"
             required
           />
@@ -144,7 +152,9 @@ const EditHealthPackage = ({ open, handleCancel, packageData }) => {
         <Form.Item label="Description 2">
           <TextArea
             value={formData.descriptionTwo}
-            onChange={(e) => handleInputChange("descriptionTwo", e.target.value)}
+            onChange={(e) =>
+              handleInputChange("descriptionTwo", e.target.value)
+            }
             placeholder="Description 2"
             required
           />

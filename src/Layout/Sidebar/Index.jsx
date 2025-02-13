@@ -3,26 +3,27 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../layout.css";
 import lightLogo from "../../Assets/Images/logo.png";
 import darkLogo from "../../Assets/Images/darkLogo.png"
-import { FiActivity, FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FiChevronDown, FiChevronUp, FiTool } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { MdOutlineDashboard } from "react-icons/md";
 import { GoShieldCheck } from "react-icons/go";
 import { TbCirclePercentage } from "react-icons/tb";
 import {
   Bell,
-  Handshake,
   LogOut,
   LucideHouse,
-  MemoryStick,
   MessageCircleCode,
   MessageSquareMore,
   Settings,
 } from "lucide-react";
-import { SlGraduation } from "react-icons/sl";
+import { SlGraduation, SlLock } from "react-icons/sl";
 import { IoMenu, IoNewspaperOutline, IoTelescopeOutline } from "react-icons/io5";
 import { BiCapsule } from "react-icons/bi";
 import { useDarkMode } from "../../DarkMode";
 import { HiOutlineUserGroup } from "react-icons/hi";
+import { showLogoutMessage } from "../../globalConstant";
+import { FaRegFileLines } from "react-icons/fa6";
+import { RiHospitalLine } from "react-icons/ri";
 
 
 function SidebarAdmin() {
@@ -35,7 +36,20 @@ function SidebarAdmin() {
     setExpandedMenu(expandedMenu === menu ? null : menu);
   };
   const { isDarkMode } = useDarkMode();
-
+const handleLogout = () => {
+    showLogoutMessage({
+      title: "Confirm Logout",
+      content: "Are you sure you want to log out?",
+      onDelete: () => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("accessTokenExpiration");
+        localStorage.removeItem("refreshTokenExpiration");
+        localStorage.removeItem("userInfo");
+        navigate("/");
+      },
+    });
+  };
   useEffect(() => {
     const pathToMenuMap = {
       "/user-dashboards/user-aquisition": "userDashboards",
@@ -56,7 +70,6 @@ function SidebarAdmin() {
       "/patient-education/resources": "education",
       "/view-all-gastro-illness": "education",
       "/view-all-treatments": "education",
-      "/view-all-treatments": "education",
       "/feedback/create-survey": "feedback",
       "/feedback/create-survey-page": "feedback",
       "/education-resources/reading-materials": "education",
@@ -65,6 +78,7 @@ function SidebarAdmin() {
       "/feedback/patient-surveys": "feedback",
       "/feedback/view-feedback": "feedback",
       "/feedback/negative-feedback": "feedback",
+      "/teleconsultation/doctors-list":"teleconsultation",
       "/teleconsultation/appointment-status": "teleconsultation",
       "/teleconsultation/doctor-detail": "teleconsultation",
       "/teleconsultation/technical-support": "teleconsultation",
@@ -80,6 +94,7 @@ function SidebarAdmin() {
       "/medication-tracker/patient-detail": "medicationtracker",
       "/sidebar/notification": "",
       "/logout": "logout",
+      "/department-details":"department",
     };
 
     const currentPath = location.pathname;
@@ -148,16 +163,21 @@ function SidebarAdmin() {
     //   subMenu: [{ label: "Hello Doctor", to: "/hello-doctor" }],
     // },
     {
+      label: "Department Details",
+      icon: <LucideHouse className="sidebar-icon" size={14} />,
+      to: "/department-details",
+    },
+    {
       id: "education",
       label: (
         <span
-        onClick={() => navigate("/patient-education/overview")}
+        onClick={() => navigate("/patient-education/resources")}
           style={{ cursor: "pointer" }}
         >
-          Patient Education
+          MyHealth Library
         </span>
       ),
-      to: "/patient-education/overview",
+      to: "/patient-education/resources",
       icon: <SlGraduation className="sidebar-icon" />,
       subMenu: [
         { label: "Education Overview", to: "/patient-education/overview" },
@@ -168,7 +188,7 @@ function SidebarAdmin() {
       id: "teleconsultation",
       label: (
         <span
-        onClick={() => navigate("/teleconsultation/doctors-list")}
+        onClick={() => navigate("/teleconsultation/virtual-management")}
           style={{ cursor: "pointer" }}
         >
           Teleconsultation
@@ -177,18 +197,18 @@ function SidebarAdmin() {
       to: "/teleconsultation/appointment-status",
       icon: <IoTelescopeOutline className="sidebar-icon" />,
       subMenu: [
-        // {
-        //   label: "Virtual Management",
-        //   to: "/teleconsultation/virtual-management",
-        // },
+        {
+          label: "Doctors List",
+          to: "/teleconsultation/virtual-management",
+        },
         // {
         //   label: "Appointment Status",
         //   to: "/teleconsultation/appointment-status",
         // },
-        {
-          label: "Doctors List",
-          to: "/teleconsultation/doctors-list",
-        },
+        // {
+        //   label: "Doctors List",
+        //   to: "/teleconsultation/doctors-list",
+        // },
         { label: "Technical Support", to: "/teleconsultation/technical-support" },
       ],
     },
@@ -237,6 +257,30 @@ function SidebarAdmin() {
       to: "/news",
     },
     {
+      id: "tearms",
+      label: "Terms & Conditions",
+      icon: <FaRegFileLines className="sidebar-icon" size={14} />,
+      to: "/terms-conditions",
+    },
+    {
+      id: "hospital",
+      label: "About Hospital",
+      icon: <RiHospitalLine className="sidebar-icon" size={14} />,
+      to: "/about-hospital",
+    },
+    {
+      id: "configuration",
+      label: "Configuration",
+      icon: <FiTool className="sidebar-icon" size={14} />,
+      to: "/configuration",
+    },
+    {
+      id: "rolebased",
+      label: "Role Based Access",
+      icon: <SlLock className="sidebar-icon" size={14} />,
+      to: "/role-based",
+    },
+    {
       id: "community post",
       label: "Community Post",
       icon: <HiOutlineUserGroup className="sidebar-icon" size={14} />,
@@ -248,24 +292,24 @@ function SidebarAdmin() {
   //     icon: <FiActivity className="sidebar-icon" size={14} />,
   //     to: "/health-package",
   //   },
-    {
-      id: "technical",
-      label: (
-        <span
-        onClick={() => navigate("/")}
-          style={{ cursor: "pointer" }}
-        >
-          Technical
-        </span>
-      ),
-      to: "/",
-      icon: <MemoryStick className="sidebar-icon" size={14} />,
-      subMenu: [
-        { label: "Raise TIcket", to: "/" },
-        // { label: "User Engagement", to: "/" },
-        // { label: "User Feedback", to: "/" },
-      ],
-    },
+    // {
+    //   id: "technical",
+    //   label: (
+    //     <span
+    //     onClick={() => navigate("/")}
+    //       style={{ cursor: "pointer" }}
+    //     >
+    //       Technical
+    //     </span>
+    //   ),
+    //   to: "/",
+    //   icon: <MemoryStick className="sidebar-icon" size={14} />,
+    //   subMenu: [
+    //     { label: "Raise TIcket", to: "/" },
+    //     // { label: "User Engagement", to: "/" },
+    //     // { label: "User Feedback", to: "/" },
+    //   ],
+    // },
     {
       id: "medication",
       label: "Medication Tracker",
@@ -283,11 +327,28 @@ function SidebarAdmin() {
       icon: <Bell className="sidebar-icon" size={14} />,
       to: "/sidebar/notification",
     },
-    {
-      label: "Department Details",
-      icon: <LucideHouse className="sidebar-icon" size={14} />,
-      to: "/department-details",
-    },
+ 
+    // {
+    //   id: "department",
+    //   label: (
+    //     <span
+    //     onClick={() => navigate("/department-details")}
+    //       style={{ cursor: "pointer" }}
+    //     >
+    //       Department Details
+    //     </span>
+    //   ),
+    //   to: "",
+    //   icon: <LucideHouse className="sidebar-icon" size={14} />,
+    //   subMenu: [
+    //     { label: "Details", to: "/department-details" },
+    //     { label: "Technology", to: "/department-technology" },
+    //     { label: "Facility", to: "/department-facility" },
+    //     { label: "Services", to: "/department-services" },
+    //     { label: "Condition We Treat", to: "/department-conditions" },
+
+    //   ],
+    // },
     {
       label: "Settings",
       icon: <Settings className="sidebar-icon" size={14} />,
@@ -295,9 +356,17 @@ function SidebarAdmin() {
     },
     {
       id: "logout",
-      label: "LogOut",
+      // label: "LogOut",
       icon: <LogOut size={14} className="sidebar-icon" />,
-      to: "/logout",
+      // to: "/logout",
+      label: (
+            <span
+            onClick={handleLogout}
+              style={{ cursor: "pointer" }}
+            >
+              Logout
+            </span>
+          ),
     },
   ];
   
@@ -316,7 +385,7 @@ function SidebarAdmin() {
           <img src={isDarkMode ? darkLogo : lightLogo}
               alt="Logo"
               className="sidebar-logo"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/user-dashboards/user-aquisition")}
             />
             <button
               className="close-btn menu-close-button-response"

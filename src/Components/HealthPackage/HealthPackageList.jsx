@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table, Dropdown, Button, Space } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
@@ -77,23 +77,29 @@ const HealthPackagelist = () => {
     });
   };
 
-  const fetchPackageList = async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get(`/package/health-checkups`, {
-        params: { page, limit: itemsPerPage },
-      });
-      console.log(response.data);
-      setPackageList(response.data || []);
-      setTotalRows(response.data.length);
-      dispatch(setPackages(response.data));
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching healthPackage:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const fetchPackageList = useCallback(
+    async (page) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/package/health-checkups`, {
+          params: { page, limit: itemsPerPage },
+        });
+        console.log(response.data);
+        setPackageList(response.data || []);
+        setTotalRows(response.data.length);
+        dispatch(setPackages(response.data));
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching healthPackage:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch]
+  );
+  useEffect(() => {
+    fetchPackageList(currentPage);
+  }, [currentPage, fetchPackageList]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return healthPackage;
@@ -103,10 +109,6 @@ const HealthPackagelist = () => {
         .includes(searchText.toLowerCase())
     );
   }, [searchText, healthPackage]);
-
-  useEffect(() => {
-    fetchPackageList(currentPage);
-  }, [currentPage]);
 
   const handleTableChange = (pagination) => {
     setCurrentPage(pagination.current);

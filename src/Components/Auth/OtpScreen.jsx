@@ -82,13 +82,15 @@ const OtpScreen = () => {
         otp: otpCode.join(""),
         email,
       });
+      const token = response.data.token;
+      console.log("otp page",token)
       showSuccessMessage(response.data.message)
-      navigate("/confirm-password", { state: { email } });
+      navigate("/confirm-password", { state: { email,token } });
     } catch (error) {
       if (error.response && error.response.data) {
         console.log("error",error.response)
         showErrorMessage(
-          error.response || "An error occurred. Please try again."
+          error.response.data.error || "An error occurred. Please try again."
         );
       } else {
         showErrorMessage(
@@ -114,7 +116,7 @@ const OtpScreen = () => {
                 Welcome to Institute of Gastro Sciences
               </p>
               <h1 className="signup-title">OTP Verification</h1>
-              <p>Enter Otp Code sent to abc@gmial.com</p>
+              <p>Enter Otp Code sent to your email</p>
             </center>
              
             <Form layout="vertical">

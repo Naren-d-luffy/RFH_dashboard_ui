@@ -1,84 +1,85 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, message, Select, Upload } from "antd";
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  message,
+  Upload,
+  Switch,
+  DatePicker,
+  TimePicker,
+} from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { editEvent } from "../../../../Features/DiscoverEventsCard";
-import { FaTrash } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import Loader from "../../../../Loader";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import moment from "moment";
 
-const { TextArea } = Input;
-const { Option } = Select;
+// const { TextArea } = Input;
+// const { Option } = Select;
 
 const EditEventsList = ({ open, handleCancel, eventsData }) => {
   const [title, setTitle] = useState("");
-  const [link, setLink] = useState("");
-  const [order, setOrder] = useState("");
+  // const [link, setLink] = useState("");
+  // const [order, setOrder] = useState("");
   const [description, setDescription] = useState("");
   const [isActive, setIsActive] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [features, setFeatures] = useState([]);
+  const [, setFeatures] = useState([]);
   const [uploadedImage, setUploadedImage] = useState(null);
-
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
   const dispatch = useDispatch();
-
-  const handleAddFeatures = () => {
-    setFeatures([...features, ""]);
+  const modules = {
+    toolbar: [
+      [{ header: "1" }, { header: "2" }, { font: [] }],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["bold", "italic"],
+      ["link", "image"],
+      ["clean"],
+    ],
   };
-
-  const handleFeaturesChange = (e, index) => {
-    const newFeatures = [...features];
-    newFeatures[index] = e.target.value;
-    setFeatures(newFeatures);
-  };
-
-  const handleRemoveFeatures = (index) => {
-    const newFeatures = features.filter((_, idx) => idx !== index);
-    setFeatures(newFeatures);
-  };
-
 
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
-    const isImage = file.type.startsWith("image/");
-    if (!isImage) {
-      message.error("You can only upload image files!");
-      return;
-    }
+    if (!validateImage(file)) return false;
     setUploadedImage(file);
   };
-
-
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
 
- 
   useEffect(() => {
     if (open && eventsData) {
       setTitle(eventsData?.title || "");
       setDescription(eventsData?.description || "");
-      setLink(eventsData?.link || "");
-      setOrder(eventsData?.order || "");
-      setIsActive(eventsData?.isActive ?? null);
-      setFeatures(eventsData?.tags || []);
-      setUploadedImage(eventsData?.imageUrl || null); 
+      // setLink(eventsData?.link || "");
+      // setOrder(eventsData?.order || "");
+      setIsActive(eventsData?.isActive || "");
+      setTime(eventsData?.time);
+      setDate(eventsData?.date);
+      setUploadedImage(eventsData?.image || null);
     } else {
-      
       setTitle("");
       setDescription("");
-      setLink("");
-      setOrder("");
-      setIsActive(null);
+      // setLink("");
+      // setOrder("");
+      // setIsActive(null);
       setFeatures([]);
       setUploadedImage(null);
     }
   }, [open, eventsData]);
 
   const handleUpdate = async () => {
-    if (!title.trim() || !description.trim() || !link.trim() || !order || isNaN(order) || !uploadedImage || features.length === 0) {
+    const strippedContent = description.replace(/<[^>]*>/g, "").trim();
+    
+    if (!title || !strippedContent || !date || !time || !uploadedImage) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -86,30 +87,28 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
     const formData = new FormData();
     formData.append("title", title.trim());
     formData.append("description", description.trim());
-    formData.append("link", link.trim());
-    formData.append("order", parseInt(order, 10));
+    // formData.append("link", link.trim());
+    // formData.append("order", parseInt(order, 10));
     formData.append("isActive", isActive);
-    formData.append("tags", JSON.stringify(features));
     formData.append("image", uploadedImage);
-
+    formData.append("date", date);
+    formData.append("time", time);
     setIsLoading(true);
 
     try {
-      const response = await Instance.put(`/discover/card/${eventsData?._id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await Instance.put(
+        `/discover/card/${eventsData?._id}`,
+        formData
+      );
 
       if (response?.status === 200 || response?.status === 201) {
-        handleCancel(); 
-        dispatch(editEvent(response.data));
+        handleCancel();
+        dispatch(editEvent(response.data.data));
         showSuccessMessage("Event updated successfully!");
-   
         setTitle("");
         setDescription("");
-        setLink("");
-        setOrder("");
+        // setLink("");
+        // setOrder("");
         setIsActive(true);
         setFeatures([]);
         setUploadedImage(null);
@@ -127,27 +126,45 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Update Event Card</span>}
+        title={
+          <span className="create-campaign-modal-title">Update Event Card</span>
+        }
         onCancel={handleCancel}
         width={680}
         footer={[
-          <Button key="back" onClick={handleCancel} className="create-campaign-cancel-button">
+          <Button
+            key="back"
+            onClick={handleCancel}
+            className="create-campaign-cancel-button"
+          >
             Cancel
           </Button>,
-          <Button key="save" onClick={handleUpdate} className="create-campaign-save-button" loading={isLoading}>
+          <Button
+            key="save"
+            onClick={handleUpdate}
+            className="create-campaign-save-button"
+            loading={isLoading}
+          >
             Update
           </Button>,
         ]}
       >
         <Form layout="vertical" className="mt-4">
           <Form.Item>
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter Event Title" required />
-            <span className="create-campaign-input-span">Title</span>
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter Event Title"
+              required
+            />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Title
+            </span>
           </Form.Item>
-          <Form.Item>
+          {/* <Form.Item>
             <Input value={link} onChange={(e) => setLink(e.target.value)} placeholder="Enter Event Link" required />
-            <span className="create-campaign-input-span">Link</span>
-          </Form.Item>
+            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Link</span>
+          </Form.Item> */}
           <Form.Item>
             <Upload
               listType="picture"
@@ -155,9 +172,12 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
               onChange={handleUpload}
               className="create-campaign-upload"
             >
-              <p className="create-campaign-ant-upload-text">Drop files here or click to upload</p>
+              <p className="create-campaign-ant-upload-text">
+                Drop files here or click to upload
+              </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline /> <span style={{ color: "#727880" }}>Upload Image</span>
+                <IoCloudUploadOutline className="image-upload-icon" />{" "}
+                <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>
             {uploadedImage && (
@@ -165,8 +185,8 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
                 <img
                   src={
                     typeof uploadedImage === "string"
-                      ? uploadedImage 
-                      : URL.createObjectURL(uploadedImage) 
+                      ? uploadedImage
+                      : URL.createObjectURL(uploadedImage)
                   }
                   alt="Uploaded"
                   style={{
@@ -190,55 +210,70 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
                 </Button>
               </div>
             )}
-            <span className="create-campaign-input-span">Image</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Image
+            </span>
           </Form.Item>
-          <Form.Item>
-            <Input type="number" value={order} onChange={(e) => setOrder(e.target.value)} placeholder="Enter Display Order" required />
-            <span className="create-campaign-input-span">Order</span>
-          </Form.Item>
-          <Form.Item>
-            <Select value={isActive} onChange={(value) => setIsActive(value)} placeholder="Select Event Status" required>
-              <Option value={true}>Active</Option>
-              <Option value={false}>Inactive</Option>
-            </Select>
-            <span className="create-campaign-input-span">Status</span>
-          </Form.Item>
-          <Form.Item>
-            <TextArea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter Event Description"
-              required
-            />
-            <span className="create-campaign-input-span">Description</span>
-          </Form.Item>
-          <h6 style={{ color: "var(--black-color)" }}>Tags</h6>
           <div className="row">
-            <div className="d-flex flex-column gap-2 mt-3">
-              <button
-                type="button"
-                className="health-package-add-feature d-flex gap-2 align-items-center mb-2"
-                onClick={handleAddFeatures}
+            <div className="col-md-3 mt-2">
+              <Form.Item>
+                <DatePicker
+                  className="settings-input w-100"
+                  placeholder="Select Date"
+                  format="YYYY-MM-DD" // Ensure the correct format
+                  value={date ? moment(date, "YYYY-MM-DD") : null} // Ensure it's in correct format
+                  onChange={(date) =>
+                    setDate(date ? date.format("YYYY-MM-DD") : "")
+                  }
+                />
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Event Date
+                </span>
+              </Form.Item>
+            </div>
+            <div className="col-md-3 mt-2">
+              <Form.Item>
+                <TimePicker
+                  className="settings-input w-100"
+                  placeholder="Select Time"
+                  format="HH:mm"
+                  value={time ? moment(time, "HH:mm") : null} // Convert string to Moment
+                  onChange={(time) => setTime(time ? time.format("HH:mm") : "")} // Convert Moment to string
+                />
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Event Time
+                </span>
+              </Form.Item>
+            </div>
+            <div className="col-lg-4 mb-5">
+              <div
+                className="mt-3"
+                style={{ display: "flex", gap: "20px", alignItems: "center" }}
               >
-                Add +
-              </button>
-              {features.map((tag, index) => (
-                <div key={index} className="d-flex align-items-center gap-2">
-                  <Form.Item className="mb-0">
-                    <input
-                      className="health-package-input"
-                      type="text"
-                      value={tag}
-                      onChange={(e) => handleFeaturesChange(e, index)}
-                      placeholder="Add tag"
-                      style={{ marginBottom: "0px" }}
-                    />
-                  </Form.Item>
-                  <FaTrash className="trash-icon-health-package" onClick={() => handleRemoveFeatures(index)} />
+                <div>
+                  <span>Active &nbsp;</span>
+                  <Switch
+                    className="gastro-switch-button"
+                    checked={isActive}
+                    onChange={(checked) => setIsActive(checked)}
+                  />
                 </div>
-              ))}
+              </div>
             </div>
           </div>
+          <Form.Item>
+            <ReactQuill
+              theme="snow"
+              modules={modules}
+              value={description}
+              onChange={setDescription}
+              placeholder="Your text goes here"
+              required
+            />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Description
+            </span>
+          </Form.Item>
         </Form>
       </Modal>
     </>
@@ -246,9 +281,3 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
 };
 
 export default EditEventsList;
-
-
-
-
-
-

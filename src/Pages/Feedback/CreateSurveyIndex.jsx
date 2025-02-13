@@ -1,10 +1,12 @@
 import React from "react";
 import "./Feedback.css";
-import CreateSurveyPage from "../../Components/Feedback/CreateSurvey/CreateSurveyPage";
+// import CreateSurveyPage from "../../Components/Feedback/CreateSurvey/CreateSurveyPage";
+import ComingSoon from "../../comingSoon";
 const CreateSurveyIndex = () => {
   return (
     <>
-      <CreateSurveyPage />
+    <ComingSoon/>
+      {/* <CreateSurveyPage /> */}
     </>
   );
 };

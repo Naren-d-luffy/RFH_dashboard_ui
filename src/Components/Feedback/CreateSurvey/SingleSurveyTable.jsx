@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Dropdown, Button, Space, Avatar, Input } from "antd";
+import { Table, Dropdown, Button, Space, Avatar } from "antd";
 import { FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { BiSortAlt2 } from "react-icons/bi";
 import { LuFilter } from "react-icons/lu";

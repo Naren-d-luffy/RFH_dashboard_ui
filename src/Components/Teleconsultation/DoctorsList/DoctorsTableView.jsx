@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table, Avatar } from "antd";
 import { FiEdit, FiSearch } from "react-icons/fi";
 import Empty_survey_image from "../../../Assets/Icons/Empty_survey_image.png";
@@ -13,9 +13,9 @@ const DoctorsTableView = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [doctorDetails, setDoctorDetails] = useState([]);
-  const [doctorProfiles, setDoctorProfiles] = useState({});
+  const [, setDoctorProfiles] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalRows, setTotalRows] = useState(0);
+  const [totalRows] = useState(0);
   const [searchText, setSearchText] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [doctorIds, setDoctorIds] = useState({}); 
@@ -36,9 +36,9 @@ const dispatch=useDispatch()
     setIsEditModalOpen(false);
   };
 
-  const fetchDoctorListMyApi = async () => {
+  const fetchDoctorListMyApi = useCallback( async () => {
     try {
-      const response = await Instance.get("/doctorProfile");
+      const response = await Instance.get("/doctor");
       const profileMapping = {};
       const idMapping = {};
       
@@ -53,7 +53,9 @@ const dispatch=useDispatch()
     } catch (error) {
       console.error("Error fetching doctor profiles:", error);
     }
-  };
+  },
+  [dispatch]
+);
 
 
   const fetchDoctorList = async () => {
@@ -127,7 +129,7 @@ const dispatch=useDispatch()
   useEffect(() => {
     fetchDoctorList();
     fetchDoctorListMyApi();
-  }, []);
+  }, [fetchDoctorListMyApi]);
 
   const dataSource = useMemo(() => {
     if (searchText.trim() === "") return doctorDetails;
