@@ -119,6 +119,11 @@ const GastroIllnessTable = () => {
   
   const columns = [
     {
+      title: "Type",
+      dataIndex: "type",
+      className: "campaign-performance-table-column",
+    },
+    {
       title: "Title",
       dataIndex: "title",
       className: "campaign-performance-table-column",
@@ -205,7 +210,7 @@ const GastroIllnessTable = () => {
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>GastroIllness Info</h3>
+              <h3>Overview</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -213,7 +218,7 @@ const GastroIllnessTable = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add Event
+                Add
               </button>
             </div>
           </div>
