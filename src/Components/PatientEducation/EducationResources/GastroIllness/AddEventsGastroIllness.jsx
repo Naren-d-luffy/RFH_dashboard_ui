@@ -108,7 +108,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Add</span>}
+        title={<span className="create-campaign-modal-title">Add Overview Info</span>}
         onCancel={handleCancelClick}
         width={680}
         footer={[

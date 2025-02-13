@@ -35,9 +35,7 @@ export const UpcomingEventList = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const eventsData = useSelector((state) => state.discoverevent.events);  
-  console.log("eventsData",eventsData);
-  
+  const eventsData = useSelector((state) => state.discoverevent.events);    
   const itemsPerPage = 10;
   const dispatch = useDispatch();
   const navigate = useNavigate();
