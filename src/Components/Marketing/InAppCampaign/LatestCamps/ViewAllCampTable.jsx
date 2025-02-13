@@ -185,7 +185,7 @@ const ViewAllCampTable = () => {
       ) : Object.values(CapmpsData).length > 0 ? (
         <>
           <div className="d-flex user-engagement-header justify-content-between align-items-center">
-            <h3>Latest Camps</h3>
+            <h3>Health Camps</h3>
             <button
               className="d-flex gap-2 align-items-center rfh-basic-button"
               onClick={() => toggleModal("addCamp")}

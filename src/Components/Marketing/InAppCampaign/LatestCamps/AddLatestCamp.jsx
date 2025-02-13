@@ -85,7 +85,7 @@ const AddLatestCamps = ({ open, handleCancel }) => {
   return (
     <Modal
       open={open}
-      title={<span className="create-campaign-modal-title">Latest Camps</span>}
+      title={<span className="create-campaign-modal-title">Add Camps</span>}
       onCancel={handleCancelClick}
       width={680}
       footer={[

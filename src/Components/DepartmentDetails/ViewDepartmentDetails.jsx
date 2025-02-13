@@ -12,7 +12,7 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
   // const [videoList, setVideoList] = useState([]);
-  const[thumbnail,setThumbnail]=useState("")
+  const [thumbnail, setThumbnail] = useState("");
   useEffect(() => {
     if (departmentData) {
       setTitle(departmentData.title || "");
@@ -59,7 +59,6 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   //   </div>
   // );
 
-
   return (
     <Modal
       visible={open}
@@ -86,11 +85,19 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
         >
           <div className="d-flex justify-content-between">
             <div>
-            <h2 className="department-heading">{title}</h2>
-            <p className="department-subheading">{subtitle}</p>
+              <h2 className="department-heading">{title}</h2>
+              <p className="department-subheading">{subtitle}</p>
             </div>
             <div>
-            <img src={thumbnail} style={{width:"250px",height:"150px",borderRadius:"15px"}} alt="Health Package" />
+              <img
+                src={thumbnail}
+                style={{
+                  width: "250px",
+                  height: "150px",
+                  borderRadius: "15px",
+                }}
+                alt="Health Package"
+              />
             </div>
           </div>
           <div
@@ -98,7 +105,14 @@ const ViewDepartmentDetails = ({ open, handleCancel, departmentData }) => {
             style={{ display: "flex", alignItems: "center" }}
           >
             <FaInfoCircle style={{ marginRight: "8px", fontSize: "16px" }} />
-            <div dangerouslySetInnerHTML={{ __html: description }} />
+            <div
+              dangerouslySetInnerHTML={{
+                __html: description?.replace(
+                  /<img/g,
+                  '<img style="max-width: 100%; max-height: 150px; height: auto; object-fit: cover;"'
+                ),
+              }}
+            />
           </div>
         </div>
       </div>
