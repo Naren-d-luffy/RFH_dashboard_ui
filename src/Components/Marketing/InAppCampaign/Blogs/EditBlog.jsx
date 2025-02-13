@@ -85,7 +85,7 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
 
-        showSuccessMessage("Blog Updated successfully!");
+        showSuccessMessage("News Updated successfully!");
         dispatch(editBlog(response.data));
         setHeading("");
         setSubHeading("");
