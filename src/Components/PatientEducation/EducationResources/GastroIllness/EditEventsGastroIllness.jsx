@@ -103,7 +103,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Edit GastroIllness Info{" "}
+            Edit Overview Info{" "}
           </span>
         }
         onCancel={handleCancel}

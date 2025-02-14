@@ -47,12 +47,17 @@ const AddBlogs = ({ open, handleCancel }) => {
   const handleDeleteImage1 = () => {
     setThumbnailImage(null);
   };
+  const isContentEmpty = (content) => {
+    if (!content || content.trim() === "") return true;
+    const strippedContent = content.replace(/<\/?[^>]+(>|$)/g, "").trim();
+    return strippedContent === "";
+  };
 
   const handleSave = async () => {
     if (
       !heading ||
       !subHeading ||
-      !content ||
+      isContentEmpty(content) ||
       !uploadedImage ||
       !thumbnailImage
     ) {

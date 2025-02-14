@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ComingSoon = () => {
-  const comingsoon = "https://reliancehospital.blob.core.windows.net/reliancehospitalblob/coming soon.png";
+  const comingsoon = "https://rfhblob.blob.core.windows.net/rfhblobcontainer/comingSoon.png";
 
   return (
     <div className="coming-soon-container">

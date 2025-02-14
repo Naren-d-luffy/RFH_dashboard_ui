@@ -53,12 +53,20 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
     const newTags = features.filter((_, idx) => idx !== index);
     setFeatures(newTags);
   };
-
+  const isContentEmpty = (content) => {
+    if (!content || content.trim() === "") return true;
+  
+    // Remove all HTML tags and check if there's any meaningful text left
+    const strippedContent = content.replace(/<\/?[^>]+(>|$)/g, "").trim();
+  
+    return strippedContent === "";
+  };
+  
   const handleSave = async () => {
     if (
       !title ||
       !description ||
-      !content ||
+      isContentEmpty(content) ||
       !uploadedImage
     ) {
       message.error("Please fill in all required fields.");

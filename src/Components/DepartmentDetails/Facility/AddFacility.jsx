@@ -67,12 +67,19 @@ const AddFacility = ({ open, handleCancel }) => {
   const handleDeleteThumbnail = () => {
     setThumbnailImage(null);
   };
-
+  const isContentEmpty = (content) => {
+    if (!content || content.trim() === "") return true;
+  
+    // Remove all HTML tags and check if there's any meaningful text left
+    const strippedContent = content.replace(/<\/?[^>]+(>|$)/g, "").trim();
+  
+    return strippedContent === "";
+  };
   const handleSave = async () => {
     if (
       !title ||
       !description ||
-      !content ||
+      isContentEmpty(content) ||      
       !uploadedImage ||
       !thumbnailImage ||
       !videoHeading ||
