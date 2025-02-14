@@ -6,8 +6,7 @@ const ProtectedRoute = ({ element, requiredCategory }) => {
   const auth = useAuth();
 
   if (!auth || !auth.isAuthenticated) {
-    // return <Navigate to="/" />;
-    console.log("wrong")
+    return <Navigate to="/" />;
   }
 
   if (!auth.hasAccess(requiredCategory)) {
