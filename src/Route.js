@@ -81,35 +81,35 @@ export const AppRouter = () => {
         <Route element={<Layout />}>
           <Route
             path="/user-dashboards/user-aquisition"
-            element={<UserAquisitionPage />}
+            element={<ProtectedRoute element={<UserAquisitionPage />} />}
           />
           <Route
             path="/user-dashboards/user-engagement"
-            element={<UserEngagementPage />}
+            element={<ProtectedRoute element={<UserEngagementPage />} />}
           />
           <Route
             path="/admin/user-management"
-            element={<UserManagementPage />}
+            element={<ProtectedRoute element={<UserManagementPage />} />}
           />
           <Route
             path="/marketing/campaign-performance"
-            element={<CampaignPerformancePage />}
+            element={<ProtectedRoute element={<CampaignPerformancePage />} />}
           />
 
           <Route
             path="/marketing/patient-acquisition"
-            element={<PatientAcquisitionPage />}
+            element={<ProtectedRoute element={<PatientAcquisitionPage />} />}
           />
           <Route
             path="/marketing/patient-acquisition/patient-detail"
-            element={<PatientDetailPage />}
+            element={<ProtectedRoute element={<PatientDetailPage />} />}
           />
 
-          <Route path="/hello-doctor" element={<HelloDoctorPage />} />
+          <Route path="/hello-doctor" element={<ProtectedRoute element={<HelloDoctorPage />} />} />
 
-          <Route path="/dashboard/settings" element={<SettingsPage />} />
+          <Route path="/dashboard/settings" element={<ProtectedRoute element={<SettingsPage />} />} />
 
-          <Route path="/user-engagement" element={<UserEngagementPage />} />
+          <Route path="/user-engagement" element={<ProtectedRoute element={<UserEngagementPage />} />} />
           {/* <Route
             path="marketing/in-app-campaign"
             element={<InAppCampaignPage />}
@@ -126,7 +126,7 @@ export const AppRouter = () => {
 
           <Route
             path="/patient-education/overview"
-            element={<EducationOverviewPage />}
+            element={<ProtectedRoute element={<EducationOverviewPage />} />}
           />
           {/* <Route
             path="/patient-education/resources"
@@ -143,46 +143,46 @@ export const AppRouter = () => {
           />
           <Route
             path="/feedback/create-survey"
-            element={<FeedbackCreateSurvey />}
+            element={<ProtectedRoute element={<FeedbackCreateSurvey />} />}
           />
           <Route
             path="/feedback/create-survey-page"
-            element={<CreateSurveyIndex />}
+            element={<ProtectedRoute element={<CreateSurveyIndex />} />}
           />
           <Route
             path="/feedback/create-survey/single-survey-details"
-            element={<SingleSurvey />}
+            element={<ProtectedRoute element={<SingleSurvey />} />}
           />
           <Route
             path="/feedback/create-survey/populated-survey-data"
-            element={<SurveyPopulatedData />}
+            element={<ProtectedRoute element={<SurveyPopulatedData />} />}
           />
           <Route
             path="/feedback/patient-surveys"
-            element={<PatientSurveys />}
+            element={<ProtectedRoute element={<PatientSurveys />} />}
           />
           <Route
             path="/feedback/view-feedback"
-            element={<ViewFeedbackIndex />}
+            element={<ProtectedRoute element={<ViewFeedbackIndex />} />}
           />
           <Route
             path="/feedback/negative-feedback"
-            element={<UserNegativeFeedbackPage />}
+            element={<ProtectedRoute element={<UserNegativeFeedbackPage />} />}
           />
           <Route
             path="/teleconsultation/appointment-status"
-            element={<AppointmentStatusPage />}
+            element={<ProtectedRoute element={<AppointmentStatusPage />} />}
           />
 
           {/* operational Routes */}
           <Route
             path="/operational/appointment-reports"
-            element={<AppointmentReports />}
+            element={<ProtectedRoute element={<AppointmentReports />} />}
           />
 
           <Route
             path="/teleconsultation/appointment-feedback"
-            element={<AppointmentFeedbackPage />}
+            element={<ProtectedRoute element={<AppointmentFeedbackPage />} />}
           />
           <Route
             path="/teleconsultation/virtual-management"
@@ -190,52 +190,52 @@ export const AppRouter = () => {
           />
           <Route
             path="/teleconsultation/doctor-detail"
-            element={<DoctorDetailPage />}
+            element={<ProtectedRoute element={<DoctorDetailPage />} />}
           />
           <Route
             path="/teleconsultation/doctor-detail/:id"
-            element={<DoctorDetailPage />}
+            element={<ProtectedRoute element={<DoctorDetailPage />} />}
           />
           <Route
             path="/teleconsultation/view-doctor-detail/:id"
-            element={<ViewDoctorDetailPage />}
+            element={<ProtectedRoute element={<ViewDoctorDetailPage />} />}
           />
           <Route
             path="/medication-tracker"
-            element={<MedicationTrackerPage />}
+            element={<ProtectedRoute element={<MedicationTrackerPage />} />}
           />
           <Route
             path="/medication-tracker/patient-detail"
-            element={<MedicationTrackerPatientDetailPage />}
+            element={<ProtectedRoute element={<MedicationTrackerPatientDetailPage />} />}
           />
           <Route
             path="/medication-tracker/add-patient-detail"
-            element={<AddPatientDetailPage />}
+            element={<ProtectedRoute element={<AddPatientDetailPage />} />}
           />
-          <Route path="/sidebar/notification" element={<NotificationIndex />} />
+          <Route path="/sidebar/notification" element={<ProtectedRoute element={<NotificationIndex />} />} />
           <Route
             path="/header/notification"
-            element={<HeaderNotificationPage />}
+            element={<ProtectedRoute element={<HeaderNotificationPage />} />}
           />
           <Route
             path="/operational/service-utilization"
-            element={<ServiceUtilizationPage />}
+            element={<ProtectedRoute element={<ServiceUtilizationPage />} />}
           />
           <Route
             path="/operational/financial-performance"
-            element={<FinancialPerformancePage />}
+            element={<ProtectedRoute element={<FinancialPerformancePage />} />}
           />
           <Route
             path="/teleconsultation/technical-support"
-            element={<ChatPage />}
+            element={<ProtectedRoute element={<ChatPage />} />}
           />
-          <Route path="/chat" element={<ChattingPage />} />
+          <Route path="/chat" element={<ProtectedRoute element={<ChattingPage />} />} />
           <Route
             path="/news"
             element={<ProtectedRoute element={<NewsPage />} requiredCategory="News" />}
           />
-          <Route path="/community-post" element={<CommunityPostPage />} />
-          <Route path="/health-package" element={<HealthPackagePage />} />
+          <Route path="/community-post" element={<ProtectedRoute element={<CommunityPostPage />} />} />
+          <Route path="/health-package" element={<ProtectedRoute element={<HealthPackagePage />} />} />
           {/* <Route
             path="/department-details"
             element={<DepartmentDetailsPage />}
@@ -244,48 +244,48 @@ export const AppRouter = () => {
             path="/department-details"
             element={<ProtectedRoute element={<DepartmentDetailsPage />} requiredCategory="Department" />}
           />
-          <Route path="/view-all-treatments" element={<TreatmentList />} />
-          <Route path="/view-all-blog-lists" element={<BlogsTable />} />
-          <Route path="/view-all-service-lists" element={<ServiceTable />} />
+          <Route path="/view-all-treatments" element={<ProtectedRoute element={<TreatmentList />} />} />
+          <Route path="/view-all-blog-lists" element={<ProtectedRoute element={<BlogsTable />} />} />
+          <Route path="/view-all-service-lists" element={<ProtectedRoute element={<ServiceTable />} />} />
 
           <Route
             path="/view-all-gastro-illness"
-            element={<GastroIllnessTable />}
+            element={<ProtectedRoute element={<GastroIllnessTable />} />}
           />
-          <Route path="/view-all-events" element={<TableEventsList />} />
-          <Route path="/view-all-features" element={<FeaturesTable />} />
+          <Route path="/view-all-events" element={<ProtectedRoute element={<TableEventsList />} />} />
+          <Route path="/view-all-features" element={<ProtectedRoute element={<FeaturesTable />} />} />
 
           <Route
             path="/view-all-outstation-clinic"
-            element={<OutstationClinicTable />}
+            element={<ProtectedRoute element={<OutstationClinicTable />} />}
           />
 
-          <Route path="/view-all-hello-doctor" element={<HelloDoctorTable />} />
+          <Route path="/view-all-hello-doctor" element={<ProtectedRoute element={<HelloDoctorTable />} />} />
           <Route
             path="/teleconsultation/doctors-list"
-            element={<DoctorsTableView />}
+            element={<ProtectedRoute element={<DoctorsTableView />} />}
           />
 
-          <Route path="/view-all-camp-table" element={<ViewAllCampTable />} />
+          <Route path="/view-all-camp-table" element={<ProtectedRoute element={<ViewAllCampTable />} />} />
 
           <Route
             path="/view-all-readingmaterials"
-            element={<ReadingMaterialsList />}
+            element={<ProtectedRoute element={<ReadingMaterialsList />} />}
           />
-          <Route path="/view-all-facility-list" element={<FacilityTable />} />
+          <Route path="/view-all-facility-list" element={<ProtectedRoute element={<FacilityTable />} />} />
           <Route
             path="/view-all-technology-list"
-            element={<TechnologyTable />}
+            element={<ProtectedRoute element={<TechnologyTable />} />}
           />
           <Route
             path="/view-all-condition-we-treat-list"
-            element={<ConditionWeTreatTable />}
+            element={<ProtectedRoute element={<ConditionWeTreatTable />} />}
           />
           <Route
             path="/view-all-recommended-videos-table"
-            element={<RecommendedVideosTable />}
+            element={<ProtectedRoute element={<RecommendedVideosTable />} />}
           />
-           <Route
+          <Route
             path="/terms-conditions"
             element={<ProtectedRoute element={<TermsAndConditionsList />} requiredCategory="Terms" />}
           />
@@ -301,14 +301,14 @@ export const AppRouter = () => {
             path="/role-based"
             element={<ProtectedRoute element={<RoleBasedPage />} requiredCategory="RoleBasedAccess" />}
           />
-          <Route path="/admin/Unauthorized" element={<UnAuthorizedPage />} />
+          <Route path="/admin/Unauthorized" element={<ProtectedRoute element={<UnAuthorizedPage />} />} />
           <Route
             path="/add-role-access"
-            element={<AddRoleBased />}
+            element={<ProtectedRoute element={<AddRoleBased />} />}
           />
           <Route
             path="/edit-role-access/:id"
-            element={<EditRoleBased />}
+            element={<ProtectedRoute element={<EditRoleBased />} />}
           />
         </Route>
       </Routes>
