@@ -156,7 +156,7 @@ export const UpcomingEventList = () => {
             <h4>{event.title}</h4>
             {/* <span>{event.isActive ? "True" : "False"}</span> */}
             </div>
-          <p><CiCalendarDate />&nbsp;{new Date(event.createdAt).toLocaleDateString("en-GB")}</p>
+          <p><CiCalendarDate />&nbsp;{new Date(event.date).toLocaleDateString("en-GB")}</p>
           <p><IoMdTime />&nbsp;{event.time}</p>
           {/* <p>
             <span

@@ -42,8 +42,14 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
     setUploadedImage(null);
   };
 
+  const isContentEmpty = (content) => {
+    if (!content || content.trim() === "") return true;
+    const strippedContent = content.replace(/<\/?[^>]+(>|$)/g, "").trim();
+    return strippedContent === "";
+  };
+  
   const handleSave = async () => {
-    if (!title || !type ||!description ||!content || !uploadedImage ) {
+    if (!title || !type ||!description || isContentEmpty(content) || !uploadedImage ) {
       message.error("Please fill in all required fields.");
       return;
     }

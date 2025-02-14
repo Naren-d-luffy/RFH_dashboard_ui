@@ -53,7 +53,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
 
   const handleUpdate = async () => {
     const strippedContent = content.replace(/<[^>]*>/g, "").trim();
-    if (!title || !description || !strippedContent ) {
+    if (!title || !description || !strippedContent || !thumbnailImage ) {
       message.error("Please fill in all required fields.");
       return;
     }
