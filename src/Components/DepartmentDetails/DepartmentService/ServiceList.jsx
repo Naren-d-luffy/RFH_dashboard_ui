@@ -33,6 +33,7 @@ const ServiceList = () => {
     return DOMPurify.sanitize(content);
   };
   const servicesList = useSelector((state) => state.service.services);
+console.log("sssssss",servicesList);
 
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
