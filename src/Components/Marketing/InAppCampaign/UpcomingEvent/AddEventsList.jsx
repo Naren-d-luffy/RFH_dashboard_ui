@@ -208,6 +208,7 @@ const AddEventsList = ({ open, handleCancel }) => {
                     height: "auto",
                     marginTop: "10px",
                     borderRadius: "5px",
+                    objectFit: "cover",
                   }}
                 />
                 <Button
