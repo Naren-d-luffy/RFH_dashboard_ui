@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import { deleteService, setService } from "../../../Features/ServiceSlice";
 import EditService from "./EditService";
 import AddService from "./AddService";
-import DOMPurify from "dompurify";
 import ViewService from "./ViewService";
 
 const ServiceList = () => {
@@ -29,11 +28,7 @@ const ServiceList = () => {
   const [, setIsEditModalOpen] = useState(false);
   const [, setIsViewModalOpen] = useState(false);
   const navigate = useNavigate();
-  const sanitizeContent = (content) => {
-    return DOMPurify.sanitize(content);
-  };
   const servicesList = useSelector((state) => state.service.services);
-console.log("sssssss",servicesList);
 
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
@@ -43,13 +38,6 @@ console.log("sssssss",servicesList);
     toggleModal("edit");
   };
 
-  const truncateText = (text, wordLimit) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
   const handleDeleteClick = (_id) => {
     showDeleteMessage({
       message: "",
