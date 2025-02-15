@@ -46,7 +46,7 @@ const AddConditionWeTreat = ({ open, handleCancel }) => {
   };
 
   const handleSave = async () => {
-    if (!title || !description || !content || !thumbnailImage) {
+    if (!title || !description  || !thumbnailImage) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -186,7 +186,7 @@ const AddConditionWeTreat = ({ open, handleCancel }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Content
+              Content
             </span>{" "}
           </Form.Item>
         </Form>

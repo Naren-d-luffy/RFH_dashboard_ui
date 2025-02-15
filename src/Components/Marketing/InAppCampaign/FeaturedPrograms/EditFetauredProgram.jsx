@@ -70,9 +70,9 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
   }, [open, featuresData]);
 
   const handleSave = async () => {
-    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
+  
     
-    if (!title || !description || !uploadedImage || !strippedContent) {
+    if (!title || !description || !uploadedImage ) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -253,7 +253,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
             required
           />
            <span className="create-campaign-input-span">
-            <span style={{ color: "red" }}>*</span> Content
+            Content
           </span>
         </Form.Item>
       </Form>

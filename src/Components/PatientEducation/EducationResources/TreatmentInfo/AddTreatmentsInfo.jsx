@@ -54,17 +54,12 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
   const handleDeleteImage1 = () => {
     setThumbnailImage(null);
   };
-  const isContentEmpty = (content) => {
-    if (!content || content.trim() === "") return true;
-    const strippedContent = content.replace(/<\/?[^>]+(>|$)/g, "").trim();
-    return strippedContent === "";
-  };
+ 
 
   const handleSave = async () => {
     if (
       !title ||
       !description ||
-      isContentEmpty(content) ||
       !uploadedImage ||
       !thumbnailImage 
     ) {
@@ -285,7 +280,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Content Points</span>
+            <span className="create-campaign-input-span"> Content Points</span>
           </Form.Item>
         </Form>
       </Modal>
