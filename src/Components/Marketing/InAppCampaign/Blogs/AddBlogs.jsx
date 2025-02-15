@@ -52,17 +52,13 @@ const AddBlogs = ({ open, handleCancel }) => {
   const handleDeleteImage1 = () => {
     setThumbnailImage(null);
   };
-  const isContentEmpty = (content) => {
-    if (!content || content.trim() === "") return true;
-    const strippedContent = content.replace(/<\/?[^>]+(>|$)/g, "").trim();
-    return strippedContent === "";
-  };
+  
 
   const handleSave = async () => {
     if (
       !heading ||
       !subHeading ||
-      isContentEmpty(content) ||
+      
       !uploadedImage ||
       !thumbnailImage
     ) {
@@ -261,7 +257,7 @@ const AddBlogs = ({ open, handleCancel }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Content Points
+             Content Points
             </span>
           </Form.Item>
         </Form>

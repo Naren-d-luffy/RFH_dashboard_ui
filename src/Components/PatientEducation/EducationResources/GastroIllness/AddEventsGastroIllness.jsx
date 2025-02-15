@@ -47,14 +47,10 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
     setUploadedImage(null);
   };
 
-  const isContentEmpty = (content) => {
-    if (!content || content.trim() === "") return true;
-    const strippedContent = content.replace(/<\/?[^>]+(>|$)/g, "").trim();
-    return strippedContent === "";
-  };
+
   
   const handleSave = async () => {
-    if (!title || !type ||!description || isContentEmpty(content) || !uploadedImage ) {
+    if (!title || !type ||!description || !uploadedImage ) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -259,7 +255,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Content Points</span>
+            <span className="create-campaign-input-span"> Content Points</span>
           </Form.Item>
         </Form>
       </Modal>

@@ -67,11 +67,9 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData }) => {
   }, [open, treatmentData]);
 
   const handleSave = async () => {
-    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
     if (
       !title ||
       !description ||
-      !strippedContent ||
       !uploadedImage ||
       !thumbnailImage
     ) {
@@ -302,7 +300,7 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Content Points
+              Content Points
             </span>
           </Form.Item>
         </Form>
