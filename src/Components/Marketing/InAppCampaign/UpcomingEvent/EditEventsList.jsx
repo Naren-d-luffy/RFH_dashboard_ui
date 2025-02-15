@@ -91,9 +91,8 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   }, [open, eventsData]);
 
   const handleUpdate = async () => {
-    const strippedContent = description.replace(/<[^>]*>/g, "").trim();
-
-    if (!title || !strippedContent || !date || !time || !uploadedImage) {
+   
+    if (!title  || !date || !time || !uploadedImage) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -306,7 +305,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Description
+             Description
             </span>
           </Form.Item>
         </Form>

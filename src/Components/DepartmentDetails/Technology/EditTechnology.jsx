@@ -58,8 +58,8 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
   };
 
   const handleUpdate = async () => {
-    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
-    if (!title || !description || !strippedContent || !thumbnailImage) {
+   
+    if (!title || !description  || !thumbnailImage) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -199,7 +199,7 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Content
+             Content
             </span>{" "}
           </Form.Item>
         </Form>

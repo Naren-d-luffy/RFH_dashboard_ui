@@ -62,18 +62,9 @@ const AddEventsList = ({ open, handleCancel }) => {
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
-  const isContentEmpty = (description) => {
-    if (!description || description.trim() === "") return true;
-  
-    // Remove all HTML tags and check if there's any meaningful text left
-    const strippedContent = description.replace(/<\/?[^>]+(>|$)/g, "").trim();
-  
-    return strippedContent === "";
-  };
   const handleSave = async () => {
     if (
       !title.trim() ||
-      isContentEmpty(description) ||
       !date ||
       !time ||
       !uploadedImage
@@ -285,7 +276,7 @@ const AddEventsList = ({ open, handleCancel }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Description
+               Description
             </span>
           </Form.Item>
         </Form>

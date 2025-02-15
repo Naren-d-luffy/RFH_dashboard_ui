@@ -63,11 +63,11 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
     setThumbnailImage(null);
   };
   const handleSave = async () => {
-    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
+  
     if (
       !heading ||
       !subHeading ||
-      !strippedContent ||
+    
       !uploadedImage ||
       !thumbnailImage
     ) {
@@ -270,7 +270,7 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Content Points
+              Content Points
             </span>
           </Form.Item>
         </Form>

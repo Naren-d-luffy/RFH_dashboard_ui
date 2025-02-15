@@ -63,9 +63,9 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
   }, [open, EventData]);
 
   const handleSave = async () => {
-    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
+   
     
-    if (!title || !type ||!description ||!strippedContent || !uploadedImage ) {
+    if (!title || !type ||!description  || !uploadedImage ) {
          message.error("Please fill in all required fields.");
          return;
        }
@@ -258,7 +258,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Content Points</span>
+            <span className="create-campaign-input-span"> Content Points</span>
           </Form.Item>
         </Form>
       </Modal>
