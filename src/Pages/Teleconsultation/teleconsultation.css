@@ -1,21 +1,11 @@
 .search-container {
   position: relative;
 }
-.search-icon {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  padding-left: 8px;
-  font-size: 24px;
-  color: var(--secondary-text-color);
-}
 .search-input-table {
   padding: 8px 32px;
   background: var(--text-color);
   border-radius: 8px;
-  color: var(--secondary-text-color);
+  color: var(--search-icon-color);
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.5px;
