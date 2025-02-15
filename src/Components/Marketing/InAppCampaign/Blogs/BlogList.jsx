@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AddBlogs from "./AddBlogs";
 import { deleteBlog, setBlogs } from "../../../../Features/BlogSlice";
-import DOMPurify from "dompurify";
+// import DOMPurify from "dompurify";
 import EditBlogs from "./EditBlog";
 import ViewBlog from "./ViewBlog";
 import Loader from "../../../../Loader";
@@ -28,9 +28,9 @@ const BlogsList = () => {
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const sanitizeContent = (content) => {
-    return DOMPurify.sanitize(content);
-  };
+  // const sanitizeContent = (content) => {
+  //   return DOMPurify.sanitize(content);
+  // };
   const dispatch = useDispatch();
   const BlogsList = useSelector((state) => state.blog.blogs || []);
   const itemsPerPage = 100;
@@ -86,7 +86,7 @@ const BlogsList = () => {
       dispatch(setBlogs(response.data || []));
       setIsLoading(false);
     } catch (error) {
-      console.error("Error fetching blog list :", error);
+      console.error("Error fetching news list :", error);
     } finally {
       setIsLoading(false);
     }
@@ -103,8 +103,8 @@ const BlogsList = () => {
             dispatch(deleteBlog(_id));
           }
         } catch (error) {
-          message.error("Error deleting blog",error);
-          console.error("Error deleting blog:", error);
+          message.error("Error deleting news",error);
+          console.error("Error deleting news:", error);
         }
       },
     });
@@ -144,13 +144,13 @@ const BlogsList = () => {
             <h4>{event.heading}</h4>
           </div>
           <p>{event.subHeading}</p>
-          <p>
+          {/* <p>
             <span
               dangerouslySetInnerHTML={{
                 __html: sanitizeContent(truncateText(event.content, 20)),
               }}
             ></span>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
@@ -228,10 +228,10 @@ const BlogsList = () => {
 
         <div className="row mt-4">
           <div className="events-header-container">
-            <h6>Blogs</h6>
+            <h6>News</h6>
             <div className="events-buttons">
               <button className="rfh-basic-button" onClick={showModal}>
-                <GoPlus size={20} /> Add Blog
+                <GoPlus size={20} /> Add News
               </button>
               <button
                 className="rfh-view-all-button"
@@ -244,7 +244,7 @@ const BlogsList = () => {
           <div className="mt-3">
             <Slider {...sliderSettings} key={BlogsList?.length}>
               {BlogsList && BlogsList?.length > 0 ? (
-                BlogsList.map((event, index) => renderBlogCard(event, index))
+                [...BlogsList].reverse()?.map((event, index) => renderBlogCard(event, index))
               ) : (
                 <p>No data available</p>
               )}

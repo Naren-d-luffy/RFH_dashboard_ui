@@ -61,7 +61,7 @@ const RoleBasedCardList = () => {
     <div className="container">
       <div className="d-flex justify-content-between align-items-center">
         <div className="user-engagement-header">
-          <h3>Role Access</h3>
+          <h3>Role Based Access</h3>
         </div>
         <div className="d-flex align-items-center gap-3">
           <button

@@ -3,7 +3,10 @@ import { Table, message } from "antd";
 import { FiEdit, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
 import Empty_survey_image from "../../../../Assets/Icons/Empty_survey_image.png";
-import {  showDeleteMessage } from "../../../../globalConstant";
+import {
+  showDeleteMessage,
+  showSuccessMessage,
+} from "../../../../globalConstant";
 import { GoPlus } from "react-icons/go";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +20,7 @@ import AddVideo from "./AddVideo";
 import EditVideo from "./EditVideo";
 
 const HelloDoctorTable = () => {
-  const EventData = useSelector((state) => state.videos.videos);  
+  const EventData = useSelector((state) => state.videos.videos);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,6 +56,7 @@ const HelloDoctorTable = () => {
         try {
           const response = await Instance.delete(`/videos/${_id}`);
           if (response.status === 200 || response.status === 204) {
+            showSuccessMessage("Deleted successfully video");
             dispatch(deleteHelloDoctorVideos(_id));
           }
         } catch (error) {
@@ -63,28 +67,32 @@ const HelloDoctorTable = () => {
     });
   };
 
-  const fetchHelloDoctorVideoInfo =useCallback(async (page=1) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get(`/videos`, {
-        params: { page, limit: itemsPerPage }
-      });
-      dispatch(setHelloDoctorVideos(response.data.data));
-      setTotalRows(response.data.total || 0);
-    } catch (error) {
-      console.error("Error fetching videos:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  },[itemsPerPage,dispatch]);
+  const fetchHelloDoctorVideoInfo = useCallback(
+    async (page = 1) => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/videos`, {
+          params: { page, limit: itemsPerPage },
+        });
+        dispatch(setHelloDoctorVideos(response.data.data));
+        setTotalRows(response.data.total || 0);
+      } catch (error) {
+        console.error("Error fetching videos:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [itemsPerPage, dispatch]
+  );
 
   useEffect(() => {
     fetchHelloDoctorVideoInfo(currentPage);
-  }, [currentPage,fetchHelloDoctorVideoInfo]);
+  }, [currentPage, fetchHelloDoctorVideoInfo]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return Object.values(EventData);
-    return Object.values(EventData).filter((video) =>
+    const events = Object.values(EventData).reverse(); 
+    if (searchText.trim() === "") return events;
+    return events.filter((video) =>
       `${video.title} ${video.url} ${video.likes}`
         .toLowerCase()
         .includes(searchText.toLowerCase())

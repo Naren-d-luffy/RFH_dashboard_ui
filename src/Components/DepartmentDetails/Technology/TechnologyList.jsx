@@ -133,13 +133,13 @@ export const TechnologyList = () => {
             </span>
           </div>
           <p>{technology.subHeading}</p>
-          <p>
+          {/* <p>
             <span
               dangerouslySetInnerHTML={{
                 __html: sanitizeContent(truncateText(technology.content, 15)),
               }}
             ></span>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
@@ -209,7 +209,7 @@ export const TechnologyList = () => {
       <div className="marketing-categories-section">
         <div className="row mt-4">
           <div className="events-header-container">
-            <h6>Technology List</h6>
+            <h6>Technology</h6>
             <div className="events-buttons">
               <button
                 className="rfh-basic-button"
@@ -233,6 +233,7 @@ export const TechnologyList = () => {
               {technologyList && Object.keys(technologyList).length > 0 ? (
                 Object.entries(technologyList)
                   .filter(([key]) => key !== "status")
+                  .reverse()
                   .map(([key, technology]) => renderTechnologyCard(technology))
               ) : (
                 <p>No data available</p>

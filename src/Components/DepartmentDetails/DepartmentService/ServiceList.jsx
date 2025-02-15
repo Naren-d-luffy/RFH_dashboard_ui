@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import { deleteService, setService } from "../../../Features/ServiceSlice";
 import EditService from "./EditService";
 import AddService from "./AddService";
-import DOMPurify from "dompurify";
 import ViewService from "./ViewService";
 
 const ServiceList = () => {
@@ -29,9 +28,6 @@ const ServiceList = () => {
   const [, setIsEditModalOpen] = useState(false);
   const [, setIsViewModalOpen] = useState(false);
   const navigate = useNavigate();
-  const sanitizeContent = (content) => {
-    return DOMPurify.sanitize(content);
-  };
   const servicesList = useSelector((state) => state.service.services);
 
   const toggleModal = (modalType) =>
@@ -42,13 +38,6 @@ const ServiceList = () => {
     toggleModal("edit");
   };
 
-  const truncateText = (text, wordLimit) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
   const handleDeleteClick = (_id) => {
     showDeleteMessage({
       message: "",
@@ -130,13 +119,13 @@ const ServiceList = () => {
             <h4>{service.heading}</h4>
           </div>
           <p>{service.subHeading}</p>
-          <p>
+          {/* <p>
             <span
               dangerouslySetInnerHTML={{
                 __html: sanitizeContent(truncateText(service.content, 3)),
               }}
             ></span>
-          </p>{" "}
+          </p>{" "} */}
         </div>
       </div>
     </div>
@@ -193,7 +182,7 @@ const ServiceList = () => {
       const response = await Instance.get("depcat/service");
       dispatch(setService(response.data));
     } catch (error) {
-      console.error("Error fetching facilities:", error);
+      console.error("Error fetching services:", error);
     }
   }, [dispatch]);
 
@@ -206,7 +195,7 @@ const ServiceList = () => {
       <div className="marketing-categories-section">
         <div className="row mt-4">
           <div className="events-header-container">
-            <h6>Department Services</h6>
+            <h6>Our Services</h6>
             <div className="events-buttons">
               <button
                 className="rfh-basic-button"
@@ -225,7 +214,7 @@ const ServiceList = () => {
           <div className="mt-4">
             <Slider {...sliderSettings} key={servicesList?.length}>
               {servicesList && servicesList.length > 0 ? (
-                servicesList?.map((service, index) =>
+                [...servicesList].reverse()?.map((service, index) =>
                   renderServiceCard(service, index)
                 )
               ) : (

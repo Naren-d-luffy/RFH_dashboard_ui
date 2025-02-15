@@ -17,7 +17,7 @@ import EditEventsList from "./EditEventsList";
 import ViewEventList from "./ViewEventList";
 import { deleteEvent, setEvent } from "../../../../Features/DiscoverEventsCard";
 import { useNavigate } from "react-router-dom";
-import DOMPurify from "dompurify";
+// import DOMPurify from "dompurify";
 
 const TableEventsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,16 +47,16 @@ const TableEventsList = () => {
   };
   const handleViewCancel = () => setIsViewModalOpen(false);
 
-  const truncateText = (text, wordLimit = 15) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
-  const sanitizeContent = (content) => {
-    return DOMPurify.sanitize(content);
-  };
+  // const truncateText = (text, wordLimit = 15) => {
+  //   if (!text) return "";
+  //   const words = text.split(" ");
+  //   return words.length > wordLimit
+  //     ? words.slice(0, wordLimit).join(" ") + "..."
+  //     : text;
+  // };
+  // const sanitizeContent = (content) => {
+  //   return DOMPurify.sanitize(content);
+  // };
   const handleDeleteEvent = (_id) => {
     showDeleteMessage({
       message: "",
@@ -96,7 +96,7 @@ const TableEventsList = () => {
 
   const dataSource = useMemo(() => {
     if (!searchText.trim())
-      return Object.values(eventsData)?.map((event, index) => ({
+      return Object.values(eventsData).reverse()?.map((event, index) => ({
         ...event,
         key: index,
       }));
@@ -122,18 +122,35 @@ const TableEventsList = () => {
     //   key: "description",
     //   render: (text) => truncateText(text),
     // },
+    // {
+    //   title: "Description",
+    //   dataIndex: "description",
+    //   key: "description",
+    //   render: (text) => (
+    //     <span
+    //       dangerouslySetInnerHTML={{
+    //         __html: sanitizeContent(truncateText(text, 15)),
+    //       }}
+    //     ></span>
+    //   ),
+    // },  
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      render: (text) => (
-        <span
-          dangerouslySetInnerHTML={{
-            __html: sanitizeContent(truncateText(text, 15)),
-          }}
-        ></span>
-      ),
-    },    
+      title: "Date",
+      dataIndex: "createdAt",
+      className: "campaign-performance-table-column",
+      render: (text) => {
+        const date = new Date(text);
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      },
+    },
+    {
+      title: "Time",
+      dataIndex: "time",
+      key: "time",
+    },  
     {
       title: "Active",
       dataIndex: "isActive",
@@ -196,7 +213,7 @@ const TableEventsList = () => {
       ) : Object.values(eventsData).length > 0 ? (
         <>
           <div className="d-flex user-engagement-header justify-content-between align-items-center">
-            <h3>Event List</h3>
+            <h3>Events</h3>
 
             <div className="d-flex align-items-center gap-3">
               <button

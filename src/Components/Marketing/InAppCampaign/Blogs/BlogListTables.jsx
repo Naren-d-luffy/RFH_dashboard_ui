@@ -72,7 +72,7 @@ const BlogsTable = () => {
       dispatch(setBlogs(response.data || []));
       setIsLoading(false);
     } catch (error) {
-      console.error("Error fetching blog list :", error);
+      console.error("Error fetching news list :", error);
     } finally {
       setIsLoading(false);
     }
@@ -89,8 +89,8 @@ const BlogsTable = () => {
             dispatch(deleteBlog(_id));
           }
         } catch (error) {
-          message.error("Error deleting blog",error);
-          console.error("Error deleting blog:", error);
+          message.error("Error deleting news",error);
+          console.error("Error deleting news:", error);
         }
       },
     });
@@ -101,14 +101,14 @@ const BlogsTable = () => {
   }, [currentPage,fetchBlogs]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return BlogsList;
-    return BlogsList.filter((blog) =>
-      `${blog.heading}{}${blog.subheading}{}${blog.content}`
+    const blogs = [...BlogsList].reverse();
+    if (searchText.trim() === "") return blogs;
+    return blogs.filter((blog) =>
+      `${blog.heading} ${blog.subheading} ${blog.content}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
-  }, [searchText, BlogsList]);
-
+  }, [searchText, BlogsList]);  
   const columns = [
     {
       title: "Heading",
@@ -174,7 +174,7 @@ const BlogsTable = () => {
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>Blogs List</h3>
+              <h3>News List</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -182,7 +182,7 @@ const BlogsTable = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add Blog
+                Add News
               </button>
             </div>
           </div>

@@ -89,8 +89,9 @@ const NewsList = () => {
 );
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return Object.values(news); 
-    return Object.values(news).filter((newsItem) =>
+    const newsList = Object.values(news).reverse();
+    if (searchText.trim() === "") return newsList;
+    return newsList.filter((newsItem) =>
       `${newsItem.heading} ${newsItem.subheading}`
         .toLowerCase()
         .includes(searchText.toLowerCase())

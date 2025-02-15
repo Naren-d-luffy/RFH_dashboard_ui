@@ -108,15 +108,21 @@ const GastroIllnessTable = () => {
   }, [currentPage,fetchGastroIllnessInfo]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return EventData;
-    return EventData.filter((Event) =>
-      `${Event.title}{}${Event.description}{}${Event.content}`
+    const events = [...EventData].reverse();
+    if (searchText.trim() === "") return events;
+    return events.filter((event) =>
+      `${event.title} ${event.description} ${event.content}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, EventData]);
-
+  
   const columns = [
+    {
+      title: "Type",
+      dataIndex: "type",
+      className: "campaign-performance-table-column",
+    },
     {
       title: "Title",
       dataIndex: "title",
@@ -204,7 +210,7 @@ const GastroIllnessTable = () => {
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>GastroIllness Info</h3>
+              <h3>Overview</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button
@@ -212,7 +218,7 @@ const GastroIllnessTable = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add Event
+                Add
               </button>
             </div>
           </div>

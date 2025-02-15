@@ -31,10 +31,14 @@ const ViewBlog = ({ open, handleCancel, blogData }) => {
 
           <div className="view-treatment-info-modal-content">
             <h5>{blogData?.subHeading || "N/A"}</h5>
-
             <div
               className="news-content"
-              dangerouslySetInnerHTML={{ __html: blogData?.content }}
+              dangerouslySetInnerHTML={{
+                __html: blogData?.content?.replace(
+                  /<img/g,
+                  '<img style="max-width: 100%; max-height: 150px; height: auto; object-fit: cover;"'
+                ),
+              }}
             />
           </div>
         </div>

@@ -12,10 +12,15 @@ import { addFacility } from "../../../Features/FacilitySlice";
 
 const modules = {
   toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["bold", "italic"],
-    ["link", "image"],
+    [{ font: [] }, { size: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
+    [{ script: "sub" }, { script: "super" }],
+    [{ direction: "rtl" }],
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
+    ["link", "image", "formula"],
     ["clean"],
   ],
 };
@@ -67,12 +72,19 @@ const AddFacility = ({ open, handleCancel }) => {
   const handleDeleteThumbnail = () => {
     setThumbnailImage(null);
   };
-
+  const isContentEmpty = (content) => {
+    if (!content || content.trim() === "") return true;
+  
+    // Remove all HTML tags and check if there's any meaningful text left
+    const strippedContent = content.replace(/<\/?[^>]+(>|$)/g, "").trim();
+  
+    return strippedContent === "";
+  };
   const handleSave = async () => {
     if (
       !title ||
       !description ||
-      !content ||
+      isContentEmpty(content) ||      
       !uploadedImage ||
       !thumbnailImage ||
       !videoHeading ||
@@ -130,7 +142,7 @@ const AddFacility = ({ open, handleCancel }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Add Department Facility
+            Add Facility
           </span>
         }
         onCancel={handleCancelClick}

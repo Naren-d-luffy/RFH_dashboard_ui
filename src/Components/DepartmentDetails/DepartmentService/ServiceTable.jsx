@@ -100,14 +100,15 @@ const ServiceTable = () => {
   }, [fetchServiceList]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return servicesList || [];
-    return (servicesList || []).filter((service) =>
-      `${service.heading}{}${service.subHeading}{}${service.content}`
+    const services = [...(servicesList || [])].reverse();
+    if (searchText.trim() === "") return services;
+    return services.filter((service) =>
+      `${service.heading} ${service.subHeading} ${service.content}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, servicesList]);
-
+  
   const columns = [
     {
       title: "Heading",

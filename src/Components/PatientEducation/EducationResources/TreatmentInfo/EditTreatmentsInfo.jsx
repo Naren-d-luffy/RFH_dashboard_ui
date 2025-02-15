@@ -11,10 +11,15 @@ import Loader from "../../../../Loader";
 import { editTreatment } from "../../../../Features/TreatmentInfoSlice";
 const modules = {
   toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["bold", "italic"],
-    ["link", "image"],
+    [{ font: [] }, { size: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
+    [{ script: "sub" }, { script: "super" }],
+    [{ direction: "rtl" }],
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
+    ["link", "image", "formula"],
     ["clean"],
   ],
 };
@@ -62,10 +67,11 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData }) => {
   }, [open, treatmentData]);
 
   const handleSave = async () => {
+    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
     if (
       !title ||
       !description ||
-      !content ||
+      !strippedContent ||
       !uploadedImage ||
       !thumbnailImage
     ) {
@@ -89,7 +95,7 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData }) => {
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         dispatch(editTreatment(response.data.data));
-        showSuccessMessage("Treatment Info updated successfully!");
+        showSuccessMessage("Common procedure updated successfully!");
         setTitle("");
         setDescription("");
         setContent("");
@@ -111,7 +117,7 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Edit Treatment Info{" "}
+            Edit Common procedure{" "}
           </span>
         }
         onCancel={handleCancel}

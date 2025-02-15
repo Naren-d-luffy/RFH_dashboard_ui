@@ -21,7 +21,7 @@ import {
 } from "../../../../Features/GastroIllnessSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import DOMPurify from "dompurify";
+// import DOMPurify from "dompurify";
 
 const EducationCategoriesGastroIllness = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,10 +35,9 @@ const EducationCategoriesGastroIllness = () => {
   const gastroEvents = useSelector(
     (state) => state.gastroIllness.gastroIllness || []
   );
-  console.log("gastroEvents", gastroEvents);
-  const sanitizeContent = (content) => {
-    return DOMPurify.sanitize(content);
-  };
+  // const sanitizeContent = (content) => {
+  //   return DOMPurify.sanitize(content);
+  // };
   const truncateText = (text, wordLimit) => {
     if (!text) return "";
     const words = text.split(" ");
@@ -159,13 +158,13 @@ const EducationCategoriesGastroIllness = () => {
             <h4>{event.title}</h4>
           </div>
           <p>{truncateText(event.description, 10)}</p>
-          <p>
+          {/* <p>
             <span
               dangerouslySetInnerHTML={{
                 __html: sanitizeContent(truncateText(event.content, 10)),
               }}
             ></span>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
@@ -257,7 +256,7 @@ const EducationCategoriesGastroIllness = () => {
             <Slider {...sliderSettings} key={Object.keys(gastroEvents).length}>
               {/* {gastroEvents.map((event) => renderEventCard(event))} */}
               {gastroEvents && Object.keys(gastroEvents).length > 0 ? (
-                Object.values(gastroEvents).map((event, index) =>
+                Object.values(gastroEvents).reverse()?.map((event, index) =>
                   renderEventCard(event, index)
                 )
               ) : (

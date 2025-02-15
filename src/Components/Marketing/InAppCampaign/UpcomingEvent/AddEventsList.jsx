@@ -27,10 +27,15 @@ import moment from "moment";
 
 const modules = {
   toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["bold", "italic"],
-    ["link", "image"],
+    [{ font: [] }, { size: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
+    [{ script: "sub" }, { script: "super" }],
+    [{ direction: "rtl" }],
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
+    ["link","image","formula"],
     ["clean"],
   ],
 };
@@ -57,11 +62,18 @@ const AddEventsList = ({ open, handleCancel }) => {
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
-
+  const isContentEmpty = (description) => {
+    if (!description || description.trim() === "") return true;
+  
+    // Remove all HTML tags and check if there's any meaningful text left
+    const strippedContent = description.replace(/<\/?[^>]+(>|$)/g, "").trim();
+  
+    return strippedContent === "";
+  };
   const handleSave = async () => {
     if (
       !title.trim() ||
-      !description.trim() ||
+      isContentEmpty(description) ||
       !date ||
       !time ||
       !uploadedImage
@@ -196,6 +208,7 @@ const AddEventsList = ({ open, handleCancel }) => {
                     height: "auto",
                     marginTop: "10px",
                     borderRadius: "5px",
+                    objectFit: "cover",
                   }}
                 />
                 <Button

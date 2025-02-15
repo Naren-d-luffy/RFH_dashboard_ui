@@ -11,10 +11,15 @@ import Loader from "../../../../Loader";
 import { editBlog } from "../../../../Features/BlogSlice";
 const modules = {
   toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["bold", "italic"],
-    ["link", "image"],
+    [{ font: [] }, { size: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
+    [{ script: "sub" }, { script: "super" }],
+    [{ direction: "rtl" }],
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
+    ["link","image","formula"],
     ["clean"],
   ],
 };
@@ -58,10 +63,11 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
     setThumbnailImage(null);
   };
   const handleSave = async () => {
+    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
     if (
       !heading ||
       !subHeading ||
-      !content ||
+      !strippedContent ||
       !uploadedImage ||
       !thumbnailImage
     ) {
@@ -84,7 +90,7 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
 
-        showSuccessMessage("Blog Updated successfully!");
+        showSuccessMessage("News Updated successfully!");
         dispatch(editBlog(response.data));
         setHeading("");
         setSubHeading("");

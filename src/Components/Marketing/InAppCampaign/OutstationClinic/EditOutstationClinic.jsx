@@ -70,7 +70,8 @@ const [isActive,setIsActive]=useState(true)
       !experience ||
       !description ||
       !timing ||
-      !clinicType
+      !clinicType||
+      !uploadedImage
     ) {
       message.error("Please fill in all required fields.");
       return;
@@ -121,7 +122,7 @@ const [isActive,setIsActive]=useState(true)
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Edit Outstation Clinic
+            Edit Outstation/Speciality Clinic
           </span>
         }
         onCancel={handleCancel}

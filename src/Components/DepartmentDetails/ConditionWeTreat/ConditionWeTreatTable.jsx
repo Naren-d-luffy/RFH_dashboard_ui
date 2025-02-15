@@ -97,13 +97,18 @@ const ConditionWeTreatTable = () => {
   }, [currentPage, fetchTechnologyList]);
 
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return conditionwetreatList;
-    return conditionwetreatList.filter((condition) =>
+    if (!conditionwetreatList) return [];
+    const sortedConditions = [...conditionwetreatList].reverse();
+  
+    if (searchText.trim() === "") return sortedConditions;
+  
+    return sortedConditions.filter((condition) =>
       `${condition.heading} ${condition.subHeading}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, conditionwetreatList]);
+  
 
   const columns = [
     {
@@ -194,7 +199,7 @@ const ConditionWeTreatTable = () => {
         <>
           <div className="d-flex justify-content-between align-items-center">
             <div className="user-engagement-header">
-              <h3>Department Conditon We Treat</h3>
+              <h3>Conditons We Treat</h3>
             </div>
             <div className="d-flex align-items-center gap-3">
               <button

@@ -31,7 +31,7 @@ const CreateNews = ({ open, handleCancel }) => {
   };
 
   const handleSave = async () => {
-    if (!heading || !subheading || !uploadedImage||!type ||backgroundColor) {
+    if (!heading || !subheading || !uploadedImage||!type || !backgroundColor) {
       message.error("Please fill in all required fields.");
       return;
     }

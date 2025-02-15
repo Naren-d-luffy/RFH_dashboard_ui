@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Form, Input, Upload, message, Select} from "antd";
-import ReactQuill from "react-quill";
+// import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { ColorPicker } from "antd";
 import { Instance } from "../../AxiosConfig";
-
 import { showSuccessMessage } from "../../globalConstant";
 import DOMPurify from "dompurify";
 import { editNews } from "../../Features/NewsSlice";
@@ -15,15 +14,15 @@ import Loader from "../../Loader";
 import { Option } from "antd/es/mentions";
 
 
-const modules = {
-  toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["bold", "italic"],
-    ["link", "image"],
-    ["clean"],
-  ],
-};
+// const modules = {
+//   toolbar: [
+//     [{ header: "1" }, { header: "2" }, { font: [] }],
+//     [{ list: "ordered" }, { list: "bullet" }],
+//     ["bold", "italic"],
+//     ["link", "image"],
+//     ["clean"],
+//   ],
+// };
 
 // const { TextArea } = Input;
 
@@ -41,11 +40,10 @@ const EditNews = ({ open, handleCancel, newsData }) => {
     setUploadedImage(file);
   };
   const [type, setType] = useState(""); 
-  // const [videoURL, setVideoURL] = useState("");
+  const [videoURL, setVideoURL] = useState("");
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
-console.log("newsXDTa",newsData)
   useEffect(() => {
     if (newsData) {
       setHeading(newsData.heading || "");
@@ -54,16 +52,14 @@ console.log("newsXDTa",newsData)
       setContent(DOMPurify.sanitize(newsData.content || ""));
       setBackgroundColor(newsData.backgroundColor || "#1677ff");
       setUploadedImage(newsData.image || null);
-      // setVideoURL(newsData.video_URL||"");
+      setVideoURL(newsData.video_URL||"");
       setType(newsData.type||"");
 
     }
   }, [newsData]);
 
   const handleUpdate = async () => {
-    if (
-      !heading 
-    ) {
+    if (!heading || !subheading ) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -79,7 +75,7 @@ console.log("newsXDTa",newsData)
       formData.append("content", content);
       formData.append("backgroundColor", backgroundColor);
       formData.append("type", type); 
-      // formData.append("video_URL", videoURL); 
+      formData.append("video_URL", videoURL); 
       if (uploadedImage) {
         formData.append("image", uploadedImage);
       }
@@ -199,7 +195,7 @@ console.log("newsXDTa",newsData)
                   required
                 />
                 <span className="create-campaign-input-span">
-                 Sub Heading
+                <span style={{ color: "red" }}>*</span> Sub Heading
                 </span>{" "}
               </Form.Item>
             </div>
@@ -222,7 +218,7 @@ console.log("newsXDTa",newsData)
               </Form.Item>
             </div>
           </div>
-{/* 
+
           <Form.Item>
             <Input
               className="settings-input"
@@ -232,7 +228,7 @@ console.log("newsXDTa",newsData)
               onChange={(e) => setVideoURL(e.target.value)} 
             />
             <span className="create-campaign-input-span">Video URL</span>
-          </Form.Item> */}
+          </Form.Item>
           {/* <Form.Item>
             <TextArea
               value={about}
@@ -262,7 +258,7 @@ console.log("newsXDTa",newsData)
             </Form.Item>
           </div>
 
-          <Form.Item>
+          {/* <Form.Item>
             <ReactQuill
               theme="snow"
               modules={modules}
@@ -274,7 +270,7 @@ console.log("newsXDTa",newsData)
             <span className="create-campaign-input-span">
               Content Points
             </span>{" "}
-          </Form.Item>
+          </Form.Item> */}
         </Form>
       </Modal>
     </>

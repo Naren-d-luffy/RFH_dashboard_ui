@@ -34,9 +34,14 @@ const ViewTreatmentsInfo = ({ open, handleCancel,treatmentData }) => {
           <h5>{treatmentData?.description || "N/A"}</h5>
           
           <div
-            className="news-content"
-            dangerouslySetInnerHTML={{ __html: treatmentData?.content }}
-          />
+             className="news-content"
+             dangerouslySetInnerHTML={{
+               __html: treatmentData?.content?.replace(
+                 /<img/g,
+                 '<img style="max-width: 100%; max-height: 150px; height: auto; object-fit: cover;"'
+               ),
+             }}
+           />
         </div>
       </div>
         

@@ -11,10 +11,15 @@ import Loader from "../../../../Loader";
 import { addTreatment } from "../../../../Features/TreatmentInfoSlice";
 const modules = {
   toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["bold", "italic"],
-    ["link", "image"],
+    [{ font: [] }, { size: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
+    [{ script: "sub" }, { script: "super" }],
+    [{ direction: "rtl" }],
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
+    ["link", "image", "formula"],
     ["clean"],
   ],
 };
@@ -49,12 +54,17 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
   const handleDeleteImage1 = () => {
     setThumbnailImage(null);
   };
+  const isContentEmpty = (content) => {
+    if (!content || content.trim() === "") return true;
+    const strippedContent = content.replace(/<\/?[^>]+(>|$)/g, "").trim();
+    return strippedContent === "";
+  };
 
   const handleSave = async () => {
     if (
       !title ||
       !description ||
-      !content ||
+      isContentEmpty(content) ||
       !uploadedImage ||
       !thumbnailImage 
     ) {
@@ -75,7 +85,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         dispatch(addTreatment(response.data.data))
-        showSuccessMessage("Treatment Info Added successfully!");
+        showSuccessMessage("Common procedure added successfully!");
         setTitle("");
         setDescription("");
         setContent("");
@@ -86,7 +96,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
       }
     } catch (error) {
       console.error(error);
-      message.error("Failed to add treatment.");
+      message.error("Failed to add common procedure.");
     } finally {
       setIsLoading(false);
     }
@@ -106,7 +116,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Add Treatment Info{" "}
+            Add Common procedure{" "}
           </span>
         }
         onCancel={handleCancelClick}

@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, message, Upload,Switch,DatePicker,
-  TimePicker, } from "antd";
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  message,
+  Upload,
+  Switch,
+  DatePicker,
+  TimePicker,
+} from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
@@ -11,6 +20,7 @@ import Loader from "../../../../Loader";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import moment from "moment";
+import dayjs from "dayjs";
 
 // const { TextArea } = Input;
 // const { Option } = Select;
@@ -29,19 +39,24 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   const dispatch = useDispatch();
   const modules = {
     toolbar: [
-      [{ header: "1" }, { header: "2" }, { font: [] }],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["bold", "italic"],
-      ["link", "image"],
+      [{ font: [] }, { size: [] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
+      [{ script: "sub" }, { script: "super" }],
+      [{ direction: "rtl" }],
+      [{ color: [] }, { background: [] }],
+      [{ align: [] }],
+      ["link","image","formula"],
       ["clean"],
     ],
   };
 
-   const handleUpload = (file) => {
-     if (!validateImage(file)) return false;
-     setUploadedImage(file);
-     return false;
-   };
+  const handleUpload = (info) => {
+    const file = info.file.originFileObj;
+    if (!validateImage(file)) return false;
+    setUploadedImage(file);
+  };
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
@@ -52,9 +67,17 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
       setDescription(eventsData?.description || "");
       // setLink(eventsData?.link || "");
       // setOrder(eventsData?.order || "");
-      setIsActive(eventsData?.isActive  || "");
+      setIsActive(eventsData?.isActive || "");
       setTime(eventsData?.time);
-      setDate(eventsData?.date)
+      const formattedDate = eventsData?.date
+        ? new Date(eventsData.date).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })
+        : "";
+
+      setDate(formattedDate);
       setUploadedImage(eventsData?.image || null);
     } else {
       setTitle("");
@@ -68,17 +91,14 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   }, [open, eventsData]);
 
   const handleUpdate = async () => {
+    const strippedContent = description.replace(/<[^>]*>/g, "").trim();
 
-     if (
-          !title ||
-          !description ||
-          !date ||
-          !time ||
-          !uploadedImage
-        ) {
-          message.error("Please fill in all required fields.");
-          return;
-        }
+    if (!title || !strippedContent || !date || !time || !uploadedImage) {
+      message.error("Please fill in all required fields.");
+      return;
+    }
+
+    const formattedDate = dayjs(date, "DD-MM-YYYY").format("YYYY-MM-DD");
 
     const formData = new FormData();
     formData.append("title", title.trim());
@@ -87,7 +107,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
     // formData.append("order", parseInt(order, 10));
     formData.append("isActive", isActive);
     formData.append("image", uploadedImage);
-    formData.append("date", date);
+    formData.append("date", formattedDate); 
     formData.append("time", time);
     setIsLoading(true);
 
@@ -115,6 +135,9 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
     } finally {
       setIsLoading(false);
     }
+  };
+  const handleInputChange = (key, value) => {
+    setDate(value); // Directly set the formatted date string
   };
 
   return (
@@ -213,7 +236,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
           <div className="row">
             <div className="col-md-3 mt-2">
               <Form.Item>
-                <DatePicker
+                {/* <DatePicker
                   className="settings-input w-100"
                   placeholder="Select Date"
                   format="YYYY-MM-DD" // Ensure the correct format
@@ -221,6 +244,22 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
                   onChange={(date) =>
                     setDate(date ? date.format("YYYY-MM-DD") : "")
                   }
+                /> */}
+                {/* <DatePicker
+                  className="settings-input w-100"
+                  placeholder="Select Date"
+                  format="DD-MM-YYYY" // Ensure the correct format
+                  value={date ? moment(date, "DD-MM-YYYY") : null} // Ensure it's in correct format
+                  onChange={(date) =>
+                    setDate(date ? date.format("DD-MM-YYYY") : "")
+                  }
+                /> */}
+                <DatePicker
+                  className="settings-input w-100"
+                  placeholder="Select Date"
+                  format="DD-MM-YYYY"
+                  value={date ? dayjs(date, "DD-MM-YYYY") : null} 
+                  onChange={(date, dateString) => handleInputChange("date", dateString)}
                 />
                 <span className="create-campaign-input-span">
                   <span style={{ color: "red" }}>*</span> Event Date
@@ -233,8 +272,8 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
                   className="settings-input w-100"
                   placeholder="Select Time"
                   format="HH:mm"
-                  value={time ? moment(time, "HH:mm") : null} // Convert string to Moment
-                  onChange={(time) => setTime(time ? time.format("HH:mm") : "")} // Convert Moment to string
+                  value={time ? moment(time, "HH:mm") : null} 
+                  onChange={(time) => setTime(time ? time.format("HH:mm") : "")} 
                 />
                 <span className="create-campaign-input-span">
                   <span style={{ color: "red" }}>*</span> Event Time

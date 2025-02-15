@@ -12,10 +12,15 @@ import { editFacility } from "../../../Features/FacilitySlice";
 
 const modules = {
   toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["bold", "italic"],
-    ["link", "image"],
+    [{ font: [] }, { size: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
+    [{ script: "sub" }, { script: "super" }],
+    [{ direction: "rtl" }],
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
+    ["link", "image", "formula"],
     ["clean"],
   ],
 };
@@ -80,10 +85,11 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
   };
 
   const handleUpdate = async () => {
+    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
     if (
       !title ||
       !description ||
-      !content ||
+      !strippedContent ||
       !uploadedImage ||
       !thumbnailImage ||
       !videoHeading ||
@@ -133,7 +139,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Edit Department Facility
+            Edit Facility
           </span>
         }
         onCancel={handleCancel}

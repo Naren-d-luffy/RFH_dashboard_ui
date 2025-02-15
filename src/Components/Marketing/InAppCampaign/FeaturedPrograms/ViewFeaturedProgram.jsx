@@ -60,7 +60,12 @@ const ViewFeaturedModal = ({ open, handleCancel, featuresData }) => {
           <div
             className="news-content"
             style={{ color: "var(--text-color)" }}
-            dangerouslySetInnerHTML={{ __html: content }}
+            dangerouslySetInnerHTML={{
+              __html: content?.replace(
+                /<img/g,
+                '<img style="max-width: 100%; max-height: 150px; height: auto; object-fit: cover;"'
+              ),
+            }}
           />
         </div>
       </div>

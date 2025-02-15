@@ -95,15 +95,24 @@ const ViewAllCampTable = () => {
     });
   };
 
+  // const dataSource = useMemo(() => {
+  //   if (searchText.trim() === "") return Object.values(CapmpsData);
+  //   return Object.values(CapmpsData).filter((camp) =>
+  //     `${camp.campName} ${camp.hospitalName} ${camp.location} ${camp.pinCode} ${camp.date} ${camp.time}`
+  //       .toLowerCase()
+  //       .includes(searchText.toLowerCase())
+  //   );
+  // }, [searchText, CapmpsData]);
   const dataSource = useMemo(() => {
-    if (searchText.trim() === "") return Object.values(CapmpsData);
-    return Object.values(CapmpsData).filter((camp) =>
+    const camps = Object.values(CapmpsData).reverse();
+    if (searchText.trim() === "") return camps;
+    return camps.filter((camp) =>
       `${camp.campName} ${camp.hospitalName} ${camp.location} ${camp.pinCode} ${camp.date} ${camp.time}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
   }, [searchText, CapmpsData]);
-
+  
   const columns = [
     {
       title: "Camp Name",
@@ -176,7 +185,7 @@ const ViewAllCampTable = () => {
       ) : Object.values(CapmpsData).length > 0 ? (
         <>
           <div className="d-flex user-engagement-header justify-content-between align-items-center">
-            <h3>Latest Camps</h3>
+            <h3>Health Camps</h3>
             <button
               className="d-flex gap-2 align-items-center rfh-basic-button"
               onClick={() => toggleModal("addCamp")}

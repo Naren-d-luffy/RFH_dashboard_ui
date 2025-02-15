@@ -12,10 +12,15 @@ import { editService } from "../../../Features/ServiceSlice";
 
 const modules = {
   toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["bold", "italic"],
-    ["link", "image"],
+    [{ font: [] }, { size: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
+    [{ script: "sub" }, { script: "super" }],
+    [{ direction: "rtl" }],
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
+    ["link", "image", "formula"],
     ["clean"],
   ],
 };
@@ -35,8 +40,11 @@ const EditService = ({ open, handleCancel, serviceData }) => {
   const handleDeleteThumbnail = () => {
     setThumbnailImage(null);
   };
+  
   const handleSave = async () => {
-    if (!heading || !subHeading || !content || !thumbnailImage) {
+    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
+
+    if (!heading || !subHeading || !strippedContent || !thumbnailImage) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -86,7 +94,7 @@ const EditService = ({ open, handleCancel, serviceData }) => {
         visible={open}
         title={
           <span className="create-campaign-modal-title">
-            Edit Department Services
+            Edit Our Services
           </span>
         }
         onCancel={handleCancel}

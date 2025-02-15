@@ -207,7 +207,7 @@ const EducationCategoriesTreatmentsInfo = () => {
     <div className="container">
       <div className="row mt-4 marketing-categories-section">
         <div className="events-header-container">
-          <h6>Treatments Info</h6>
+          <h6>Common procedures</h6>
           <div className="events-buttons">
             <button className="rfh-basic-button" onClick={showModal}>
               <GoPlus size={20} /> Add
@@ -224,7 +224,7 @@ const EducationCategoriesTreatmentsInfo = () => {
         <div className="row mt-3">
           <Slider {...sliderSettings} key={treatmentData.length}>
             {treatmentData && treatmentData.length > 0 ? (
-              treatmentData.map((treatment) => renderImageCard(treatment))
+              [...treatmentData].reverse()?.map((treatment) => renderImageCard(treatment))
             ) : (
               <p>No data available</p>
             )}

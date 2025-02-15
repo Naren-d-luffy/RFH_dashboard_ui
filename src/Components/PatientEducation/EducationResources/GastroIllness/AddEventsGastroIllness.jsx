@@ -11,10 +11,15 @@ import Loader from "../../../../Loader";
 import { addGastroIllness } from "../../../../Features/GastroIllnessSlice";
 const modules = {
   toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["bold", "italic"],
-    ["link", "image"],
+    [{ font: [] }, { size: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
+    [{ script: "sub" }, { script: "super" }],
+    [{ direction: "rtl" }],
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
+    ["link", "image", "formula"],
     ["clean"],
   ],
 };
@@ -42,8 +47,14 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
     setUploadedImage(null);
   };
 
+  const isContentEmpty = (content) => {
+    if (!content || content.trim() === "") return true;
+    const strippedContent = content.replace(/<\/?[^>]+(>|$)/g, "").trim();
+    return strippedContent === "";
+  };
+  
   const handleSave = async () => {
-    if (!title || !type ||!description ||!content || !uploadedImage ) {
+    if (!title || !type ||!description || isContentEmpty(content) || !uploadedImage ) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -102,7 +113,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Add</span>}
+        title={<span className="create-campaign-modal-title">Add Overview Info</span>}
         onCancel={handleCancelClick}
         width={680}
         footer={[

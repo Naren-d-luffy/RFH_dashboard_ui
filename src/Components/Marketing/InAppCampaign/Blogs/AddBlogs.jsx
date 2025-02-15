@@ -11,10 +11,15 @@ import Loader from "../../../../Loader";
 import { addBlog } from "../../../../Features/BlogSlice";
 const modules = {
   toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["bold", "italic"],
-    ["link", "image"],
+    [{ font: [] }, { size: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
+    [{ script: "sub" }, { script: "super" }],
+    [{ direction: "rtl" }],
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
+    ["link","image","formula"],
     ["clean"],
   ],
 };
@@ -47,12 +52,17 @@ const AddBlogs = ({ open, handleCancel }) => {
   const handleDeleteImage1 = () => {
     setThumbnailImage(null);
   };
+  const isContentEmpty = (content) => {
+    if (!content || content.trim() === "") return true;
+    const strippedContent = content.replace(/<\/?[^>]+(>|$)/g, "").trim();
+    return strippedContent === "";
+  };
 
   const handleSave = async () => {
     if (
       !heading ||
       !subHeading ||
-      !content ||
+      isContentEmpty(content) ||
       !uploadedImage ||
       !thumbnailImage
     ) {
@@ -73,7 +83,7 @@ const AddBlogs = ({ open, handleCancel }) => {
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
 
-        showSuccessMessage("Blog Added successfully!");
+        showSuccessMessage("News Added successfully!");
         dispatch(addBlog(response.data));
         setHeading("");
         setSubHeading("");
@@ -83,7 +93,7 @@ const AddBlogs = ({ open, handleCancel }) => {
       }
     } catch (error) {
       console.error(error);
-      message.error("Failed to add Blog.");
+      message.error("Failed to add news.");
     } finally {
       setIsLoading(false);
     }
@@ -100,7 +110,7 @@ const AddBlogs = ({ open, handleCancel }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Add Blog</span>}
+        title={<span className="create-campaign-modal-title">Add News</span>}
         onCancel={handleCancelClick}
         width={680}
         footer={[

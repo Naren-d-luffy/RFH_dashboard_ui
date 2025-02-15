@@ -58,8 +58,7 @@ export const ConditionWeTreatList = () => {
           }
         } catch (error) {
           console.error("Error deleting condition we treat:", error);
-          message.error("Error deleting condition we treat",error);
-
+          message.error("Error deleting condition we treat", error);
         }
       },
     });
@@ -138,13 +137,13 @@ export const ConditionWeTreatList = () => {
             </span>
           </div>
           <p>{condition.subHeading}</p>
-          <p>
+          {/* <p>
             <span
               dangerouslySetInnerHTML={{
                 __html: sanitizeContent(truncateText(condition.content, 3)),
               }}
             ></span>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
@@ -214,7 +213,7 @@ export const ConditionWeTreatList = () => {
       <div className="marketing-categories-section">
         <div className="row mt-4">
           <div className="events-header-container">
-            <h6>Condition We Treat List</h6>
+            <h6>Conditions We Treat List</h6>
             <div className="events-buttons">
               <button
                 className="rfh-basic-button"
@@ -239,6 +238,7 @@ export const ConditionWeTreatList = () => {
               Object.keys(conditionwetreatList).length > 0 ? (
                 Object.entries(conditionwetreatList)
                   .filter(([key]) => key !== "status")
+                  .reverse()
                   .map(([key, condition]) => renderConditionCard(condition))
               ) : (
                 <p>No data available</p>

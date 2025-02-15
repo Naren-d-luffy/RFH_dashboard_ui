@@ -41,9 +41,15 @@ const ViewConditionWeTreat = ({ open, handleCancel, conditionData }) => {
 
             {conditionData?.content ? (
               <div
-                className="news-content"
-                dangerouslySetInnerHTML={{ __html: conditionData.content }}
-              />
+              className="news-content"
+              dangerouslySetInnerHTML={{
+                __html: conditionData?.content?.replace(
+                  /<img/g,
+                  '<img style="max-width: 100%; max-height: 150px; height: auto; object-fit: cover;"'
+                ),
+              }}
+            />
+              
             ) : (
               <p>No content available</p>
             )}

@@ -33,8 +33,11 @@ const ViewEventList = ({ open, handleCancel, eventsData }) => {
           </div>
 
           <div className="view-treatment-info-modal-content">
-            <h6><IoMdTime />{" "} {eventsData?.time || "N/A"}</h6>
-            <h6><CiCalendarDate /> {" "}
+            <h6>
+              <IoMdTime /> {eventsData?.time || "N/A"}
+            </h6>
+            <h6>
+              <CiCalendarDate />{" "}
               {eventsData?.date
                 ? new Date(eventsData.date).toLocaleDateString("en-GB")
                 : "N/A"}
@@ -42,15 +45,13 @@ const ViewEventList = ({ open, handleCancel, eventsData }) => {
             <div
               className="news-content"
               style={{ color: "var(--text-color)" }}
-              dangerouslySetInnerHTML={{ __html: eventsData?.description }}
+              dangerouslySetInnerHTML={{
+                __html: eventsData?.description?.replace(
+                  /<img/g,
+                  '<img style="max-width: 100%; max-height: 150px; height: auto; object-fit: cover;"'
+                ),
+              }}
             />
-            {/* <ul>
-              {eventsData?.tags
-                ?.flatMap((tag) => tag.split(",")) 
-                .map((individualTag, index) => (
-                  <li key={index}>{individualTag.trim()}</li> 
-                ))}
-            </ul> */}
           </div>
         </div>
       </Modal>
