@@ -174,6 +174,13 @@ const ServiceList = () => {
           slidesToScroll: 1,
         },
       },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
     ],
   };
 
