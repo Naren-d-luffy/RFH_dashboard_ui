@@ -121,7 +121,7 @@
   font-size: 14px;
   font-weight: 500;
   line-height: 30px;
-  color: var(--faq-ans-color);
+  color: var(--search-icon-color);
 }
 .treatment-info-icon-container {
   position: absolute;
