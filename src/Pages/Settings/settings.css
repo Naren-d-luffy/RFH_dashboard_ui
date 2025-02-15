@@ -5,7 +5,7 @@
 }
 .settings-section p {
   font-size: 14px;
-  color: var(--secondary-text-color);
+  color: var(--input-text-color);
   font-weight: 500;
 }
 .settings-options {
@@ -99,7 +99,7 @@
 }
 .settings-personal-information p {
   font-size: 14px;
-  color: var(--secondary-text-color);
+  color: var(--input-text-color);
   font-weight: 500;
 }
 .settings-personal-information h5 {
@@ -146,7 +146,7 @@
 }
 .settings-theme-image p{
   padding: 10px;
-  color: var(--secondary-text-color);
+  color: var(--input-text-color);
   font-weight: 600;
   margin-bottom: 0;
 }
@@ -317,7 +317,7 @@
   margin: 0;
   font-size: 14px;
   font-weight: 400;
-  color: var(--secondary-text-color);
+  color: var(--input-text-color);
 }
 
 
@@ -386,7 +386,7 @@ h4.hospital-title-heading {
 }
 p.hospital-title-paragraph{
   font-size: 14px;
-  color: var(--faq-ans-color);
+  color: var(--input-text-color);
 }
 .hospital-profile-description h4{
   font-size: 14px;
@@ -396,7 +396,7 @@ p.hospital-title-paragraph{
 }
 .hospital-profile-description p{
   font-size: 14px;
-  color: var(--faq-ans-color);  
+  color: var(--input-text-color);  
 }
 
 .config-card.ant-card-bordered{

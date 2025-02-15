@@ -54,6 +54,7 @@
   --model-background-color: #fff;
   --graph-field-color: #252525;
   --department-bg-color: #eda665;
+  --input-text-color:#939393;
 
 }
 
@@ -79,5 +80,6 @@
   --dark-blue: #251736;
   --border-color: #ffffff;
   --card-bg-color: #353535;
+  --input-text-color:#f8f3f3;
 }
 
