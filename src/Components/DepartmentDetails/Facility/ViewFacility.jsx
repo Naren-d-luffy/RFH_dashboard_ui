@@ -42,38 +42,9 @@ const ViewFacility = ({ open, handleCancel, facilityData }) => {
             )}
           </div>
 
-          <div className="view-treatment-info-modal-content">
-            <h5>{facilityData?.video_heading || "N/A"}</h5>
-            {facilityData?.video && (
-              <div className="recommend-video-card p-3">
-                <div className="video-player-container">
-                  <ReactPlayer
-                    url={facilityData.video}
-                    controls={true}
-                    playing={playingVideo === facilityData?._id}
-                    width="100%"
-                    height="150px"
-                    onPlay={() => handlePlayVideo(facilityData?._id)}
-                    onPause={() => setPlayingVideo(null)}
-                  />
-                </div>
-              </div>
-            )}
+          
 
-            {facilityData?.content ? (
-              <div
-                className="news-content"
-                dangerouslySetInnerHTML={{
-                  __html: facilityData?.content?.replace(
-                    /<img/g,
-                    '<img style="max-width: 100%; max-height: 150px; height: auto; object-fit: cover;"'
-                  ),
-                }}
-              />
-            ) : (
-              <p>No content available</p>
-            )}
-          </div>
+           
         </div>
       </Modal>
     </>
