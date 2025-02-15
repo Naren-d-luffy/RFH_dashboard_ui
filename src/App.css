@@ -453,6 +453,6 @@ body,
 .ant-table-wrapper .ant-table-thead >tr>th{
   color: var(--black-color);
 }
-.ant-empty-description{
-  
+.ant-empty-normal .ant-empty-description{
+  color: var(--search-icon-color);
 }
