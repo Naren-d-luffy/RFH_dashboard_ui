@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AddBlogs from "./AddBlogs";
 import { deleteBlog, setBlogs } from "../../../../Features/BlogSlice";
-// import DOMPurify from "dompurify";
 import EditBlogs from "./EditBlog";
 import ViewBlog from "./ViewBlog";
 import Loader from "../../../../Loader";
@@ -28,26 +27,14 @@ const BlogsList = () => {
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  // const sanitizeContent = (content) => {
-  //   return DOMPurify.sanitize(content);
-  // };
   const dispatch = useDispatch();
   const BlogsList = useSelector((state) => state.blog.blogs || []);
   const itemsPerPage = 100;
-
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
   const showEditModal = () => setIsEditModalOpen(true);
   const handleEditCancel = () => setIsEditModalOpen(false);
   const handleViewCancel = () => setIsViewModalOpen(false);
-
-  const truncateText = (text, wordLimit) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
 
   const sortMenu = (blog) => (
     <Menu onClick={(e) => e.domEvent.stopPropagation()}>

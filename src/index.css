@@ -55,7 +55,7 @@
   --graph-field-color: #252525;
   --department-bg-color: #eda665;
   --search-icon-color: #6c7278;
-
+  --input-text-color:#939393;
 }
 
 .dark-mode{
@@ -81,6 +81,6 @@
   --border-color: #ffffff;
   --card-bg-color: #353535;
   --search-icon-color: #ffffff;
-
+  --input-text-color:#f8f3f3;
 }
 

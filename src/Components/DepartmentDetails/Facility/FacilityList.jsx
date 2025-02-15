@@ -15,7 +15,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteFacility, setFacility } from "../../../Features/FacilitySlice";
 import ViewFacity from "./ViewFacility";
-import DOMPurify from "dompurify";
 
 export const FacilityList = () => {
   const [modals, setModals] = useState({
@@ -33,16 +32,6 @@ export const FacilityList = () => {
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 
-  const sanitizeContent = (content) => {
-    return DOMPurify.sanitize(content);
-  };
-  const truncateText = (text, wordLimit) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
   const handleEditClick = (facility) => {
     setSelectedFacility(facility);
     toggleModal("edit");
@@ -134,13 +123,6 @@ export const FacilityList = () => {
             </span>
           </div>
           <p>{facility.subHeading}</p>
-          {/* <p>
-            <span
-              dangerouslySetInnerHTML={{
-                __html: sanitizeContent(truncateText(facility.content, 15)),
-              }}
-            ></span>
-          </p> */}
         </div>
       </div>
     </div>

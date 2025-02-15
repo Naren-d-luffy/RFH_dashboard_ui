@@ -18,7 +18,6 @@ import {
   deleteTechnology,
   setTechnology,
 } from "../../../Features/TechnologySlice";
-import DOMPurify from "dompurify";
 
 export const TechnologyList = () => {
   const [modals, setModals] = useState({
@@ -32,16 +31,7 @@ export const TechnologyList = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
   const technologyList = useSelector((state) => state.technology.technologies);
-  const sanitizeContent = (content) => {
-    return DOMPurify.sanitize(content);
-  };
-  const truncateText = (text, wordLimit) => {
-    if (!text) return "";
-    const words = text.split(" ");
-    return words.length > wordLimit
-      ? words.slice(0, wordLimit).join(" ") + "..."
-      : text;
-  };
+
   const toggleModal = (modalType) =>
     setModals((prev) => ({ ...prev, [modalType]: !prev[modalType] }));
 

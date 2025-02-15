@@ -42,9 +42,9 @@ const EditService = ({ open, handleCancel, serviceData }) => {
   };
   
   const handleSave = async () => {
-    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
+    
 
-    if (!heading || !subHeading || !strippedContent || !thumbnailImage) {
+    if (!heading || !subHeading || !thumbnailImage) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -201,7 +201,7 @@ const EditService = ({ open, handleCancel, serviceData }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Content
+             Content
             </span>
           </Form.Item>
         </Form>

@@ -41,7 +41,7 @@ const AddService = ({ open, handleCancel }) => {
     setThumbnailImage(null);
   };
   const handleSave = async () => {
-    if (!heading || !subHeading || !content || !thumbnailImage) {
+    if (!heading || !subHeading  || !thumbnailImage) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -181,7 +181,7 @@ const AddService = ({ open, handleCancel }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Content
+             Content
             </span>
           </Form.Item>
         </Form>

@@ -27,31 +27,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState("");
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
-
-  // const [successStories, setSuccessStories] = useState([]);
   const dispatch = useDispatch();
-
-  // const handleAddSuccessStory = () => {
-  //   setSuccessStories([
-  //     ...successStories,
-  //     { title: "", views: 0, video_thumbnail_url: "" },
-  //   ]);
-  // };
-
-  // const handleSuccessStoryChange = (index, field, value) => {
-  //   const updatedStories = [...successStories];
-
-  //   updatedStories[index] = {
-  //     ...updatedStories[index],
-  //     [field]: value,
-  //   };
-
-  //   setSuccessStories(updatedStories);
-  // };
-
-  // const handleDeleteSuccessStory = (index) => {
-  //   setSuccessStories(successStories.filter((_, i) => i !== index));
-  // };
 
   useEffect(() => {
     if (departmentData) {
@@ -61,15 +37,6 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
       if (departmentData.thumbnail) {
         setImagePreviewUrl(departmentData.thumbnail);
       }
-      // if (Array.isArray(departmentData.success_stories)) {
-      //   setSuccessStories(
-      //     departmentData.success_stories?.map((story) => ({
-      //       title: story.title || "",
-      //       views: story.views || 0,
-      //       video_thumbnail_url: story.video_thumbnail_url || "",
-      //     }))
-      //   );
-      // }
     }
   }, [departmentData]);
 
@@ -84,16 +51,6 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
         requestData.append("thumbnail", uploadedImage);
       }
 
-      // const formattedSuccessStories = successStories?.map((story) => ({
-      //   video_thumbnail_url: story.video_thumbnail_url,
-      //   title: story.title,
-      //   views: parseInt(story.views),
-      // }));
-
-      // requestData.append(
-      //   "success_stories",
-      //   JSON.stringify(formattedSuccessStories)
-      // );
       const response = await Instance.put(
         `/department/${departmentData._id}`,
         requestData,
@@ -103,7 +60,6 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
       );
 
       dispatch(editDepartment(response.data));
-      // message.success("Department Updtaed successfully!");
       showSuccessMessage("Department Updated successfully!");
       resetForm();
       handleCancel();
@@ -123,7 +79,6 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
     setTitle("");
     setSubtitle("");
     setDescription("");
-    // setSuccessStories([]);
     setUploadedImage(null);
   };
 
@@ -250,70 +205,6 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
               <span style={{ color: "red" }}>*</span> Thumbnail Image
             </span>
           </Form.Item>
-
-          {/* <Button
-            onClick={handleAddSuccessStory}
-            className="create-campaign-cancel-button"
-            style={{ marginBottom: "20px" }}
-          >
-            Add Success Stories
-          </Button>
-          {successStories?.map((story, index) => (
-            <div key={index}>
-              <h5 className="specialist-heading-name">
-                Success Story {index + 1}
-              </h5>
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item label="Title">
-                    <Input
-                      value={story.title}
-                      onChange={(e) =>
-                        handleSuccessStoryChange(index, "title", e.target.value)
-                      }
-                      placeholder="Add Title"
-                      required
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item label="Views">
-                    <Input
-                      type="number"
-                      value={story.views}
-                      onChange={(e) =>
-                        handleSuccessStoryChange(index, "views", e.target.value)
-                      }
-                      placeholder="Add Views"
-                      required
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Form.Item label="Thumbnail URL">
-                <Input
-                  value={story.video_thumbnail_url}
-                  onChange={(e) =>
-                    handleSuccessStoryChange(
-                      index,
-                      "video_thumbnail_url",
-                      e.target.value
-                    )
-                  }
-                  placeholder="Add Thumbnail URL"
-                  required
-                />
-              </Form.Item>
-              <Button
-                icon={<RiDeleteBin5Line />}
-                className="settings-delete-account"
-                onClick={() => handleDeleteSuccessStory(index)}
-                style={{ marginBottom: "20px" }}
-              >
-                Delete Success Story
-              </Button>
-            </div>
-          ))} */}
         </Form>
       </Modal>
     </>

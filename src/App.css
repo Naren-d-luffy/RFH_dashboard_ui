@@ -126,7 +126,7 @@ body,
 }
 
 .ant-input::placeholder {
-  color: var(--secondary-text-color);
+  color: var(--input-text-color);
   font-size: 12px;
 }
 
