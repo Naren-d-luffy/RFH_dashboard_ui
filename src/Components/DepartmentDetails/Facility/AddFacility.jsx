@@ -9,6 +9,7 @@ import { showSuccessMessage, validateImage } from "../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../Loader";
 import { addFacility } from "../../../Features/FacilitySlice";
+import { Video } from "lucide-react";
 
 const modules = {
   toolbar: [
@@ -31,7 +32,7 @@ const AddFacility = ({ open, handleCancel }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
-  const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState("");
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [videoHeading, setVideoHeading] = useState("");
   const [videoSubHeading, setVideoSubHeading] = useState("");
@@ -72,27 +73,24 @@ const AddFacility = ({ open, handleCancel }) => {
   const handleDeleteThumbnail = () => {
     setThumbnailImage(null);
   };
-  const isContentEmpty = (content) => {
-    if (!content || content.trim() === "") return true;
   
-    // Remove all HTML tags and check if there's any meaningful text left
-    const strippedContent = content.replace(/<\/?[^>]+(>|$)/g, "").trim();
-  
-    return strippedContent === "";
-  };
   const handleSave = async () => {
     if (
       !title ||
-      !description ||
-      isContentEmpty(content) ||      
-      !uploadedImage ||
-      !thumbnailImage ||
-      !videoHeading ||
-      !videoSubHeading
+      !thumbnailImage 
+      
     ) {
       message.error("Please fill in all required fields.");
       return;
     }
+    const isAnyVideoFieldFilled = videoHeading || videoSubHeading || uploadedImage;
+    const areAllVideoFieldsFilled = videoHeading && videoSubHeading && uploadedImage;
+  
+    if (isAnyVideoFieldFilled && !areAllVideoFieldsFilled) {
+      message.error("If you provide a Video Heading, Video Subheading, or Upload a Video, then all three must be filled.");
+      return;
+    }
+  
     setIsLoading(true);
     try {
       const formData = new FormData();
@@ -101,9 +99,8 @@ const AddFacility = ({ open, handleCancel }) => {
       formData.append("thumbnail", thumbnailImage);
       formData.append("content", content);
       formData.append("video_heading", videoHeading);
-      formData.append("video", uploadedImage);
+      formData.append("video", uploadedImage ? uploadedImage : "");
       formData.append("video_subHeading", videoSubHeading);
-
       const response = await Instance.post("/depcat/facility", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
@@ -185,7 +182,7 @@ const AddFacility = ({ open, handleCancel }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Description
+             Description
             </span>
           </Form.Item>
           <div className="row">
@@ -235,10 +232,9 @@ const AddFacility = ({ open, handleCancel }) => {
               value={content}
               onChange={setContent}
               placeholder="Your text goes here"
-              required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Content
+             Content
             </span>
           </Form.Item>
           <Form.Item>
@@ -249,7 +245,7 @@ const AddFacility = ({ open, handleCancel }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span>Video Heading
+             Video Heading
             </span>
           </Form.Item>
           <Form.Item>
@@ -260,7 +256,7 @@ const AddFacility = ({ open, handleCancel }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Video Subheading
+              Video Subheading
             </span>
           </Form.Item>
           <div className="col-lg-12">
@@ -297,7 +293,7 @@ const AddFacility = ({ open, handleCancel }) => {
                 </div>
               )}
               <span className="create-campaign-input-span">
-                <span style={{ color: "red" }}>*</span> Upload Video
+                 Upload Video
               </span>
             </Form.Item>
           </div>
