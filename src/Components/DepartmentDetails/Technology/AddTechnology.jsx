@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
@@ -9,21 +7,8 @@ import { showSuccessMessage, validateImage } from "../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../Loader";
 import { addTechnology } from "../../../Features/TechnologySlice";
-
-const modules = {
-  toolbar: [
-    [{ font: [] }, { size: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
-    [{ script: "sub" }, { script: "super" }],
-    [{ direction: "rtl" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link", "image", "formula"],
-    ["clean"],
-  ],
-};
+import JoditEditor from "jodit-react";
+import { FiMaximize2, FiMinimize2 ,FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
@@ -34,7 +19,9 @@ const AddTechnology = ({ open, handleCancel }) => {
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const [isMaximized, setIsMaximized] = useState(false);
 
+  const editor = useRef(null);
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
     if (!validateImage(file)) return false;
@@ -45,7 +32,12 @@ const AddTechnology = ({ open, handleCancel }) => {
   const handleDeleteThumbnail = () => {
     setThumbnailImage(null);
   };
-
+ 
+  const toggleMaximize = (e) => {
+    e.preventDefault();  // Prevent any form submission
+    e.stopPropagation(); // Stop event bubbling
+    setIsMaximized(!isMaximized);
+  };
   const handleSave = async () => {
     if (!title || !description || !thumbnailImage) {
       message.error("Please fill in all required fields.");
@@ -77,25 +69,46 @@ const AddTechnology = ({ open, handleCancel }) => {
     }
   };
 
-  const handleCancelClick = () => {
+  const handleCancelClick = (e) => {
+    e.preventDefault();  // Prevent any form submission
+    e.stopPropagation(); // Stop event bubbling
     setTitle("");
     setDescription("");
     setContent("");
     setThumbnailImage(null);
     handleCancel();
   };
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={isMaximized ? <FiMinimize2  size={16} /> : <FiMaximize2 size={16} />}
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancelClick}
+      >
+        <span ><FiX size={18}/></span>
+      </Button>
+    </div>
+  );
   return (
     <>
       {isLoading && <Loader />}
       <Modal
         visible={open}
         title={
-          <span className="create-campaign-modal-title">
-            Add Technology
-          </span>
+          <span className="create-campaign-modal-title">Add Technology</span>
         }
+        closeIcon={closeButtons}
         onCancel={handleCancelClick}
-        width={680}
+        width={isMaximized ? "98%" : 680}
+        style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+        bodyStyle={
+          isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+        }
         footer={[
           <Button
             key="back"
@@ -122,7 +135,7 @@ const AddTechnology = ({ open, handleCancel }) => {
               placeholder="Add Title"
               required
             />
-             <span className="create-campaign-input-span">
+            <span className="create-campaign-input-span">
               <span style={{ color: "red" }}>*</span> Title
             </span>
           </Form.Item>
@@ -133,7 +146,7 @@ const AddTechnology = ({ open, handleCancel }) => {
               placeholder="Description"
               required
             />
-             <span className="create-campaign-input-span">
+            <span className="create-campaign-input-span">
               <span style={{ color: "red" }}>*</span> Description
             </span>
           </Form.Item>
@@ -149,7 +162,7 @@ const AddTechnology = ({ open, handleCancel }) => {
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
                   </p>
-                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
+                  <IoCloudUploadOutline className="image-upload-icon" />{" "}
                   <span style={{ color: "#727880" }}>Upload Thumbnail</span>
                 </Upload>
                 {thumbnailImage && (
@@ -171,24 +184,19 @@ const AddTechnology = ({ open, handleCancel }) => {
                     </Button>
                   </div>
                 )}
-                 <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Thumbnail Image
-            </span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Thumbnail Image
+                </span>
               </Form.Item>
             </div>
           </div>
           <Form.Item>
-            <ReactQuill
-              theme="snow"
-              modules={modules}
+            <JoditEditor
+              ref={editor}
               value={content}
-              onChange={setContent}
-              placeholder="Your text goes here"
-              required
+              onChange={(newContent) => setContent(newContent)}
             />
-             <span className="create-campaign-input-span">
-             Content
-            </span>
+            <span className="create-campaign-input-span">Content</span>
           </Form.Item>
         </Form>
       </Modal>

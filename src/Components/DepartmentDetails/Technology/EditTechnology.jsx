@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
@@ -9,21 +7,9 @@ import { showSuccessMessage, validateImage } from "../../../globalConstant";
 import Loader from "../../../Loader";
 import { useDispatch } from "react-redux";
 import { editTechnology } from "../../../Features/TechnologySlice";
+import JoditEditor from "jodit-react";
 
-const modules = {
-  toolbar: [
-    [{ font: [] }, { size: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
-    [{ script: "sub" }, { script: "super" }],
-    [{ direction: "rtl" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link", "image", "formula"],
-    ["clean"],
-  ],
-};
+
 
 const { TextArea } = Input;
 
@@ -35,7 +21,8 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-
+  const editor = useRef(null);
+console.log("tech",technologyData)
   useEffect(() => {
     if (open && technologyData) {
       setTitle(technologyData.heading || "");
@@ -190,17 +177,12 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
             </div>
           </div>
           <Form.Item>
-            <ReactQuill
-              theme="snow"
-              modules={modules}
+            <JoditEditor
+              ref={editor}
               value={content}
-              onChange={setContent}
-              placeholder="Your text goes here"
-              required
+              onChange={newContent=>setContent(newContent)}
             />
-            <span className="create-campaign-input-span">
-             Content
-            </span>{" "}
+            <span className="create-campaign-input-span">Content</span>
           </Form.Item>
         </Form>
       </Modal>
