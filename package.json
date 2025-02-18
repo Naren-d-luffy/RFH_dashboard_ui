@@ -15,6 +15,7 @@
     "chart.js": "^4.4.6",
     "dompurify": "^3.2.3",
     "html2canvas": "^1.4.1",
+    "jodit-react": "^5.2.14",
     "jspdf": "^2.5.2",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.460.0",

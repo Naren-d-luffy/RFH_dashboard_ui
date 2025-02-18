@@ -456,3 +456,11 @@ body,
 .ant-empty-normal .ant-empty-description{
   color: var(--search-icon-color);
 }
+
+.jodit-status-bar{
+  background-color: var(--white-color) !important;
+  display: none !important;
+}
+.ant-modal-body::-webkit-scrollbar{
+  width: 0px;
+}
