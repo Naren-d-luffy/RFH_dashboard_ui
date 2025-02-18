@@ -37,7 +37,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
   const [videoSubHeading, setVideoSubHeading] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-
+console.log("FacilityData",facilityData)
   useEffect(() => {
     if (open && facilityData) {
       setTitle(facilityData.heading || "");
@@ -45,7 +45,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
       setContent(facilityData.content || "");
       setVideoHeading(facilityData.video_heading || "");
       setVideoSubHeading(facilityData.video_subHeading || "");
-      setUploadedImage(facilityData.video || null);
+      setUploadedImage(facilityData.video || "");
       setThumbnailImage(facilityData.thumbnail || null);
     }
   }, [open, facilityData]);
@@ -85,19 +85,21 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
   };
 
   const handleUpdate = async () => {
-    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
     if (
       !title ||
-      !description ||
-      !strippedContent ||
-      !uploadedImage ||
-      !thumbnailImage ||
-      !videoHeading ||
-      !videoSubHeading
+      !thumbnailImage 
     ) {
       message.error("Please fill in all required fields.");
       return;
     }
+    const isAnyVideoFieldFilled = videoHeading || videoSubHeading || uploadedImage;
+    const areAllVideoFieldsFilled = videoHeading && videoSubHeading && uploadedImage;
+  
+    if (isAnyVideoFieldFilled && !areAllVideoFieldsFilled) {
+      message.error("If you provide a Video Heading, Video Subheading, or Upload a Video, then all three must be filled.");
+      return;
+    }
+  
 
     setIsLoading(true);
     try {
@@ -182,7 +184,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Description
+             Description
             </span>
           </Form.Item>
           <div className="row">
@@ -266,7 +268,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
                   </div>
                 )}
                 <span className="create-campaign-input-span">
-                  <span style={{ color: "red" }}>*</span> Upload video
+                  Upload video
                 </span>
               </Form.Item>
             </div>
@@ -278,10 +280,10 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
               value={content}
               onChange={setContent}
               placeholder="Your text goes here"
-              required
+              
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Content
+              Content
             </span>
           </Form.Item>
           <Form.Item>
@@ -292,7 +294,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Video Heading
+               Video Heading
             </span>
           </Form.Item>
           <Form.Item>
@@ -303,7 +305,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
               required
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Video Subheading
+               Video Subheading
             </span>
           </Form.Item>
         </Form>
