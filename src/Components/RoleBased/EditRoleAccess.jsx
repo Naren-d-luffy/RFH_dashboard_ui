@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Form, Input, Row, Col, Button, Select, Checkbox } from "antd";
+import { Form, Input, Row, Col, Button, Select, Checkbox, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Instance } from "../../AxiosConfig";
 import { showSuccessMessage } from "../../globalConstant";
@@ -34,7 +34,6 @@ const EditRoleBased = () => {
     }
   };
 
-
   const handleEditClick = () => {
     fileInputRef.current.click();
   };
@@ -57,7 +56,7 @@ const EditRoleBased = () => {
         const response = await Instance.get(`admin/getProfile/${id}`);
         const userData = response.data;
         console.log("roleaccessData", userData);
-        
+
         setFormData({
           name: userData.name,
           email: userData.email,
@@ -78,6 +77,14 @@ const EditRoleBased = () => {
   }, [id]);
 
   const handleSubmit = async () => {
+    if (!formData.name) {
+      message.error("Full name is required");
+      return;
+    }
+    if (!formData.phone) {
+      message.error("Phone number is required");
+      return;
+    }
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
     formDataToSend.append("email", formData.email);
@@ -154,7 +161,7 @@ const EditRoleBased = () => {
 
           <Row gutter={24} className="mt-4">
             <Col span={12}>
-              <Form.Item label="Full Name">
+              <Form.Item label="Full Name" required>
                 <Input
                   name="name"
                   className="create-campaign-input"
@@ -180,7 +187,7 @@ const EditRoleBased = () => {
 
           <Row gutter={24}>
             <Col span={12}>
-              <Form.Item label="Phone Number">
+              <Form.Item label="Phone Number" required>
                 <Input
                   name="phone"
                   className="create-campaign-input"

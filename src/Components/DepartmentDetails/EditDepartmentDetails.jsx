@@ -41,6 +41,11 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   }, [departmentData]);
 
   const handleUpdate = async () => {
+   
+    if (!title || !subtitle || !uploadedImage) {
+      message.error("Please fill in all required fields.");
+      return;
+    }
     setIsLoading(true);
     try {
       const requestData = new FormData();
@@ -129,7 +134,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
               placeholder="Add Subtitle"
               required
             />
-             <span className="create-campaign-input-span">
+            <span className="create-campaign-input-span">
               <span style={{ color: "red" }}>*</span> Subtitle
             </span>
           </Form.Item>
@@ -138,14 +143,13 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
             <ReactQuill
               theme="snow"
               modules={modules}
-
               value={description}
               onChange={setDescription}
               placeholder="Your text goes here"
               required
             />
-             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Description
+            <span className="create-campaign-input-span">
+              Description
             </span>
           </Form.Item>
 
@@ -164,7 +168,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
+                <IoCloudUploadOutline className="image-upload-icon" />{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>
@@ -201,7 +205,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 </Button>
               </div>
             )}
-             <span className="create-campaign-input-span">
+            <span className="create-campaign-input-span">
               <span style={{ color: "red" }}>*</span> Thumbnail Image
             </span>
           </Form.Item>
