@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   Modal,
@@ -17,11 +17,10 @@ import { editEvent } from "../../../../Features/DiscoverEventsCard";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import Loader from "../../../../Loader";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import moment from "moment";
 import dayjs from "dayjs";
-
+import JoditEditor from "jodit-react";
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 // const { TextArea } = Input;
 // const { Option } = Select;
 
@@ -37,21 +36,13 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const dispatch = useDispatch();
-  const modules = {
-    toolbar: [
-      [{ font: [] }, { size: [] }],
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
-      [{ script: "sub" }, { script: "super" }],
-      [{ direction: "rtl" }],
-      [{ color: [] }, { background: [] }],
-      [{ align: [] }],
-      ["link","image","formula"],
-      ["clean"],
-    ],
+  const editor = useRef(null);
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
   };
-
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
     if (!validateImage(file)) return false;
@@ -71,10 +62,10 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
       setTime(eventsData?.time);
       const formattedDate = eventsData?.date
         ? new Date(eventsData.date).toLocaleDateString("en-GB", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-        })
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          })
         : "";
 
       setDate(formattedDate);
@@ -91,8 +82,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   }, [open, eventsData]);
 
   const handleUpdate = async () => {
-   
-    if (!title  || !date || !time || !uploadedImage) {
+    if (!title || !date || !time || !uploadedImage) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -106,7 +96,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
     // formData.append("order", parseInt(order, 10));
     formData.append("isActive", isActive);
     formData.append("image", uploadedImage);
-    formData.append("date", formattedDate); 
+    formData.append("date", formattedDate);
     formData.append("time", time);
     setIsLoading(true);
 
@@ -138,7 +128,26 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   const handleInputChange = (key, value) => {
     setDate(value); // Directly set the formatted date string
   };
-
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancel}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
   return (
     <>
       {isLoading && <Loader />}
@@ -148,7 +157,12 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
           <span className="create-campaign-modal-title">Update Event Card</span>
         }
         onCancel={handleCancel}
-        width={680}
+        closeIcon={closeButtons}
+        width={isMaximized ? "98%" : 680}
+        style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+        bodyStyle={
+          isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+        }
         footer={[
           <Button
             key="back"
@@ -257,8 +271,10 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
                   className="settings-input w-100"
                   placeholder="Select Date"
                   format="DD-MM-YYYY"
-                  value={date ? dayjs(date, "DD-MM-YYYY") : null} 
-                  onChange={(date, dateString) => handleInputChange("date", dateString)}
+                  value={date ? dayjs(date, "DD-MM-YYYY") : null}
+                  onChange={(date, dateString) =>
+                    handleInputChange("date", dateString)
+                  }
                 />
                 <span className="create-campaign-input-span">
                   <span style={{ color: "red" }}>*</span> Event Date
@@ -271,8 +287,8 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
                   className="settings-input w-100"
                   placeholder="Select Time"
                   format="HH:mm"
-                  value={time ? moment(time, "HH:mm") : null} 
-                  onChange={(time) => setTime(time ? time.format("HH:mm") : "")} 
+                  value={time ? moment(time, "HH:mm") : null}
+                  onChange={(time) => setTime(time ? time.format("HH:mm") : "")}
                 />
                 <span className="create-campaign-input-span">
                   <span style={{ color: "red" }}>*</span> Event Time
@@ -296,17 +312,13 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
             </div>
           </div>
           <Form.Item>
-            <ReactQuill
-              theme="snow"
-              modules={modules}
+            <JoditEditor
+              ref={editor}
               value={description}
               onChange={setDescription}
-              placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">
-             Description
-            </span>
+            <span className="create-campaign-input-span">Description</span>
           </Form.Item>
         </Form>
       </Modal>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -8,8 +8,7 @@ import Loader from "../../../Loader";
 import { useDispatch } from "react-redux";
 import { editTechnology } from "../../../Features/TechnologySlice";
 import JoditEditor from "jodit-react";
-
-
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
@@ -21,8 +20,15 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+
   const editor = useRef(null);
-console.log("tech",technologyData)
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
+  console.log("tech", technologyData);
   useEffect(() => {
     if (open && technologyData) {
       setTitle(technologyData.heading || "");
@@ -35,8 +41,8 @@ console.log("tech",technologyData)
 
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
-        if (!validateImage(file)) return false;
-    
+    if (!validateImage(file)) return false;
+
     setThumbnailImage(file);
   };
 
@@ -45,8 +51,7 @@ console.log("tech",technologyData)
   };
 
   const handleUpdate = async () => {
-   
-    if (!title || !description  || !thumbnailImage) {
+    if (!title || !description || !thumbnailImage) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -79,18 +84,42 @@ console.log("tech",technologyData)
     }
   };
 
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancel}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
+
   return (
     <>
       {isLoading && <Loader />}
       <Modal
         visible={open}
         title={
-          <span className="create-campaign-modal-title">
-            Edit Technology
-          </span>
+          <span className="create-campaign-modal-title">Edit Technology</span>
         }
         onCancel={handleCancel}
-        width={680}
+        closeIcon={closeButtons}
+        width={isMaximized ? "98%" : 680}
+        style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+        bodyStyle={
+          isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+        }
         footer={[
           <Button
             key="back"
@@ -144,7 +173,7 @@ console.log("tech",technologyData)
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
                   </p>
-                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
+                  <IoCloudUploadOutline className="image-upload-icon" />{" "}
                   <span style={{ color: "#727880" }}>Upload Thumbnail</span>
                 </Upload>
                 {thumbnailImage && (
@@ -180,7 +209,8 @@ console.log("tech",technologyData)
             <JoditEditor
               ref={editor}
               value={content}
-              onChange={newContent=>setContent(newContent)}
+              onChange={setContent}
+              required
             />
             <span className="create-campaign-input-span">Content</span>
           </Form.Item>

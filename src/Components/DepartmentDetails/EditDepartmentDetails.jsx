@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
@@ -9,6 +9,9 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import Loader from "../../Loader";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import JoditEditor from "jodit-react";
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
+
 const modules = {
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -26,6 +29,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   const [subtitle, setSubtitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState("");
+  const [content, setContent] = useState("");
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const dispatch = useDispatch();
 
@@ -39,6 +43,14 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
       }
     }
   }, [departmentData]);
+
+  const editor = useRef(null);
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
 
   const handleUpdate = async () => {
    
@@ -87,6 +99,27 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
     setUploadedImage(null);
   };
 
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancel}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
+
   return (
     <>
       {isLoading && <Loader />}
@@ -96,7 +129,12 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
           <span className="create-campaign-modal-title">Edit Department</span>
         }
         onCancel={handleCancel}
-        width={680}
+        closeIcon={closeButtons}
+        width={isMaximized ? "98%" : 680}
+        style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+        bodyStyle={
+          isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+        }
         footer={[
           <Button
             key="back"
@@ -139,18 +177,16 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
             </span>
           </Form.Item>
 
-          <Form.Item label="Description">
-            <ReactQuill
-              theme="snow"
-              modules={modules}
+
+          <Form.Item>
+            <JoditEditor
+              ref={editor}
               value={description}
               onChange={setDescription}
-              placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">
-              Description
-            </span>
+            <span className="create-campaign-input-span">Descriptioin</span>
+
           </Form.Item>
 
           <Form.Item>

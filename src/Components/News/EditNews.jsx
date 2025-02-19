@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Form, Input, Upload, message, Select} from "antd";
+import { Button, Modal, Form, Input, Upload, message, Select } from "antd";
 // import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -12,7 +12,7 @@ import { editNews } from "../../Features/NewsSlice";
 import { useDispatch } from "react-redux";
 import Loader from "../../Loader";
 import { Option } from "antd/es/mentions";
-
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 // const modules = {
 //   toolbar: [
@@ -35,11 +35,17 @@ const EditNews = ({ open, handleCancel, newsData }) => {
   const [backgroundColor, setBackgroundColor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
     setUploadedImage(file);
   };
-  const [type, setType] = useState(""); 
+  const [type, setType] = useState("");
   const [videoURL, setVideoURL] = useState("");
   const handleDeleteImage = () => {
     setUploadedImage(null);
@@ -52,14 +58,13 @@ const EditNews = ({ open, handleCancel, newsData }) => {
       setContent(DOMPurify.sanitize(newsData.content || ""));
       setBackgroundColor(newsData.backgroundColor || "#1677ff");
       setUploadedImage(newsData.image || null);
-      setVideoURL(newsData.video_URL||"");
-      setType(newsData.type||"");
-
+      setVideoURL(newsData.video_URL || "");
+      setType(newsData.type || "");
     }
   }, [newsData]);
 
   const handleUpdate = async () => {
-    if (!heading || !subheading ) {
+    if (!heading || !subheading) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -67,15 +72,14 @@ const EditNews = ({ open, handleCancel, newsData }) => {
     setIsLoading(true);
 
     try {
-
       const formData = new FormData();
       formData.append("heading", heading);
       formData.append("subheading", subheading);
       // formData.append("about", about);
       formData.append("content", content);
       formData.append("backgroundColor", backgroundColor);
-      formData.append("type", type); 
-      formData.append("video_URL", videoURL); 
+      formData.append("type", type);
+      formData.append("video_URL", videoURL);
       if (uploadedImage) {
         formData.append("image", uploadedImage);
       }
@@ -95,7 +99,26 @@ const EditNews = ({ open, handleCancel, newsData }) => {
       setIsLoading(false);
     }
   };
-
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancel}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
   return (
     <>
       {isLoading && <Loader />}
@@ -103,7 +126,12 @@ const EditNews = ({ open, handleCancel, newsData }) => {
         visible={open}
         title={<span className="create-campaign-modal-title">Edit News</span>}
         onCancel={handleCancel}
-        width={680}
+        closeIcon={closeButtons}
+        width={isMaximized ? "98%" : 680}
+        style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+        bodyStyle={
+          isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+        }
         footer={[
           <Button
             key="back"
@@ -134,7 +162,7 @@ const EditNews = ({ open, handleCancel, newsData }) => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
+                <IoCloudUploadOutline className="image-upload-icon" />{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>
@@ -168,9 +196,7 @@ const EditNews = ({ open, handleCancel, newsData }) => {
                 </Button>
               </div>
             )}
-            <span className="create-campaign-input-span">
-              Image
-            </span>{" "}
+            <span className="create-campaign-input-span">Image</span>{" "}
           </Form.Item>
           <div className="row">
             <div className="col-lg-12">
@@ -195,7 +221,7 @@ const EditNews = ({ open, handleCancel, newsData }) => {
                   required
                 />
                 <span className="create-campaign-input-span">
-                <span style={{ color: "red" }}>*</span> Sub Heading
+                  <span style={{ color: "red" }}>*</span> Sub Heading
                 </span>{" "}
               </Form.Item>
             </div>
@@ -225,7 +251,7 @@ const EditNews = ({ open, handleCancel, newsData }) => {
               placeholder="Enter URL"
               defaultValue=""
               value={videoURL}
-              onChange={(e) => setVideoURL(e.target.value)} 
+              onChange={(e) => setVideoURL(e.target.value)}
             />
             <span className="create-campaign-input-span">Video URL</span>
           </Form.Item>

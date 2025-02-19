@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
@@ -9,20 +7,8 @@ import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { addBlog } from "../../../../Features/BlogSlice";
-const modules = {
-  toolbar: [
-    [{ font: [] }, { size: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
-    [{ script: "sub" }, { script: "super" }],
-    [{ direction: "rtl" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link","image","formula"],
-    ["clean"],
-  ],
-};
+import JoditEditor from "jodit-react";
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
@@ -34,6 +20,13 @@ const AddBlogs = ({ open, handleCancel }) => {
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const editor = useRef(null);
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault(); 
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
     if (!validateImage(file)) return false;
@@ -52,16 +45,9 @@ const AddBlogs = ({ open, handleCancel }) => {
   const handleDeleteImage1 = () => {
     setThumbnailImage(null);
   };
-  
 
   const handleSave = async () => {
-    if (
-      !heading ||
-      !subHeading ||
-      
-      !uploadedImage ||
-      !thumbnailImage
-    ) {
+    if (!heading || !subHeading || !uploadedImage || !thumbnailImage) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -101,6 +87,26 @@ const AddBlogs = ({ open, handleCancel }) => {
     setUploadedImage(null);
     handleCancel();
   };
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancelClick}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
   return (
     <>
       {isLoading && <Loader />}
@@ -108,7 +114,12 @@ const AddBlogs = ({ open, handleCancel }) => {
         visible={open}
         title={<span className="create-campaign-modal-title">Add News</span>}
         onCancel={handleCancelClick}
-        width={680}
+        closeIcon={closeButtons}
+        width={isMaximized ? "98%" : 680}
+        style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+        bodyStyle={
+          isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+        }
         footer={[
           <Button
             key="back"
@@ -248,17 +259,13 @@ const AddBlogs = ({ open, handleCancel }) => {
           </div>
 
           <Form.Item>
-            <ReactQuill
-              theme="snow"
-              modules={modules}
+            <JoditEditor
+              ref={editor}
               value={content}
               onChange={setContent}
-              placeholder="Your text goes here"
               required
             />
-            <span className="create-campaign-input-span">
-             Content Points
-            </span>
+            <span className="create-campaign-input-span">Content Points</span>
           </Form.Item>
         </Form>
       </Modal>
