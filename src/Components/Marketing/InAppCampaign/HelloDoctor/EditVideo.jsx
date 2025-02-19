@@ -5,13 +5,19 @@ import { showSuccessMessage } from "../../../../globalConstant";
 import { editHelloDoctorVideos } from "../../../../Features/HelloDoctorSlice";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const EditVideo = ({ open, handleCancel, videoData }) => {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
   useEffect(() => {
     if (open && videoData) {
       setTitle(videoData.title || "");
@@ -45,7 +51,26 @@ const EditVideo = ({ open, handleCancel, videoData }) => {
       setIsLoading(false);
     }
   };
-
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancel}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
   return (
     <>
       {isLoading && <Loader />}
@@ -53,7 +78,12 @@ const EditVideo = ({ open, handleCancel, videoData }) => {
         visible={open}
         title={<span className="create-campaign-modal-title">Edit Video</span>}
         onCancel={handleCancel}
-        width={680}
+        closeIcon={closeButtons}
+        width={isMaximized ? "98%" : 680}
+        style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+        bodyStyle={
+          isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+        }
         footer={[
           <Button
             key="back"
@@ -80,7 +110,9 @@ const EditVideo = ({ open, handleCancel, videoData }) => {
               placeholder="Enter Title"
               required
             />
-            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Video Title</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Video Title
+            </span>
           </Form.Item>
           <Form.Item>
             <Input
@@ -89,7 +121,9 @@ const EditVideo = ({ open, handleCancel, videoData }) => {
               placeholder="Enter URL"
               required
             />
-            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Video URL</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Video URL
+            </span>
           </Form.Item>
         </Form>
       </Modal>

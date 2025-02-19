@@ -5,12 +5,18 @@ import TextArea from "antd/es/input/TextArea";
 import { Instance } from "../../../../AxiosConfig";
 import { addFaqs } from "../../../../Features/FaqsSlice";
 import { useDispatch } from "react-redux";
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const AddAskedQuestions = ({ open, handleCancel }) => {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const dispatch = useDispatch();
-
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
   const handleSave = async () => {
     if (!question.trim() || !answer.trim()) {
       message.error("Please fill in all required fields.");
@@ -44,12 +50,37 @@ const AddAskedQuestions = ({ open, handleCancel }) => {
     setAnswer("");
     handleCancel();
   };
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancelClick}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
   return (
     <Modal
       open={open}
       title={<span className="create-campaign-modal-title">Frequently Asked Questions</span>}
       onCancel={handleCancelClick}
-      width={680}
+      closeIcon={closeButtons}
+      width={isMaximized ? "98%" : 680}
+      style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+      bodyStyle={
+        isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+      }
       footer={[
         <Button key="back" onClick={handleCancelClick} className="create-campaign-cancel-button">
           Cancel

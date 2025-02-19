@@ -17,6 +17,7 @@ import Loader from "../../../../Loader";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { showSuccessMessage, validateImage } from "../../../../globalConstant";
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
   const { TextArea } = Input;
@@ -34,6 +35,12 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 const [isActive,setIsActive]=useState(true)
+const [isMaximized, setIsMaximized] = useState(false);
+const toggleMaximize = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  setIsMaximized(!isMaximized);
+};
   useEffect(() => {
     if (open && EventData) {
       setClinicName(EventData.name || "");
@@ -114,7 +121,26 @@ const [isActive,setIsActive]=useState(true)
       setIsLoading(false);
     }
   };
-
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancel}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
   return (
     <>
       {isLoading && <Loader />}
@@ -126,7 +152,12 @@ const [isActive,setIsActive]=useState(true)
           </span>
         }
         onCancel={handleCancel}
-        width={680}
+        closeIcon={closeButtons}
+        width={isMaximized ? "98%" : 680}
+        style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+        bodyStyle={
+          isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+        }
         footer={[
           <Button
             key="back"

@@ -15,9 +15,17 @@ import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
 import dayjs from "dayjs";
 import { editCamp } from "../../../../Features/CampSlice";
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
+
 const { TextArea } = Input;
 
 const EditCamps = ({ open, handleCancel, campDataa }) => {
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     campName: "",
@@ -84,13 +92,37 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
       message.error("Failed to update Camp.");
     }
   };
-
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancel}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
   return (
     <Modal
       open={open}
       title={<span className="create-campaign-modal-title">Edit Camp</span>}
       onCancel={handleCancel}
-      width={680}
+      closeIcon={closeButtons}
+      width={isMaximized ? "98%" : 680}
+      style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+      bodyStyle={
+        isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+      }
       footer={[
         <Button
           key="back"

@@ -14,9 +14,17 @@ import { showSuccessMessage } from "../../../../globalConstant";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
 import { addCamp } from "../../../../Features/CampSlice";
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
+
 const { TextArea } = Input;
 
 const AddLatestCamps = ({ open, handleCancel }) => {
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
   const [formData, setFormData] = useState({
     campName: "",
     date: null,
@@ -82,12 +90,37 @@ const AddLatestCamps = ({ open, handleCancel }) => {
     resetForm();
     handleCancel();
   };
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancelClick}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
   return (
     <Modal
       open={open}
       title={<span className="create-campaign-modal-title">Add Camps</span>}
       onCancel={handleCancelClick}
-      width={680}
+      closeIcon={closeButtons}
+      width={isMaximized ? "98%" : 680}
+      style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+      bodyStyle={
+        isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+      }
       footer={[
         <Button
           key="back"

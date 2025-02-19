@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { showSuccessMessage, validateImage } from "../../../../globalConstant";
@@ -6,25 +6,12 @@ import { useDispatch } from "react-redux";
 import { FaTrash } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
 import { editFeature } from "../../../../Features/FeatureSlice";
+import JoditEditor from "jodit-react";
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 const { TextArea } = Input;
-const modules = {
-  toolbar: [
-    [{ font: [] }, { size: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
-    [{ script: "sub" }, { script: "super" }],
-    [{ direction: "rtl" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link","image","formula"],
-    ["clean"],
-  ],
-};
+
 const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -33,7 +20,13 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
   const [features, setFeatures] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-
+  const editor = useRef(null);
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
   const handleAddFeatures = () => {
     setFeatures([...features, ""]);
   };
@@ -107,7 +100,26 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
       setIsLoading(false);
     }
   };
-
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancel}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
   return (
     <Modal
       visible={open}
@@ -117,7 +129,12 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
         </span>
       }
       onCancel={handleCancel}
-      width={680}
+      closeIcon={closeButtons}
+      width={isMaximized ? "98%" : 680}
+      style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+      bodyStyle={
+        isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+      }
       footer={[
         <Button
           key="back"
@@ -244,12 +261,10 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
           </div>
         </div>
         <Form.Item>
-          <ReactQuill
-            theme="snow"
-            modules={modules}
+          <JoditEditor
+            ref={editor}
             value={content}
             onChange={setContent}
-            placeholder="Your text goes here"
             required
           />
            <span className="create-campaign-input-span">

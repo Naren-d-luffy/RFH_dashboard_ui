@@ -39,12 +39,16 @@ const AllConfigList = () => {
 
         {loading ? (
           <Spin size="large" className="d-flex justify-content-center mt-5" />
+        ) : configs.length === 0 ? (
+          <div className="text-center mt-5">
+            <p className="coming-soon-text">No data found</p>
+          </div>
         ) : (
           <div className="row">
             {configs.map((config, index) => (
               <div
                 key={config._id}
-                className="col-lg-6 col-md-7 col-sm-12 mb-4 "
+                className="col-lg-6 col-md-7 col-sm-12 mb-4"
               >
                 <Card
                   title={config.name || `Configuration ${index + 1}`}
