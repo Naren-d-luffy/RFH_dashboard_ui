@@ -86,7 +86,9 @@ const AddLatestCamps = ({ open, handleCancel }) => {
       message.error("Failed to create Camp.");
     }
   };
-  const handleCancelClick = () => {
+  const handleCancelClick = (e) => {
+    e.preventDefault(); // Prevent any form submission
+    e.stopPropagation(); // Stop event bubbling
     resetForm();
     handleCancel();
   };
