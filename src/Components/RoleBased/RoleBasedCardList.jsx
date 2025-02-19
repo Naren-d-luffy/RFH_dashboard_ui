@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import user from "../../Assets/Images/singleuser.png";
-import { Avatar, Button, Tag } from "antd";
+import { Avatar, Button, Spin, Tag } from "antd";
 import { Instance } from "../../AxiosConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { setRoleAccess } from "../../Features/RoleAccessSlice";
@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { showErrorMessage, showSuccessMessage } from "../../globalConstant";
 
 const RoleBasedCardList = () => {
-  const [, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -73,7 +73,15 @@ const RoleBasedCardList = () => {
           </button>
         </div>
       </div>
-
+      {isLoading ? (
+        <div className="d-flex justify-content-center mt-5">
+          <Spin size="large" />
+        </div>
+      ) : roleaccessData.length === 0 ? (
+        <div className="text-center mt-5">
+          <p className="coming-soon-text">No data found</p>
+        </div>
+      ) : (
       <div className="row mt-4">
         {Array.isArray(roleaccessData) &&
           roleaccessData
@@ -120,6 +128,8 @@ const RoleBasedCardList = () => {
             )
           )}
       </div>
+            )}
+
     </div>
   );
 };

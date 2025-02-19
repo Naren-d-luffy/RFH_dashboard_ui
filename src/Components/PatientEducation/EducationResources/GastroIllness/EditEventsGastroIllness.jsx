@@ -1,7 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, Input, Upload, message, Select ,Switch} from "antd";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  Upload,
+  message,
+  Select,
+  Switch,
+} from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
@@ -9,20 +16,8 @@ import { showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { editGastroIllness } from "../../../../Features/GastroIllnessSlice";
-const modules = {
-  toolbar: [
-    [{ font: [] }, { size: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
-    [{ script: "sub" }, { script: "super" }],
-    [{ direction: "rtl" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link", "image", "formula"],
-    ["clean"],
-  ],
-};
+import JoditEditor from "jodit-react";
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
@@ -33,9 +28,16 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-    const [service, setService] = useState(false);
-    const [conditions, setConditions] = useState(false);
+  const [service, setService] = useState(false);
+  const [conditions, setConditions] = useState(false);
   const dispatch = useDispatch();
+  const editor = useRef(null);
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
     if (!validateImage(file)) return false;
@@ -55,20 +57,18 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
       setContent(EventData.content || "");
       setUploadedImage(EventData.headerImage || null);
       setType(EventData.type || "");
-      setService(EventData.service)
-      setConditions(EventData.condition)
+      setService(EventData.service);
+      setConditions(EventData.condition);
 
       // setThumbnailImage(EventData.thumbnail || null);
     }
   }, [open, EventData]);
 
   const handleSave = async () => {
-   
-    
-    if (!title || !type ||!description  || !uploadedImage ) {
-         message.error("Please fill in all required fields.");
-         return;
-       }
+    if (!title || !type || !description || !uploadedImage) {
+      message.error("Please fill in all required fields.");
+      return;
+    }
     setIsLoading(true);
     try {
       const formData = new FormData();
@@ -100,7 +100,26 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
       setIsLoading(false);
     }
   };
-
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancel}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
   return (
     <>
       {isLoading && <Loader />}
@@ -112,7 +131,12 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
           </span>
         }
         onCancel={handleCancel}
-        width={680}
+        closeIcon={closeButtons}
+        width={isMaximized ? "98%" : 680}
+        style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+        bodyStyle={
+          isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+        }
         footer={[
           <Button
             key="back"
@@ -150,7 +174,9 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Description</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Description
+            </span>
           </Form.Item>
           <div className="row">
             <div className="col-lg-5">
@@ -176,13 +202,14 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               </Form.Item>
             </div>
             <div className="col-lg-7">
-              <div className="mt-2"
+              <div
+                className="mt-2"
                 style={{ display: "flex", gap: "10px", alignItems: "center" }}
               >
                 <div>
                   <span>Department Services </span>
                   <Switch
-                  className="gastro-switch-button"
+                    className="gastro-switch-button"
                     checked={service}
                     onChange={(checked) => setService(checked)}
                   />
@@ -190,7 +217,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                 <div>
                   <span>Conditions we Treat </span>
                   <Switch
-                  className="gastro-switch-button"
+                    className="gastro-switch-button"
                     checked={conditions}
                     onChange={(checked) => setConditions(checked)}
                   />
@@ -245,19 +272,14 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Header Image</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Header Image
+                </span>
               </Form.Item>
             </div>
           </div>
           <Form.Item>
-            <ReactQuill
-              theme="snow"
-              modules={modules}
-              value={content}
-              onChange={setContent}
-              placeholder="Your text goes here"
-              required
-            />
+            <JoditEditor ref={editor} value={content} onChange={setContent} />
             <span className="create-campaign-input-span"> Content Points</span>
           </Form.Item>
         </Form>

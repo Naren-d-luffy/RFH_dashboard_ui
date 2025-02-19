@@ -10,6 +10,7 @@ import { addNews } from "../../Features/NewsSlice";
 import { useDispatch } from "react-redux";
 import Loader from "../../Loader";
 import { Option } from "antd/es/mentions";
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const CreateNews = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -20,6 +21,12 @@ const CreateNews = ({ open, handleCancel }) => {
   const [backgroundColor, setBackgroundColor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
     setUploadedImage(file);
@@ -78,6 +85,26 @@ const CreateNews = ({ open, handleCancel }) => {
     setBackgroundColor("");
     handleCancel();
   };
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancelClick}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
   return (
     <>
       {isLoading && <Loader />}
@@ -85,7 +112,12 @@ const CreateNews = ({ open, handleCancel }) => {
         visible={open}
         title={<span className="create-campaign-modal-title">Create News</span>}
         onCancel={handleCancelClick}
-        width={680}
+        closeIcon={closeButtons}
+        width={isMaximized ? "98%" : 680}
+        style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+        bodyStyle={
+          isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+        }
         footer={[
           <Button
             key="back"
