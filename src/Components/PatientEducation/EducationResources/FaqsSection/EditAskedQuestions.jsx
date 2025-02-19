@@ -5,10 +5,16 @@ import TextArea from "antd/es/input/TextArea";
 import { Instance } from "../../../../AxiosConfig";
 import { editFaqs } from "../../../../Features/FaqsSlice";
 import { useDispatch } from "react-redux";
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const EditAskedQuestions = ({ open, handleCancel, faqsData }) => {
   const dispatch = useDispatch();
-
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
 
@@ -57,7 +63,26 @@ const EditAskedQuestions = ({ open, handleCancel, faqsData }) => {
     setAnswer("");
     setQuestion("");
   };
-
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancel}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
   return (
     <Modal
       open={open}
@@ -67,7 +92,12 @@ const EditAskedQuestions = ({ open, handleCancel, faqsData }) => {
         </span>
       }
       onCancel={handleCancel}
-      width={680}
+      closeIcon={closeButtons}
+      width={isMaximized ? "98%" : 680}
+      style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+      bodyStyle={
+        isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+      }
       footer={[
         <Button
           key="back"

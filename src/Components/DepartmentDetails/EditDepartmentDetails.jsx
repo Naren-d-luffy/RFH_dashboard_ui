@@ -53,6 +53,11 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
   };
 
   const handleUpdate = async () => {
+   
+    if (!title || !subtitle || !uploadedImage) {
+      message.error("Please fill in all required fields.");
+      return;
+    }
     setIsLoading(true);
     try {
       const requestData = new FormData();
@@ -172,14 +177,16 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
             </span>
           </Form.Item>
 
+
           <Form.Item>
             <JoditEditor
               ref={editor}
-              value={content}
-              onChange={setContent}
+              value={description}
+              onChange={setDescription}
               required
             />
             <span className="create-campaign-input-span">Descriptioin</span>
+
           </Form.Item>
 
           <Form.Item>
