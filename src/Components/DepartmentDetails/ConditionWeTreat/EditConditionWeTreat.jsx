@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -9,13 +9,20 @@ import { showSuccessMessage, validateImage } from "../../../globalConstant";
 import Loader from "../../../Loader";
 import { useDispatch } from "react-redux";
 import { editConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
+import JoditEditor from "jodit-react";
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const modules = {
   toolbar: [
     [{ font: [] }, { size: [] }],
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
     ["bold", "italic", "underline", "strike", "blockquote"],
-    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+    ],
     [{ script: "sub" }, { script: "super" }],
     [{ direction: "rtl" }],
     [{ color: [] }, { background: [] }],
@@ -35,6 +42,14 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+
+  const editor = useRef(null);
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
 
   useEffect(() => {
     if (open && conditionData) {
@@ -57,7 +72,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
   };
 
   const handleUpdate = async () => {
-    if (!title || !description || !thumbnailImage ) {
+    if (!title || !description || !thumbnailImage) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -90,6 +105,27 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
     }
   };
 
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancel}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
+
   return (
     <>
       {isLoading && <Loader />}
@@ -101,7 +137,12 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
           </span>
         }
         onCancel={handleCancel}
-        width={680}
+        closeIcon={closeButtons}
+        width={isMaximized ? "98%" : 680}
+        style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+        bodyStyle={
+          isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+        }
         footer={[
           <Button
             key="back"
@@ -181,12 +222,10 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
             </div>
           </div>
           <Form.Item>
-            <ReactQuill
-              theme="snow"
-              modules={modules}
+            <JoditEditor
+              ref={editor}
               value={content}
               onChange={setContent}
-              placeholder="Your text goes here"
               required
             />
             <span className="create-campaign-input-span">Content</span>
