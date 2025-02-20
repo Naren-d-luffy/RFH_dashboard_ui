@@ -93,6 +93,7 @@ const AddTechnology = ({ open, handleCancel }) => {
         setDescription("");
         setContent("");
         setThumbnailImage(null);
+        setPosition("")
       }
     } catch (error) {
       console.error(error);
@@ -109,6 +110,7 @@ const AddTechnology = ({ open, handleCancel }) => {
     setDescription("");
     setContent("");
     setThumbnailImage(null);
+    setPosition("")
     handleCancel();
   };
   const closeButtons = (
