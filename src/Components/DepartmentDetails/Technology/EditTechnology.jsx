@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Modal, Form, Input, Upload, message } from "antd";
+import { Button, Modal, Form, Input, Upload, message, Switch } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
 import { showSuccessMessage, validateImage } from "../../../globalConstant";
 import Loader from "../../../Loader";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { editTechnology } from "../../../Features/TechnologySlice";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
@@ -20,7 +20,8 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-
+  const [isOverview, setIsOverview] = useState(false);
+  const [position, setPosition] = useState("");
   const editor = useRef(null);
   const [isMaximized, setIsMaximized] = useState(false);
   const toggleMaximize = (e) => {
@@ -31,11 +32,13 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
   console.log("tech", technologyData);
   useEffect(() => {
     if (open && technologyData) {
-      setTitle(technologyData.heading || "");
-      setDescription(technologyData.subHeading || "");
-      setContent(technologyData.content || "");
-      setUploadedImage(technologyData.video || null);
-      setThumbnailImage(technologyData.thumbnail || null);
+      setTitle(technologyData?.heading || "");
+      setDescription(technologyData?.subHeading || "");
+      setContent(technologyData?.content || "");
+      setUploadedImage(technologyData?.video || null);
+      setThumbnailImage(technologyData?.thumbnail || null);
+      setIsOverview(technologyData?.isOverview);
+      setPosition(technologyData?.position);
     }
   }, [open, technologyData]);
 
@@ -49,24 +52,50 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
   const handleDeleteThumbnail = () => {
     setThumbnailImage(null);
   };
+  const technologyList = useSelector((state) => state.technology.technologies);
+  const maxAllowedPosition = technologyList.length + 1;
 
-  const handleUpdate = async () => {
-    if (!title || !description || !thumbnailImage) {
-      message.error("Please fill in all required fields.");
+  const handlePositionChange = (e) => {
+    const value = e.target.value;
+    if (value === "") {
+      setPosition("");
       return;
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue > 0 && numValue <= maxAllowedPosition) {
+      setPosition(numValue.toString());
+    } else if (numValue > maxAllowedPosition) {
+      message.error(`Position cannot be greater than ${maxAllowedPosition}`);
+    }
+  };
+  const handleUpdate = async () => {
+    if (isOverview) {
+      if (!title || !position) {
+        message.error(
+          "Please fill in all required fields (Title and Position)."
+        );
+        return;
+      }
+    } else {
+      if (!title || !description || !thumbnailImage || !position) {
+        message.error("Please fill in all required fields.");
+        return;
+      }
     }
 
     setIsLoading(true);
     try {
       const formData = new FormData();
       formData.append("heading", title);
-      formData.append("subHeading", description);
-      formData.append("content", content);
+      formData.append("position", position);
+      formData.append("isOverview", isOverview);
 
-      if (thumbnailImage && typeof thumbnailImage !== "string") {
+      // Only append these fields if not in overview mode
+      if (!isOverview) {
+        formData.append("subHeading", description);
         formData.append("thumbnail", thumbnailImage);
+        formData.append("content", content);
       }
-
       const response = await Instance.put(
         `/depcat/technology/${technologyData._id}`,
         formData
@@ -139,6 +168,14 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
         ]}
       >
         <Form layout="vertical" className="mt-4">
+          <div className="flex justify-between items-center mb-4">
+            <Switch
+              checked={isOverview}
+              onChange={(checked) => setIsOverview(checked)}
+              className="gastro-switch-button"
+            />
+            <span className="mx-2">Overview</span>
+          </div>
           <Form.Item>
             <Input
               value={title}
@@ -150,70 +187,93 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
               <span style={{ color: "red" }}>*</span> Title
             </span>
           </Form.Item>
+
           <Form.Item>
-            <TextArea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Description"
+            <Input
+              value={position}
+              onChange={handlePositionChange}
+              placeholder="Position (positive numbers only)"
               required
+              type="number"
+              min="1"
             />
             <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span> Description
-            </span>{" "}
+              <span style={{ color: "red" }}>*</span> Position
+            </span>
           </Form.Item>
-          <div className="row">
-            <div className="col-lg-12">
+
+          {!isOverview && (
+            <>
               <Form.Item>
-                <Upload
-                  listType="picture"
-                  showUploadList={false}
-                  onChange={handleUploadThumbnail}
-                  className="create-campaign-upload"
-                >
-                  <p className="create-campaign-ant-upload-text">
-                    Drop files here or click to upload
-                  </p>
-                  <IoCloudUploadOutline className="image-upload-icon" />{" "}
-                  <span style={{ color: "#727880" }}>Upload Thumbnail</span>
-                </Upload>
-                {thumbnailImage && (
-                  <div className="uploaded-image-preview">
-                    <img
-                      src={
-                        typeof thumbnailImage === "string"
-                          ? thumbnailImage
-                          : URL.createObjectURL(thumbnailImage)
-                      }
-                      alt="Thumbnail"
-                      style={{
-                        width: "200px",
-                        height: "auto",
-                        marginTop: "10px",
-                      }}
-                    />
-                    <Button
-                      onClick={handleDeleteThumbnail}
-                      className="model-image-upload-delete-icon"
-                    >
-                      <RiDeleteBin5Line />
-                    </Button>
-                  </div>
-                )}
+                <TextArea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Description"
+                  required
+                />
                 <span className="create-campaign-input-span">
-                  <span style={{ color: "red" }}>*</span> Thumbnail Image
+                  <span style={{ color: "red" }}>*</span> Description
                 </span>
               </Form.Item>
-            </div>
-          </div>
-          <Form.Item>
-            <JoditEditor
-              ref={editor}
-              value={content}
-              onChange={setContent}
-              required
-            />
-            <span className="create-campaign-input-span">Content</span>
-          </Form.Item>
+
+              <div className="row">
+                <div className="col-lg-12">
+                  <Form.Item>
+                    <Upload
+                      listType="picture"
+                      showUploadList={false}
+                      onChange={handleUploadThumbnail}
+                      className="create-campaign-upload"
+                    >
+                      <p className="create-campaign-ant-upload-text">
+                        Drop files here or click to upload
+                      </p>
+                      <IoCloudUploadOutline className="image-upload-icon" />{" "}
+                      <span style={{ color: "#727880" }}>Upload Thumbnail</span>
+                    </Upload>
+                    {thumbnailImage && (
+                      <div className="uploaded-image-preview">
+                        <img
+                          src={
+                            typeof thumbnailImage === "string"
+                              ? thumbnailImage
+                              : thumbnailImage
+                              ? URL.createObjectURL(thumbnailImage)
+                              : ""
+                          }
+                          alt="Thumbnail"
+                          style={{
+                            width: "200px",
+                            height: "auto",
+                            marginTop: "10px",
+                          }}
+                        />
+
+                        <Button
+                          onClick={handleDeleteThumbnail}
+                          className="model-image-upload-delete-icon"
+                        >
+                          <RiDeleteBin5Line />
+                        </Button>
+                      </div>
+                    )}
+                    <span className="create-campaign-input-span">
+                      <span style={{ color: "red" }}>*</span> Thumbnail Image
+                    </span>
+                  </Form.Item>
+                </div>
+              </div>
+
+              <Form.Item>
+                <JoditEditor
+                  ref={editor}
+                  value={content}
+                  onChange={(newContent) => setContent(newContent)}
+                />
+                <span className="create-campaign-input-span">Content</span>
+              </Form.Item>
+            </>
+          )}
         </Form>
       </Modal>
     </>
