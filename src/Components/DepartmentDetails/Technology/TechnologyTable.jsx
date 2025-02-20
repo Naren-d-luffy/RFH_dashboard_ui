@@ -16,7 +16,20 @@ import {
   deleteTechnology,
   setTechnology,
 } from "../../../Features/TechnologySlice";
-
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 const TechnologyTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -27,7 +40,9 @@ const TechnologyTable = () => {
   const [selectedReadingMaterial, setSelectedReadingMaterial] = useState(null);
 
   const technologyList = useSelector((state) => state.technology.technologies);
-
+  const tableData = technologyList;
+  console.log(tableData);
+  const [items, setItems] = useState([]); // Local state for draggable items
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
@@ -73,44 +88,145 @@ const TechnologyTable = () => {
       },
     });
   };
+  const fetchTechnologyList = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const response = await Instance.get("/depcat/technology");
+      // Sort the data by position before setting it
+      const sortedData = response.data.sort((a, b) => a.position - b.position);
+      dispatch(setTechnology(sortedData));
+      setItems(sortedData);
+      setTotalRows(sortedData.length || 0);
+    } catch (error) {
+      console.error("Error fetching technology list:", error);
+      message.error("Failed to fetch technology list");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dispatch]);
 
-  const fetchTechnologyList = useCallback(
-    async (page) => {
-      setIsLoading(true);
-      try {
-        const response = await Instance.get(`/depcat/technology`, {
-          params: { page, limit: itemsPerPage },
-        });
-        dispatch(setTechnology(response.data));
-        setTotalRows(response.data.total || 0);
-      } catch (error) {
-        console.error("Error fetching technology list:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [dispatch]
-  );
+
 
   useEffect(() => {
     fetchTechnologyList(currentPage);
   }, [currentPage, fetchTechnologyList]);
 
-  const dataSource = useMemo(() => {
-    if (!technologyList) return [];
-    const sortedTechnologies = [...technologyList].reverse();
-  
-    if (searchText.trim() === "") return sortedTechnologies;
-  
-    return sortedTechnologies.filter((technology) =>
+  useEffect(() => {
+    if (technologyList && technologyList.length > 0) {
+      setItems(
+        technologyList.map((item, index) => ({
+          ...item,
+          position: index + 1,
+        }))
+      );
+    }
+  }, [technologyList]);
+
+  const filteredItems = useMemo(() => {
+    if (!items.length) return [];
+    if (searchText.trim() === "") return items;
+
+    return items.filter((technology) =>
       `${technology.heading} ${technology.subHeading}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
-  }, [searchText, technologyList]);
-  
+  }, [items, searchText]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // 8px movement required before drag starts
+      },
+    })
+  );
+
+  const onDragEnd = useCallback(async (event) => {
+    const { active, over } = event;
+    
+    if (!over || active.id === over.id) {
+      return;
+    }
+
+    const oldIndex = items.findIndex(item => item._id === active.id);
+    const newIndex = items.findIndex(item => item._id === over.id);
+    
+    // Create new array with updated positions
+    const newItems = arrayMove([...items], oldIndex, newIndex).map((item, index) => ({
+      ...item,
+      position: index + 1
+    }));
+
+    // Update local state immediately
+    setItems(newItems);
+
+    try {
+      // Prepare the payload with all items and their new positions
+      const updatePayload = newItems.map(item => ({
+        _id: item._id,
+        position: item.position
+      }));
+
+      // Make the API call
+      const response = await Instance.patch("/depcat/technology", {
+        technologies: updatePayload
+      });
+
+      if (response.status === 200) {
+        // Update Redux store with the new order
+        dispatch(setTechnology(newItems));
+        message.success("Order updated successfully");
+        
+        // Fetch the updated list to ensure consistency
+        await fetchTechnologyList();
+      }
+    } catch (error) {
+      console.error("Error updating order:", error);
+      message.error("Failed to update order");
+      // Reset to original order
+      await fetchTechnologyList();
+    }
+  }, [items, dispatch, fetchTechnologyList]);
+  const SortableRow = ({ children, ...props }) => {
+    const {
+      attributes,
+      listeners,
+      setNodeRef,
+      transform,
+      transition,
+      isDragging,
+    } = useSortable({
+      id: props["data-row-key"],
+    });
+
+    const style = {
+      ...props.style,
+      transform: CSS.Transform.toString(transform),
+      transition,
+      cursor: isDragging ? "grabbing" : "grab",
+      backgroundColor: isDragging ? "#fafafa" : "transparent",
+      zIndex: isDragging ? 1 : 0,
+    };
+
+    return (
+      <tr
+        {...props}
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+      >
+        {children}
+      </tr>
+    );
+  };
 
   const columns = [
+    {
+      title: "Sl No",
+      dataIndex: "position",
+      className: "campaign-performance-table-column",
+    },
     {
       title: "Title",
       dataIndex: "heading",
@@ -169,27 +285,7 @@ const TechnologyTable = () => {
     },
   ];
 
-  // const items = [
-  //   {
-  //     label: "Last Day",
-  //     key: "1",
-  //   },
-  //   {
-  //     label: "Last week",
-  //     key: "2",
-  //   },
-  //   {
-  //     label: "Last Month",
-  //     key: "3",
-  //   },
-  // ];
 
-  // const handleMenuClick = ({ key }) => {};
-
-  // const menuProps = {
-  //   items,
-  //   onClick: handleMenuClick,
-  // };
 
   return (
     <div className="container mt-1">
@@ -224,18 +320,9 @@ const TechnologyTable = () => {
                 />
               </div>
 
-              {/* <div className="d-flex gap-2">
-                <Dropdown menu={menuProps}>
-                  <Button>
-                    <Space>
-                      Sort By
-                      <BiSortAlt2 />
-                    </Space>
-                  </Button>
-                </Dropdown>
-              </div> */}
+              
             </div>
-            <div className="mt-3">
+            {/* <div className="mt-3">
               <Table
                 columns={columns}
                 dataSource={dataSource}
@@ -249,6 +336,38 @@ const TechnologyTable = () => {
                 className="campaign-performance-table overflow-y-auto"
                 bordered={false}
               />
+            </div> */}
+
+            <div className="mt-3">
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={onDragEnd}
+              >
+                <SortableContext
+                  items={filteredItems.map((item) => item._id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <Table
+                    components={{
+                      body: {
+                        row: SortableRow,
+                      },
+                    }}
+                    rowKey="_id"
+                    columns={columns}
+                    dataSource={filteredItems}
+                    pagination={{
+                      current: currentPage,
+                      pageSize: itemsPerPage,
+                      total: totalRows,
+                      onChange: (page) => setCurrentPage(page),
+                      showSizeChanger: false,
+                    }}
+                    className="campaign-performance-table"
+                  />
+                </SortableContext>
+              </DndContext>
             </div>
           </div>
           <div className="d-flex justify-content-start mt-2">
