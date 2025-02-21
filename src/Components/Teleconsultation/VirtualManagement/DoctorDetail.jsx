@@ -1,30 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Form, Input, Row, Col, Button, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useNavigate, useLocation } from "react-router-dom";
 import { showSuccessMessage } from "../../../globalConstant";
 import { Instance } from "../../../AxiosConfig";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-const modules = {
-  toolbar: [
-    [{ font: [] }, { size: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
-    [{ script: "sub" }, { script: "super" }],
-    [{ direction: "rtl" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link", "image", "formula"],
-    ["clean"],
-  ],
-};
+import JoditEditor from "jodit-react";
 const DoctorDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const doctorData = location.state || null;
+  const editor = useRef(null);
 
   const [uploadedFile, setUploadedFile] = useState(null);
   const [formData, setFormData] = useState({
@@ -38,6 +24,7 @@ const DoctorDetail = () => {
     contactDetails: "",
     about: "",
     AreasOfExpertise: [],
+    subSpeciality: "",
   });
 
   useEffect(() => {
@@ -63,28 +50,35 @@ const DoctorDetail = () => {
   };
 
   const handleArrayInputChange = (field, value) => {
-    const arrayValue = value.split(",").map((item) => item.trim());
+    const arrayValue = value.split(";").map((item) => item.trim());
     handleInputChange(field, arrayValue);
   };
 
   const handleSave = async () => {
     if (
-      !uploadedFile
+      !formData.department ||
+      !formData.name ||
+      !formData.qualifications.length ||
+      formData.qualifications.some((q) => q.trim() === "")||
+      !formData.contactDetails ||
+      !formData.position||
+      !formData.experience
     ) {
       message.error("Please fill in all required fields.");
       return;
     }
+    
     const data = new FormData();
     if (uploadedFile) {
       data.append("profile", uploadedFile);
     } else if (formData.profile && typeof formData.profile === "string") {
       data.append("profile", formData.profile);
     }
-    
+
     Object.keys(formData).forEach((key) => {
-      if (key !== "profile") { 
+      if (key !== "profile") {
         if (Array.isArray(formData[key])) {
-          data.append(key, JSON.stringify(formData[key])); 
+          data.append(key, JSON.stringify(formData[key]));
         } else {
           data.append(key, formData[key]);
         }
@@ -131,7 +125,10 @@ const DoctorDetail = () => {
                   value={formData.name.replace(/^Dr\.\s*/, "") || ""}
                   onChange={(e) => handleInputChange("name", e.target.value)}
                 />
-                <span className="create-campaign-input-span">Full Name</span>
+                <span className="create-campaign-input-span">
+                  {" "}
+                  <span style={{ color: "red" }}>*</span> Full Name
+                </span>
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -144,7 +141,10 @@ const DoctorDetail = () => {
                     handleInputChange("position", e.target.value)
                   }
                 />
-                <span className="create-campaign-input-span">Position</span>
+                <span className="create-campaign-input-span">
+                  {" "}
+                  <span style={{ color: "red" }}>*</span> Position
+                </span>
               </Form.Item>
             </Col>
           </Row>
@@ -160,33 +160,48 @@ const DoctorDetail = () => {
                     handleInputChange("department", e.target.value)
                   }
                 />
-                <span className="create-campaign-input-span">Department</span>
+                <span className="create-campaign-input-span">
+                  {" "}
+                  <span style={{ color: "red" }}>*</span> Department
+                </span>
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item>
                 <Input
                   className="create-campaign-input"
-                  placeholder="Enter Qualifications (comma-separated)"
-                  value={formData.qualifications?.join(", ") || ""}
+                  placeholder="Enter Sub Specialty"
+                  value={formData.subSpeciality || ""}
+                  onChange={(e) =>
+                    handleInputChange("subSpeciality", e.target.value)
+                  }
+                />
+                <span className="create-campaign-input-span">
+                  Sub Speciality
+                </span>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item>
+                <Input
+                  className="create-campaign-input"
+                  placeholder="Enter Qualifications (separated by semi-colon)"
+                  value={formData.qualifications?.join(";") || ""}
                   onChange={(e) =>
                     handleArrayInputChange("qualifications", e.target.value)
                   }
                 />
                 <span className="create-campaign-input-span">
-                  Qualifications
+                  <span style={{ color: "red" }}>*</span> Qualifications
                 </span>
               </Form.Item>
             </Col>
-          </Row>
-
-          <Row gutter={24}>
             <Col span={12}>
               <Form.Item>
                 <Input
                   className="create-campaign-input"
-                  placeholder="Enter Fellowships (comma-separated)"
-                  value={formData.fellowships?.join(", ") || ""}
+                  placeholder="Enter Fellowships (separated by semi-colon)"
+                  value={formData.fellowships?.join("; ") || ""}
                   onChange={(e) =>
                     handleArrayInputChange("fellowships", e.target.value)
                   }
@@ -198,8 +213,8 @@ const DoctorDetail = () => {
               <Form.Item>
                 <Input
                   className="create-campaign-input"
-                  placeholder="Enter Awards (comma-separated)"
-                  value={formData.awards?.join(", ") || ""}
+                  placeholder="Enter Awards (separated by semi-colon)"
+                  value={formData.awards?.join("; ") || ""}
                   onChange={(e) =>
                     handleArrayInputChange("awards", e.target.value)
                   }
@@ -207,9 +222,6 @@ const DoctorDetail = () => {
                 <span className="create-campaign-input-span">Awards</span>
               </Form.Item>
             </Col>
-          </Row>
-
-          <Row gutter={24}>
             <Col span={12}>
               <Form.Item>
                 <Input
@@ -220,7 +232,7 @@ const DoctorDetail = () => {
                     handleInputChange("experience", e.target.value)
                   }
                 />
-                <span className="create-campaign-input-span">Experience</span>
+                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Experience</span>
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -234,35 +246,16 @@ const DoctorDetail = () => {
                   }
                 />
                 <span className="create-campaign-input-span">
-                  Contact Details
+                  <span style={{ color: "red" }}>*</span> Contact Details
                 </span>
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={24}>
-            <Col span={12}>
-              <Form.Item>
-                <div className="quill-editor">
-                  <ReactQuill
-                    theme="snow"
-                    modules={modules}
-                    placeholder="Enter About"
-                    value={formData.about || ""}
-                    onChange={(value) => handleInputChange("about", value)}
-                    required
-                  />
-                </div>
-
-                <span className="create-campaign-input-span">About</span>
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item>
                 <Input
                   className="create-campaign-input"
-                  placeholder="Enter Areas of Expertise (comma-separated)"
-                  value={formData.AreasOfExpertise?.join(", ") || ""}
+                  placeholder="Enter Areas of Expertise (separated by semi-colon)"
+                  value={formData.AreasOfExpertise?.join(";") || ""}
                   onChange={(e) =>
                     handleArrayInputChange("AreasOfExpertise", e.target.value)
                   }
@@ -270,6 +263,22 @@ const DoctorDetail = () => {
                 <span className="create-campaign-input-span">
                   Areas of Expertise
                 </span>
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={24}>
+            <Col span={24}>
+              <Form.Item>
+                <div className="quill-editor">
+                  <JoditEditor
+                    ref={editor}
+                    value={formData.about || ""}
+                    onChange={(value) => handleInputChange("about", value)}
+                  />
+                </div>
+
+                <span className="create-campaign-input-span">About</span>
               </Form.Item>
             </Col>
           </Row>

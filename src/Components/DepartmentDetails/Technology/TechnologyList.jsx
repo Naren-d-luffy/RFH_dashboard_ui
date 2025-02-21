@@ -229,7 +229,10 @@ export const TechnologyList = () => {
             >
               {technologyList && Object.keys(technologyList).length > 0 ? (
                 Object.entries(technologyList)
-                  .filter(([key]) => key !== "status")
+                  .filter(
+                    ([key, technology]) =>
+                      key !== "status" && !technology.isOverview
+                  ) // Exclude items with isOverview: true
                   .reverse()
                   .map(([key, technology]) => renderTechnologyCard(technology))
               ) : (

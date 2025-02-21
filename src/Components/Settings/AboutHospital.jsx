@@ -123,27 +123,27 @@ const AboutHospital = () => {
             <div>
               <div className="d-flex mt-4">
                 <h4 className="hospital-title-heading">Hospital Name</h4>
-                <p className="hospital-title-paragraph">: {hospital.name}</p>
+                <p className="hospital-title-paragraph">: {hospital?.name}</p>
               </div>
               <div className="d-flex ">
                 <h4 className="hospital-title-heading">Hospital Short Title</h4>
                 <p className="hospital-title-paragraph">
-                  : {hospital.short_title}
+                  : {hospital?.short_title}
                 </p>
               </div>
               <div className="d-flex ">
                 <h4 className="hospital-title-heading">Hospital Tag</h4>
-                <p className="hospital-title-paragraph">: {hospital.tag}</p>
+                <p className="hospital-title-paragraph">: {hospital?.tag}</p>
               </div>
               <div className="d-flex ">
                 <h4 className="hospital-title-heading">
                   Hospital Established year
                 </h4>
-                <p className="hospital-title-paragraph">: {hospital.year}</p>
+                <p className="hospital-title-paragraph">: {hospital?.year}</p>
               </div>
             </div>
             <div className="settings-profile-icon-section">
-              {hospital.headerImage && (
+              {hospital?.headerImage && (
                 <img
                   src={hospital.headerImage}
                   alt={hospital.name}
@@ -162,16 +162,16 @@ const AboutHospital = () => {
           <h3 style={{ color: "var(--primary-green)" }}>Overview</h3>
           <div className="hospital-profile-description">
             <h4>Short Description</h4>
-            <p>{hospital.short_description}</p>
+            <p>{hospital?.short_description}</p>
           </div>
           <div className="hospital-profile-description">
             <h4> Description</h4>
-            <p>{hospital.description}</p>
+            <p>{hospital?.description}</p>
           </div>
           <hr style={{ color: "var(--black-color)" }} />
           <h3 style={{ color: "var(--primary-green)" }}>History</h3>
           <div className="hospital-profile-description">
-            <p>{hospital.history}</p>
+            <p>{hospital?.history}</p>
           </div>
         </div>
 

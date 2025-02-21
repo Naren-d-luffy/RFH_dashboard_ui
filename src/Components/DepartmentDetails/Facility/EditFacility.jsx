@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -9,13 +9,20 @@ import { showSuccessMessage, validateImage } from "../../../globalConstant";
 import Loader from "../../../Loader";
 import { useDispatch } from "react-redux";
 import { editFacility } from "../../../Features/FacilitySlice";
+import JoditEditor from "jodit-react";
+import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const modules = {
   toolbar: [
     [{ font: [] }, { size: [] }],
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
     ["bold", "italic", "underline", "strike", "blockquote"],
-    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }], 
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+    ],
     [{ script: "sub" }, { script: "super" }],
     [{ direction: "rtl" }],
     [{ color: [] }, { background: [] }],
@@ -37,7 +44,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
   const [videoSubHeading, setVideoSubHeading] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-console.log("FacilityData",facilityData)
+  console.log("FacilityData", facilityData);
   useEffect(() => {
     if (open && facilityData) {
       setTitle(facilityData.heading || "");
@@ -74,6 +81,14 @@ console.log("FacilityData",facilityData)
     setUploadedImage(null);
   };
 
+  const editor = useRef(null);
+  const [isMaximized, setIsMaximized] = useState(false);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
+
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
     if (!validateImage(file)) return false;
@@ -85,21 +100,21 @@ console.log("FacilityData",facilityData)
   };
 
   const handleUpdate = async () => {
-    if (
-      !title ||
-      !thumbnailImage 
-    ) {
+    if (!title || !thumbnailImage) {
       message.error("Please fill in all required fields.");
       return;
     }
-    const isAnyVideoFieldFilled = videoHeading || videoSubHeading || uploadedImage;
-    const areAllVideoFieldsFilled = videoHeading && videoSubHeading && uploadedImage;
-  
+    const isAnyVideoFieldFilled =
+      videoHeading || videoSubHeading || uploadedImage;
+    const areAllVideoFieldsFilled =
+      videoHeading && videoSubHeading && uploadedImage;
+
     if (isAnyVideoFieldFilled && !areAllVideoFieldsFilled) {
-      message.error("If you provide a Video Heading, Video Subheading, or Upload a Video, then all three must be filled.");
+      message.error(
+        "If you provide a Video Heading, Video Subheading, or Upload a Video, then all three must be filled."
+      );
       return;
     }
-  
 
     setIsLoading(true);
     try {
@@ -134,18 +149,42 @@ console.log("FacilityData",facilityData)
     }
   };
 
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancel}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
+
   return (
     <>
       {isLoading && <Loader />}
       <Modal
         visible={open}
         title={
-          <span className="create-campaign-modal-title">
-            Edit Facility
-          </span>
+          <span className="create-campaign-modal-title">Edit Facility</span>
         }
         onCancel={handleCancel}
-        width={680}
+        closeIcon={closeButtons}
+        width={isMaximized ? "98%" : 680}
+        style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
+        bodyStyle={
+          isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
+        }
         footer={[
           <Button
             key="back"
@@ -183,9 +222,7 @@ console.log("FacilityData",facilityData)
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span">
-             Description
-            </span>
+            <span className="create-campaign-input-span">Description</span>
           </Form.Item>
           <div className="row">
             <div className="col-lg-6">
@@ -267,24 +304,18 @@ console.log("FacilityData",facilityData)
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span">
-                  Upload video
-                </span>
+                <span className="create-campaign-input-span">Upload video</span>
               </Form.Item>
             </div>
           </div>
           <Form.Item>
-            <ReactQuill
-              theme="snow"
-              modules={modules}
+            <JoditEditor
+              ref={editor}
               value={content}
               onChange={setContent}
-              placeholder="Your text goes here"
-              
+              required
             />
-            <span className="create-campaign-input-span">
-              Content
-            </span>
+            <span className="create-campaign-input-span">Content</span>
           </Form.Item>
           <Form.Item>
             <Input
@@ -293,9 +324,7 @@ console.log("FacilityData",facilityData)
               placeholder="Video Heading"
               required
             />
-            <span className="create-campaign-input-span">
-               Video Heading
-            </span>
+            <span className="create-campaign-input-span">Video Heading</span>
           </Form.Item>
           <Form.Item>
             <Input
@@ -304,9 +333,7 @@ console.log("FacilityData",facilityData)
               placeholder="Video Subheading"
               required
             />
-            <span className="create-campaign-input-span">
-               Video Subheading
-            </span>
+            <span className="create-campaign-input-span">Video Subheading</span>
           </Form.Item>
         </Form>
       </Modal>

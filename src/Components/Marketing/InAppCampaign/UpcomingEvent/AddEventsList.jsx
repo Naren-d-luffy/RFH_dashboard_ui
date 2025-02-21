@@ -98,7 +98,9 @@ const AddEventsList = ({ open, handleCancel }) => {
       setIsLoading(false);
     }
   };
-  const handleCancelClick = () => {
+  const handleCancelClick = (e) => {
+    e.preventDefault(); // Prevent any form submission
+    e.stopPropagation(); // Stop event bubbling
     setTitle("");
     setDescription("");
     // setLink("");
