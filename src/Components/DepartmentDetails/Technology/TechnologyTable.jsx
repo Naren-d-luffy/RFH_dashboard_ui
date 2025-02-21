@@ -113,14 +113,14 @@ const TechnologyTable = () => {
 
   useEffect(() => {
     if (technologyList && technologyList.length > 0) {
-      setItems(
-        technologyList.map((item, index) => ({
-          ...item,
-          position: index + 1,
-        }))
-      );
+      const updatedItems = technologyList.map((item, index) => ({
+        ...item,
+        position: index + 1,
+      }));
+      setItems(updatedItems);
     }
   }, [technologyList]);
+
 
   const filteredItems = useMemo(() => {
     if (!items.length) return [];
@@ -285,6 +285,15 @@ const TechnologyTable = () => {
     },
   ];
 
+  const handleTechnologyAdded = useCallback(async (newTechnology) => {
+    // Fetch the complete list after adding new technology
+    await fetchTechnologyList();
+    
+    // Calculate the current page based on the new technology's position
+    const newPosition = newTechnology.position;
+    const newPage = Math.ceil(newPosition / itemsPerPage);
+    setCurrentPage(newPage);
+  }, [fetchTechnologyList, itemsPerPage]);
 
 
   return (
@@ -400,11 +409,12 @@ const TechnologyTable = () => {
           </div>
         </div>
       )}
-      <AddTechnology open={isModalOpen} handleCancel={handleCancel} />
+      <AddTechnology open={isModalOpen} handleCancel={handleCancel}  onTechnologyAdded={handleTechnologyAdded}  />
       <EditTechnology
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
         technologyData={selectedFacility}
+        onTechnologyAdded={handleTechnologyAdded}
       />
       <ViewTechnology
         open={isViewModalOpen}

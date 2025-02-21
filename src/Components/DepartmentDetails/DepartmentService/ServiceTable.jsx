@@ -44,7 +44,7 @@ const ServiceTable = () => {
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
-  const totalRows = servicesList?.length || 0;
+  const [totalRows, setTotalRows] = useState(0);
 
   const navigate = useNavigate();
 
@@ -104,10 +104,15 @@ const ServiceTable = () => {
   const fetchServiceList = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await Instance.get("depcat/service");
-      dispatch(setService(response.data));
+      const response = await Instance.get("/depcat/service");
+      // Sort the data by position before setting it
+      const sortedData = response.data.sort((a, b) => a.position - b.position);
+      dispatch(setService(sortedData));
+      setItems(sortedData);
+      setTotalRows(sortedData.length || 0);
     } catch (error) {
-      console.error("Error fetching Services:", error);
+      console.error("Error fetching service list:", error);
+      message.error("Failed to fetch service list");
     } finally {
       setIsLoading(false);
     }
@@ -119,12 +124,11 @@ const ServiceTable = () => {
 
   useEffect(() => {
     if (servicesList && servicesList.length > 0) {
-      setItems(
-        servicesList.map((item, index) => ({
-          ...item,
-          position: index + 1,
-        }))
-      );
+      const updatedItems = servicesList.map((item, index) => ({
+        ...item,
+        position: index + 1,
+      }));
+      setItems(updatedItems);
     }
   }, [servicesList]);
 
@@ -183,6 +187,7 @@ const ServiceTable = () => {
 
         if (response.status === 200) {
           // Update Redux store with the new order
+          // console.log("drag", response);
           dispatch(setService(newItems));
           message.success("Order updated successfully");
 
@@ -232,17 +237,25 @@ const ServiceTable = () => {
     );
   };
 
-  const dataSource = useMemo(() => {
-    const services = [...(servicesList || [])].reverse();
-    if (searchText.trim() === "") return services;
-    return services.filter((service) =>
-      `${service.heading} ${service.subHeading} ${service.content}`
-        .toLowerCase()
-        .includes(searchText.toLowerCase())
-    );
-  }, [searchText, servicesList]);
+  const handleServiceAdded = useCallback(
+    async (newService) => {
+      // Fetch the complete list after adding new technology
+      await fetchServiceList();
+
+      // Calculate the current page based on the new technology's position
+      const newPosition = newService.position;
+      const newPage = Math.ceil(newPosition / itemsPerPage);
+      setCurrentPage(newPage);
+    },
+    [fetchServiceList, itemsPerPage]
+  );
 
   const columns = [
+    {
+      title: "Sl No",
+      dataIndex: "position",
+      className: "campaign-performance-table-column",
+    },
     {
       title: "Heading",
       dataIndex: "heading",
@@ -299,28 +312,6 @@ const ServiceTable = () => {
     },
   ];
 
-  // const items = [
-  //   {
-  //     label: "Last Day",
-  //     key: "1",
-  //   },
-  //   {
-  //     label: "Last week",
-  //     key: "2",
-  //   },
-  //   {
-  //     label: "Last Month",
-  //     key: "3",
-  //   },
-  // ];
-
-  // const handleMenuClick = ({ key }) => {};
-
-  // const menuProps = {
-  //   items,
-  //   onClick: handleMenuClick,
-  // };
-
   return (
     <div className="container mt-1">
       {isLoading ? (
@@ -353,17 +344,6 @@ const ServiceTable = () => {
                   onChange={(e) => setSearchText(e.target.value)}
                 />
               </div>
-
-              {/* <div className="d-flex gap-2">
-                <Dropdown menu={menuProps}>
-                  <Button>
-                    <Space>
-                      Sort By
-                      <BiSortAlt2 />
-                    </Space>
-                  </Button>
-                </Dropdown>
-              </div> */}
             </div>
 
             <div className="mt-3">
@@ -384,7 +364,7 @@ const ServiceTable = () => {
                     }}
                     rowKey="_id"
                     columns={columns}
-                    dataSource={dataSource}
+                    dataSource={filteredItems}
                     pagination={{
                       current: currentPage,
                       pageSize: itemsPerPage,
@@ -392,8 +372,7 @@ const ServiceTable = () => {
                       onChange: (page) => setCurrentPage(page),
                       showSizeChanger: false,
                     }}
-                    className="campaign-performance-table overflow-y-auto"
-                    bordered={false}
+                    className="campaign-performance-table"
                   />
                 </SortableContext>
               </DndContext>
@@ -433,11 +412,13 @@ const ServiceTable = () => {
         open={modals.service}
         handleCancel={() => toggleModal("service")}
         serviceData={selectedService}
+        onServiceAdded={handleServiceAdded}
       />
       <EditService
         open={modals.edit}
         handleCancel={() => toggleModal("edit")}
         serviceData={selectedService}
+        onServiceAdded={handleServiceAdded}
       />
       <ViewService
         open={modals.view}

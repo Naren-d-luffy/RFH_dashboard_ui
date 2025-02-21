@@ -12,7 +12,7 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
-const AddTechnology = ({ open, handleCancel }) => {
+const AddTechnology = ({ open, handleCancel ,onTechnologyAdded }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -89,6 +89,9 @@ const AddTechnology = ({ open, handleCancel }) => {
         handleCancel();
         showSuccessMessage("Technology added successfully!");
         dispatch(addTechnology(response.data));
+        if (onTechnologyAdded) {
+          await onTechnologyAdded(response.data);
+        }
         setTitle("");
         setDescription("");
         setContent("");

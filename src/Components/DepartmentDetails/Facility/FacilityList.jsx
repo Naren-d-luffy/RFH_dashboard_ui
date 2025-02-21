@@ -26,6 +26,7 @@ export const FacilityList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const facilities = useSelector((state) => state.facility.facilities);
+  console.log("facil",facilities)
   const [, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
