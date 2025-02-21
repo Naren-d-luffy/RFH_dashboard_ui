@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";

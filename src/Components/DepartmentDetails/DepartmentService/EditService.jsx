@@ -11,7 +11,7 @@ import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
-const EditService = ({ open, handleCancel, serviceData }) => {
+const EditService = ({ open, handleCancel, serviceData,onServiceAdded }) => {
   const [heading, setHeading] = useState("");
   const [subHeading, setSubHeading] = useState("");
   const [content, setContent] = useState("");
@@ -77,6 +77,9 @@ const EditService = ({ open, handleCancel, serviceData }) => {
 
         showSuccessMessage("Service edited successfully!");
         dispatch(editService(response.data));
+        if (onServiceAdded) {
+          await onServiceAdded(response.data);
+        }
         setHeading("");
         setSubHeading("");
         setContent("");
