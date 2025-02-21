@@ -14,6 +14,20 @@ import AddService from "./AddService";
 import EditService from "./EditService";
 import ViewService from "./ViewService";
 import { deleteService, setService } from "../../../Features/ServiceSlice";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 const ServiceTable = () => {
   const [modals, setModals] = useState({
@@ -25,7 +39,7 @@ const ServiceTable = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [items, setItems] = useState([]);
   const servicesList = useSelector((state) => state.service.services);
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
@@ -77,7 +91,11 @@ const ServiceTable = () => {
           }
         } catch (error) {
           console.error("Error deleting service:", error);
-          message.error(`${error?.response?.data?.message || "An unexpected error occurred"}`);
+          message.error(
+            `${
+              error?.response?.data?.message || "An unexpected error occurred"
+            }`
+          );
         }
       },
     });
@@ -96,8 +114,123 @@ const ServiceTable = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    fetchServiceList();
-  }, [fetchServiceList]);
+    fetchServiceList(currentPage);
+  }, [currentPage, fetchServiceList]);
+
+  useEffect(() => {
+    if (servicesList && servicesList.length > 0) {
+      setItems(
+        servicesList.map((item, index) => ({
+          ...item,
+          position: index + 1,
+        }))
+      );
+    }
+  }, [servicesList]);
+
+  const filteredItems = useMemo(() => {
+    if (!items.length) return [];
+    if (searchText.trim() === "") return items;
+
+    return items.filter((service) =>
+      `${service.heading} ${service.subHeading}`
+        .toLowerCase()
+        .includes(searchText.toLowerCase())
+    );
+  }, [items, searchText]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // 8px movement required before drag starts
+      },
+    })
+  );
+
+  const onDragEnd = useCallback(
+    async (event) => {
+      const { active, over } = event;
+
+      if (!over || active.id === over.id) {
+        return;
+      }
+
+      const oldIndex = items.findIndex((item) => item._id === active.id);
+      const newIndex = items.findIndex((item) => item._id === over.id);
+
+      // Create new array with updated positions
+      const newItems = arrayMove([...items], oldIndex, newIndex).map(
+        (item, index) => ({
+          ...item,
+          position: index + 1,
+        })
+      );
+
+      // Update local state immediately
+      setItems(newItems);
+
+      try {
+        // Prepare the payload with all items and their new positions
+        const updatePayload = newItems.map((item) => ({
+          _id: item._id,
+          position: item.position,
+        }));
+
+        // Make the API call
+        const response = await Instance.patch("/depcat/service", {
+          services: updatePayload,
+        });
+
+        if (response.status === 200) {
+          // Update Redux store with the new order
+          dispatch(setService(newItems));
+          message.success("Order updated successfully");
+
+          // Fetch the updated list to ensure consistency
+          await fetchServiceList();
+        }
+      } catch (error) {
+        console.error("Error updating order:", error);
+        message.error("Failed to update order");
+        // Reset to original order
+        await fetchServiceList();
+      }
+    },
+    [items, dispatch, fetchServiceList]
+  );
+  const SortableRow = ({ children, ...props }) => {
+    const {
+      attributes,
+      listeners,
+      setNodeRef,
+      transform,
+      transition,
+      isDragging,
+    } = useSortable({
+      id: props["data-row-key"],
+    });
+
+    const style = {
+      ...props.style,
+      transform: CSS.Transform.toString(transform),
+      transition,
+      cursor: isDragging ? "grabbing" : "grab",
+      backgroundColor: isDragging ? "#fafafa" : "transparent",
+      zIndex: isDragging ? 1 : 0,
+    };
+
+    return (
+      <tr
+        {...props}
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+      >
+        {children}
+      </tr>
+    );
+  };
 
   const dataSource = useMemo(() => {
     const services = [...(servicesList || [])].reverse();
@@ -108,7 +241,7 @@ const ServiceTable = () => {
         .includes(searchText.toLowerCase())
     );
   }, [searchText, servicesList]);
-  
+
   const columns = [
     {
       title: "Heading",
@@ -232,20 +365,38 @@ const ServiceTable = () => {
                 </Dropdown>
               </div> */}
             </div>
+
             <div className="mt-3">
-              <Table
-                columns={columns}
-                dataSource={dataSource}
-                pagination={{
-                  current: currentPage,
-                  pageSize: itemsPerPage,
-                  total: totalRows,
-                  onChange: (page) => setCurrentPage(page),
-                  showSizeChanger: false,
-                }}
-                className="campaign-performance-table overflow-y-auto"
-                bordered={false}
-              />
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={onDragEnd}
+              >
+                <SortableContext
+                  items={filteredItems.map((item) => item._id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <Table
+                    components={{
+                      body: {
+                        row: SortableRow,
+                      },
+                    }}
+                    rowKey="_id"
+                    columns={columns}
+                    dataSource={dataSource}
+                    pagination={{
+                      current: currentPage,
+                      pageSize: itemsPerPage,
+                      total: totalRows,
+                      onChange: (page) => setCurrentPage(page),
+                      showSizeChanger: false,
+                    }}
+                    className="campaign-performance-table overflow-y-auto"
+                    bordered={false}
+                  />
+                </SortableContext>
+              </DndContext>
             </div>
           </div>
           <div className="d-flex justify-content-start mt-2">

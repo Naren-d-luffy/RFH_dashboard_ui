@@ -1,36 +1,16 @@
 import React, { useRef, useState } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
 import { showSuccessMessage, validateImage } from "../../../globalConstant";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { addService } from "../../../Features/ServiceSlice";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
-const modules = {
-  toolbar: [
-    [{ font: [] }, { size: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
-    [{ script: "sub" }, { script: "super" }],
-    [{ direction: "rtl" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link", "image", "formula"],
-    ["clean"],
-  ],
-};
+
 const { TextArea } = Input;
 const AddService = ({ open, handleCancel }) => {
   const [heading, setHeading] = useState("");
@@ -41,6 +21,23 @@ const AddService = ({ open, handleCancel }) => {
   const dispatch = useDispatch();
   const [isMaximized, setIsMaximized] = useState(false);
   const editor = useRef(null);
+  const [position, setPosition] = useState("");
+  const servicesList = useSelector((state) => state.service.services);
+  const maxAllowedPosition = servicesList.length + 1;
+
+  const handlePositionChange = (e) => {
+    const value = e.target.value;
+    if (value === "") {
+      setPosition("");
+      return;
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue > 0 && numValue <= maxAllowedPosition) {
+      setPosition(numValue.toString());
+    } else if (numValue > maxAllowedPosition) {
+      message.error(`Position cannot be greater than ${maxAllowedPosition}`);
+    }
+  };
 
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
@@ -52,13 +49,13 @@ const AddService = ({ open, handleCancel }) => {
   };
 
   const toggleMaximize = (e) => {
-    e.preventDefault(); // Prevent any form submission
-    e.stopPropagation(); // Stop event bubbling
+    e.preventDefault(); 
+    e.stopPropagation();
     setIsMaximized(!isMaximized);
   };
 
   const handleSave = async () => {
-    if (!heading || !subHeading || !thumbnailImage) {
+    if (!heading || !subHeading || !thumbnailImage || !position) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -69,6 +66,7 @@ const AddService = ({ open, handleCancel }) => {
       formData.append("subHeading", subHeading);
       formData.append("thumbnail", thumbnailImage);
       formData.append("content", content);
+      formData.append("position", position);
 
       const response = await Instance.post("/depcat/service/", formData);
       if (response?.status === 200 || response?.status === 201) {
@@ -80,6 +78,7 @@ const AddService = ({ open, handleCancel }) => {
         setSubHeading("");
         setContent("");
         setThumbnailImage(null);
+        setPosition("");
       }
     } catch (error) {
       console.error(error);
@@ -89,12 +88,13 @@ const AddService = ({ open, handleCancel }) => {
     }
   };
   const handleCancelClick = (e) => {
-    e.preventDefault(); // Prevent any form submission
-    e.stopPropagation(); // Stop event bubbling
+    e.preventDefault(); 
+    e.stopPropagation(); 
     setHeading("");
     setSubHeading("");
     setContent("");
     setThumbnailImage(null);
+    setPosition("");
     handleCancel();
   };
 
@@ -173,6 +173,19 @@ const AddService = ({ open, handleCancel }) => {
             />
             <span className="create-campaign-input-span">
               <span style={{ color: "red" }}>*</span>Sub Heading
+            </span>
+          </Form.Item>
+          <Form.Item>
+            <Input
+              value={position}
+              onChange={handlePositionChange}
+              placeholder="Position (positive numbers only)"
+              required
+              type="number"
+              min="1"
+            />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Position
             </span>
           </Form.Item>
           <div className="row">
