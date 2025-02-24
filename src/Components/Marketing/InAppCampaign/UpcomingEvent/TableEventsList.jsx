@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table, message } from "antd";
 import { FiEdit, FiEye, FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaAngleLeft, FaPlus } from "react-icons/fa6";
@@ -17,21 +17,7 @@ import EditEventsList from "./EditEventsList";
 import ViewEventList from "./ViewEventList";
 import { deleteEvent, setEvent } from "../../../../Features/DiscoverEventsCard";
 import { useNavigate } from "react-router-dom";
-// import DOMPurify from "dompurify";
-import {
-  DndContext,
-  closestCenter,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+
 
 const TableEventsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,7 +33,6 @@ const TableEventsList = () => {
   const [totalRows] = useState(0);
   const dispatch = useDispatch();
   const itemsPerPage = 10;
-  const tableData = eventsData;
 
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
@@ -111,46 +96,7 @@ const TableEventsList = () => {
     fetchEventInfo();
   }, [fetchEventInfo]);
 
-  const onDragEnd = async (event) => {
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
-  
-    const oldIndex = tableData.findIndex((item) => item._id === active.id);
-    const newIndex = tableData.findIndex((item) => item._id === over.id);
-    const newOrder = arrayMove(tableData, oldIndex, newIndex);
-  
-    // Update Redux state
-    dispatch(setEvent(newOrder));
-  
-    // Send updated order to the backend
-    try {
-      await Instance.put("/discover/card/reorder", { newOrder });
-    } catch (error) {
-      console.error("Error updating order:", error);
-      // message.error("Failed to update order");
-    }
-  };
-  
-  const SortableItem = ({ children, ...props }) => {
-    const { attributes, listeners, setNodeRef, transform, transition } =
-      useSortable({
-        id: props["data-row-key"],
-      });
 
-    const style = {
-      transform: CSS.Transform.toString(transform),
-      transition,
-      cursor: "grab",
-    };
-
-    return (
-      <tr ref={setNodeRef} style={style} {...attributes} {...listeners}>
-        {React.Children.map(children, (child) =>
-          React.cloneElement(child, props)
-        )}
-      </tr>
-    );
-  };
   const columns = [
     {
       title: "Sl No",
@@ -255,6 +201,17 @@ const TableEventsList = () => {
   //   onClick: handleMenuClick,
   // };
 
+  const dataSource = useMemo(() => {
+      const events = [...eventsData].reverse();
+      if (searchText.trim() === "") return events;
+      return events.filter((event) =>
+        `${event.title} ${event.isActive}`
+          .toLowerCase()
+          .includes(searchText.toLowerCase())
+      );
+    }, [searchText, eventsData]);
+
+
   return (
     <div className="container mt-1">
       {isLoading ? (
@@ -298,30 +255,17 @@ const TableEventsList = () => {
               </div> */}
             </div>
             <div className="mt-3">
-              <DndContext
-                // sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={onDragEnd}
-              >
-                <SortableContext
-                  items={tableData.map((item) => item._id)}
-                  strategy={verticalListSortingStrategy}
-                >
+              
                   <Table
                     columns={columns}
-                    dataSource={tableData.map((item) => ({
-                      ...item,
-                      key: item._id,
-                    }))}
-                    components={{ body: { row: SortableItem } }}
+                    dataSource={dataSource}
                     pagination={{
                       current: currentPage,
                       pageSize: itemsPerPage,
                       onChange: (page) => setCurrentPage(page),
                     }}
                   />
-                </SortableContext>
-              </DndContext>
+                
             </div>
           </div>
           <div className="d-flex justify-content-start mt-2">
