@@ -472,3 +472,13 @@ body,
 .campaign-performance-table tr {
   transition: all 0.2s ease;
 }
+
+ul[style*="list-style-type: square;"] li::marker {
+  content: "▸";
+font-size: 20px;
+  /* color: black; Adjust color */
+  
+}
+.jodit-workplace p{
+  margin-bottom: 0px;
+}
