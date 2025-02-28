@@ -12,7 +12,7 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
-const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
+const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdded }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -96,6 +96,9 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
         showSuccessMessage("Condition we treat updated successfully!");
         handleCancel();
         dispatch(editConditionWeTreat(response.data));
+        if (onConditionAdded) {
+          await onConditionAdded(response.data);
+        }
       }
     } catch (error) {
       console.error("Failed to update Condition we treat:", error);

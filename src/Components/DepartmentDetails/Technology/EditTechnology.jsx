@@ -12,7 +12,7 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
-const EditTechnology = ({ open, handleCancel, technologyData }) => {
+const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -104,6 +104,9 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
         showSuccessMessage("Technology updated successfully!");
         handleCancel();
         dispatch(editTechnology(response.data));
+        if (onTechnologyAdded) {
+          await onTechnologyAdded(response.data);
+        }
       }
     } catch (error) {
       console.error("Failed to update technology:", error);
@@ -142,7 +145,7 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
         title={
           <span className="create-campaign-modal-title">Edit Technology</span>
         }
-        onCancel={handleCancel}
+        // onCancel={handleCancel}
         closeIcon={closeButtons}
         width={isMaximized ? "98%" : 680}
         style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}

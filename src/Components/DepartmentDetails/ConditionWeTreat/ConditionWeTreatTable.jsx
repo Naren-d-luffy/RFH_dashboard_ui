@@ -35,6 +35,8 @@ const ConditionWeTreatTable = () => {
   const conditionwetreatList = useSelector(
     (state) => state.conditionwetreat.conditionwetreats
   );
+
+  // console.log("conditionwetreatList",conditionwetreatList)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -89,38 +91,40 @@ const ConditionWeTreatTable = () => {
     });
   };
 
-  const fetchConditionList = useCallback(
-    async (page) => {
+ 
+
+  const fetchConditionList = useCallback(async () => {
       setIsLoading(true);
       try {
-        const response = await Instance.get(`/depcat/treat`, {
-          params: { page, limit: itemsPerPage },
-        });
-        dispatch(setConditionWeTreat(response.data));
-        setTotalRows(response.data.total || 0);
+        const response = await Instance.get("/depcat/treat");
+        // Sort the data by position before setting it
+        const sortedData = response.data.sort((a, b) => a.position - b.position);
+        dispatch(setConditionWeTreat(sortedData));
+        setItems(sortedData);
+        setTotalRows(sortedData.length || 0);
       } catch (error) {
-        console.error("Error fetching condition list:", error);
+        console.error("Error fetching conditions list:", error);
+        message.error("Failed to fetch conditions list");
       } finally {
         setIsLoading(false);
       }
-    },
-    [dispatch, itemsPerPage]
-  );
+    }, [dispatch]);
+  
 
-  useEffect(() => {
-    fetchConditionList(currentPage);
+ useEffect(() => {
+  fetchConditionList(currentPage);
   }, [currentPage, fetchConditionList]);
 
   useEffect(() => {
     if (conditionwetreatList && conditionwetreatList.length > 0) {
-      setItems(
-        conditionwetreatList.map((item, index) => ({
-          ...item,
-          position: index + 1,
-        }))
-      );
+      const updatedItems = conditionwetreatList.map((item, index) => ({
+        ...item,
+        position: index + 1,
+      }));
+      setItems(updatedItems);
     }
   }, [conditionwetreatList]);
+
 
   const filteredItems = useMemo(() => {
     if (!items.length) return [];
@@ -172,7 +176,7 @@ const ConditionWeTreatTable = () => {
 
         // Make the API call
         const response = await Instance.patch("/depcat/treat", {
-          conditionwetreats: updatePayload,
+          weTreats: updatePayload,
         });
 
         if (response.status === 200) {
@@ -239,7 +243,22 @@ const ConditionWeTreatTable = () => {
     );
   }, [searchText, conditionwetreatList]);
 
+    const handleConditionAdded = useCallback(async (newCondition) => {
+      // Fetch the complete list after adding new technology
+      await fetchConditionList();
+      
+      // Calculate the current page based on the new technology's position
+      const newPosition = newCondition.position;
+      const newPage = Math.ceil(newPosition / itemsPerPage);
+      setCurrentPage(newPage);
+    }, [fetchConditionList, itemsPerPage]);
+
   const columns = [
+    {
+      title: "Sl No",
+      dataIndex: "position",
+      className: "campaign-performance-table-column",
+    },
     {
       title: "Title",
       dataIndex: "heading",
@@ -383,7 +402,7 @@ const ConditionWeTreatTable = () => {
                     }}
                     rowKey="_id"
                     columns={columns}
-                    dataSource={dataSource}
+                    dataSource={filteredItems}
                     pagination={{
                       current: currentPage,
                       pageSize: itemsPerPage,
@@ -422,17 +441,19 @@ const ConditionWeTreatTable = () => {
             </p>
             <div className="d-flex justify-content-center">
               <button className="rfh-basic-button" onClick={showModal}>
-                <FaPlus /> Create News
+                <FaPlus /> Create Treatment Conditions
               </button>
             </div>
           </div>
         </div>
       )}
-      <AddConditionWeTreat open={isModalOpen} handleCancel={handleCancel} />
+      <AddConditionWeTreat open={isModalOpen} handleCancel={handleCancel} onConditionAdded={handleConditionAdded} />
       <EditConditionWeTreat
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
         conditionData={selectedFacility}
+        onConditionAdded={handleConditionAdded}
+
       />
       <ViewConditionWeTreat
         open={isViewModalOpen}

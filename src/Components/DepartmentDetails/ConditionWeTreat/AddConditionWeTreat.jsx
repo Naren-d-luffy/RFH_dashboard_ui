@@ -1,7 +1,5 @@
 import React, { useRef, useState } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
@@ -12,29 +10,10 @@ import { addConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
-const modules = {
-  toolbar: [
-    [{ font: [] }, { size: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
-    [{ script: "sub" }, { script: "super" }],
-    [{ direction: "rtl" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link", "image", "formula"],
-    ["clean"],
-  ],
-};
 
 const { TextArea } = Input;
 
-const AddConditionWeTreat = ({ open, handleCancel }) => {
+const AddConditionWeTreat = ({ open, handleCancel,onConditionAdded }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -98,7 +77,11 @@ const AddConditionWeTreat = ({ open, handleCancel }) => {
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("Condition we treat added successfully!");
+        // console.log(response,"add")
         dispatch(addConditionWeTreat(response.data));
+        if (onConditionAdded) {
+          await onConditionAdded(response.data);
+        }
         setTitle("");
         setDescription("");
         setContent("");

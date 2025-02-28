@@ -12,7 +12,7 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 
 const { TextArea } = Input;
-const AddService = ({ open, handleCancel }) => {
+const AddService = ({ open, handleCancel,onServiceAdded }) => {
   const [heading, setHeading] = useState("");
   const [subHeading, setSubHeading] = useState("");
   const [content, setContent] = useState("");
@@ -74,6 +74,9 @@ const AddService = ({ open, handleCancel }) => {
 
         showSuccessMessage("Service added successfully!");
         dispatch(addService(response.data));
+        if (onServiceAdded) {
+          await onServiceAdded(response.data);
+        }
         setHeading("");
         setSubHeading("");
         setContent("");

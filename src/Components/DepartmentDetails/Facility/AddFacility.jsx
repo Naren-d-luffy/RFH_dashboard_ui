@@ -1,41 +1,18 @@
 import React, { useRef, useState } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
 import { showSuccessMessage, validateImage } from "../../../globalConstant";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { addFacility } from "../../../Features/FacilitySlice";
-import { Video } from "lucide-react";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
-const modules = {
-  toolbar: [
-    [{ font: [] }, { size: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
-    [{ script: "sub" }, { script: "super" }],
-    [{ direction: "rtl" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link", "image", "formula"],
-    ["clean"],
-  ],
-};
-
 const { TextArea } = Input;
 
-const AddFacility = ({ open, handleCancel }) => {
+const AddFacility = ({ open, handleCancel,onFacilityAdded }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -46,7 +23,23 @@ const AddFacility = ({ open, handleCancel }) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const [isMaximized, setIsMaximized] = useState(false);
+  const [position, setPosition] = useState("");
 
+  const facilities = useSelector((state) => state.facility.facilities);
+  const maxAllowedPosition = facilities.length + 1;
+  const handlePositionChange = (e) => {
+    const value = e.target.value;
+    if (value === "") {
+      setPosition("");
+      return;
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue > 0 && numValue <= maxAllowedPosition) {
+      setPosition(numValue.toString());
+    } else if (numValue > maxAllowedPosition) {
+      message.error(`Position cannot be greater than ${maxAllowedPosition}`);
+    }
+  };
   const editor = useRef(null);
 
   const handleUpload = (info) => {
@@ -90,7 +83,7 @@ const AddFacility = ({ open, handleCancel }) => {
   };
 
   const handleSave = async () => {
-    if (!title || !thumbnailImage) {
+    if (!title || !thumbnailImage|| !position) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -116,12 +109,16 @@ const AddFacility = ({ open, handleCancel }) => {
       formData.append("video_heading", videoHeading);
       formData.append("video", uploadedImage ? uploadedImage : "");
       formData.append("video_subHeading", videoSubHeading);
+      formData.append("position",position);
       const response = await Instance.post("/depcat/facility", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
 
         showSuccessMessage("Facility added successfully!");
         dispatch(addFacility(response.data));
+        if (onFacilityAdded) {
+          await onFacilityAdded(response.data);
+        }
         setTitle("");
         setDescription("");
         setContent("");
@@ -129,6 +126,7 @@ const AddFacility = ({ open, handleCancel }) => {
         setThumbnailImage(null);
         setVideoHeading("");
         setVideoSubHeading("");
+        setPosition("");
       }
     } catch (error) {
       console.error(error);
@@ -214,6 +212,19 @@ const AddFacility = ({ open, handleCancel }) => {
             />
             <span className="create-campaign-input-span">
               <span style={{ color: "red" }}>*</span> Title
+            </span>
+          </Form.Item>
+          <Form.Item>
+            <Input
+              value={position}
+              onChange={handlePositionChange}
+              placeholder="Position (positive numbers only)"
+              required
+              type="number"
+              min="1"
+            />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Position
             </span>
           </Form.Item>
           <Form.Item>
