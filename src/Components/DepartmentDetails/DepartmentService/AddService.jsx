@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../globalConstant";
+import { showSuccessMessage, validateImage,editorConfig } from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { addService } from "../../../Features/ServiceSlice";
@@ -53,6 +53,8 @@ const AddService = ({ open, handleCancel,onServiceAdded }) => {
     e.stopPropagation();
     setIsMaximized(!isMaximized);
   };
+
+
 
   const handleSave = async () => {
     if (!heading || !subHeading || !thumbnailImage || !position) {
@@ -235,6 +237,7 @@ const AddService = ({ open, handleCancel,onServiceAdded }) => {
             <JoditEditor
               ref={editor}
               value={content}
+              config={editorConfig}
               onChange={(newContent) => setContent(newContent)}
             />
             <span className="create-campaign-input-span">Content</span>

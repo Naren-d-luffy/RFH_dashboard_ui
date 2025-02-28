@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../globalConstant";
+import { showSuccessMessage, validateImage ,editorConfig} from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { editService } from "../../../Features/ServiceSlice";
@@ -54,6 +54,7 @@ const EditService = ({ open, handleCancel, serviceData,onServiceAdded }) => {
     setIsMaximized(!isMaximized);
   };
 
+ 
   const handleSave = async () => {
     if (!heading || !subHeading || !thumbnailImage || !position) {
       message.error("Please fill in all required fields.");
@@ -250,6 +251,7 @@ const EditService = ({ open, handleCancel, serviceData,onServiceAdded }) => {
             <JoditEditor
               ref={editor}
               value={content}
+              config={editorConfig}
               onChange={setContent}
               required
             />

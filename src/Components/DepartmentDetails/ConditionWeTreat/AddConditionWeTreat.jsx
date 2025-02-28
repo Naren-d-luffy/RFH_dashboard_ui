@@ -3,7 +3,7 @@ import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../globalConstant";
+import { editorConfig, showSuccessMessage, validateImage } from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { addConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
@@ -244,6 +244,7 @@ const AddConditionWeTreat = ({ open, handleCancel,onConditionAdded }) => {
             <JoditEditor
               ref={editor}
               value={content}
+              config={editorConfig}
               onChange={(newContent) => setContent(newContent)}
             />
             <span className="create-campaign-input-span">Content</span>

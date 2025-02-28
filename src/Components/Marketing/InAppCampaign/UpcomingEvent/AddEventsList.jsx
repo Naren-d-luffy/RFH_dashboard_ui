@@ -15,6 +15,7 @@ import {
   showErrorMessage,
   showSuccessMessage,
   validateImage,
+  editorConfig
 } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { addEvent } from "../../../../Features/DiscoverEventsCard";
@@ -283,6 +284,7 @@ const AddEventsList = ({ open, handleCancel }) => {
             <JoditEditor
               ref={editor}
               value={description}
+              config={editorConfig}
               onChange={setDescription}
             />
             <span className="create-campaign-input-span">Description</span>

@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../globalConstant";
+import { showSuccessMessage, validateImage,editorConfig } from "../../../globalConstant";
 import { useDispatch,useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { addFacility } from "../../../Features/FacilitySlice";
@@ -41,7 +41,7 @@ const AddFacility = ({ open, handleCancel,onFacilityAdded }) => {
     }
   };
   const editor = useRef(null);
-
+  
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
     const isVideo = file.type.startsWith("video/");
@@ -280,6 +280,7 @@ const AddFacility = ({ open, handleCancel,onFacilityAdded }) => {
             <JoditEditor
               ref={editor}
               value={content}
+              config={editorConfig}
               onChange={(newContent) => setContent(newContent)}
             />
             <span className="create-campaign-input-span">Content</span>

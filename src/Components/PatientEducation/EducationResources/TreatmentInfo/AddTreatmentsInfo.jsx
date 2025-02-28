@@ -3,7 +3,7 @@ import { Button, Modal, Form, Input, Upload, message, Switch } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage ,editorConfig} from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { addTreatment } from "../../../../Features/TreatmentInfoSlice";
@@ -292,7 +292,12 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
           </div>
 
           <Form.Item>
-            <JoditEditor ref={editor} value={content} onChange={setContent} />
+            <JoditEditor
+              ref={editor}
+              value={content}
+              config={editorConfig}
+              onChange={setContent}
+            />
             <span className="create-campaign-input-span"> Content Points</span>
           </Form.Item>
         </Form>

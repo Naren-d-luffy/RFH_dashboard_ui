@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
-import { showSuccessMessage } from "../../globalConstant";
+import { showSuccessMessage,editorConfig } from "../../globalConstant";
 import { Instance } from "../../AxiosConfig";
 import { editDepartment } from "../../Features/DepartmentSlice";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -181,6 +181,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
           <Form.Item>
             <JoditEditor
               ref={editor}
+              config={editorConfig}
               value={description}
               onChange={setDescription}
               required

@@ -3,7 +3,7 @@ import { Button, Modal, Form, Input, Upload, message, Select,Switch } from "antd
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage,editorConfig } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { addGastroIllness } from "../../../../Features/GastroIllnessSlice";
@@ -268,6 +268,8 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
              <JoditEditor
               ref={editor}
               value={content}
+              config={editorConfig}
+
               onChange={setContent}
               required
             />

@@ -11,7 +11,7 @@ import {
   TimePicker,
 } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage,editorConfig } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { editEvent } from "../../../../Features/DiscoverEventsCard";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -314,6 +314,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
           <Form.Item>
             <JoditEditor
               ref={editor}
+              config={editorConfig}
               value={description}
               onChange={setDescription}
               required
