@@ -3,7 +3,7 @@ import { Form, Input, Row, Col, Button, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useNavigate, useLocation } from "react-router-dom";
-import { showSuccessMessage } from "../../../globalConstant";
+import { showSuccessMessage,editorConfig } from "../../../globalConstant";
 import { Instance } from "../../../AxiosConfig";
 import JoditEditor from "jodit-react";
 const DoctorDetail = () => {
@@ -273,6 +273,8 @@ const DoctorDetail = () => {
                 <div className="quill-editor">
                   <JoditEditor
                     ref={editor}
+                    config={editorConfig}
+
                     value={formData.about || ""}
                     onChange={(value) => handleInputChange("about", value)}
                   />

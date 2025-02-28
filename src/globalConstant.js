@@ -3,6 +3,8 @@ import deleteIcon from "./Assets/Icons/delete-warning-icon.png";
 import success from "./Assets/Icons/success.png";
 import { Button, Card, Checkbox, Input, message, Modal } from "antd";
 import { FiSearch } from "react-icons/fi";
+import { Jodit } from "jodit-react";
+
 // export const IMG_URL = `https://digitalcard-bucket.s3.amazonaws.com`;
 
 export const showSuccessMessage = (message, extraContent = "") => {
@@ -245,3 +247,19 @@ export const validateImage = (file, maxSizeMB = 50) => {
 
   return true; // Validation passed
 };
+
+export const editorConfig = {
+	...Jodit.defaultOptions, // Ensure default settings are not lost
+	controls: {
+	  ...Jodit.defaultOptions.controls, // Keep other default controls
+	  ul: {
+		list: {
+		  default: "Default",
+		  circle: "Circle",
+		  disc: "Dot",
+		  square: "Triangle", // Rename "Square" to "Triangle"
+		},
+	  },
+	},
+  };
+  

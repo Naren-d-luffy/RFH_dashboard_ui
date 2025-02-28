@@ -6,21 +6,11 @@ import { Instance } from "../../AxiosConfig";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import Loader from "../../Loader";
 import { addDepartment } from "../../Features/DepartmentSlice";
-import { showSuccessMessage } from "../../globalConstant";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { showSuccessMessage,editorConfig } from "../../globalConstant";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
-const modules = {
-  toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["bold", "italic"],
-    ["link", "image"],
-    ["clean"],
-  ],
-};
+
 const CreateDepartmentDetails = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -165,6 +155,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
           <Form.Item>
             <JoditEditor
               ref={editor}
+              config={editorConfig}
               value={content}
               onChange={(newContent) => setContent(newContent)}
             />
