@@ -177,7 +177,7 @@ const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }
               onChange={(checked) => setIsOverview(checked)}
               className="gastro-switch-button"
             />
-            <span className="mx-2">Overview</span>
+            <span className="mx-2" style={{color:'var(--black-color)'}}>Overview</span>
           </div>
           <Form.Item>
             <Input
