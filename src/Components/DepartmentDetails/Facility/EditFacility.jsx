@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../globalConstant";
+import { showSuccessMessage, validateImage,editorConfig } from "../../../globalConstant";
 import Loader from "../../../Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { editFacility } from "../../../Features/FacilitySlice";
@@ -38,7 +38,7 @@ const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
     }
   }, [open, facilityData]);
   const [position, setPosition] = useState("");
-
+  
   const facilities = useSelector((state) => state.facility.facilities);
   const maxAllowedPosition = facilities.length + 1;
   const handlePositionChange = (e) => {
@@ -327,6 +327,7 @@ const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
             <JoditEditor
               ref={editor}
               value={content}
+              config={editorConfig}
               onChange={setContent}
               required
             />

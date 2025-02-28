@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { Button, Modal, Form, Input, Upload, message, Switch } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../globalConstant";
+import { showSuccessMessage, validateImage,editorConfig } from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { addTechnology } from "../../../Features/TechnologySlice";
@@ -40,6 +40,8 @@ const AddTechnology = ({ open, handleCancel ,onTechnologyAdded }) => {
     }
   };
   const editor = useRef(null);
+ 
+
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
     if (!validateImage(file)) return false;
@@ -263,6 +265,7 @@ const AddTechnology = ({ open, handleCancel ,onTechnologyAdded }) => {
                 <JoditEditor
                   ref={editor}
                   value={content}
+                  config={editorConfig}
                   onChange={(newContent) => setContent(newContent)}
                 />
                 <span className="create-campaign-input-span">Content</span>

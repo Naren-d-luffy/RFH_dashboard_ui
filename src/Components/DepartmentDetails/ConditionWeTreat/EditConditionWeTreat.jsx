@@ -3,7 +3,7 @@ import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../globalConstant";
+import { editorConfig, showSuccessMessage, validateImage } from "../../../globalConstant";
 import Loader from "../../../Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { editConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
@@ -241,6 +241,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdd
               ref={editor}
               value={content}
               onChange={setContent}
+              config={editorConfig}
               required
             />
             <span className="create-campaign-input-span">Content</span>
