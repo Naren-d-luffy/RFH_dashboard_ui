@@ -269,7 +269,7 @@ const AddEventsList = ({ open, handleCancel }) => {
                 style={{ display: "flex", gap: "20px", alignItems: "center" }}
               >
                 <div>
-                  <span>Active &nbsp;</span>
+                  <span style={{color:'var(--black-color)'}}>Active &nbsp;</span>
                   <Switch
                     className="gastro-switch-button"
                     checked={isActive}
