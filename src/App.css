@@ -154,7 +154,7 @@ body,
   background-color: var(--table-head-bg-color) !important;
 }
 .search-input-header::placeholder,
-.search-input-table::placeholder{
+.search-input-table::placeholder {
   color: var(--search-icon-color);
 }
 
@@ -332,7 +332,7 @@ body,
   color: var(--black-color);
   background: transparent;
   font-size: 12px;
-  padding: 10px
+  padding: 10px;
 }
 
 .ant-form-vertical
@@ -398,7 +398,7 @@ body,
   }
 }
 
-.ant-color-picker-trigger{
+.ant-color-picker-trigger {
   padding: 10px 18px;
 }
 
@@ -430,13 +430,15 @@ body,
   color: var(--search-icon-color);
   font-size: 16px;
 }
+
 /* .news-content h3, .news-content h4, .news-content p, .news-content h1, .news-content h2, .news-content h5, .news-content h6{
+
   color: var(--black-color) !important;
 } */
 .checkbox-grid {
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
-  gap: 10px; 
+  gap: 10px;
   padding: 10px 0;
 }
 .unauthorized-container {
@@ -458,48 +460,47 @@ body,
   color: var(--black-color);
 }
 
+.news-content ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}
 
-  .news-content ul {
-    list-style-type: disc;
-    margin-left: 20px;
-  }
+.news-content .ql-indent-1 {
+  margin-left: 20px;
+}
 
-  .news-content .ql-indent-1 {
-    margin-left: 20px;
-  }
+.news-content .ql-indent-2 {
+  margin-left: 40px;
+}
 
-  .news-content .ql-indent-2 {
-    margin-left: 40px;
-  }
+.news-content .ql-indent-3 {
+  margin-left: 60px;
+}
 
-  .news-content .ql-indent-3 {
-    margin-left: 60px;
-  }
-
-  .news-content .ql-indent-4 {
-    margin-left: 80px;
-  }
+.news-content .ql-indent-4 {
+  margin-left: 80px;
+}
 .ant-table-column-title,
-.ant-table-cell{
+.ant-table-cell {
   color: var(--black-color);
 }
-.ant-table-wrapper .ant-table-thead >tr>th{
+.ant-table-wrapper .ant-table-thead > tr > th {
   color: var(--black-color);
 }
-.ant-empty-normal .ant-empty-description{
+.ant-empty-normal .ant-empty-description {
   color: var(--search-icon-color);
 }
 
-.jodit-status-bar{
+.jodit-status-bar {
   background-color: var(--white-color) !important;
   display: none !important;
 }
-.ant-modal-body::-webkit-scrollbar{
+.ant-modal-body::-webkit-scrollbar {
   width: 0px;
 }
 
 .dragging {
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .campaign-performance-table tr {
@@ -509,13 +510,32 @@ body,
 ul[style*="list-style-type: square;"] li::marker {
   content: "▸";
 font-size: 16px;
+
   /* color: black; Adjust color */
-  
 }
-.jodit-workplace p{
+.jodit-workplace p {
   margin-bottom: 0px;
 }
 .jodit-workplace ul{
   padding-left: 1rem !important;
   margin-bottom: 0px;
+}
+
+
+.jodit-container {
+  background-color: var(--card-background-color) !important;
+  color: var(--black-color) !important;
+}
+
+.jodit-container .jodit-workplace,
+.jodit-toolbar__box {
+  background-color: var(--card-background-color) !important;
+  color: var(--black-color) !important;
+}
+.jodit-container .jodit-toolbar-button {
+  color: var(--black-color) !important;
+}
+.jodit-container .jodit-toolbar-button svg {
+  fill: var(--black-color) !important;
+  stroke: var(--black-color) !important;
 }

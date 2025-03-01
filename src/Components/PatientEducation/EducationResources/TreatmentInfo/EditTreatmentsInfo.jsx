@@ -184,7 +184,7 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData }) => {
                 style={{ display: "flex", gap: "30px", alignItems: "center" }}
               >
                 <div>
-                  <span>Department Services </span>
+                  <span style={{color:'var(--black-color)'}}>Department Services </span>
                   <Switch
                     className="gastro-switch-button"
                     checked={service}
@@ -192,7 +192,7 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData }) => {
                   />
                 </div>
                 <div>
-                  <span>Conditions we Treat </span>
+                  <span style={{color:'var(--black-color)'}}>Conditions we Treat </span>
                   <Switch
                     className="gastro-switch-button"
                     checked={conditions}
