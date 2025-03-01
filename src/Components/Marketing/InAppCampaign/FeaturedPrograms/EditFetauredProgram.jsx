@@ -265,7 +265,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
             ref={editor}
             config={editorConfig}
             value={content}
-            onChange={setContent}
+            onBlur={(newContent) => setContent(newContent)}
             required
           />
            <span className="create-campaign-input-span">

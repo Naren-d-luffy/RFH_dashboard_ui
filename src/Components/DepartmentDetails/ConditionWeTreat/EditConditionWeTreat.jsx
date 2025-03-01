@@ -240,7 +240,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdd
             <JoditEditor
               ref={editor}
               value={content}
-              onChange={setContent}
+              onBlur={(newContent) => setContent(newContent)}
               config={editorConfig}
               required
             />

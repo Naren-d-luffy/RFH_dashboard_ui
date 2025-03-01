@@ -272,7 +272,7 @@ const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }
                   ref={editor}
                   value={content}
                   config={editorConfig}
-                  onChange={(newContent) => setContent(newContent)}
+                  onBlur={(newContent) => setContent(newContent)}
                 />
                 <span className="create-campaign-input-span">Content</span>
               </Form.Item>

@@ -283,7 +283,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               ref={editor}
               value={content}
               config={editorConfig}
-              onChange={setContent}
+              onBlur={(newContent) => setContent(newContent)}
             />
             <span className="create-campaign-input-span"> Content Points</span>
           </Form.Item>

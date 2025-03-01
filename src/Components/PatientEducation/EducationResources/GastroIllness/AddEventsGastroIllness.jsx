@@ -269,8 +269,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
               ref={editor}
               value={content}
               config={editorConfig}
-
-              onChange={setContent}
+              onBlur={(newContent) => setContent(newContent)}
               required
             />
             <span className="create-campaign-input-span"> Content Points</span>

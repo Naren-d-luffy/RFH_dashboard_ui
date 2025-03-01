@@ -300,7 +300,7 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
               ref={editor}
               config={editorConfig}
               value={content}
-              onChange={setContent}
+              onBlur={(newContent) => setContent(newContent)}
             />
             <span className="create-campaign-input-span">Content Points</span>
           </Form.Item>
