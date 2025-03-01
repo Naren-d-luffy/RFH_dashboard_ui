@@ -1,8 +1,37 @@
 body {
   margin: 0;
   overflow-x: hidden;
-  font-family: "Poppins";
+  font-family: 'Proxima Nova', sans-serif;
 }
+
+@font-face {
+  font-family: 'Proxima Nova';
+  src: url('../src/Assets/ProximaNova/Proxima\Nova-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova';
+  src: url('../src/Assets/ProximaNova/Proxima\ Nova\ Alt\ Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova';
+  src: url('../src/Assets/ProximaNova/Proxima\ Nova\ Alt\ Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova';
+  src: url('../src/Assets/ProximaNova/Proxima\ Nova\ Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
 
 body,
 .ant-typography,
@@ -13,8 +42,12 @@ body,
 .ant-radio,
 .ant-form-item-label,
 .ant-tabs {
-  font-family: "Poppins" !important;
+  font-family: 'Proxima Nova', sans-serif !important;
   /* color: var(--black-color) !important; */
+}
+
+:where(.css-dev-only-do-not-override-1x0dypw).ant-table-wrapper .ant-table {
+  font-family: 'Proxima Nova', sans-serif !important;
 }
 @media (max-width: 768px) {
   .ant-table-container {
@@ -395,11 +428,11 @@ body,
 .coming-soon-text {
   margin-top: 8px;
   color: var(--search-icon-color);
-  font-size: 14px;
+  font-size: 16px;
 }
-.news-content h3, .news-content h4, .news-content p, .news-content h1, .news-content h2, .news-content h5, .news-content h6{
+/* .news-content h3, .news-content h4, .news-content p, .news-content h1, .news-content h2, .news-content h5, .news-content h6{
   color: var(--black-color) !important;
-}
+} */
 .checkbox-grid {
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
@@ -475,10 +508,14 @@ body,
 
 ul[style*="list-style-type: square;"] li::marker {
   content: "▸";
-font-size: 20px;
+font-size: 16px;
   /* color: black; Adjust color */
   
 }
 .jodit-workplace p{
+  margin-bottom: 0px;
+}
+.jodit-workplace ul{
+  padding-left: 1rem !important;
   margin-bottom: 0px;
 }
