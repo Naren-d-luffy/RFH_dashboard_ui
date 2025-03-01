@@ -228,8 +228,6 @@ export const filterDropdown = (
 	</Card>
 );
 
-
-
 export const validateImage = (file, maxSizeMB = 50) => {
 	message.destroy();
   const isImage = file.type.startsWith("image/");
@@ -249,17 +247,35 @@ export const validateImage = (file, maxSizeMB = 50) => {
 };
 
 export const editorConfig = {
-	...Jodit.defaultOptions, // Ensure default settings are not lost
+	...Jodit.defaultOptions,
 	controls: {
-	  ...Jodit.defaultOptions.controls, // Keep other default controls
+	  ...Jodit.defaultOptions.controls,
 	  ul: {
 		list: {
 		  default: "Default",
 		  circle: "Circle",
 		  disc: "Dot",
-		  square: "Triangle", // Rename "Square" to "Triangle"
+		  square: "Triangle",
 		},
 	  },
+	  // Customize indent behavior
+	  indent: {
+		exec: (editor) => {
+		  editor.execCommand('indent');
+		  return false;
+		}
+	  },
+	  outdent: {
+		exec: (editor) => {
+		  // Make outdent more responsive
+		  editor.execCommand('outdent');
+		  return false;
+		}
+	  }
 	},
-  };
-  
+	// Adjust these settings to make indent/outdent more responsive
+	indentMargin: 10,
+	useAceEditor: false,
+	// This might help with the indent behavior
+	beautifyHTML: false,
+};
