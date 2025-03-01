@@ -183,7 +183,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
               ref={editor}
               config={editorConfig}
               value={description}
-              onChange={setDescription}
+              onBlur={(newContent) => setContent(newContent)}
               required
             />
             <span className="create-campaign-input-span">Descriptioin</span>

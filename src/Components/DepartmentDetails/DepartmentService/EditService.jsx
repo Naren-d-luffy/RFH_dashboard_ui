@@ -252,7 +252,7 @@ const EditService = ({ open, handleCancel, serviceData,onServiceAdded }) => {
               ref={editor}
               value={content}
               config={editorConfig}
-              onChange={setContent}
+              onBlur={(newContent) => setContent(newContent)}
               required
             />
             <span className="create-campaign-input-span">Content</span>
