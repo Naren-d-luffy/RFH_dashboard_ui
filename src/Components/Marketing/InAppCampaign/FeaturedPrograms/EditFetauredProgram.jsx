@@ -263,9 +263,10 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
         <Form.Item>
           <JoditEditor
             ref={editor}
-            config={editorConfig}
+            // config={editorConfig}
+            config={{ ...editorConfig, className: "hide-placeholder-editor" }}
             value={content}
-            onChange={setContent}
+            onBlur={(newContent) => setContent(newContent)}
             required
           />
            <span className="create-campaign-input-span">

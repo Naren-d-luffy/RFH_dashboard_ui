@@ -352,9 +352,10 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData,onServiceAdded }
           <Form.Item>
             <JoditEditor
               ref={editor}
-              config={editorConfig}
+              // config={editorConfig}
+              config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               value={content}
-              onChange={setContent}
+              onBlur={(newContent) => setContent(newContent)}
             />
             <span className="create-campaign-input-span">Content Points</span>
           </Form.Item>

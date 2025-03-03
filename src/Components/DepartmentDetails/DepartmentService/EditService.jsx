@@ -251,8 +251,9 @@ const EditService = ({ open, handleCancel, serviceData,onServiceAdded }) => {
             <JoditEditor
               ref={editor}
               value={content}
-              config={editorConfig}
-              onChange={setContent}
+              // config={editorConfig}
+              config={{ ...editorConfig, className: "hide-placeholder-editor" }}
+              onBlur={(newContent) => setContent(newContent)}
               required
             />
             <span className="create-campaign-input-span">Content</span>

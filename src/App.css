@@ -520,7 +520,10 @@ font-size: 16px;
   padding-left: 1rem !important;
   margin-bottom: 0px;
 }
-
+.jodit-workplace ol{
+  padding-left: 1rem !important;
+  margin-bottom: 0px;
+}
 
 .jodit-container {
   background-color: var(--card-background-color) !important;
@@ -546,7 +549,7 @@ font-size: 16px;
   background: var(--white-color) !important;
 }
 .jodit-container {
-  resize: vertical; /* Enable both directions */
+  resize: vertical;
   overflow: auto;
   min-height: 250px !important;
   max-width: 100%;
@@ -562,4 +565,7 @@ font-size: 16px;
 }
 .jodit-wysiwyg span{
   font-family: "Proxima Nova", sans-serif !important;
+}
+.hide-placeholder-editor .jodit-placeholder {
+  display: none !important;
 }

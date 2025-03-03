@@ -35,6 +35,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [content, setContent] = useState("")
   const dispatch = useDispatch();
   const editor = useRef(null);
   const [isMaximized, setIsMaximized] = useState(false);
@@ -314,9 +315,10 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
           <Form.Item>
             <JoditEditor
               ref={editor}
-              config={editorConfig}
+              // config={editorConfig}
+              config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               value={description}
-              onChange={setDescription}
+              onBlur={(newContent) => setContent(newContent)}
               required
             />
             <span className="create-campaign-input-span">Description</span>

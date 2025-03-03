@@ -240,8 +240,9 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdd
             <JoditEditor
               ref={editor}
               value={content}
-              onChange={setContent}
-              config={editorConfig}
+              onBlur={(newContent) => setContent(newContent)}
+              // config={editorConfig}
+              config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               required
             />
             <span className="create-campaign-input-span">Content</span>

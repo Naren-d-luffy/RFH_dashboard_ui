@@ -157,7 +157,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
               ref={editor}
               config={editorConfig}
               value={content}
-              onChange={(newContent) => setContent(newContent)}
+              onBlur={(newContent) => setContent(newContent)}
             />
             <span className="create-campaign-input-span">Content</span>
           </Form.Item>
