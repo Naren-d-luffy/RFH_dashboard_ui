@@ -271,7 +271,8 @@ const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }
                 <JoditEditor
                   ref={editor}
                   value={content}
-                  config={editorConfig}
+                  // config={editorConfig}
+                  config={{ ...editorConfig, className: "hide-placeholder-editor" }}
                   onBlur={(newContent) => setContent(newContent)}
                 />
                 <span className="create-campaign-input-span">Content</span>

@@ -315,7 +315,8 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
           <Form.Item>
             <JoditEditor
               ref={editor}
-              config={editorConfig}
+              // config={editorConfig}
+              config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               value={description}
               onBlur={(newContent) => setContent(newContent)}
               required

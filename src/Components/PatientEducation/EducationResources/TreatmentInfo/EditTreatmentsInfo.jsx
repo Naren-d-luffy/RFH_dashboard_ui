@@ -309,7 +309,8 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData }) => {
           <Form.Item>
             <JoditEditor
               ref={editor}
-              config={editorConfig}
+              // config={editorConfig}
+              config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               value={content}
               onBlur={(newContent) => setContent(newContent)}
             />

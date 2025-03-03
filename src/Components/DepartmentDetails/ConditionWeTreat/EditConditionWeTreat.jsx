@@ -241,7 +241,8 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdd
               ref={editor}
               value={content}
               onBlur={(newContent) => setContent(newContent)}
-              config={editorConfig}
+              // config={editorConfig}
+              config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               required
             />
             <span className="create-campaign-input-span">Content</span>
