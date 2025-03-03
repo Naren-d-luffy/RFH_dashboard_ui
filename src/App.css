@@ -155,11 +155,11 @@ body,
 }
 .search-input-header::placeholder,
 .search-input-table::placeholder {
-  color: var(--search-icon-color);
+  color: var(--secondary-text-color);
 }
 
 .ant-input::placeholder {
-  color: var(--input-text-color);
+  color: var(--secondary-text-color);
   font-size: 12px;
 }
 
