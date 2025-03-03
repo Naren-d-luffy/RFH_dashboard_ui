@@ -3,7 +3,7 @@ import { Button, Modal, Form, Input, Upload, message, Switch } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage ,editorConfig} from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { addTreatment } from "../../../../Features/TreatmentInfoSlice";
@@ -176,7 +176,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
                 style={{ display: "flex", gap: "30px", alignItems: "center" }}
               >
                 <div>
-                  <span>Department Services </span>
+                  <span style={{color:'var(--black-color)'}}>Department Services </span>
                   <Switch
                     className="gastro-switch-button"
                     checked={service}
@@ -184,7 +184,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
                   />
                 </div>
                 <div>
-                  <span>Conditions we Treat </span>
+                  <span style={{color:'var(--black-color)'}}>Conditions we Treat </span>
                   <Switch
                     className="gastro-switch-button"
                     checked={conditions}
@@ -292,7 +292,12 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
           </div>
 
           <Form.Item>
-            <JoditEditor ref={editor} value={content} onChange={setContent} />
+            <JoditEditor
+              ref={editor}
+              value={content}
+              config={editorConfig}
+              onBlur={(newContent) => setContent(newContent)}
+            />
             <span className="create-campaign-input-span"> Content Points</span>
           </Form.Item>
         </Form>

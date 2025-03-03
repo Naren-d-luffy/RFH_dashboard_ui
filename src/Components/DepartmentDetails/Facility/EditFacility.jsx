@@ -1,40 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../globalConstant";
+import { showSuccessMessage, validateImage,editorConfig } from "../../../globalConstant";
 import Loader from "../../../Loader";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { editFacility } from "../../../Features/FacilitySlice";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
-const modules = {
-  toolbar: [
-    [{ font: [] }, { size: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
-    [{ script: "sub" }, { script: "super" }],
-    [{ direction: "rtl" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link", "image", "formula"],
-    ["clean"],
-  ],
-};
+
 
 const { TextArea } = Input;
 
-const EditFacility = ({ open, handleCancel, facilityData }) => {
+const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -54,9 +34,26 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
       setVideoSubHeading(facilityData.video_subHeading || "");
       setUploadedImage(facilityData.video || "");
       setThumbnailImage(facilityData.thumbnail || null);
+      setPosition(facilityData?.position || "")
     }
   }, [open, facilityData]);
-
+  const [position, setPosition] = useState("");
+  
+  const facilities = useSelector((state) => state.facility.facilities);
+  const maxAllowedPosition = facilities.length + 1;
+  const handlePositionChange = (e) => {
+    const value = e.target.value;
+    if (value === "") {
+      setPosition("");
+      return;
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue > 0 && numValue <= maxAllowedPosition) {
+      setPosition(numValue.toString());
+    } else if (numValue > maxAllowedPosition) {
+      message.error(`Position cannot be greater than ${maxAllowedPosition}`);
+    }
+  };
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
     const isVideo = file.type.startsWith("video/");
@@ -100,7 +97,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
   };
 
   const handleUpdate = async () => {
-    if (!title || !thumbnailImage) {
+    if (!title || !thumbnailImage || !position) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -124,6 +121,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
       formData.append("content", content);
       formData.append("video_heading", videoHeading);
       formData.append("video_subHeading", videoSubHeading);
+      formData.append("position",position);
 
       if (uploadedImage && typeof uploadedImage !== "string") {
         formData.append("video", uploadedImage);
@@ -138,8 +136,12 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
       );
       if (response?.status === 200 || response?.status === 201) {
         showSuccessMessage("Facility updated successfully!");
-        handleCancel();
+       
         dispatch(editFacility(response.data));
+        if (onFacilityAdded) {
+          await onFacilityAdded(response.data);
+        }
+        handleCancel();
       }
     } catch (error) {
       console.error("Failed to update facility:", error);
@@ -178,7 +180,7 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
         title={
           <span className="create-campaign-modal-title">Edit Facility</span>
         }
-        onCancel={handleCancel}
+        // onCancel={handleCancel}
         closeIcon={closeButtons}
         width={isMaximized ? "98%" : 680}
         style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
@@ -213,6 +215,19 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
             />
             <span className="create-campaign-input-span">
               <span style={{ color: "red" }}>*</span> Title
+            </span>
+          </Form.Item>
+          <Form.Item>
+            <Input
+              value={position}
+              onChange={handlePositionChange}
+              placeholder="Position (positive numbers only)"
+              required
+              type="number"
+              min="1"
+            />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Position
             </span>
           </Form.Item>
           <Form.Item>
@@ -312,7 +327,8 @@ const EditFacility = ({ open, handleCancel, facilityData }) => {
             <JoditEditor
               ref={editor}
               value={content}
-              onChange={setContent}
+              config={editorConfig}
+              onBlur={(newContent) => setContent(newContent)}
               required
             />
             <span className="create-campaign-input-span">Content</span>

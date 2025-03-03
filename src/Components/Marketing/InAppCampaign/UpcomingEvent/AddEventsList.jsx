@@ -15,6 +15,7 @@ import {
   showErrorMessage,
   showSuccessMessage,
   validateImage,
+  editorConfig,
 } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { addEvent } from "../../../../Features/DiscoverEventsCard";
@@ -37,7 +38,7 @@ const AddEventsList = ({ open, handleCancel }) => {
   const editor = useRef(null);
   const [isMaximized, setIsMaximized] = useState(false);
   const toggleMaximize = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     e.stopPropagation();
     setIsMaximized(!isMaximized);
   };
@@ -269,7 +270,9 @@ const AddEventsList = ({ open, handleCancel }) => {
                 style={{ display: "flex", gap: "20px", alignItems: "center" }}
               >
                 <div>
-                  <span>Active &nbsp;</span>
+                  <span style={{ color: "var(--black-color)" }}>
+                    Active &nbsp;
+                  </span>
                   <Switch
                     className="gastro-switch-button"
                     checked={isActive}
@@ -283,7 +286,8 @@ const AddEventsList = ({ open, handleCancel }) => {
             <JoditEditor
               ref={editor}
               value={description}
-              onChange={setDescription}
+              config={editorConfig}
+              onBlur={(newContent) => setDescription(newContent)}
             />
             <span className="create-campaign-input-span">Description</span>
           </Form.Item>

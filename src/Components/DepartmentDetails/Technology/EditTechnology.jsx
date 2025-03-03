@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Button, Modal, Form, Input, Upload, message, Switch } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../globalConstant";
+import { showSuccessMessage, validateImage,editorConfig } from "../../../globalConstant";
 import Loader from "../../../Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { editTechnology } from "../../../Features/TechnologySlice";
@@ -12,7 +12,7 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
-const EditTechnology = ({ open, handleCancel, technologyData }) => {
+const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -41,7 +41,7 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
       setPosition(technologyData?.position);
     }
   }, [open, technologyData]);
-
+  
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
     if (!validateImage(file)) return false;
@@ -104,6 +104,9 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
         showSuccessMessage("Technology updated successfully!");
         handleCancel();
         dispatch(editTechnology(response.data));
+        if (onTechnologyAdded) {
+          await onTechnologyAdded(response.data);
+        }
       }
     } catch (error) {
       console.error("Failed to update technology:", error);
@@ -142,7 +145,7 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
         title={
           <span className="create-campaign-modal-title">Edit Technology</span>
         }
-        onCancel={handleCancel}
+        // onCancel={handleCancel}
         closeIcon={closeButtons}
         width={isMaximized ? "98%" : 680}
         style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
@@ -174,7 +177,7 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
               onChange={(checked) => setIsOverview(checked)}
               className="gastro-switch-button"
             />
-            <span className="mx-2">Overview</span>
+            <span className="mx-2" style={{color:'var(--black-color)'}}>Overview</span>
           </div>
           <Form.Item>
             <Input
@@ -268,7 +271,8 @@ const EditTechnology = ({ open, handleCancel, technologyData }) => {
                 <JoditEditor
                   ref={editor}
                   value={content}
-                  onChange={(newContent) => setContent(newContent)}
+                  config={editorConfig}
+                  onBlur={(newContent) => setContent(newContent)}
                 />
                 <span className="create-campaign-input-span">Content</span>
               </Form.Item>

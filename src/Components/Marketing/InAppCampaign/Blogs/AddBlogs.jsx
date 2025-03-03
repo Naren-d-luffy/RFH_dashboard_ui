@@ -3,7 +3,7 @@ import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage,editorConfig } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
 import { addBlog } from "../../../../Features/BlogSlice";
@@ -262,7 +262,8 @@ const AddBlogs = ({ open, handleCancel }) => {
             <JoditEditor
               ref={editor}
               value={content}
-              onChange={setContent}
+              config={editorConfig}
+              onBlur={(newContent) => setContent(newContent)}
               required
             />
             <span className="create-campaign-input-span">Content Points</span>

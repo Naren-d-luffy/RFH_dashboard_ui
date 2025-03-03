@@ -14,6 +14,20 @@ import AddService from "./AddService";
 import EditService from "./EditService";
 import ViewService from "./ViewService";
 import { deleteService, setService } from "../../../Features/ServiceSlice";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 const ServiceTable = () => {
   const [modals, setModals] = useState({
@@ -25,12 +39,12 @@ const ServiceTable = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [items, setItems] = useState([]);
   const servicesList = useSelector((state) => state.service.services);
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const itemsPerPage = 10;
-  const totalRows = servicesList?.length || 0;
+  const [totalRows, setTotalRows] = useState(0);
 
   const navigate = useNavigate();
 
@@ -77,7 +91,11 @@ const ServiceTable = () => {
           }
         } catch (error) {
           console.error("Error deleting service:", error);
-          message.error(`${error?.response?.data?.message || "An unexpected error occurred"}`);
+          message.error(
+            `${
+              error?.response?.data?.message || "An unexpected error occurred"
+            }`
+          );
         }
       },
     });
@@ -86,30 +104,158 @@ const ServiceTable = () => {
   const fetchServiceList = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await Instance.get("depcat/service");
-      dispatch(setService(response.data));
+      const response = await Instance.get("/depcat/service");
+      // Sort the data by position before setting it
+      const sortedData = response.data.sort((a, b) => a.position - b.position);
+      dispatch(setService(sortedData));
+      setItems(sortedData);
+      setTotalRows(sortedData.length || 0);
     } catch (error) {
-      console.error("Error fetching Services:", error);
+      console.error("Error fetching service list:", error);
+      message.error("Failed to fetch service list");
     } finally {
       setIsLoading(false);
     }
   }, [dispatch]);
 
   useEffect(() => {
-    fetchServiceList();
-  }, [fetchServiceList]);
+    fetchServiceList(currentPage);
+  }, [currentPage, fetchServiceList]);
 
-  const dataSource = useMemo(() => {
-    const services = [...(servicesList || [])].reverse();
-    if (searchText.trim() === "") return services;
-    return services.filter((service) =>
-      `${service.heading} ${service.subHeading} ${service.content}`
+  useEffect(() => {
+    if (servicesList && servicesList.length > 0) {
+      const updatedItems = servicesList.map((item, index) => ({
+        ...item,
+        position: index + 1,
+      }));
+      setItems(updatedItems);
+    }
+  }, [servicesList]);
+
+  const filteredItems = useMemo(() => {
+    if (!items.length) return [];
+    if (searchText.trim() === "") return items;
+
+    return items.filter((service) =>
+      `${service.heading} ${service.subHeading}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
-  }, [searchText, servicesList]);
-  
+  }, [items, searchText]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // 8px movement required before drag starts
+      },
+    })
+  );
+
+  const onDragEnd = useCallback(
+    async (event) => {
+      const { active, over } = event;
+
+      if (!over || active.id === over.id) {
+        return;
+      }
+
+      const oldIndex = items.findIndex((item) => item._id === active.id);
+      const newIndex = items.findIndex((item) => item._id === over.id);
+
+      // Create new array with updated positions
+      const newItems = arrayMove([...items], oldIndex, newIndex).map(
+        (item, index) => ({
+          ...item,
+          position: index + 1,
+        })
+      );
+
+      // Update local state immediately
+      setItems(newItems);
+
+      try {
+        // Prepare the payload with all items and their new positions
+        const updatePayload = newItems.map((item) => ({
+          _id: item._id,
+          position: item.position,
+        }));
+
+        // Make the API call
+        const response = await Instance.patch("/depcat/service", {
+          services: updatePayload,
+        });
+
+        if (response.status === 200) {
+          // Update Redux store with the new order
+          // console.log("drag", response);
+          dispatch(setService(newItems));
+          message.success("Order updated successfully");
+
+          // Fetch the updated list to ensure consistency
+          await fetchServiceList();
+        }
+      } catch (error) {
+        console.error("Error updating order:", error);
+        message.error("Failed to update order");
+        // Reset to original order
+        await fetchServiceList();
+      }
+    },
+    [items, dispatch, fetchServiceList]
+  );
+  const SortableRow = ({ children, ...props }) => {
+    const {
+      attributes,
+      listeners,
+      setNodeRef,
+      transform,
+      transition,
+      isDragging,
+    } = useSortable({
+      id: props["data-row-key"],
+    });
+
+    const style = {
+      ...props.style,
+      transform: CSS.Transform.toString(transform),
+      transition,
+      cursor: isDragging ? "grabbing" : "grab",
+      backgroundColor: isDragging ? "#fafafa" : "transparent",
+      zIndex: isDragging ? 1 : 0,
+    };
+
+    return (
+      <tr
+        {...props}
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+      >
+        {children}
+      </tr>
+    );
+  };
+
+  const handleServiceAdded = useCallback(
+    async (newService) => {
+      // Fetch the complete list after adding new technology
+      await fetchServiceList();
+
+      // Calculate the current page based on the new technology's position
+      const newPosition = newService.position;
+      const newPage = Math.ceil(newPosition / itemsPerPage);
+      setCurrentPage(newPage);
+    },
+    [fetchServiceList, itemsPerPage]
+  );
+
   const columns = [
+    {
+      title: "Sl No",
+      dataIndex: "position",
+      className: "campaign-performance-table-column",
+    },
     {
       title: "Heading",
       dataIndex: "heading",
@@ -166,28 +312,6 @@ const ServiceTable = () => {
     },
   ];
 
-  // const items = [
-  //   {
-  //     label: "Last Day",
-  //     key: "1",
-  //   },
-  //   {
-  //     label: "Last week",
-  //     key: "2",
-  //   },
-  //   {
-  //     label: "Last Month",
-  //     key: "3",
-  //   },
-  // ];
-
-  // const handleMenuClick = ({ key }) => {};
-
-  // const menuProps = {
-  //   items,
-  //   onClick: handleMenuClick,
-  // };
-
   return (
     <div className="container mt-1">
       {isLoading ? (
@@ -220,32 +344,38 @@ const ServiceTable = () => {
                   onChange={(e) => setSearchText(e.target.value)}
                 />
               </div>
-
-              {/* <div className="d-flex gap-2">
-                <Dropdown menu={menuProps}>
-                  <Button>
-                    <Space>
-                      Sort By
-                      <BiSortAlt2 />
-                    </Space>
-                  </Button>
-                </Dropdown>
-              </div> */}
             </div>
+
             <div className="mt-3">
-              <Table
-                columns={columns}
-                dataSource={dataSource}
-                pagination={{
-                  current: currentPage,
-                  pageSize: itemsPerPage,
-                  total: totalRows,
-                  onChange: (page) => setCurrentPage(page),
-                  showSizeChanger: false,
-                }}
-                className="campaign-performance-table overflow-y-auto"
-                bordered={false}
-              />
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={onDragEnd}
+              >
+                <SortableContext
+                  items={filteredItems.map((item) => item._id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <Table
+                    components={{
+                      body: {
+                        row: SortableRow,
+                      },
+                    }}
+                    rowKey="_id"
+                    columns={columns}
+                    dataSource={filteredItems}
+                    pagination={{
+                      current: currentPage,
+                      pageSize: itemsPerPage,
+                      total: totalRows,
+                      onChange: (page) => setCurrentPage(page),
+                      showSizeChanger: false,
+                    }}
+                    className="campaign-performance-table"
+                  />
+                </SortableContext>
+              </DndContext>
             </div>
           </div>
           <div className="d-flex justify-content-start mt-2">
@@ -282,11 +412,13 @@ const ServiceTable = () => {
         open={modals.service}
         handleCancel={() => toggleModal("service")}
         serviceData={selectedService}
+        onServiceAdded={handleServiceAdded}
       />
       <EditService
         open={modals.edit}
         handleCancel={() => toggleModal("edit")}
         serviceData={selectedService}
+        onServiceAdded={handleServiceAdded}
       />
       <ViewService
         open={modals.view}

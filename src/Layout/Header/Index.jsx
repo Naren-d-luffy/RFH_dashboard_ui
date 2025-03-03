@@ -169,7 +169,7 @@ const HeaderAdmin = () => {
               <span
                 style={{
                   color: "var(--black-color)",
-                  fontSize: "15px",
+                  fontSize: "16px",
                   fontWeight: "600",
                   letterSpacing: "0.5px",
                 }}

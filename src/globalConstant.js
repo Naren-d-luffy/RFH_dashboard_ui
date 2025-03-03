@@ -3,6 +3,8 @@ import deleteIcon from "./Assets/Icons/delete-warning-icon.png";
 import success from "./Assets/Icons/success.png";
 import { Button, Card, Checkbox, Input, message, Modal } from "antd";
 import { FiSearch } from "react-icons/fi";
+import { Jodit } from "jodit-react";
+
 // export const IMG_URL = `https://digitalcard-bucket.s3.amazonaws.com`;
 
 export const showSuccessMessage = (message, extraContent = "") => {
@@ -226,8 +228,6 @@ export const filterDropdown = (
 	</Card>
 );
 
-
-
 export const validateImage = (file, maxSizeMB = 50) => {
 	message.destroy();
   const isImage = file.type.startsWith("image/");
@@ -244,4 +244,38 @@ export const validateImage = (file, maxSizeMB = 50) => {
   }
 
   return true; // Validation passed
+};
+
+export const editorConfig = {
+	...Jodit.defaultOptions,
+	controls: {
+	  ...Jodit.defaultOptions.controls,
+	  ul: {
+		list: {
+		  default: "Default",
+		  circle: "Circle",
+		  disc: "Dot",
+		  square: "Triangle",
+		},
+	  },
+	  // Customize indent behavior
+	  indent: {
+		exec: (editor) => {
+		  editor.execCommand('indent');
+		  return false;
+		}
+	  },
+	  outdent: {
+		exec: (editor) => {
+		  // Make outdent more responsive
+		  editor.execCommand('outdent');
+		  return false;
+		}
+	  }
+	},
+	// Adjust these settings to make indent/outdent more responsive
+	indentMargin: 10,
+	useAceEditor: false,
+	// This might help with the indent behavior
+	beautifyHTML: false,
 };

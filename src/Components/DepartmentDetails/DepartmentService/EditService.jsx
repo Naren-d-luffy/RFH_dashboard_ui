@@ -1,44 +1,42 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../globalConstant";
-import { useDispatch } from "react-redux";
+import { showSuccessMessage, validateImage ,editorConfig} from "../../../globalConstant";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { editService } from "../../../Features/ServiceSlice";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
-const modules = {
-  toolbar: [
-    [{ font: [] }, { size: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
-    [{ script: "sub" }, { script: "super" }],
-    [{ direction: "rtl" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link", "image", "formula"],
-    ["clean"],
-  ],
-};
 const { TextArea } = Input;
-const EditService = ({ open, handleCancel, serviceData }) => {
+const EditService = ({ open, handleCancel, serviceData,onServiceAdded }) => {
   const [heading, setHeading] = useState("");
   const [subHeading, setSubHeading] = useState("");
   const [content, setContent] = useState("");
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+
+  const [position, setPosition] = useState("");
+  const servicesList = useSelector((state) => state.service.services);
+  const maxAllowedPosition = servicesList.length + 1;
+
+  const handlePositionChange = (e) => {
+    const value = e.target.value;
+    if (value === "") {
+      setPosition("");
+      return;
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue > 0 && numValue <= maxAllowedPosition) {
+      setPosition(numValue.toString());
+    } else if (numValue > maxAllowedPosition) {
+      message.error(`Position cannot be greater than ${maxAllowedPosition}`);
+    }
+  };
+
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
     if (!validateImage(file)) return false;
@@ -56,8 +54,9 @@ const EditService = ({ open, handleCancel, serviceData }) => {
     setIsMaximized(!isMaximized);
   };
 
+ 
   const handleSave = async () => {
-    if (!heading || !subHeading || !thumbnailImage) {
+    if (!heading || !subHeading || !thumbnailImage || !position) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -68,6 +67,7 @@ const EditService = ({ open, handleCancel, serviceData }) => {
       formData.append("subHeading", subHeading);
       formData.append("thumbnail", thumbnailImage);
       formData.append("content", content);
+      formData.append("position", position);
 
       const response = await Instance.put(
         `/depcat/service/${serviceData._id}`,
@@ -78,10 +78,14 @@ const EditService = ({ open, handleCancel, serviceData }) => {
 
         showSuccessMessage("Service edited successfully!");
         dispatch(editService(response.data));
+        if (onServiceAdded) {
+          await onServiceAdded(response.data);
+        }
         setHeading("");
         setSubHeading("");
         setContent("");
         setThumbnailImage(null);
+        setPosition("");
       }
     } catch (error) {
       console.error(error);
@@ -97,6 +101,7 @@ const EditService = ({ open, handleCancel, serviceData }) => {
       setSubHeading(serviceData.subHeading || "");
       setContent(serviceData.content || "");
       setThumbnailImage(serviceData.thumbnail || null);
+      setPosition(serviceData?.position || "");
     }
   }, [open, serviceData]);
 
@@ -129,7 +134,6 @@ const EditService = ({ open, handleCancel, serviceData }) => {
         title={
           <span className="create-campaign-modal-title">Edit Our Services</span>
         }
-        onCancel={handleCancel}
         closeIcon={closeButtons}
         width={isMaximized ? "98%" : 680}
         style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
@@ -177,6 +181,21 @@ const EditService = ({ open, handleCancel, serviceData }) => {
               <span style={{ color: "red" }}>*</span> Sub Heading
             </span>
           </Form.Item>
+
+          <Form.Item>
+            <Input
+              value={position}
+              onChange={handlePositionChange}
+              placeholder="Position (positive numbers only)"
+              required
+              type="number"
+              min="1"
+            />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Position
+            </span>
+          </Form.Item>
+
           <div className="row">
             <div className="col-lg-12">
               <Form.Item>
@@ -232,7 +251,8 @@ const EditService = ({ open, handleCancel, serviceData }) => {
             <JoditEditor
               ref={editor}
               value={content}
-              onChange={setContent}
+              config={editorConfig}
+              onBlur={(newContent) => setContent(newContent)}
               required
             />
             <span className="create-campaign-input-span">Content</span>

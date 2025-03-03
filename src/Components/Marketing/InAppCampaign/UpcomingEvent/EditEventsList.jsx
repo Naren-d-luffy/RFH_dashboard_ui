@@ -11,7 +11,7 @@ import {
   TimePicker,
 } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage,editorConfig } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { editEvent } from "../../../../Features/DiscoverEventsCard";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -35,6 +35,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [content, setContent] = useState("")
   const dispatch = useDispatch();
   const editor = useRef(null);
   const [isMaximized, setIsMaximized] = useState(false);
@@ -301,7 +302,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
                 style={{ display: "flex", gap: "20px", alignItems: "center" }}
               >
                 <div>
-                  <span>Active &nbsp;</span>
+                  <span style={{color:'var(--black-color)'}}>Active &nbsp;</span>
                   <Switch
                     className="gastro-switch-button"
                     checked={isActive}
@@ -314,8 +315,9 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
           <Form.Item>
             <JoditEditor
               ref={editor}
+              config={editorConfig}
               value={description}
-              onChange={setDescription}
+              onBlur={(newContent) => setContent(newContent)}
               required
             />
             <span className="create-campaign-input-span">Description</span>

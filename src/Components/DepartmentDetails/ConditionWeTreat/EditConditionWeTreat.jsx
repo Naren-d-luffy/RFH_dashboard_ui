@@ -1,40 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../globalConstant";
+import { editorConfig, showSuccessMessage, validateImage } from "../../../globalConstant";
 import Loader from "../../../Loader";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { editConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
-const modules = {
-  toolbar: [
-    [{ font: [] }, { size: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
-    [{ script: "sub" }, { script: "super" }],
-    [{ direction: "rtl" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link", "image", "formula"],
-    ["clean"],
-  ],
-};
-
 const { TextArea } = Input;
 
-const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
+const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdded }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -42,6 +20,26 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+
+  const [position, setPosition] = useState("");
+  const conditionwetreatList = useSelector(
+    (state) => state.conditionwetreat.conditionwetreats
+  );
+  const maxAllowedPosition = conditionwetreatList.length + 1;
+
+  const handlePositionChange = (e) => {
+    const value = e.target.value;
+    if (value === "") {
+      setPosition("");
+      return;
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue > 0 && numValue <= maxAllowedPosition) {
+      setPosition(numValue.toString());
+    } else if (numValue > maxAllowedPosition) {
+      message.error(`Position cannot be greater than ${maxAllowedPosition}`);
+    }
+  };
 
   const editor = useRef(null);
   const [isMaximized, setIsMaximized] = useState(false);
@@ -58,6 +56,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
       setContent(conditionData.content || "");
       // setUploadedImage(conditionData.video || null);
       setThumbnailImage(conditionData.thumbnail || null);
+      setPosition(conditionData?.position || "");
     }
   }, [open, conditionData]);
 
@@ -72,7 +71,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
   };
 
   const handleUpdate = async () => {
-    if (!title || !description || !thumbnailImage) {
+    if (!title || !description || !thumbnailImage || !position) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -83,6 +82,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
       formData.append("heading", title);
       formData.append("subHeading", description);
       formData.append("content", content);
+      formData.append("position", position);
 
       if (thumbnailImage && typeof thumbnailImage !== "string") {
         formData.append("thumbnail", thumbnailImage);
@@ -96,6 +96,9 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
         showSuccessMessage("Condition we treat updated successfully!");
         handleCancel();
         dispatch(editConditionWeTreat(response.data));
+        if (onConditionAdded) {
+          await onConditionAdded(response.data);
+        }
       }
     } catch (error) {
       console.error("Failed to update Condition we treat:", error);
@@ -136,7 +139,6 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
             Edit Condition we treat
           </span>
         }
-        onCancel={handleCancel}
         closeIcon={closeButtons}
         width={isMaximized ? "98%" : 680}
         style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
@@ -170,6 +172,19 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
               required
             />
             <span className="create-campaign-input-span">Title</span>
+          </Form.Item>
+          <Form.Item>
+            <Input
+              value={position}
+              onChange={handlePositionChange}
+              placeholder="Position (positive numbers only)"
+              required
+              type="number"
+              min="1"
+            />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Position
+            </span>
           </Form.Item>
           <Form.Item>
             <TextArea
@@ -225,7 +240,8 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData }) => {
             <JoditEditor
               ref={editor}
               value={content}
-              onChange={setContent}
+              onBlur={(newContent) => setContent(newContent)}
+              config={editorConfig}
               required
             />
             <span className="create-campaign-input-span">Content</span>

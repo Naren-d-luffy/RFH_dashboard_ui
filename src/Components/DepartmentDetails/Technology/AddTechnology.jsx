@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { Button, Modal, Form, Input, Upload, message, Switch } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../globalConstant";
+import { showSuccessMessage, validateImage,editorConfig } from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { addTechnology } from "../../../Features/TechnologySlice";
@@ -12,7 +12,7 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
-const AddTechnology = ({ open, handleCancel }) => {
+const AddTechnology = ({ open, handleCancel ,onTechnologyAdded }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -40,6 +40,8 @@ const AddTechnology = ({ open, handleCancel }) => {
     }
   };
   const editor = useRef(null);
+ 
+
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
     if (!validateImage(file)) return false;
@@ -89,6 +91,9 @@ const AddTechnology = ({ open, handleCancel }) => {
         handleCancel();
         showSuccessMessage("Technology added successfully!");
         dispatch(addTechnology(response.data));
+        if (onTechnologyAdded) {
+          await onTechnologyAdded(response.data);
+        }
         setTitle("");
         setDescription("");
         setContent("");
@@ -173,7 +178,7 @@ const AddTechnology = ({ open, handleCancel }) => {
               onChange={(checked) => setIsOverview(checked)}
               className="gastro-switch-button"
             />
-            <span className="mx-2">Overview</span>
+            <span className="mx-2" style={{color:'var(--black-color)'}}>Overview</span>
           </div>
           <Form.Item>
             <Input
@@ -260,7 +265,8 @@ const AddTechnology = ({ open, handleCancel }) => {
                 <JoditEditor
                   ref={editor}
                   value={content}
-                  onChange={(newContent) => setContent(newContent)}
+                  config={editorConfig}
+                  onBlur={(newContent) => setContent(newContent)}
                 />
                 <span className="create-campaign-input-span">Content</span>
               </Form.Item>

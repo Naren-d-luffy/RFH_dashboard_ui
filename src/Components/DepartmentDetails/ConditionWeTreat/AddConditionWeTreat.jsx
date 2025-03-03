@@ -1,40 +1,19 @@
 import React, { useRef, useState } from "react";
 import { Button, Modal, Form, Input, Upload, message } from "antd";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage } from "../../../globalConstant";
-import { useDispatch } from "react-redux";
+import { editorConfig, showSuccessMessage, validateImage } from "../../../globalConstant";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { addConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
-const modules = {
-  toolbar: [
-    [{ font: [] }, { size: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
-    [{ script: "sub" }, { script: "super" }],
-    [{ direction: "rtl" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link", "image", "formula"],
-    ["clean"],
-  ],
-};
 
 const { TextArea } = Input;
 
-const AddConditionWeTreat = ({ open, handleCancel }) => {
+const AddConditionWeTreat = ({ open, handleCancel,onConditionAdded }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -42,8 +21,27 @@ const AddConditionWeTreat = ({ open, handleCancel }) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const [isMaximized, setIsMaximized] = useState(false);
-
   const editor = useRef(null);
+
+  const [position, setPosition] = useState("");
+  const conditionwetreatList = useSelector(
+    (state) => state.conditionwetreat.conditionwetreats
+  );
+  const maxAllowedPosition = conditionwetreatList.length + 1;
+
+  const handlePositionChange = (e) => {
+    const value = e.target.value;
+    if (value === "") {
+      setPosition("");
+      return;
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue > 0 && numValue <= maxAllowedPosition) {
+      setPosition(numValue.toString());
+    } else if (numValue > maxAllowedPosition) {
+      message.error(`Position cannot be greater than ${maxAllowedPosition}`);
+    }
+  };
 
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
@@ -62,7 +60,7 @@ const AddConditionWeTreat = ({ open, handleCancel }) => {
   };
 
   const handleSave = async () => {
-    if (!title || !description || !thumbnailImage) {
+    if (!title || !description || !thumbnailImage || !position) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -73,15 +71,21 @@ const AddConditionWeTreat = ({ open, handleCancel }) => {
       formData.append("subHeading", description);
       formData.append("thumbnail", thumbnailImage);
       formData.append("content", content);
+      formData.append("position", position);
 
       const response = await Instance.post("/depcat/treat", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("Condition we treat added successfully!");
+        // console.log(response,"add")
         dispatch(addConditionWeTreat(response.data));
+        if (onConditionAdded) {
+          await onConditionAdded(response.data);
+        }
         setTitle("");
         setDescription("");
         setContent("");
+        setPosition("");
         setThumbnailImage(null);
       }
     } catch (error) {
@@ -92,12 +96,13 @@ const AddConditionWeTreat = ({ open, handleCancel }) => {
     }
   };
   const handleCancelClick = (e) => {
-    e.preventDefault(); // Prevent any form submission
-    e.stopPropagation(); // Stop event bubbling
+    e.preventDefault();
+    e.stopPropagation();
     setTitle("");
     setDescription("");
     setContent("");
     setThumbnailImage(null);
+    setPosition("");
     handleCancel();
   };
 
@@ -169,6 +174,21 @@ const AddConditionWeTreat = ({ open, handleCancel }) => {
               <span style={{ color: "red" }}>*</span> Title
             </span>
           </Form.Item>
+
+          <Form.Item>
+            <Input
+              value={position}
+              onChange={handlePositionChange}
+              placeholder="Position (positive numbers only)"
+              required
+              type="number"
+              min="1"
+            />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Position
+            </span>
+          </Form.Item>
+
           <Form.Item>
             <TextArea
               value={description}
@@ -224,7 +244,8 @@ const AddConditionWeTreat = ({ open, handleCancel }) => {
             <JoditEditor
               ref={editor}
               value={content}
-              onChange={(newContent) => setContent(newContent)}
+              config={editorConfig}
+              onBlur={(newContent) => setContent(newContent)}
             />
             <span className="create-campaign-input-span">Content</span>
           </Form.Item>
