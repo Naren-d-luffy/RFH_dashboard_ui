@@ -1,19 +1,31 @@
 import React, { useRef, useState } from "react";
-import { Button, Modal, Form, Input, Upload, message, Select,Switch } from "antd";
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  Upload,
+  message,
+  Select,
+  Switch,
+} from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage, validateImage,editorConfig } from "../../../../globalConstant";
-import { useDispatch } from "react-redux";
+import {
+  showSuccessMessage,
+  validateImage,
+  editorConfig,
+} from "../../../../globalConstant";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
 import { addGastroIllness } from "../../../../Features/GastroIllnessSlice";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
-
 const { TextArea } = Input;
 
-const AddEventsGastroIllness = ({ open, handleCancel }) => {
+const AddEventsGastroIllness = ({ open, handleCancel,  onServiceAdded }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [, setThumbnailImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -26,7 +38,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
   const editor = useRef(null);
   const [isMaximized, setIsMaximized] = useState(false);
   const toggleMaximize = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     e.stopPropagation();
     setIsMaximized(!isMaximized);
   };
@@ -40,15 +52,32 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
+  const [position, setPosition] = useState("");
 
+  const gastroEvents = useSelector(
+    (state) => state.gastroIllness.gastroIllness || []
+  );
+  const maxAllowedPosition = gastroEvents.length + 1;
+  const handlePositionChange = (e) => {
+    const value = e.target.value;
+    if (value === "") {
+      setPosition("");
+      return;
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue > 0 && numValue <= maxAllowedPosition) {
+      setPosition(numValue.toString());
+    } else if (numValue > maxAllowedPosition) {
+      message.error(`Position cannot be greater than ${maxAllowedPosition}`);
+    }
+  };
 
-  
   const handleSave = async () => {
-    if (!title || !type ||!description || !uploadedImage ) {
+    if (!title || !type || !description || !uploadedImage) {
       message.error("Please fill in all required fields.");
       return;
     }
-   
+
     try {
       const formData = new FormData();
       formData.append("title", title);
@@ -59,7 +88,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
       formData.append("type", type); // Include type
       formData.append("service", service);
       formData.append("condition", conditions);
-  
+      formData.append("position", position);
 
       // console.log("Form Data being sent:");
       // for (let pair of formData.entries()) {
@@ -70,9 +99,12 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
       const response = await Instance.post("/gastro", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
-        console.log("add gastfro",response)
+        console.log("add gastfro", response);
         showSuccessMessage("GastroIllness Added successfully!");
         dispatch(addGastroIllness(response.data.data));
+        if (onServiceAdded) {
+          await onServiceAdded(response.data.data);
+        }
         setTitle("");
         setDescription("");
         setContent("");
@@ -80,7 +112,8 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
         setThumbnailImage("");
         setType(""); // Reset type
         setConditions(false);
-        setService(false)
+        setService(false);
+        setPosition("");
       }
     } catch (error) {
       console.error(error);
@@ -122,7 +155,9 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Add Overview Info</span>}
+        title={
+          <span className="create-campaign-modal-title">Add Overview Info</span>
+        }
         onCancel={handleCancelClick}
         closeIcon={closeButtons}
         width={isMaximized ? "98%" : 680}
@@ -167,10 +202,12 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
               placeholder="Description"
               required
             />
-            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Description</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Description
+            </span>
           </Form.Item>
           <div className="row">
-            <div className="col-lg-5">
+            <div className="col-lg-6">
               <Form.Item>
                 <Select
                   placeholder="Select Type"
@@ -192,22 +229,42 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
                 </span>
               </Form.Item>
             </div>
+            <div className="col-lg-6">
+              <Form.Item>
+                <Input
+                  value={position}
+                  onChange={handlePositionChange}
+                  placeholder="Position (positive numbers only)"
+                  required
+                  type="number"
+                  min="1"
+                />
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Position
+                </span>
+              </Form.Item>
+            </div>
             <div className="col-lg-7">
-              <div className="mt-2"
+              <div
+                className="mt-2"
                 style={{ display: "flex", gap: "10px", alignItems: "center" }}
               >
                 <div>
-                  <span style={{color:'var(--black-color)'}}>Department Services </span>
+                  <span style={{ color: "var(--black-color)" }}>
+                    Department Services{" "}
+                  </span>
                   <Switch
-                  className="gastro-switch-button"
+                    className="gastro-switch-button"
                     checked={service}
                     onChange={(checked) => setService(checked)}
                   />
                 </div>
                 <div>
-                  <span style={{color:'var(--black-color)'}}>Conditions we Treat </span>
+                  <span style={{ color: "var(--black-color)" }}>
+                    Conditions we Treat{" "}
+                  </span>
                   <Switch
-                  className="gastro-switch-button"
+                    className="gastro-switch-button"
                     checked={conditions}
                     onChange={(checked) => setConditions(checked)}
                   />
@@ -216,7 +273,7 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
             </div>
           </div>
 
-          <div className="row">
+          <div className="row mt-4">
             <div className="col-lg-12">
               <Form.Item>
                 <Upload
@@ -259,17 +316,18 @@ const AddEventsGastroIllness = ({ open, handleCancel }) => {
                     </Button>
                   </div>
                 )}
-                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Header Image</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Header Image
+                </span>
               </Form.Item>
             </div>
           </div>
 
           <Form.Item>
-             <JoditEditor
+            <JoditEditor
               ref={editor}
               value={content}
               config={editorConfig}
-
               onChange={setContent}
               required
             />

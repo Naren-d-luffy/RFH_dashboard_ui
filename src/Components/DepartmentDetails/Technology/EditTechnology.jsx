@@ -53,7 +53,7 @@ const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }
     setThumbnailImage(null);
   };
   const technologyList = useSelector((state) => state.technology.technologies);
-  const maxAllowedPosition = technologyList.length + 1;
+  const maxAllowedPosition = technologyList.length;
 
   const handlePositionChange = (e) => {
     const value = e.target.value;

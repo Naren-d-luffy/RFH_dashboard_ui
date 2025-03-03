@@ -40,7 +40,7 @@ const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
   const [position, setPosition] = useState("");
   
   const facilities = useSelector((state) => state.facility.facilities);
-  const maxAllowedPosition = facilities.length + 1;
+  const maxAllowedPosition = facilities.length;
   const handlePositionChange = (e) => {
     const value = e.target.value;
     if (value === "") {

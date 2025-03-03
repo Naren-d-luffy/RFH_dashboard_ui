@@ -20,6 +20,20 @@ import {
   setGastroIllness,
 } from "../../../../Features/GastroIllnessSlice";
 import { useNavigate } from "react-router-dom";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 const GastroIllnessTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +43,7 @@ const GastroIllnessTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState(null);
-
+  const [items, setItems] = useState([]);
   const EventData = useSelector((state) => state.gastroIllness.gastroIllness);
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
@@ -78,46 +92,179 @@ const GastroIllnessTable = () => {
           }
         } catch (error) {
           console.error("Error deleting overview:", error);
-          message.error("Error deleting overview",error);
-
+          message.error("Error deleting overview", error);
         }
       },
     });
   };
   const fetchGastroIllnessInfo = useCallback(
-     async (page) => {
-    setIsLoading(true);
-    try {
-      const response = await Instance.get(`/gastro`, {
-        params: { page, limit: itemsPerPage },
-      });
-      dispatch(setGastroIllness(response?.data?.data?.gastros));
-      setGastroIllness(response.data?.gastros || []);
-      setTotalRows(response.data?.data?.totalGastros || 0);
-    } catch (error) {
-      console.error("Error fetching overview:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  },
-  [dispatch, itemsPerPage]
-);
+    async () => {
+      setIsLoading(true);
+      try {
+        const response = await Instance.get(`/gastro`);
+        const sortedData = response.data.data.sort(
+          (a, b) => a.position - b.position
+        );
+        dispatch(setGastroIllness(response?.data?.data));
+        setItems(sortedData);
+        setTotalRows(sortedData.length || 0);
+      } catch (error) {
+        console.error("Error fetching overview:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     fetchGastroIllnessInfo(currentPage);
-  }, [currentPage,fetchGastroIllnessInfo]);
+  }, [currentPage, fetchGastroIllnessInfo]);
 
-  const dataSource = useMemo(() => {
-    const events = [...EventData].reverse();
-    if (searchText.trim() === "") return events;
-    return events.filter((event) =>
+  useEffect(() => {
+    if (EventData && EventData.length > 0) {
+      const updatedItems = EventData.map((item, index) => ({
+        ...item,
+        position: index + 1,
+      }));
+      setItems(updatedItems);
+    }
+  }, [EventData]);
+
+  const filteredItems = useMemo(() => {
+    if (!items.length) return [];
+    if (searchText.trim() === "") return items;
+
+    return items.filter((event) =>
       `${event.title} ${event.description} ${event.content}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
-  }, [searchText, EventData]);
-  
+  }, [items, searchText]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // 8px movement required before drag starts
+      },
+    })
+  );
+
+  const onDragEnd = useCallback(
+    async (event) => {
+      const { active, over } = event;
+
+      if (!over || active.id === over.id) {
+        return;
+      }
+
+      const oldIndex = items.findIndex((item) => item._id === active.id);
+      const newIndex = items.findIndex((item) => item._id === over.id);
+
+      // Create new array with updated positions
+      const newItems = arrayMove([...items], oldIndex, newIndex).map(
+        (item, index) => ({
+          ...item,
+          position: index + 1,
+        })
+      );
+
+      // Update local state immediately
+      setItems(newItems);
+
+      try {
+        // Prepare the payload with all items and their new positions
+        const updatePayload = newItems.map((item) => ({
+          _id: item._id,
+          position: item.position,
+        }));
+
+        // Make the API call
+        const response = await Instance.patch("/gastro", {
+          gastros: updatePayload,
+        });
+
+        if (response.status === 200) {
+          // Update Redux store with the new order
+          // console.log("drag", response);
+          dispatch(setGastroIllness(newItems));
+          message.success("Order updated successfully");
+
+          // Fetch the updated list to ensure consistency
+          await fetchGastroIllnessInfo();
+        }
+      } catch (error) {
+        console.error("Error updating order:", error);
+        message.error("Failed to update order");
+        // Reset to original order
+        await fetchGastroIllnessInfo();
+      }
+    },
+    [items, dispatch, fetchGastroIllnessInfo]
+  );
+  const SortableRow = ({ children, ...props }) => {
+    const {
+      attributes,
+      listeners,
+      setNodeRef,
+      transform,
+      transition,
+      isDragging,
+    } = useSortable({
+      id: props["data-row-key"],
+    });
+
+    const style = {
+      ...props.style,
+      transform: CSS.Transform.toString(transform),
+      transition,
+      cursor: isDragging ? "grabbing" : "grab",
+      backgroundColor: isDragging ? "#fafafa" : "transparent",
+      zIndex: isDragging ? 1 : 0,
+    };
+
+    return (
+      <tr
+        {...props}
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+      >
+        {children}
+      </tr>
+    );
+  };
+
+  const handleServiceAdded = useCallback(
+    async (newService) => {
+      // Fetch the complete list after adding new technology
+      await fetchGastroIllnessInfo();
+
+      // Calculate the current page based on the new technology's position
+      const newPosition = newService.position;
+      const newPage = Math.ceil(newPosition / itemsPerPage);
+      setCurrentPage(newPage);
+    },
+    [fetchGastroIllnessInfo, itemsPerPage]
+  );
+
+  // const dataSource = useMemo(() => {
+  //   const events = [...EventData].reverse();
+  //   if (searchText.trim() === "") return events;
+  //   return events.filter((event) =>
+  //     `${event.title} ${event.description} ${event.content}`
+  //       .toLowerCase()
+  //       .includes(searchText.toLowerCase())
+  //   );
+  // }, [searchText, EventData]);
+
   const columns = [
+    {
+      title: "Sl No",
+      dataIndex: "position",
+      className: "campaign-performance-table-column",
+    },
     {
       title: "Type",
       dataIndex: "type",
@@ -127,8 +274,7 @@ const GastroIllnessTable = () => {
       title: "Title",
       dataIndex: "title",
       className: "campaign-performance-table-column",
-      sorter:(a,b)=>a.title.localeCompare(b.title)
-
+      sorter: (a, b) => a.title.localeCompare(b.title),
     },
     {
       title: "Description",
@@ -246,7 +392,7 @@ const GastroIllnessTable = () => {
                 </Dropdown>
               </div> */}
             </div>
-            <div className="mt-3">
+            {/* <div className="mt-3">
               <Table
                 columns={columns}
                 dataSource={dataSource}
@@ -260,6 +406,37 @@ const GastroIllnessTable = () => {
                 className="campaign-performance-table overflow-y-auto"
                 bordered={false}
               />
+            </div> */}
+            <div className="mt-3">
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={onDragEnd}
+              >
+                <SortableContext
+                  items={filteredItems.map((item) => item._id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <Table
+                    components={{
+                      body: {
+                        row: SortableRow,
+                      },
+                    }}
+                    rowKey="_id"
+                    columns={columns}
+                    dataSource={filteredItems}
+                    pagination={{
+                      current: currentPage,
+                      pageSize: itemsPerPage,
+                      total: totalRows,
+                      onChange: (page) => setCurrentPage(page),
+                      showSizeChanger: false,
+                    }}
+                    className="campaign-performance-table"
+                  />
+                </SortableContext>
+              </DndContext>
             </div>
           </div>
           <div className="d-flex justify-content-start mt-2">
@@ -292,16 +469,18 @@ const GastroIllnessTable = () => {
           </div>
         </div>
       )}
-      <AddEventsGastroIllness open={isModalOpen} handleCancel={handleCancel} />
+      <AddEventsGastroIllness open={isModalOpen} handleCancel={handleCancel}   onServiceAdded={handleServiceAdded}/>
       <EditEventsGastroIllness
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
         EventData={selectedEvent}
+        onServiceAdded={handleServiceAdded}
       />
       <ViewEventsGastroIllness
         open={isViewModalOpen}
         handleCancel={handleViewCancel}
         EventData={selectedEvent}
+        
       />
     </div>
   );

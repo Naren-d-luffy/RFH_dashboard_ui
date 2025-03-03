@@ -12,8 +12,12 @@ import {
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage, validateImage,editorConfig } from "../../../../globalConstant";
-import { useDispatch } from "react-redux";
+import {
+  showSuccessMessage,
+  validateImage,
+  editorConfig,
+} from "../../../../globalConstant";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
 import { editGastroIllness } from "../../../../Features/GastroIllnessSlice";
 import JoditEditor from "jodit-react";
@@ -21,7 +25,7 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
-const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
+const EditEventsGastroIllness = ({ open, handleCancel, EventData,  onServiceAdded }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [, setThumbnailImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -33,6 +37,26 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
   const dispatch = useDispatch();
   const editor = useRef(null);
   const [isMaximized, setIsMaximized] = useState(false);
+  const [position, setPosition] = useState("");
+
+  const gastroEvents = useSelector(
+    (state) => state.gastroIllness.gastroIllness || []
+  );
+  const maxAllowedPosition = gastroEvents.length;
+  const handlePositionChange = (e) => {
+    const value = e.target.value;
+    if (value === "") {
+      setPosition("");
+      return;
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue > 0 && numValue <= maxAllowedPosition) {
+      setPosition(numValue.toString());
+    } else if (numValue > maxAllowedPosition) {
+      message.error(`Position cannot be greater than ${maxAllowedPosition}`);
+    }
+  };
+
   const toggleMaximize = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -59,7 +83,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
       setType(EventData.type || "");
       setService(EventData.service);
       setConditions(EventData.condition);
-
+      setPosition(EventData.position);
       // setThumbnailImage(EventData.thumbnail || null);
     }
   }, [open, EventData]);
@@ -80,12 +104,15 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
       formData.append("type", type); // Include type
       formData.append("service", service);
       formData.append("condition", conditions);
+      formData.append("position", position);
       const response = await Instance.put(`/gastro/${EventData._id}`, formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         showSuccessMessage("GastroIllness Info Updated successfully!");
         dispatch(editGastroIllness(response.data.data));
-
+        if (onServiceAdded) {
+          await onServiceAdded(response.data.data);
+        }
         setTitle("");
         setDescription("");
         setContent("");
@@ -179,7 +206,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
             </span>
           </Form.Item>
           <div className="row">
-            <div className="col-lg-5">
+            <div className="col-lg-6">
               <Form.Item>
                 <Select
                   placeholder="Select Type"
@@ -201,13 +228,30 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                 </span>
               </Form.Item>
             </div>
+            <div className="col-lg-6">
+              <Form.Item>
+                <Input
+                  value={position}
+                  onChange={handlePositionChange}
+                  placeholder="Position (positive numbers only)"
+                  required
+                  type="number"
+                  min="1"
+                />
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Position
+                </span>
+              </Form.Item>
+            </div>
             <div className="col-lg-7">
               <div
                 className="mt-2"
                 style={{ display: "flex", gap: "10px", alignItems: "center" }}
               >
                 <div>
-                  <span style={{color:'var(--black-color)'}}>Department Services </span>
+                  <span style={{ color: "var(--black-color)" }}>
+                    Department Services{" "}
+                  </span>
                   <Switch
                     className="gastro-switch-button"
                     checked={service}
@@ -215,7 +259,9 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
                   />
                 </div>
                 <div>
-                  <span style={{color:'var(--black-color)'}}>Conditions we Treat </span>
+                  <span style={{ color: "var(--black-color)" }}>
+                    Conditions we Treat{" "}
+                  </span>
                   <Switch
                     className="gastro-switch-button"
                     checked={conditions}
@@ -225,7 +271,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
               </div>
             </div>
           </div>
-          <div className="row">
+          <div className="row mt-4">
             <div className="col-lg-12">
               <Form.Item>
                 <Upload
