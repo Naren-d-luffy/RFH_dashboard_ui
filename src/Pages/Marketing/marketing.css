@@ -144,8 +144,8 @@
 }
 
 .campaign-performance-table-head h6 {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 22px;
+  font-weight: 600;
   letter-spacing: -2%;
   line-height: 19px;
   color: var(--search-icon-color);
@@ -251,6 +251,7 @@
   padding: 10px;
   border-radius: 12px;
   cursor: pointer;
+  color: var(--black-color);
 }
 
 .ql-toolbar.ql-snow + .ql-container.ql-snow {
@@ -432,7 +433,7 @@
 }
 
 .marketing-categories-section h6 {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 600;
   line-height: 37.93px;
   letter-spacing: -0.03em;
