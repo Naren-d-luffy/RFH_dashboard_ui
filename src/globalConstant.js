@@ -265,6 +265,9 @@ export const editorConfig = {
 		  return false;
 		}
 	  },
+	  style: {
+		fontFamily: 'Proxima Nova, sans-serif', // Enforce Proxima Nova
+	  },
 	  outdent: {
 		exec: (editor) => {
 		  // Make outdent more responsive

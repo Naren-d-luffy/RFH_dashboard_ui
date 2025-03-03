@@ -331,7 +331,7 @@ body,
 .ant-input {
   color: var(--black-color);
   background: transparent;
-  font-size: 12px;
+  font-size: 14px;
   padding: 10px;
 }
 
@@ -541,6 +541,30 @@ font-size: 16px;
 .jodit-container .jodit-toolbar-button svg {
   fill: var(--black-color) !important;
   stroke: var(--black-color) !important;
+}
+.ant-color-picker-trigger .ant-color-picker-trigger-text {
+  color: var(--black-color) !important;
+}
+.ant-color-picker-trigger {
+  background: var(--white-color) !important;
+}
+.jodit-container {
+  resize: vertical;
+  overflow: auto;
+  min-height: 250px !important;
+  max-width: 100%;
+}
+.jodit-toolbar-button_font {
+  display: none !important;
+}
+.jodit-add-new-line{
+  display: none !important;
+}
+.jodit-wysiwyg {
+  font-family: "Proxima Nova", sans-serif !important;
+}
+.jodit-wysiwyg span{
+  font-family: "Proxima Nova", sans-serif !important;
 }
 .hide-placeholder-editor .jodit-placeholder {
   display: none !important;

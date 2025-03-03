@@ -3,8 +3,12 @@ import { Button, Modal, Form, Input, Upload, message, Switch } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage, validateImage ,editorConfig} from "../../../../globalConstant";
-import { useDispatch } from "react-redux";
+import {
+  showSuccessMessage,
+  validateImage,
+  editorConfig,
+} from "../../../../globalConstant";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
 import { addTreatment } from "../../../../Features/TreatmentInfoSlice";
 import JoditEditor from "jodit-react";
@@ -12,7 +16,7 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
-const AddTreatmentsInfo = ({ open, handleCancel }) => {
+const AddTreatmentsInfo = ({ open, handleCancel ,onServiceAdded}) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -24,6 +28,25 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
   const dispatch = useDispatch();
   const editor = useRef(null);
   const [isMaximized, setIsMaximized] = useState(false);
+  const [position, setPosition] = useState("");
+  const treatmentData = useSelector((state) => state.treatments.treatments);
+
+  const maxAllowedPosition = treatmentData.length + 1;
+  
+    const handlePositionChange = (e) => {
+      const value = e.target.value;
+      if (value === "") {
+        setPosition("");
+        return;
+      }
+      const numValue = parseInt(value);
+      if (!isNaN(numValue) && numValue > 0 && numValue <= maxAllowedPosition) {
+        setPosition(numValue.toString());
+      } else if (numValue > maxAllowedPosition) {
+        message.error(`Position cannot be greater than ${maxAllowedPosition}`);
+      }
+    };
+  
   const toggleMaximize = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -63,10 +86,16 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
       formData.append("thumbnail", thumbnailImage);
       formData.append("service", service);
       formData.append("condition", conditions);
+      formData.append("position", position);
+
+      
       const response = await Instance.post("/education", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
         dispatch(addTreatment(response.data.data));
+        if (onServiceAdded) {
+          await onServiceAdded(response.data.data);
+        }
         showSuccessMessage("Common procedure added successfully!");
         setTitle("");
         setDescription("");
@@ -75,6 +104,7 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
         setThumbnailImage("");
         setConditions(false);
         setService(false);
+        setPosition("");
       }
     } catch (error) {
       console.error(error);
@@ -170,13 +200,15 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
             </span>
           </Form.Item>
           <div className="row">
-            <div className="col-lg-12">
+            <div className="col-lg-8">
               <div
                 className="mt-2"
                 style={{ display: "flex", gap: "30px", alignItems: "center" }}
               >
                 <div>
-                  <span style={{color:'var(--black-color)'}}>Department Services </span>
+                  <span style={{ color: "var(--black-color)" }}>
+                    Department Services{" "}
+                  </span>
                   <Switch
                     className="gastro-switch-button"
                     checked={service}
@@ -184,7 +216,9 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
                   />
                 </div>
                 <div>
-                  <span style={{color:'var(--black-color)'}}>Conditions we Treat </span>
+                  <span style={{ color: "var(--black-color)" }}>
+                    Conditions we Treat{" "}
+                  </span>
                   <Switch
                     className="gastro-switch-button"
                     checked={conditions}
@@ -192,6 +226,21 @@ const AddTreatmentsInfo = ({ open, handleCancel }) => {
                   />
                 </div>
               </div>
+            </div>
+            <div className="col-lg-4">
+              <Form.Item>
+                <Input
+                  value={position}
+                  onChange={handlePositionChange}
+                  placeholder="Position (positive numbers only)"
+                  required
+                  type="number"
+                  min="1"
+                />
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Position
+                </span>
+              </Form.Item>
             </div>
           </div>
           <div className="row mt-5">

@@ -25,7 +25,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdd
   const conditionwetreatList = useSelector(
     (state) => state.conditionwetreat.conditionwetreats
   );
-  const maxAllowedPosition = conditionwetreatList.length + 1;
+  const maxAllowedPosition = conditionwetreatList.length ;
 
   const handlePositionChange = (e) => {
     const value = e.target.value;
