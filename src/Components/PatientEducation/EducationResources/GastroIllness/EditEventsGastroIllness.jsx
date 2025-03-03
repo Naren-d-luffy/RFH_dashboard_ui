@@ -282,7 +282,8 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData }) => {
             <JoditEditor
               ref={editor}
               value={content}
-              config={editorConfig}
+              // config={editorConfig}
+              config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               onBlur={(newContent) => setContent(newContent)}
             />
             <span className="create-campaign-input-span"> Content Points</span>

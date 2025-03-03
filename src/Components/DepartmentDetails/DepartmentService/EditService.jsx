@@ -251,7 +251,8 @@ const EditService = ({ open, handleCancel, serviceData,onServiceAdded }) => {
             <JoditEditor
               ref={editor}
               value={content}
-              config={editorConfig}
+              // config={editorConfig}
+              config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               onBlur={(newContent) => setContent(newContent)}
               required
             />
