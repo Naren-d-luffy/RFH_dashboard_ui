@@ -25,7 +25,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdd
   const conditionwetreatList = useSelector(
     (state) => state.conditionwetreat.conditionwetreats
   );
-  const maxAllowedPosition = conditionwetreatList.length + 1;
+  const maxAllowedPosition = conditionwetreatList.length ;
 
   const handlePositionChange = (e) => {
     const value = e.target.value;
@@ -241,7 +241,8 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdd
               ref={editor}
               value={content}
               onBlur={(newContent) => setContent(newContent)}
-              config={editorConfig}
+              // config={editorConfig}
+              config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               required
             />
             <span className="create-campaign-input-span">Content</span>

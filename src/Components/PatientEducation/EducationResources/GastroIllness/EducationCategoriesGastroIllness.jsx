@@ -35,6 +35,7 @@ const EducationCategoriesGastroIllness = () => {
   const gastroEvents = useSelector(
     (state) => state.gastroIllness.gastroIllness || []
   );
+  console.log("gastroEvents",gastroEvents)
   // const sanitizeContent = (content) => {
   //   return DOMPurify.sanitize(content);
   // };
@@ -100,7 +101,8 @@ const EducationCategoriesGastroIllness = () => {
         const response = await Instance.get("/gastro", {
           params: { page, limit: itemsPerPage },
         });
-        dispatch(setGastroIllness(response.data.data.gastros || []));
+        console.log(response)
+        dispatch(setGastroIllness(response.data.data || []));
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching gastro events:", error);

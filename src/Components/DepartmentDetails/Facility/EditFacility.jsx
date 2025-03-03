@@ -40,7 +40,7 @@ const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
   const [position, setPosition] = useState("");
   
   const facilities = useSelector((state) => state.facility.facilities);
-  const maxAllowedPosition = facilities.length + 1;
+  const maxAllowedPosition = facilities.length;
   const handlePositionChange = (e) => {
     const value = e.target.value;
     if (value === "") {
@@ -327,7 +327,8 @@ const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
             <JoditEditor
               ref={editor}
               value={content}
-              config={editorConfig}
+              // config={editorConfig}
+              config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               onBlur={(newContent) => setContent(newContent)}
               required
             />

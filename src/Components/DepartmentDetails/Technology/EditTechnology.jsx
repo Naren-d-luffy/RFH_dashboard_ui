@@ -53,7 +53,7 @@ const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }
     setThumbnailImage(null);
   };
   const technologyList = useSelector((state) => state.technology.technologies);
-  const maxAllowedPosition = technologyList.length + 1;
+  const maxAllowedPosition = technologyList.length;
 
   const handlePositionChange = (e) => {
     const value = e.target.value;
@@ -271,7 +271,8 @@ const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }
                 <JoditEditor
                   ref={editor}
                   value={content}
-                  config={editorConfig}
+                  // config={editorConfig}
+                  config={{ ...editorConfig, className: "hide-placeholder-editor" }}
                   onBlur={(newContent) => setContent(newContent)}
                 />
                 <span className="create-campaign-input-span">Content</span>

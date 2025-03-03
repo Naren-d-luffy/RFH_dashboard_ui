@@ -142,7 +142,7 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
       {isLoading && <Loader />}
       <Modal
         visible={open}
-        title={<span className="create-campaign-modal-title">Edit Blog</span>}
+        title={<span className="create-campaign-modal-title">Edit News</span>}
         onCancel={handleCancel}
         closeIcon={closeButtons}
         width={isMaximized ? "98%" : 680}
@@ -298,7 +298,8 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
           <Form.Item>
             <JoditEditor
               ref={editor}
-              config={editorConfig}
+              // config={editorConfig}
+              config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               value={content}
               onBlur={(newContent) => setContent(newContent)}
             />
