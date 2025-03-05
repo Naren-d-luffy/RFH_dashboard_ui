@@ -13,6 +13,7 @@ const DoctorDetail = () => {
   const editor = useRef(null);
 
   const [uploadedFile, setUploadedFile] = useState(null);
+  const [content, setContent] = useState("")
   const [formData, setFormData] = useState({
     name: "",
     position: "",
@@ -276,7 +277,7 @@ const DoctorDetail = () => {
                     config={editorConfig}
 
                     value={formData.about || ""}
-                    onChange={(value) => handleInputChange("about", value)}
+                    onBlur={(newContent) => setContent(newContent)}
                   />
                 </div>
 

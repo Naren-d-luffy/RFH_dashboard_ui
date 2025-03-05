@@ -11,7 +11,7 @@
   letter-spacing: 0.5px;
   border: 1px solid var(--border-color);
 }
-.search-input-table:focus-visible{
+.search-input-table:focus-visible {
   border: 1px solid var(--border-color);
   outline: none;
 }
@@ -1010,12 +1010,21 @@
   font-size: 12px;
   color: var(--secondary-text-color);
 }
-.disabled-input.ant-input-outlined.ant-input-disabled,.ant-input-outlined[disabled] {
-  background-color:var(--white-color);
+.disabled-input.ant-input-outlined.ant-input-disabled,
+.ant-input-outlined[disabled] {
+  background-color: var(--white-color);
 }
 .quill-editor .ql-container {
-  border-radius: 0px 0px 6px 6px; 
+  border-radius: 0px 0px 6px 6px;
 }
 .quill-editor .ql-toolbar {
-  border-radius: 6px 6px 0 0; 
+  border-radius: 6px 6px 0 0;
+}
+
+.news-content p {
+  color: var(--black-color);
+}
+
+.news-content h6 {
+  color: var(--black-color);
 }

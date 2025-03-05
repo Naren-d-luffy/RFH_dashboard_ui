@@ -20,6 +20,20 @@ import EditTreatmentsInfo from "./EditTreatmentsInfo";
 import ViewTreatmentsInfo from "./ViewTreatmentsInfo";
 import AddTreatmentsInfo from "./AddTreatmentsInfo";
 import { useNavigate } from "react-router-dom";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 const TreatmentList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,6 +44,7 @@ const TreatmentList = () => {
   const [totalRows, setTotalRows] = useState(0);
   const [selectedTreatment, setSelectedTreatment] = useState(null);
   const navigate = useNavigate();
+  const [items, setItems] = useState([]);
 
   const treatmentData = useSelector((state) => state.treatments.treatments);
 
@@ -84,58 +99,164 @@ const TreatmentList = () => {
       },
     });
   };
-  // const fetchTreatmentsInfo = async (page) => {
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await Instance.get(`/education`, {
-  //       params: { page, limit: itemsPerPage },
-  //     });
-  //     dispatch(setTreatment(response?.data?.data?.educations));
-  //     setTotalRows(response.data?.data?.totalEducations || 0);
-  //   } catch (error) {
-  //     console.error("Error fetching treatments:", error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchTreatmentsInfo(currentPage);
-  // }, [currentPage]);
-
   const fetchTreatmentsInfo = useCallback(
     async (page) => {
       setIsLoading(true);
       try {
-        const response = await Instance.get(`/education`, {
-          params: { page, limit: itemsPerPage },
-        });
-        dispatch(setTreatment(response?.data?.data?.educations));
-        setTotalRows(response.data?.data?.totalEducations || 0);
+        const response = await Instance.get(`/education`);
+        const sortedData = response.data.data.sort(
+          (a, b) => a.position - b.position
+        );
+        dispatch(setTreatment(sortedData));
+        setItems(sortedData);
+        setTotalRows(sortedData.length || 0);
       } catch (error) {
         console.error("Error fetching common procedure:", error);
       } finally {
         setIsLoading(false);
       }
     },
-    [dispatch, itemsPerPage]
+    [dispatch]
   );
 
   useEffect(() => {
     fetchTreatmentsInfo(currentPage);
   }, [currentPage, fetchTreatmentsInfo]);
 
-  const dataSource = useMemo(() => {
-    const treatments = [...treatmentData].reverse();
-    if (searchText.trim() === "") return treatments;
-    return treatments.filter((treatment) =>
+  useEffect(() => {
+    if (treatmentData && treatmentData.length > 0) {
+      const updatedItems = treatmentData.map((item, index) => ({
+        ...item,
+        position: index + 1,
+      }));
+      setItems(updatedItems);
+    }
+  }, [treatmentData]);
+
+ 
+
+  const filteredItems = useMemo(() => {
+    if (!items.length) return [];
+    if (searchText.trim() === "") return items;
+
+    return items.filter((treatment) =>
       `${treatment.title} ${treatment.description} ${treatment.content}`
         .toLowerCase()
         .includes(searchText.toLowerCase())
     );
-  }, [searchText, treatmentData]);
-  
+  }, [items, searchText]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // 8px movement required before drag starts
+      },
+    })
+  );
+
+  const onDragEnd = useCallback(
+    async (event) => {
+      const { active, over } = event;
+
+      if (!over || active.id === over.id) {
+        return;
+      }
+
+      const oldIndex = items.findIndex((item) => item._id === active.id);
+      const newIndex = items.findIndex((item) => item._id === over.id);
+
+      // Create new array with updated positions
+      const newItems = arrayMove([...items], oldIndex, newIndex).map(
+        (item, index) => ({
+          ...item,
+          position: index + 1,
+        })
+      );
+
+      // Update local state immediately
+      setItems(newItems);
+
+      try {
+        // Prepare the payload with all items and their new positions
+        const updatePayload = newItems.map((item) => ({
+          _id: item._id,
+          position: item.position,
+        }));
+
+        // Make the API call
+        const response = await Instance.patch("/education", {
+          educations: updatePayload,
+        });
+
+        if (response.status === 200) {
+       
+          dispatch(setTreatment(newItems));
+          message.success("Order updated successfully");
+
+          await fetchTreatmentsInfo();
+        }
+      } catch (error) {
+        console.error("Error updating order:", error);
+        message.error("Failed to update order");
+        // Reset to original order
+        await fetchTreatmentsInfo();
+      }
+    },
+    [items, dispatch, fetchTreatmentsInfo]
+  );
+  const SortableRow = ({ children, ...props }) => {
+    const {
+      attributes,
+      listeners,
+      setNodeRef,
+      transform,
+      transition,
+      isDragging,
+    } = useSortable({
+      id: props["data-row-key"],
+    });
+
+    const style = {
+      ...props.style,
+      transform: CSS.Transform.toString(transform),
+      transition,
+      cursor: isDragging ? "grabbing" : "grab",
+      backgroundColor: isDragging ? "#fafafa" : "transparent",
+      zIndex: isDragging ? 1 : 0,
+    };
+
+    return (
+      <tr
+        {...props}
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+      >
+        {children}
+      </tr>
+    );
+  };
+
+  const handleServiceAdded = useCallback(
+    async (newService) => {
+      // Fetch the complete list after adding new technology
+      await fetchTreatmentsInfo();
+
+      // Calculate the current page based on the new technology's position
+      const newPosition = newService.position;
+      const newPage = Math.ceil(newPosition / itemsPerPage);
+      setCurrentPage(newPage);
+    },
+    [fetchTreatmentsInfo, itemsPerPage]
+  );
+
   const columns = [
+    {
+      title: "Sl No",
+      dataIndex: "position",
+      className: "campaign-performance-table-column",
+    },
     {
       title: "Title",
       dataIndex: "title",
@@ -192,27 +313,6 @@ const TreatmentList = () => {
     },
   ];
 
-  // const items = [
-  //   {
-  //     label: "Last Day",
-  //     key: "1",
-  //   },
-  //   {
-  //     label: "Last week",
-  //     key: "2",
-  //   },
-  //   {
-  //     label: "Last Month",
-  //     key: "3",
-  //   },
-  // ];
-
-  // const handleMenuClick = ({ key }) => {};
-
-  // const menuProps = {
-  //   items,
-  //   onClick: handleMenuClick,
-  // };
 
   return (
     <div className="container mt-1">
@@ -230,7 +330,7 @@ const TreatmentList = () => {
                 onClick={showModal}
               >
                 <GoPlus />
-                Add 
+                Add
               </button>
             </div>
           </div>
@@ -246,32 +346,38 @@ const TreatmentList = () => {
                   onChange={(e) => setSearchText(e.target.value)}
                 />
               </div>
-
-              {/* <div className="d-flex gap-2">
-                <Dropdown menu={menuProps}>
-                  <Button>
-                    <Space>
-                      Sort By
-                      <BiSortAlt2 />
-                    </Space>
-                  </Button>
-                </Dropdown>
-              </div> */}
             </div>
+            
             <div className="mt-3">
-              <Table
-                columns={columns}
-                dataSource={dataSource}
-                pagination={{
-                  current: currentPage,
-                  pageSize: itemsPerPage,
-                  total: totalRows,
-                  onChange: (page) => setCurrentPage(page),
-                  showSizeChanger: false,
-                }}
-                className="campaign-performance-table overflow-y-auto"
-                bordered={false}
-              />
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={onDragEnd}
+              >
+                <SortableContext
+                  items={filteredItems.map((item) => item._id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <Table
+                    components={{
+                      body: {
+                        row: SortableRow,
+                      },
+                    }}
+                    rowKey="_id"
+                    columns={columns}
+                    dataSource={filteredItems}
+                    pagination={{
+                      current: currentPage,
+                      pageSize: itemsPerPage,
+                      total: totalRows,
+                      onChange: (page) => setCurrentPage(page),
+                      showSizeChanger: false,
+                    }}
+                    className="campaign-performance-table"
+                  />
+                </SortableContext>
+              </DndContext>
             </div>
           </div>
           <div className="d-flex justify-content-start mt-2">
@@ -304,11 +410,14 @@ const TreatmentList = () => {
           </div>
         </div>
       )}
-      <AddTreatmentsInfo open={isModalOpen} handleCancel={handleCancel} />
+      <AddTreatmentsInfo open={isModalOpen} handleCancel={handleCancel}  onServiceAdded={handleServiceAdded}
+      />
       <EditTreatmentsInfo
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
         treatmentData={selectedTreatment}
+        onServiceAdded={handleServiceAdded}
+
       />
       <ViewTreatmentsInfo
         open={isViewModalOpen}

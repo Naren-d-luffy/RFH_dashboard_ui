@@ -111,7 +111,7 @@ const EducationCategoriesTreatmentsInfo = () => {
         const response = await Instance.get(`/education`, {
           params: { page, limit: itemsPerPage },
         });
-        dispatch(setTreatment(response.data.data.educations));
+        dispatch(setTreatment(response.data.data));
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching treatments:", error);
@@ -229,8 +229,8 @@ const EducationCategoriesTreatmentsInfo = () => {
         </div>
         {isLoading && <Loader />}
         <div className="row mt-3">
-          <Slider {...sliderSettings} key={treatmentData.length}>
-            {treatmentData && treatmentData.length > 0 ? (
+          <Slider {...sliderSettings} key={treatmentData?.length}>
+            {treatmentData && treatmentData?.length > 0 ? (
               [...treatmentData].reverse()?.map((treatment) => renderImageCard(treatment))
             ) : (
               <p>No data available</p>
