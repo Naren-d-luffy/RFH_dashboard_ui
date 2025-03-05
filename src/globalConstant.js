@@ -14,7 +14,7 @@ export const showSuccessMessage = (message, extraContent = "") => {
 		imageHeight: 100,
 		padding: "10px",
 		html: `
-			<p style='color: var(--black-color); font-size: 24px; font-weight: 600; margin-bottom: 0; text-align: center; margin-top: -25px;'>
+			<p style='color: var(--black-color); font-size: 24px; font-weight: 600; margin-bottom: 0; text-align: center; margin-top: -20px;'>
 				${message}
 			</p>
 			<p style='color: var(--secondary-text-color); font-size: 14px; font-weight: 500; margin-top: 10px; text-align: center;'>
@@ -39,7 +39,7 @@ export const showErrorMessage = (message) => {
 		imageHeight: 100,
 		padding: "10px",
 		html: `
-			<p style='color: var(--black-color); font-size: 20px; font-weight: 600; margin-bottom: 0; text-align: center; margin-top: -25px;'>
+			<p style='color: var(--black-color); font-size: 20px; font-weight: 600; margin-bottom: 0; text-align: center; margin-top: -20px;'>
 				${message}
 			</p>
 			

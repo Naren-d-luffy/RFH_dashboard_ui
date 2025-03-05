@@ -30,6 +30,9 @@ import {
 } from "@dnd-kit/sortable";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import CommonProceduresServices from "../DepartmentService/CommonProceduresServices";
+import CommonProcedurersConditions from "./CommonProceduresConditions";
+import ConditionOverviewTable from "./ConditionsOverviewTable";
 
 const ConditionWeTreatTable = () => {
   const conditionwetreatList = useSelector(
@@ -417,7 +420,7 @@ const ConditionWeTreatTable = () => {
               </DndContext>
             </div>
           </div>
-          <div className="d-flex justify-content-start mt-2">
+          {/* <div className="d-flex justify-content-start mt-2">
             <button
               className="d-flex gap-2 align-items-center rfh-basic-button"
               onClick={() => navigate("/department-details")}
@@ -425,7 +428,7 @@ const ConditionWeTreatTable = () => {
               <FaAngleLeft />
               Back
             </button>
-          </div>
+          </div> */}
         </>
       ) : (
         <div className="container">
@@ -447,6 +450,9 @@ const ConditionWeTreatTable = () => {
           </div>
         </div>
       )}
+
+      <ConditionOverviewTable/>
+      <CommonProcedurersConditions/>
       <AddConditionWeTreat open={isModalOpen} handleCancel={handleCancel} onConditionAdded={handleConditionAdded} />
       <EditConditionWeTreat
         open={isEditModalOpen}
