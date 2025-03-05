@@ -28,6 +28,8 @@ import {
 } from "@dnd-kit/sortable";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import ServicesOverviewTable from "./ServicesOverviewTable";
+import CommonProceduresServices from "./CommonProceduresServices";
 
 const ServiceTable = () => {
   const [modals, setModals] = useState({
@@ -378,7 +380,7 @@ const ServiceTable = () => {
               </DndContext>
             </div>
           </div>
-          <div className="d-flex justify-content-start mt-2">
+          {/* <div className="d-flex justify-content-start mt-2">
             <button
               className="d-flex gap-2 align-items-center rfh-basic-button"
               onClick={() => navigate("/department-details")}
@@ -386,7 +388,7 @@ const ServiceTable = () => {
               <FaAngleLeft />
               Back
             </button>
-          </div>
+          </div> */}
         </>
       ) : (
         <div className="container">
@@ -408,6 +410,10 @@ const ServiceTable = () => {
           </div>
         </div>
       )}
+
+      <ServicesOverviewTable/>
+      <CommonProceduresServices/>
+
       <AddService
         open={modals.service}
         handleCancel={() => toggleModal("service")}
