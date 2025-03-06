@@ -33,6 +33,12 @@ const ViewOutstationClinic = ({ open, handleCancel, EventData }) => {
             <h5>{EventData?.about || "N/A"}</h5>
             <div>
               <p>
+                <strong>Clinic Type:</strong> {EventData?.type || "N/A"}
+              </p>
+              <p>
+                <strong>Clinic Name:</strong> {EventData?.name || "N/A"}
+              </p>
+              <p>
                 <strong>Address:</strong> {EventData?.location || "N/A"}
               </p>
               <p>
@@ -51,9 +57,23 @@ const ViewOutstationClinic = ({ open, handleCancel, EventData }) => {
               <p>
                 <strong>Timing:</strong> {EventData?.timing || "N/A"}
               </p>
+
               <p>
-                <strong>Clinic Type:</strong> {EventData?.type || "N/A"}
+                <strong>Appointment:</strong> {EventData?.appointment || "N/A"}
               </p>
+              {/* <p>
+                <strong>Content:</strong> {EventData?.content || "N/A"}
+              </p> */}
+              <div
+                className="news-content"
+                style={{ color: "var(--text-color)" }}
+                dangerouslySetInnerHTML={{
+                  __html: EventData?.content?.replace(
+                    /<img/g,
+                    '<img style="max-width: 100%; max-height: 150px; height: auto; object-fit: cover;"'
+                  ),
+                }}
+              />
             </div>
           </div>
         </div>
