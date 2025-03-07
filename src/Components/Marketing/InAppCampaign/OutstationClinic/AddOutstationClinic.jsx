@@ -13,7 +13,7 @@ import {
 } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
-import { editorConfig, showSuccessMessage, validateImage } from "../../../../globalConstant";
+import { editorConfig, formatListWithTriangleBullets, showSuccessMessage, validateImage } from "../../../../globalConstant";
 import Loader from "../../../../Loader";
 import { addOutstationClinic } from "../../../../Features/OutstationClinicSlice";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -308,7 +308,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               ref={editor}
               value={content}
               config={editorConfig}
-              onBlur={(newContent) => setContent(newContent)}
+              onBlur={(newContent) => {
+                const modifiedContent = formatListWithTriangleBullets(newContent);
+              setContent(newContent)}}
             />
             <span className="create-campaign-input-span">Content</span>
           </Form.Item>
@@ -372,6 +374,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               showUploadList={false}
               onChange={handleUpload}
               className="create-campaign-upload"
+              accept="image/*"
             >
               <p className="create-campaign-ant-upload-text">
                 Drop files here or click to upload

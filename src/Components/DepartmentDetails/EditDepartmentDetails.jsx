@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
-import { showSuccessMessage,editorConfig } from "../../globalConstant";
+import { showSuccessMessage,editorConfig, formatListWithTriangleBullets } from "../../globalConstant";
 import { Instance } from "../../AxiosConfig";
 import { editDepartment } from "../../Features/DepartmentSlice";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -54,7 +54,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
 
   const handleUpdate = async () => {
    
-    if (!title || !subtitle || !uploadedImage) {
+    if (!title || !subtitle || !imagePreviewUrl) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -184,10 +184,12 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
               // config={editorConfig}
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               value={description}
-              onBlur={(newContent) => setContent(newContent)}
+              onBlur={(newContent) => {
+                const modifiedContent = formatListWithTriangleBullets(newContent);
+                setDescription(newContent)}}
               required
             />
-            <span className="create-campaign-input-span">Descriptioin</span>
+            <span className="create-campaign-input-span">Description</span>
 
           </Form.Item>
 
@@ -201,6 +203,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
                 return false;
               }}
               className="upload-users-image"
+              accept="image/*"
             >
               <p className="create-campaign-ant-upload-text">
                 Drop files here or click to upload

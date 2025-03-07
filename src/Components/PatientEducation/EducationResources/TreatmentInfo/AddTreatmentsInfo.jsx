@@ -7,6 +7,7 @@ import {
   showSuccessMessage,
   validateImage,
   editorConfig,
+  formatListWithTriangleBullets,
 } from "../../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
@@ -251,6 +252,7 @@ const AddTreatmentsInfo = ({ open, handleCancel ,onServiceAdded}) => {
                   showUploadList={false}
                   onChange={handleUpload}
                   className="create-campaign-upload"
+                  accept="image/*"
                 >
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
@@ -298,6 +300,7 @@ const AddTreatmentsInfo = ({ open, handleCancel ,onServiceAdded}) => {
                   showUploadList={false}
                   onChange={handleUpload1}
                   className="create-campaign-upload"
+                  accept="image/*"
                 >
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
@@ -345,7 +348,9 @@ const AddTreatmentsInfo = ({ open, handleCancel ,onServiceAdded}) => {
               ref={editor}
               value={content}
               config={editorConfig}
-              onBlur={(newContent) => setContent(newContent)}
+              onBlur={(newContent) => {
+                const modifiedContent = formatListWithTriangleBullets(newContent);
+                setContent(newContent)}}
             />
             <span className="create-campaign-input-span"> Content Points</span>
           </Form.Item>

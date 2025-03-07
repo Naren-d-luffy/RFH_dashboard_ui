@@ -122,6 +122,7 @@ const UploadProfileModal = ({ open, handleCancel, doctorData }) => {
               showUploadList={false}
               onChange={handleUpload}
               className="create-campaign-upload"
+              accept="image/*"
             >
               <p className="create-campaign-ant-upload-text">
                 Drop files here or click to upload

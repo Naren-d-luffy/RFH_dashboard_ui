@@ -282,3 +282,26 @@ export const editorConfig = {
 	// This might help with the indent behavior
 	beautifyHTML: false,
 };
+
+
+
+export const formatListWithTriangleBullets = (htmlContent) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlContent, 'text/html');
+
+    // Find all UL elements with square bullets
+    const squareLists = doc.querySelectorAll('ul[style*="list-style-type: square"]');
+
+    squareLists.forEach(list => {
+        list.removeAttribute('style'); // Remove existing styles
+        list.style.listStyleType = 'none'; // Remove default bullets
+
+        list.querySelectorAll('li').forEach(li => {
+            li.style.listStyleType = 'none'; // Ensure no default bullets
+            li.style.display = 'block'; // Prevent numbering in mobile
+            li.innerHTML = `▸ ${li.innerHTML}`; // Add triangle marker
+        });
+    });
+
+    return doc.body.innerHTML; // Return the modified HTML
+};

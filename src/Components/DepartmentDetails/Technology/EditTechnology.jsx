@@ -3,7 +3,7 @@ import { Button, Modal, Form, Input, Upload, message, Switch } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage,editorConfig } from "../../../globalConstant";
+import { showSuccessMessage, validateImage,editorConfig, formatListWithTriangleBullets } from "../../../globalConstant";
 import Loader from "../../../Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { editTechnology } from "../../../Features/TechnologySlice";
@@ -227,6 +227,7 @@ const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }
                       showUploadList={false}
                       onChange={handleUploadThumbnail}
                       className="create-campaign-upload"
+                      accept="image/*"
                     >
                       <p className="create-campaign-ant-upload-text">
                         Drop files here or click to upload
@@ -273,7 +274,9 @@ const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }
                   value={content}
                   // config={editorConfig}
                   config={{ ...editorConfig, className: "hide-placeholder-editor" }}
-                  onBlur={(newContent) => setContent(newContent)}
+                  onBlur={(newContent) => {
+                    const modifiedContent = formatListWithTriangleBullets(newContent);
+                    setContent(newContent)}}
                 />
                 <span className="create-campaign-input-span">Content</span>
               </Form.Item>

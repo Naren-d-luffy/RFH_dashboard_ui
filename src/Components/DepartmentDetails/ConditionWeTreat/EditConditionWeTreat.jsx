@@ -3,7 +3,7 @@ import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { editorConfig, showSuccessMessage, validateImage } from "../../../globalConstant";
+import { editorConfig, formatListWithTriangleBullets, showSuccessMessage, validateImage } from "../../../globalConstant";
 import Loader from "../../../Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { editConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
@@ -203,6 +203,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdd
                   showUploadList={false}
                   onChange={handleUploadThumbnail}
                   className="create-campaign-upload"
+                  accept="image/*"
                 >
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
@@ -240,7 +241,9 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdd
             <JoditEditor
               ref={editor}
               value={content}
-              onBlur={(newContent) => setContent(newContent)}
+              onBlur={(newContent) => {
+                const modifiedContent = formatListWithTriangleBullets(newContent);
+                setContent(newContent)}}
               // config={editorConfig}
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               required
