@@ -16,6 +16,7 @@ import {
   showSuccessMessage,
   validateImage,
   editorConfig,
+  formatListWithTriangleBullets,
 } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { addEvent } from "../../../../Features/DiscoverEventsCard";
@@ -192,6 +193,7 @@ const AddEventsList = ({ open, handleCancel }) => {
               showUploadList={false}
               beforeUpload={handleUpload}
               className="create-campaign-upload"
+              accept="image/*"
             >
               <p className="create-campaign-ant-upload-text">
                 Drop files here or click to upload
@@ -287,7 +289,9 @@ const AddEventsList = ({ open, handleCancel }) => {
               ref={editor}
               value={description}
               config={editorConfig}
-              onBlur={(newContent) => setDescription(newContent)}
+              onBlur={(newDescription) => {
+                const modifiedContent = formatListWithTriangleBullets(newDescription);
+                setDescription(newDescription)}}
             />
             <span className="create-campaign-input-span">Description</span>
           </Form.Item>

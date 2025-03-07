@@ -6,7 +6,7 @@ import { Instance } from "../../AxiosConfig";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import Loader from "../../Loader";
 import { addDepartment } from "../../Features/DepartmentSlice";
-import { showSuccessMessage,editorConfig } from "../../globalConstant";
+import { showSuccessMessage,editorConfig, formatListWithTriangleBullets } from "../../globalConstant";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
@@ -156,10 +156,12 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
             <JoditEditor
               ref={editor}
               config={editorConfig}
-              value={content}
-              onBlur={(newContent) => setContent(newContent)}
+              value={description}
+              onBlur={(newContent) =>{
+                const modifiedContent = formatListWithTriangleBullets(newContent);
+                 setDescription(newContent)}}
             />
-            <span className="create-campaign-input-span">Content</span>
+            <span className="create-campaign-input-span">Description</span>
           </Form.Item>
           <Form.Item>
             <Upload
@@ -170,6 +172,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
                 return false;
               }}
               className="upload-users-image"
+              accept="image/*"
             >
               <p className="create-campaign-ant-upload-text">
                 Drop files here or click to upload

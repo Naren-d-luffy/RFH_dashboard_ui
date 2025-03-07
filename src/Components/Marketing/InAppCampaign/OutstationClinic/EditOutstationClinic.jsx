@@ -16,7 +16,7 @@ import { editOutstationClinic } from "../../../../Features/OutstationClinicSlice
 import Loader from "../../../../Loader";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { editorConfig, showSuccessMessage, validateImage } from "../../../../globalConstant";
+import { editorConfig, formatListWithTriangleBullets, showSuccessMessage, validateImage } from "../../../../globalConstant";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 import JoditEditor from "jodit-react";
 const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
@@ -297,7 +297,9 @@ const validateForm = () => {
               ref={editor}
               value={content}
               config={editorConfig}
-              onBlur={(newContent) => setContent(newContent)}
+              onBlur={(newContent) => {
+                const modifiedContent = formatListWithTriangleBullets(newContent);
+                setContent(newContent)}}
             />
             <span className="create-campaign-input-span">Content</span>
           </Form.Item>
@@ -360,6 +362,7 @@ const validateForm = () => {
               showUploadList={false}
               onChange={handleUpload}
               className="create-campaign-upload"
+              accept="image/*"
             >
               <p className="create-campaign-ant-upload-text">
                 Drop files here or click to upload

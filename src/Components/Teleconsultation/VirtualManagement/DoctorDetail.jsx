@@ -3,7 +3,7 @@ import { Form, Input, Row, Col, Button, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useNavigate, useLocation } from "react-router-dom";
-import { showSuccessMessage,editorConfig } from "../../../globalConstant";
+import { showSuccessMessage,editorConfig, formatListWithTriangleBullets } from "../../../globalConstant";
 import { Instance } from "../../../AxiosConfig";
 import JoditEditor from "jodit-react";
 const DoctorDetail = () => {
@@ -277,7 +277,9 @@ const DoctorDetail = () => {
                     config={editorConfig}
 
                     value={formData.about || ""}
-                    onBlur={(newContent) => setContent(newContent)}
+                    onBlur={(newContent) => {
+                      const modifiedContent = formatListWithTriangleBullets(newContent);
+                      setContent(newContent)}}
                   />
                 </div>
 
@@ -292,6 +294,7 @@ const DoctorDetail = () => {
               showUploadList={false}
               onChange={handleUpload}
               className="create-campaign-upload"
+              accept="image/*"
             >
               <p className="create-campaign-ant-upload-text">
                 Drop files here or click to upload
