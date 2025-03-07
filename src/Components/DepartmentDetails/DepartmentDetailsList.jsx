@@ -103,6 +103,9 @@ const DepartmentDetailsList = () => {
 
     try {
       const response = await Instance.get(`/department`, {});
+      
+      console.log("API Response:", response.data);
+
       setDepartmentList(response.data.departments || []);
       setTotalRows(response.data.totalDepartments);
       dispatch(setDepartment(response.data));
@@ -112,6 +115,8 @@ const DepartmentDetailsList = () => {
       setIsLoading(false);
     }
   }, [dispatch]);
+
+
   useEffect(() => {
     fetchDepartmentList(currentPage);
   }, [currentPage, fetchDepartmentList]);

@@ -9,6 +9,7 @@ import {
   showSuccessMessage,
   validateImage,
   editorConfig,
+  formatListWithTriangleBullets,
 } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Loader";
@@ -199,6 +200,7 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
                   showUploadList={false}
                   onChange={handleUpload}
                   className="create-campaign-upload"
+                  accept="image/*"
                 >
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
@@ -250,6 +252,7 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
                   showUploadList={false}
                   onChange={handleUpload1}
                   className="create-campaign-upload"
+                  accept="image/*"
                 >
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
@@ -301,7 +304,9 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
               // config={editorConfig}
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               value={content}
-              onBlur={(newContent) => setContent(newContent)}
+              onBlur={(newContent) => {
+                const modifiedContent = formatListWithTriangleBullets(newContent);
+              setContent(newContent)}}
             />
             <span className="create-campaign-input-span">Content Points</span>
           </Form.Item>

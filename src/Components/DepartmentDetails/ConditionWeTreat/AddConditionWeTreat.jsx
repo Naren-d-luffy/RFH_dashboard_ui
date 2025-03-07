@@ -3,7 +3,7 @@ import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { editorConfig, showSuccessMessage, validateImage } from "../../../globalConstant";
+import { editorConfig, formatListWithTriangleBullets, showSuccessMessage, validateImage } from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { addConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
@@ -208,6 +208,7 @@ const AddConditionWeTreat = ({ open, handleCancel,onConditionAdded }) => {
                   showUploadList={false}
                   onChange={handleUploadThumbnail}
                   className="create-campaign-upload"
+                  accept="image/*"
                 >
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
@@ -245,7 +246,9 @@ const AddConditionWeTreat = ({ open, handleCancel,onConditionAdded }) => {
               ref={editor}
               value={content}
               config={editorConfig}
-              onBlur={(newContent) => setContent(newContent)}
+              onBlur={(newContent) => {
+                const modifiedContent = formatListWithTriangleBullets(newContent);
+                setContent(newContent)}}
             />
             <span className="create-campaign-input-span">Content</span>
           </Form.Item>
