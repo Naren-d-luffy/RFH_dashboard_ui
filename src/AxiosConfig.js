@@ -8,7 +8,7 @@ const loginInstance = axios.create({
 
 // Instance for Other Requests
 const Instance = axios.create({
-  baseURL: "http://10.45.180.229:9000/api/v1/",
+  baseURL: "http://10.45.180.228:9000/api/v1/",
   // baseURL:"http://4.186.24.50:9000/api/v1"
 // baseURL:"http://10.45.173.5:9000/api/v1"
 });
