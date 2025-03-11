@@ -82,13 +82,13 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
 
   const validateForm = () => {
     // Validation based on clinic type
-    if (!clinicName || !description || !timing || !address) {
+    if (!clinicName || !description || !timing || !address || !content || !uploadedImage) {
       message.error("Please fill in all required fields.");
       return false;
     }
 
     if (clinicType === 'outstation') {
-      if (!rating || !reviews || !patients || !experience) {
+      if (!rating || !reviews || !patients || !experience || !content || !uploadedImage) {
         message.error("Please fill in all required fields for Outstation Clinic.");
         return false;
       }

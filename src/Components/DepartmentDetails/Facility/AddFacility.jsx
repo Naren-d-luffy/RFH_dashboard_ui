@@ -250,7 +250,7 @@ const AddFacility = ({ open, handleCancel,onFacilityAdded }) => {
                     Drop files here or click to upload
                   </p>
                   <IoCloudUploadOutline className="image-upload-icon" />{" "}
-                  <span style={{ color: "#727880" }}>Upload Thumbnail</span>
+                  <span style={{ color: "#727880", cursor:'pointer' }}>Upload Thumbnail</span>
                 </Upload>
                 {thumbnailImage && (
                   <div className="uploaded-image-preview">
