@@ -269,7 +269,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
             value={content}
             onBlur={(newContent) => {
               const modifiedContent = formatListWithTriangleBullets(newContent);
-            setContent(newContent)}}
+            setContent(modifiedContent)}}
             required
           />
            <span className="create-campaign-input-span">

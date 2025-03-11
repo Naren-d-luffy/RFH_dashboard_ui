@@ -332,7 +332,7 @@ const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               onBlur={(newContent) => {
                 const modifiedContent = formatListWithTriangleBullets(newContent);
-                setContent(newContent)}}
+                setContent(modifiedContent)}}
               required
             />
             <span className="create-campaign-input-span">Content</span>

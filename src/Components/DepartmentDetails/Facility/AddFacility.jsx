@@ -284,7 +284,7 @@ const AddFacility = ({ open, handleCancel,onFacilityAdded }) => {
               config={editorConfig}
               onBlur={(newContent) => {
                 const modifiedContent = formatListWithTriangleBullets(newContent);
-                setContent(newContent)}}
+                setContent(modifiedContent)}}
             />
             <span className="create-campaign-input-span">Content</span>
           </Form.Item>
