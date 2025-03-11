@@ -68,10 +68,10 @@ const AddEventsList = ({ open, handleCancel }) => {
 
     formData.append("image", uploadedImage);
 
-    // console.log("Form Data being sent:");
-    // for (let pair of formData.entries()) {
-    //   console.log(pair[0], pair[1]);
-    // }
+    console.log("Form Data being sent:");
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
 
     // return;
     setIsLoading(true);
@@ -291,7 +291,7 @@ const AddEventsList = ({ open, handleCancel }) => {
               config={editorConfig}
               onBlur={(newDescription) => {
                 const modifiedContent = formatListWithTriangleBullets(newDescription);
-                setDescription(newDescription)}}
+                setDescription(modifiedContent)}}
             />
             <span className="create-campaign-input-span">Description</span>
           </Form.Item>

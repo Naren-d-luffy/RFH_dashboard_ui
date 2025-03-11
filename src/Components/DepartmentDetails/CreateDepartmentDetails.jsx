@@ -159,7 +159,7 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
               value={description}
               onBlur={(newContent) =>{
                 const modifiedContent = formatListWithTriangleBullets(newContent);
-                 setDescription(newContent)}}
+                 setDescription(modifiedContent)}}
             />
             <span className="create-campaign-input-span">Description</span>
           </Form.Item>

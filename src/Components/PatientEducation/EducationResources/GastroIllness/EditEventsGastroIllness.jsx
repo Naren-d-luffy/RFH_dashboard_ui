@@ -334,7 +334,7 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData,  onServiceAdde
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               onBlur={(newContent) => {
                 const modifiedContent = formatListWithTriangleBullets(newContent);
-                setContent(newContent)}}
+                setContent(modifiedContent)}}
             />
             <span className="create-campaign-input-span"> Content Points</span>
           </Form.Item>

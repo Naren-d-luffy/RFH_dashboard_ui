@@ -279,7 +279,7 @@ const DoctorDetail = () => {
                     value={formData.about || ""}
                     onBlur={(newContent) => {
                       const modifiedContent = formatListWithTriangleBullets(newContent);
-                      setContent(newContent)}}
+                      setContent(modifiedContent)}}
                   />
                 </div>
 
