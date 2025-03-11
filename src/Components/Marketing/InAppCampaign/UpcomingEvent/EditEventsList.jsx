@@ -99,6 +99,11 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
     formData.append("image", uploadedImage);
     formData.append("date", formattedDate);
     formData.append("time", time);
+
+    console.log("Form Data being sent:");
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
     setIsLoading(true);
 
     try {
