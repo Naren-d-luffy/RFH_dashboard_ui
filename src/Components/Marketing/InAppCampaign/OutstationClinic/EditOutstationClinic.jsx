@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Button,
   Modal,
@@ -8,7 +8,9 @@ import {
   Col,
   Row,
   Upload,
-  Radio,Switch
+  Radio,
+  Switch,
+  Select
 } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
@@ -16,7 +18,12 @@ import { editOutstationClinic } from "../../../../Features/OutstationClinicSlice
 import Loader from "../../../../Loader";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { editorConfig, formatListWithTriangleBullets, showSuccessMessage, validateImage } from "../../../../globalConstant";
+import {
+  editorConfig,
+  formatListWithTriangleBullets,
+  showSuccessMessage,
+  validateImage,
+} from "../../../../globalConstant";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 import JoditEditor from "jodit-react";
 const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
@@ -33,17 +40,20 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
   const [clinicType, setClinicType] = useState("");
   const [uploadedImage, setUploadedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const[appointment,setAppointment]=useState("")
-    const[content,setContent]=useState("")
-    const editor = useRef(null);
+  const [appointment, setAppointment] = useState("");
+  const [content, setContent] = useState("");
+  const editor = useRef(null);
   const dispatch = useDispatch();
-const [isActive,setIsActive]=useState(true)
-const [isMaximized, setIsMaximized] = useState(false);
-const toggleMaximize = (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  setIsMaximized(!isMaximized);
-};
+  const [isActive, setIsActive] = useState(true);
+  const [isMaximized, setIsMaximized] = useState(false);
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedDoctors, setSelectedDoctors] = useState([]);
+  const toggleMaximize = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsMaximized(!isMaximized);
+  };
   useEffect(() => {
     if (open && EventData) {
       setClinicName(EventData.name || "");
@@ -59,28 +69,54 @@ const toggleMaximize = (e) => {
       setIsActive(EventData?.isActive);
       setAppointment(EventData?.appointment);
       setContent(EventData?.content);
+      setSelectedDoctors(EventData.doctor.map((doc) => doc._id)); // Extract _id
     }
   }, [open, EventData]);
 
-   const handleUpload = (info) => {
-     const file = info.file.originFileObj;
-       if (!validateImage(file)) return false;
-     setUploadedImage(file);
-   };
+  const handleUpload = (info) => {
+    const file = info.file.originFileObj;
+    if (!validateImage(file)) return false;
+    setUploadedImage(file);
+  };
 
   const handleDeleteImage = () => {
     setUploadedImage(null);
   };
-const validateForm = () => {
+
+  const { Option } = Select;
+  console.log("EventData Doctors: ", EventData?.doctor);
+  console.log("Fetched Doctors: ", doctors);
+  
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const response = await Instance.get("/doctor");
+        setDoctors(response.data);
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
+  const handleDoctorChange = (selectedIds) => {
+    setSelectedDoctors(selectedIds);
+  };
+  const validateForm = () => {
     // Validation based on clinic type
     if (!clinicName || !description || !timing || !address) {
       message.error("Please fill in all required fields.");
       return false;
     }
 
-    if (clinicType === 'outstation') {
+    if (clinicType === "outstation") {
       if (!rating || !reviews || !patients || !experience) {
-        message.error("Please fill in all required fields for Outstation Clinic.");
+        message.error(
+          "Please fill in all required fields for Outstation Clinic."
+        );
         return false;
       }
     }
@@ -98,16 +134,22 @@ const validateForm = () => {
       formData.append("about", description);
       formData.append("timing", timing);
       formData.append("type", clinicType);
-      formData.append("isActive",isActive);
+      formData.append("isActive", isActive);
       formData.append("content", content);
       formData.append("appointment", appointment);
 
       // Only append these for outstation clinics
-      if (clinicType === 'outstation') {
+      if (clinicType === "outstation") {
         formData.append("rating", parseFloat(rating));
         formData.append("reviews", parseInt(reviews, 10));
         formData.append("patients", parseInt(patients, 10));
         formData.append("experience", experience);
+      }
+
+      if (clinicType === "speciality" && selectedDoctors.length > 0) {
+        selectedDoctors.forEach((doctorId, index) => {
+          formData.append(`doctor[${index}]`, doctorId);
+        });
       }
 
       if (uploadedImage) {
@@ -215,7 +257,7 @@ const validateForm = () => {
           </Form.Item>
 
           {/* Conditional Fields for Outstation Clinic */}
-          {clinicType === 'outstation' && (
+          {clinicType === "outstation" && (
             <>
               <Row gutter={24}>
                 <Col span={12}>
@@ -298,8 +340,10 @@ const validateForm = () => {
               value={content}
               config={editorConfig}
               onBlur={(newContent) => {
-                const modifiedContent = formatListWithTriangleBullets(newContent);
-                setContent(modifiedContent)}}
+                const modifiedContent =
+                  formatListWithTriangleBullets(newContent);
+                setContent(modifiedContent);
+              }}
             />
             <span className="create-campaign-input-span">Content</span>
           </Form.Item>
@@ -317,13 +361,38 @@ const validateForm = () => {
                 </span>
               </Form.Item>
             </Col>
-            <Col span={10}>
+            {clinicType === "speciality" && (
+              <Col span={8}>
+                <Form.Item>
+                  <Select
+                    className="create-clinic-input-select"
+                    placeholder="Select Doctor"
+                    style={{ width: "100%" }}
+                    dropdownClassName="create-campaign-dropdown"
+                    onChange={handleDoctorChange}
+                    loading={loading}
+                    mode="multiple"
+                    value={selectedDoctors}
+                  >
+                    {doctors.map((doctor) => (
+                      <Option key={doctor._id} value={doctor._id}>
+                        {doctor.name}
+                      </Option>
+                    ))}
+                  </Select>
+                  <span className="create-campaign-input-span">Doctor</span>
+                </Form.Item>
+              </Col>
+            )}
+            <Col span={8}>
               <div
                 className="mt-3"
                 style={{ display: "flex", gap: "20px", alignItems: "center" }}
               >
                 <div>
-                  <span style={{color:'var(--black-color)'}}>Active &nbsp;</span>
+                  <span style={{ color: "var(--black-color)" }}>
+                    Active &nbsp;
+                  </span>
                   <Switch
                     className="gastro-switch-button"
                     checked={isActive}
@@ -368,7 +437,7 @@ const validateForm = () => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
+                <IoCloudUploadOutline className="image-upload-icon" />{" "}
                 <span style={{ color: "#727880" }}>Upload Image</span>
               </span>
             </Upload>
@@ -406,7 +475,6 @@ const validateForm = () => {
               <span style={{ color: "red" }}>*</span> Image
             </span>
           </Form.Item>
-          
         </Form>
       </Modal>
     </>

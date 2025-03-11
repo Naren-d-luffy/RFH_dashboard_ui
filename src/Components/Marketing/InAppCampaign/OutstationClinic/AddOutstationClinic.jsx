@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Button,
   Modal,
@@ -10,10 +10,16 @@ import {
   Upload,
   Radio,
   Switch,
+  Select,
 } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
-import { editorConfig, formatListWithTriangleBullets, showSuccessMessage, validateImage } from "../../../../globalConstant";
+import {
+  editorConfig,
+  formatListWithTriangleBullets,
+  showSuccessMessage,
+  validateImage,
+} from "../../../../globalConstant";
 import Loader from "../../../../Loader";
 import { addOutstationClinic } from "../../../../Features/OutstationClinicSlice";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -22,7 +28,7 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 import JoditEditor from "jodit-react";
 
 const { TextArea } = Input;
-
+const { Option } = Select;
 const AddOutstationClinic = ({ open, handleCancel }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -38,11 +44,31 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
   const dispatch = useDispatch();
   const [isActive, setIsActive] = useState(true);
   const [isMaximized, setIsMaximized] = useState(false);
-  const[appointment,setAppointment]=useState("")
-  const[content,setContent]=useState("")
+  const [appointment, setAppointment] = useState("");
+  const [content, setContent] = useState("");
   const editor = useRef(null);
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedDoctors, setSelectedDoctors] = useState([]);
 
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const response = await Instance.get("/doctor");
+        setDoctors(response.data);
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchDoctors();
+  }, []);
+
+  const handleDoctorChange = (selectedIds) => {
+    setSelectedDoctors(selectedIds);
+  };
   const toggleMaximize = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -87,9 +113,11 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
       return false;
     }
 
-    if (clinicType === 'outstation') {
+    if (clinicType === "outstation") {
       if (!rating || !reviews || !patients || !experience) {
-        message.error("Please fill in all required fields for Outstation Clinic.");
+        message.error(
+          "Please fill in all required fields for Outstation Clinic."
+        );
         return false;
       }
     }
@@ -112,16 +140,26 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
       formData.append("appointment", appointment);
 
       // Only append these for outstation clinics
-      if (clinicType === 'outstation') {
+      if (clinicType === "outstation") {
         formData.append("rating", parseFloat(rating));
         formData.append("reviews", parseInt(reviews, 10));
         formData.append("patients", parseInt(patients, 10));
         formData.append("experience", experience);
       }
-
+      if (clinicType === "speciality" && selectedDoctors.length > 0) {
+        selectedDoctors.forEach((doctorId, index) => {
+          formData.append(`doctor[${index}]`, doctorId);
+        });
+      }
       if (uploadedImage) {
         formData.append("image", uploadedImage);
       }
+
+      console.log("Form Data being sent:");
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+      // return
 
       setIsLoading(true);
       const response = await Instance.post("/discover/clinic", formData, {
@@ -129,8 +167,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
           "Content-Type": "multipart/form-data",
         },
       });
-      
+
       if (response?.status === 200 || response?.status === 201) {
+        console.log("Add",response)
         handleCancel();
         showSuccessMessage("Clinic added successfully!");
         dispatch(addOutstationClinic(response.data));
@@ -208,7 +247,6 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
             >
               <Radio value="speciality">Speciality</Radio>
               <Radio value="outstation">Outstation</Radio>
-              
             </Radio.Group>
           </Form.Item>
 
@@ -226,7 +264,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
           </Form.Item>
 
           {/* Conditional Fields for Outstation Clinic */}
-          {clinicType === 'outstation' && (
+          {clinicType === "outstation" && (
             <>
               <Row gutter={24}>
                 <Col span={12}>
@@ -309,8 +347,10 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               value={content}
               config={editorConfig}
               onBlur={(newContent) => {
-                const modifiedContent = formatListWithTriangleBullets(newContent);
-              setContent(modifiedContent)}}
+                const modifiedContent =
+                  formatListWithTriangleBullets(newContent);
+                setContent(modifiedContent);
+              }}
             />
             <span className="create-campaign-input-span">Content</span>
           </Form.Item>
@@ -329,13 +369,39 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                 </span>
               </Form.Item>
             </Col>
-            <Col span={10}>
+           
+            {clinicType === "speciality" && (
+              <Col span={8}>
+                <Form.Item>
+                  <Select
+                    className="create-clinic-input-select"
+                    placeholder="Select Doctor"
+                    style={{ width: "100%" }}
+                    dropdownClassName="create-campaign-dropdown"
+                    onChange={handleDoctorChange}
+                    loading={loading}
+                    mode="multiple"
+                    value={selectedDoctors}
+                  >
+                    {doctors.map((doctor) => (
+                      <Option key={doctor._id} value={doctor._id}>
+                        {doctor.name}
+                      </Option>
+                    ))}
+                  </Select>
+                  <span className="create-campaign-input-span">Doctor</span>
+                </Form.Item>
+              </Col>
+            )}
+            <Col span={8}>
               <div
                 className="mt-3"
                 style={{ display: "flex", gap: "20px", alignItems: "center" }}
               >
                 <div>
-                  <span style={{color:'var(--black-color)'}}>Active &nbsp;</span>
+                  <span style={{ color: "var(--black-color)" }}>
+                    Active &nbsp;
+                  </span>
                   <Switch
                     className="gastro-switch-button"
                     checked={isActive}
@@ -414,7 +480,6 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               <span style={{ color: "red" }}>*</span> Image
             </span>
           </Form.Item>
-          
         </Form>
       </Modal>
     </>
