@@ -321,7 +321,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
               value={description}
               onBlur={(newDescription) => {
                 const modifiedContent = formatListWithTriangleBullets(newDescription);
-                setDescription(newDescription)}}
+                setDescription(modifiedContent)}}
               required
             />
             <span className="create-campaign-input-span">Description</span>

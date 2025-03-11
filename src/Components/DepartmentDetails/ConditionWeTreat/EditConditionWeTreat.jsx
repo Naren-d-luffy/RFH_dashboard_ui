@@ -243,7 +243,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdd
               value={content}
               onBlur={(newContent) => {
                 const modifiedContent = formatListWithTriangleBullets(newContent);
-                setContent(newContent)}}
+                setContent(modifiedContent)}}
               // config={editorConfig}
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               required
