@@ -16,6 +16,7 @@ import {
   showSuccessMessage,
   validateImage,
   editorConfig,
+  formatListWithTriangleBullets,
 } from "../../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../Loader";
@@ -281,6 +282,7 @@ const AddEventsGastroIllness = ({ open, handleCancel,  onServiceAdded }) => {
                   showUploadList={false}
                   onChange={handleUpload}
                   className="create-campaign-upload"
+                  accept="image/*"
                 >
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
@@ -328,7 +330,9 @@ const AddEventsGastroIllness = ({ open, handleCancel,  onServiceAdded }) => {
               ref={editor}
               value={content}
               config={editorConfig}
-              onBlur={(newContent) => setContent(newContent)}
+              onBlur={(newContent) =>{
+                const modifiedContent = formatListWithTriangleBullets(newContent);
+                 setContent(newContent)}}
               required
             />
             <span className="create-campaign-input-span"> Content Points</span>

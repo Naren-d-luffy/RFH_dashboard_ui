@@ -11,7 +11,7 @@ import {
   TimePicker,
 } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage, validateImage,editorConfig } from "../../../../globalConstant";
+import { showSuccessMessage, validateImage,editorConfig, formatListWithTriangleBullets } from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { editEvent } from "../../../../Features/DiscoverEventsCard";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -204,6 +204,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
               showUploadList={false}
               onChange={handleUpload}
               className="create-campaign-upload"
+              accept="image/*"
             >
               <p className="create-campaign-ant-upload-text">
                 Drop files here or click to upload
@@ -318,7 +319,9 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
               // config={editorConfig}
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               value={description}
-              onBlur={(newContent) => setContent(newContent)}
+              onBlur={(newDescription) => {
+                const modifiedContent = formatListWithTriangleBullets(newDescription);
+                setDescription(newDescription)}}
               required
             />
             <span className="create-campaign-input-span">Description</span>

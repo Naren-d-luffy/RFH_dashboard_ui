@@ -3,7 +3,7 @@ import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage,editorConfig } from "../../../globalConstant";
+import { showSuccessMessage, validateImage,editorConfig, formatListWithTriangleBullets } from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { addService } from "../../../Features/ServiceSlice";
@@ -44,6 +44,7 @@ const AddService = ({ open, handleCancel,onServiceAdded }) => {
     if (!validateImage(file)) return false;
     setThumbnailImage(file);
   };
+
   const handleDeleteThumbnail = () => {
     setThumbnailImage(null);
   };
@@ -201,6 +202,7 @@ const AddService = ({ open, handleCancel,onServiceAdded }) => {
                   showUploadList={false}
                   onChange={handleUploadThumbnail}
                   className="create-campaign-upload"
+                  accept="image/*"
                 >
                   <p className="create-campaign-ant-upload-text">
                     Drop files here or click to upload
@@ -238,7 +240,9 @@ const AddService = ({ open, handleCancel,onServiceAdded }) => {
               ref={editor}
               value={content}
               config={editorConfig}
-              onBlur={(newContent) => setContent(newContent)}
+              onBlur={(newContent) => {
+                const modifiedContent = formatListWithTriangleBullets(newContent);
+                setContent(newContent)}}
             />
             <span className="create-campaign-input-span">Content</span>
           </Form.Item>

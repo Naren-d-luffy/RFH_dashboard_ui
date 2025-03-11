@@ -115,7 +115,7 @@ export const Preferences = () => {
               </Form.Item>
             </div>
           </div> */}
-          <div className="row mt-4">
+          {/* <div className="row mt-4">
             <div className="d-flex justify-content-end gap-2">
               <button className="settings-delete-button" type="button">
                 Cancel
@@ -124,7 +124,7 @@ export const Preferences = () => {
                 Save
               </button>
             </div>
-          </div>
+          </div> */}
         </Form>
       </div>
     </div>

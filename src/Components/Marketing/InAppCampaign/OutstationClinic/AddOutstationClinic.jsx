@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import {
   Button,
   Modal,
@@ -13,12 +13,13 @@ import {
 } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
-import { showSuccessMessage, validateImage } from "../../../../globalConstant";
+import { editorConfig, formatListWithTriangleBullets, showSuccessMessage, validateImage } from "../../../../globalConstant";
 import Loader from "../../../../Loader";
 import { addOutstationClinic } from "../../../../Features/OutstationClinicSlice";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
+import JoditEditor from "jodit-react";
 
 const { TextArea } = Input;
 
@@ -33,33 +34,45 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
   const [description, setDescription] = useState("");
   const [timing, setTiming] = useState("");
   const [address, setAddress] = useState("");
-  const [clinicType, setClinicType] = useState("");
+  const [clinicType, setClinicType] = useState("speciality");
   const dispatch = useDispatch();
   const [isActive, setIsActive] = useState(true);
   const [isMaximized, setIsMaximized] = useState(false);
+  const[appointment,setAppointment]=useState("")
+  const[content,setContent]=useState("")
+  const editor = useRef(null);
+
+
   const toggleMaximize = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setIsMaximized(!isMaximized);
   };
+
   useEffect(() => {
     if (!open) {
-      setClinicName("");
-      setRating("");
-      setReviews("");
-      setPatients("");
-      setExperience("");
-      setDescription("");
-      setTiming("");
-      setAddress("");
-      setClinicType("");
-      setUploadedImage(null);
+      resetForm();
     }
   }, [open]);
 
+  const resetForm = () => {
+    setClinicName("");
+    setRating("");
+    setReviews("");
+    setPatients("");
+    setExperience("");
+    setDescription("");
+    setTiming("");
+    setAddress("");
+    setClinicType("outstation");
+    setUploadedImage(null);
+    setContent("");
+    setAppointment("");
+  };
+
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
-      if (!validateImage(file)) return false;
+    if (!validateImage(file)) return false;
     setUploadedImage(file);
   };
 
@@ -67,34 +80,45 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
     setUploadedImage(null);
   };
 
-  const handleSave = async () => {
-    if (
-      !clinicName ||
-      !rating ||
-      !reviews ||
-      !patients ||
-      !experience ||
-      !description ||
-      !timing ||
-      !address ||
-      !clinicType
-    ) {
+  const validateForm = () => {
+    // Validation based on clinic type
+    if (!clinicName || !description || !timing || !address) {
       message.error("Please fill in all required fields.");
-      return;
+      return false;
     }
+
+    if (clinicType === 'outstation') {
+      if (!rating || !reviews || !patients || !experience) {
+        message.error("Please fill in all required fields for Outstation Clinic.");
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const handleSave = async () => {
+    if (!validateForm()) return;
 
     try {
       const formData = new FormData();
       formData.append("name", clinicName);
       formData.append("location", address);
-      formData.append("rating", parseFloat(rating));
-      formData.append("reviews", parseInt(reviews, 10));
-      formData.append("patients", parseInt(patients, 10));
-      formData.append("experience", experience);
       formData.append("about", description);
       formData.append("timing", timing);
       formData.append("type", clinicType);
       formData.append("isActive", isActive);
+      formData.append("content", content);
+      formData.append("appointment", appointment);
+
+      // Only append these for outstation clinics
+      if (clinicType === 'outstation') {
+        formData.append("rating", parseFloat(rating));
+        formData.append("reviews", parseInt(reviews, 10));
+        formData.append("patients", parseInt(patients, 10));
+        formData.append("experience", experience);
+      }
+
       if (uploadedImage) {
         formData.append("image", uploadedImage);
       }
@@ -105,18 +129,20 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
           "Content-Type": "multipart/form-data",
         },
       });
+      
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
-        showSuccessMessage("Outstation Clinic added successfully!");
+        showSuccessMessage("Clinic added successfully!");
         dispatch(addOutstationClinic(response.data));
       }
     } catch (error) {
       console.error("Error while submitting: ", error?.response?.data || error);
-      message.error("Failed to add outstation clinic. Please try again.");
+      message.error("Failed to add clinic. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
+
   const closeButtons = (
     <div className="d-flex items-center gap-2 pe-5">
       <Button
@@ -137,6 +163,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
       </Button>
     </div>
   );
+
   return (
     <>
       {isLoading && <Loader />}
@@ -173,6 +200,19 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
         ]}
       >
         <Form layout="vertical" className="mt-4">
+          {/* Clinic Type Selection */}
+          <Form.Item label="Clinic Type">
+            <Radio.Group
+              onChange={(e) => setClinicType(e.target.value)}
+              value={clinicType}
+            >
+              <Radio value="speciality">Speciality</Radio>
+              <Radio value="outstation">Outstation</Radio>
+              
+            </Radio.Group>
+          </Form.Item>
+
+          {/* Common Fields */}
           <Form.Item>
             <Input
               value={clinicName}
@@ -184,66 +224,74 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               <span style={{ color: "red" }}>*</span> Clinic Name
             </span>
           </Form.Item>
-          <Row gutter={24}>
-            <Col span={12}>
-              <Form.Item>
-                <Input
-                  value={rating}
-                  onChange={(e) => setRating(e.target.value)}
-                  type="number"
-                  placeholder="Enter Rating (e.g., 4.5)"
-                  required
-                />
-                <span className="create-campaign-input-span">
-                  <span style={{ color: "red" }}>*</span>Rating
-                </span>
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item>
-                <Input
-                  value={reviews}
-                  onChange={(e) => setReviews(e.target.value)}
-                  placeholder="Enter Number of Reviews"
-                  required
-                  type="number"
-                />
-                <span className="create-campaign-input-span">
-                  <span style={{ color: "red" }}>*</span> Reviews
-                </span>
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={24}>
-            <Col span={12}>
-              <Form.Item>
-                <Input
-                  value={patients}
-                  onChange={(e) => setPatients(e.target.value)}
-                  placeholder="Enter Number of Patients"
-                  required
-                  type="number"
-                />
-                <span className="create-campaign-input-span">
-                  <span style={{ color: "red" }}>*</span> Patients
-                </span>
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item>
-                <Input
-                  value={experience}
-                  onChange={(e) => setExperience(e.target.value)}
-                  placeholder="Enter Experience (in years)"
-                  required
-                  type="number"
-                />
-                <span className="create-campaign-input-span">
-                  <span style={{ color: "red" }}>*</span> Experience
-                </span>
-              </Form.Item>
-            </Col>
-          </Row>
+
+          {/* Conditional Fields for Outstation Clinic */}
+          {clinicType === 'outstation' && (
+            <>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <Form.Item>
+                    <Input
+                      value={rating}
+                      onChange={(e) => setRating(e.target.value)}
+                      type="number"
+                      placeholder="Enter Rating (e.g., 4.5)"
+                      required
+                    />
+                    <span className="create-campaign-input-span">
+                      <span style={{ color: "red" }}>*</span>Rating
+                    </span>
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item>
+                    <Input
+                      value={reviews}
+                      onChange={(e) => setReviews(e.target.value)}
+                      placeholder="Enter Number of Reviews"
+                      required
+                      type="number"
+                    />
+                    <span className="create-campaign-input-span">
+                      <span style={{ color: "red" }}>*</span> Reviews
+                    </span>
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <Form.Item>
+                    <Input
+                      value={patients}
+                      onChange={(e) => setPatients(e.target.value)}
+                      placeholder="Enter Number of Patients"
+                      required
+                      type="number"
+                    />
+                    <span className="create-campaign-input-span">
+                      <span style={{ color: "red" }}>*</span> Patients
+                    </span>
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item>
+                    <Input
+                      value={experience}
+                      onChange={(e) => setExperience(e.target.value)}
+                      placeholder="Enter Experience (in years)"
+                      required
+                      type="number"
+                    />
+                    <span className="create-campaign-input-span">
+                      <span style={{ color: "red" }}>*</span> Experience
+                    </span>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </>
+          )}
+
+          {/* Common Fields */}
           <Form.Item>
             <TextArea
               value={description}
@@ -255,6 +303,18 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               <span style={{ color: "red" }}>*</span>About
             </span>
           </Form.Item>
+          <Form.Item>
+            <JoditEditor
+              ref={editor}
+              value={content}
+              config={editorConfig}
+              onBlur={(newContent) => {
+                const modifiedContent = formatListWithTriangleBullets(newContent);
+              setContent(newContent)}}
+            />
+            <span className="create-campaign-input-span">Content</span>
+          </Form.Item>
+
           <Row gutter={24}>
             <Col span={8}>
               <Form.Item>
@@ -270,25 +330,6 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               </Form.Item>
             </Col>
             <Col span={10}>
-              <Form.Item
-                label={
-                  <span>
-                    Clinic Type <span style={{ color: "red" }}>*</span>
-                  </span>
-                }
-              >
-                <div className="radio-group-container">
-                  <Radio.Group
-                    onChange={(e) => setClinicType(e.target.value)}
-                    value={clinicType}
-                  >
-                    <Radio value="outstation">Outstation</Radio>
-                    <Radio value="speciality">Speciality</Radio>
-                  </Radio.Group>
-                </div>
-              </Form.Item>
-            </Col>
-            <Col span={6}>
               <div
                 className="mt-3"
                 style={{ display: "flex", gap: "20px", alignItems: "center" }}
@@ -304,6 +345,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               </div>
             </Col>
           </Row>
+
           <Form.Item>
             <Input
               value={address}
@@ -316,11 +358,23 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
             </span>
           </Form.Item>
           <Form.Item>
+            <TextArea
+              value={appointment}
+              onChange={(e) => setAppointment(e.target.value)}
+              placeholder="Appointment"
+              required
+            />
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span>Appointment
+            </span>
+          </Form.Item>
+          <Form.Item>
             <Upload
               listType="picture"
               showUploadList={false}
               onChange={handleUpload}
               className="create-campaign-upload"
+              accept="image/*"
             >
               <p className="create-campaign-ant-upload-text">
                 Drop files here or click to upload
@@ -360,6 +414,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               <span style={{ color: "red" }}>*</span> Image
             </span>
           </Form.Item>
+          
         </Form>
       </Modal>
     </>
