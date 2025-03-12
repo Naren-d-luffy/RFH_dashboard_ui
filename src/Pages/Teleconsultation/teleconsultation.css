@@ -1023,6 +1023,7 @@
 
 .news-content p {
   color: var(--black-color);
+  margin-bottom: 1px;
 }
 
 .news-content h6 {
