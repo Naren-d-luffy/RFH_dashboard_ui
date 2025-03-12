@@ -186,7 +186,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
               value={description}
               onBlur={(newContent) => {
                 const modifiedContent = formatListWithTriangleBullets(newContent);
-                setDescription(newContent)}}
+                setDescription(modifiedContent)}}
               required
             />
             <span className="create-campaign-input-span">Description</span>
@@ -210,7 +210,7 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
                 <IoCloudUploadOutline className="image-upload-icon" />{" "}
-                <span style={{ color: "#727880" }}>Upload Image</span>
+                <span style={{ color: "#727880", cursor:'pointer' }}>Upload Image</span>
               </span>
             </Upload>
             {(uploadedImage || imagePreviewUrl) && (

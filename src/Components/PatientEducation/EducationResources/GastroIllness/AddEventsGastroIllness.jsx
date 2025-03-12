@@ -332,7 +332,7 @@ const AddEventsGastroIllness = ({ open, handleCancel,  onServiceAdded }) => {
               config={editorConfig}
               onBlur={(newContent) =>{
                 const modifiedContent = formatListWithTriangleBullets(newContent);
-                 setContent(newContent)}}
+                 setContent(modifiedContent)}}
               required
             />
             <span className="create-campaign-input-span"> Content Points</span>

@@ -253,7 +253,7 @@ const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
                     Drop files here or click to upload
                   </p>
                   <IoCloudUploadOutline />{" "}
-                  <span style={{ color: "#727880" }}>Upload Thumbnail</span>
+                  <span style={{ color: "#727880", cursor:'pointer' }}>Upload Thumbnail</span>
                 </Upload>
                 {thumbnailImage && (
                   <div className="uploaded-image-preview">
@@ -332,7 +332,7 @@ const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               onBlur={(newContent) => {
                 const modifiedContent = formatListWithTriangleBullets(newContent);
-                setContent(newContent)}}
+                setContent(modifiedContent)}}
               required
             />
             <span className="create-campaign-input-span">Content</span>

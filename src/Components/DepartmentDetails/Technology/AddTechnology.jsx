@@ -234,7 +234,7 @@ const AddTechnology = ({ open, handleCancel ,onTechnologyAdded }) => {
                         Drop files here or click to upload
                       </p>
                       <IoCloudUploadOutline className="image-upload-icon" />{" "}
-                      <span style={{ color: "#727880" }}>Upload Thumbnail</span>
+                      <span style={{ color: "#727880", cursor:'pointer' }}>Upload Thumbnail</span>
                     </Upload>
                     {thumbnailImage && (
                       <div className="uploaded-image-preview">
@@ -269,7 +269,7 @@ const AddTechnology = ({ open, handleCancel ,onTechnologyAdded }) => {
                   config={editorConfig}
                   onBlur={(newContent) =>{
                     const modifiedContent = formatListWithTriangleBullets(newContent);
-                     setContent(newContent)}}
+                     setContent(modifiedContent)}}
                 />
                 <span className="create-campaign-input-span">Content</span>
               </Form.Item>

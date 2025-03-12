@@ -95,10 +95,15 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
     formData.append("description", description.trim());
     // formData.append("link", link.trim());
     // formData.append("order", parseInt(order, 10));
-    formData.append("isActive", isActive);
+    formData.append("isActive", JSON.stringify(isActive === true));
     formData.append("image", uploadedImage);
     formData.append("date", formattedDate);
     formData.append("time", time);
+
+    console.log("Form Data being sent:");
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
     setIsLoading(true);
 
     try {
@@ -321,7 +326,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
               value={description}
               onBlur={(newDescription) => {
                 const modifiedContent = formatListWithTriangleBullets(newDescription);
-                setDescription(newDescription)}}
+                setDescription(modifiedContent)}}
               required
             />
             <span className="create-campaign-input-span">Description</span>

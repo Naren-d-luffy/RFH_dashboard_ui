@@ -233,7 +233,7 @@ const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }
                         Drop files here or click to upload
                       </p>
                       <IoCloudUploadOutline className="image-upload-icon" />{" "}
-                      <span style={{ color: "#727880" }}>Upload Thumbnail</span>
+                      <span style={{ color: "#727880", cursor:'pointer' }}>Upload Thumbnail</span>
                     </Upload>
                     {thumbnailImage && (
                       <div className="uploaded-image-preview">
@@ -276,7 +276,7 @@ const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }
                   config={{ ...editorConfig, className: "hide-placeholder-editor" }}
                   onBlur={(newContent) => {
                     const modifiedContent = formatListWithTriangleBullets(newContent);
-                    setContent(newContent)}}
+                    setContent(modifiedContent)}}
                 />
                 <span className="create-campaign-input-span">Content</span>
               </Form.Item>
