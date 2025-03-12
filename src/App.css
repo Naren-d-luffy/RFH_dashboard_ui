@@ -1,37 +1,40 @@
 body {
   margin: 0;
   overflow-x: hidden;
-  font-family: 'Proxima Nova', sans-serif;
+  font-family: "Proxima Nova", sans-serif;
 }
 
 @font-face {
-  font-family: 'Proxima Nova';
-  src: url('../src/Assets/ProximaNova/Proxima\Nova-Regular.otf') format('opentype');
+  font-family: "Proxima Nova";
+  src: url("../src/Assets/ProximaNova/Proxima\Nova-Regular.otf")
+    format("opentype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Proxima Nova';
-  src: url('../src/Assets/ProximaNova/Proxima\ Nova\ Alt\ Light.otf') format('opentype');
+  font-family: "Proxima Nova";
+  src: url("../src/Assets/ProximaNova/Proxima\ Nova\ Alt\ Light.otf")
+    format("opentype");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Proxima Nova';
-  src: url('../src/Assets/ProximaNova/Proxima\ Nova\ Alt\ Semibold.otf') format('opentype');
+  font-family: "Proxima Nova";
+  src: url("../src/Assets/ProximaNova/Proxima\ Nova\ Alt\ Semibold.otf")
+    format("opentype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Proxima Nova';
-  src: url('../src/Assets/ProximaNova/Proxima\ Nova\ Bold.otf') format('opentype');
+  font-family: "Proxima Nova";
+  src: url("../src/Assets/ProximaNova/Proxima\ Nova\ Bold.otf")
+    format("opentype");
   font-weight: 700;
   font-style: normal;
 }
-
 
 body,
 .ant-typography,
@@ -42,12 +45,12 @@ body,
 .ant-radio,
 .ant-form-item-label,
 .ant-tabs {
-  font-family: 'Proxima Nova', sans-serif !important;
+  font-family: "Proxima Nova", sans-serif !important;
   /* color: var(--black-color) !important; */
 }
 
 :where(.css-dev-only-do-not-override-1x0dypw).ant-table-wrapper .ant-table {
-  font-family: 'Proxima Nova', sans-serif !important;
+  font-family: "Proxima Nova", sans-serif !important;
 }
 @media (max-width: 768px) {
   .ant-table-container {
@@ -513,18 +516,18 @@ body,
 
 ul[style*="list-style-type: square;"] li::marker {
   content: "▸";
-font-size: 16px;
+  font-size: 16px;
 
   /* color: black; Adjust color */
 }
 .jodit-workplace p {
   margin-bottom: 0px;
 }
-.jodit-workplace ul{
+.jodit-workplace ul {
   padding-left: 1rem !important;
   margin-bottom: 0px;
 }
-.jodit-workplace ol{
+.jodit-workplace ol {
   padding-left: 1rem !important;
   margin-bottom: 0px;
 }
@@ -561,15 +564,28 @@ font-size: 16px;
 .jodit-toolbar-button_font {
   display: none !important;
 }
-.jodit-add-new-line{
+.jodit-add-new-line {
   display: none !important;
 }
 .jodit-wysiwyg {
   font-family: "Proxima Nova", sans-serif !important;
 }
-.jodit-wysiwyg span{
+.jodit-wysiwyg span {
   font-family: "Proxima Nova", sans-serif !important;
 }
 .hide-placeholder-editor .jodit-placeholder {
   display: none !important;
 }
+
+.ant-dropdown .ant-dropdown-menu {
+  background-color: var(--white-color);
+  border: 1px solid var(--black-color);
+}
+
+.jodit-wysiwyg p {
+  margin-left: 0px !important;
+  padding-left: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+
