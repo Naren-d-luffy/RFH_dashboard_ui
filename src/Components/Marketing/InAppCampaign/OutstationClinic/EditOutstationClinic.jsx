@@ -69,7 +69,14 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
       setIsActive(EventData?.isActive);
       setAppointment(EventData?.appointment);
       setContent(EventData?.content);
-      setSelectedDoctors(EventData.doctor.map((doc) => doc._id)); // Extract _id
+      if (EventData.doctor && Array.isArray(EventData.doctor)) {
+        const doctorIds = EventData.doctor.map(doc => 
+          typeof doc === 'object' && doc._id ? doc._id : doc
+        );
+        setSelectedDoctors(doctorIds);
+      } else {
+        setSelectedDoctors([]);
+      }
     }
   }, [open, EventData]);
 
