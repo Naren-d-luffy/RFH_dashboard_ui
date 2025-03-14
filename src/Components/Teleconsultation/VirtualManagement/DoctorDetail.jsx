@@ -124,6 +124,13 @@ const DoctorDetail = () => {
     }
   };
 
+  const isEditMode = Boolean(doctorData);
+  const dynamicEditorConfig = {
+    ...editorConfig,
+    placeholder: isEditMode ? "" : "Start typing here...",
+    showPlaceholder: !isEditMode
+  };
+
   return (
     <div className="container">
       <div className="mt-4 campaign-performance-head">
@@ -311,12 +318,13 @@ const DoctorDetail = () => {
                 <div className="quill-editor">
                   <JoditEditor
                     ref={editor}
-                    config={editorConfig}
+                    config={dynamicEditorConfig}
                     value={formData.about || ""}
                     onBlur={(newContent) => {
                       const modifiedContent =
                         formatListWithTriangleBullets(newContent);
                       setContent(modifiedContent);
+                      handleInputChange("about", modifiedContent);
                     }}
                   />
                 </div>
