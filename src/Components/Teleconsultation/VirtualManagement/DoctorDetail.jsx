@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Form, Input, Row, Col, Button, Upload, message } from "antd";
+import { Form, Input, Row, Col, Button, Upload, message, Switch } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { useNavigate, useLocation } from "react-router-dom";
-import { showSuccessMessage,editorConfig, formatListWithTriangleBullets } from "../../../globalConstant";
+import {
+  showSuccessMessage,
+  editorConfig,
+  formatListWithTriangleBullets,
+} from "../../../globalConstant";
 import { Instance } from "../../../AxiosConfig";
 import JoditEditor from "jodit-react";
 const DoctorDetail = () => {
@@ -13,7 +17,8 @@ const DoctorDetail = () => {
   const editor = useRef(null);
 
   const [uploadedFile, setUploadedFile] = useState(null);
-  const [content, setContent] = useState("")
+  const [content, setContent] = useState("");
+  const [isActive, setIsActive] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     position: "",
@@ -26,6 +31,7 @@ const DoctorDetail = () => {
     about: "",
     AreasOfExpertise: [],
     subSpeciality: "",
+    isActive: true,
   });
 
   useEffect(() => {
@@ -60,15 +66,16 @@ const DoctorDetail = () => {
       !formData.department ||
       !formData.name ||
       !formData.qualifications.length ||
-      formData.qualifications.some((q) => q.trim() === "")||
+      formData.qualifications.some((q) => q.trim() === "") ||
       !formData.contactDetails ||
-      !formData.position||
-      !formData.experience
+      !formData.position ||
+      !formData.experience ||
+      !formData.isActive
     ) {
       message.error("Please fill in all required fields.");
       return;
     }
-    
+
     const data = new FormData();
     if (uploadedFile) {
       data.append("profile", uploadedFile);
@@ -223,7 +230,7 @@ const DoctorDetail = () => {
                 <span className="create-campaign-input-span">Awards</span>
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={6}>
               <Form.Item>
                 <Input
                   className="create-campaign-input"
@@ -233,8 +240,27 @@ const DoctorDetail = () => {
                     handleInputChange("experience", e.target.value)
                   }
                 />
-                <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Experience</span>
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Experience
+                </span>
               </Form.Item>
+            </Col>
+            <Col span={6}>
+              <div
+                className="mt-3"
+                style={{ display: "flex", gap: "20px", alignItems: "center" }}
+              >
+                <div>
+                  <span style={{ color: "var(--black-color)" }}>
+                    Active &nbsp;
+                  </span>
+                  <Switch
+                    className="gastro-switch-button"
+                    checked={isActive}
+                    onChange={(checked) => setIsActive(checked)}
+                  />
+                </div>
+              </div>
             </Col>
             <Col span={12}>
               <Form.Item>
@@ -275,11 +301,12 @@ const DoctorDetail = () => {
                   <JoditEditor
                     ref={editor}
                     config={editorConfig}
-
                     value={formData.about || ""}
                     onBlur={(newContent) => {
-                      const modifiedContent = formatListWithTriangleBullets(newContent);
-                      setContent(modifiedContent)}}
+                      const modifiedContent =
+                        formatListWithTriangleBullets(newContent);
+                      setContent(modifiedContent);
+                    }}
                   />
                 </div>
 

@@ -94,6 +94,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
     setUploadedImage(null);
     setContent("");
     setAppointment("");
+    setSelectedDoctors([]);
   };
 
   const handleUpload = (info) => {
@@ -108,15 +109,36 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
 
   const validateForm = () => {
     // Validation based on clinic type
-    if (!clinicName || !description || !timing || !address || !content || !uploadedImage) {
+    if (
+      !clinicName ||
+      !description ||
+      !timing ||
+      !address ||
+      !content ||
+      !uploadedImage ||
+      !selectedDoctors
+    ) {
       message.error("Please fill in all required fields.");
       return false;
     }
 
+    if (selectedDoctors.length === 0) {
+      message.error("Please select at least one doctor for the clinic.");
+      return false;
+    }
 
-    if (clinicType === 'outstation') {
-      if (!rating || !reviews || !patients || !experience || !content || !uploadedImage) {
-        message.error("Please fill in all required fields for Outstation Clinic.");
+    if (clinicType === "outstation") {
+      if (
+        !rating ||
+        !reviews ||
+        !patients ||
+        !experience ||
+        !content ||
+        !uploadedImage
+      ) {
+        message.error(
+          "Please fill in all required fields for Outstation Clinic."
+        );
         return false;
       }
     }
@@ -168,7 +190,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
       });
 
       if (response?.status === 200 || response?.status === 201) {
-        console.log("Add",response)
+        console.log("Add", response);
         handleCancel();
         showSuccessMessage("Clinic added successfully!");
         dispatch(addOutstationClinic(response.data));
@@ -368,7 +390,7 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                 </span>
               </Form.Item>
             </Col>
-           
+
             {clinicType === "speciality" && (
               <Col span={8}>
                 <Form.Item>
@@ -388,7 +410,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
                       </Option>
                     ))}
                   </Select>
-                  <span className="create-campaign-input-span">Doctor</span>
+                  <span className="create-campaign-input-span">
+                    <span style={{ color: "red" }}>*</span> Doctor
+                  </span>
                 </Form.Item>
               </Col>
             )}

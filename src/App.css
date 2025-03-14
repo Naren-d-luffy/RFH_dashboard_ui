@@ -522,6 +522,7 @@ ul[style*="list-style-type: square;"] li::marker {
 }
 .jodit-workplace p {
   margin-bottom: 0px;
+  margin-left: 0px;
 }
 .jodit-workplace ul {
   padding-left: 1rem !important;
@@ -530,6 +531,10 @@ ul[style*="list-style-type: square;"] li::marker {
 .jodit-workplace ol {
   padding-left: 1rem !important;
   margin-bottom: 0px;
+}
+
+.jodit-workplace li {
+ margin-left: 0px !important;
 }
 
 .jodit-container {
