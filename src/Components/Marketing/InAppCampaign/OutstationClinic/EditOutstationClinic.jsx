@@ -10,7 +10,7 @@ import {
   Upload,
   Radio,
   Switch,
-  Select
+  Select,
 } from "antd";
 import { Instance } from "../../../../AxiosConfig";
 import { useDispatch } from "react-redux";
@@ -70,8 +70,8 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
       setAppointment(EventData?.appointment);
       setContent(EventData?.content);
       if (EventData.doctor && Array.isArray(EventData.doctor)) {
-        const doctorIds = EventData.doctor.map(doc => 
-          typeof doc === 'object' && doc._id ? doc._id : doc
+        const doctorIds = EventData.doctor.map((doc) =>
+          typeof doc === "object" && doc._id ? doc._id : doc
         );
         setSelectedDoctors(doctorIds);
       } else {
@@ -93,7 +93,6 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
   const { Option } = Select;
   console.log("EventData Doctors: ", EventData?.doctor);
   console.log("Fetched Doctors: ", doctors);
-  
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -114,15 +113,28 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
   };
   const validateForm = () => {
     // Validation based on clinic type
-    if (!clinicName || !description || !timing || !address || !uploadedImage) {
+    if (
+      !clinicName ||
+      !description ||
+      !timing ||
+      !address ||
+      !uploadedImage ||
+      !selectedDoctors
+    ) {
       message.error("Please fill in all required fields.");
       return false;
     }
 
+    if (selectedDoctors.length === 0) {
+      message.error("Please select at least one doctor for the clinic.");
+      return false;
+    }
 
-    if (clinicType === 'outstation') {
+    if (clinicType === "outstation") {
       if (!rating || !reviews || !patients || !experience || !uploadedImage) {
-        message.error("Please fill in all required fields for Outstation Clinic.");
+        message.error(
+          "Please fill in all required fields for Outstation Clinic."
+        );
         return false;
       }
     }
@@ -386,7 +398,9 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
                       </Option>
                     ))}
                   </Select>
-                  <span className="create-campaign-input-span">Doctor</span>
+                  <span className="create-campaign-input-span">
+                    <span style={{ color: "red" }}>*</span> Doctor
+                  </span>
                 </Form.Item>
               </Col>
             )}
