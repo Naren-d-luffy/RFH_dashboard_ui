@@ -22,7 +22,7 @@ const DoctorDetail = () => {
   const [formData, setFormData] = useState({
     name: "",
     position: "",
-    department: "",
+    department: "Institute of Gastrosciences",
     qualifications: [],
     fellowships: [],
     awards: [],
@@ -162,11 +162,12 @@ const DoctorDetail = () => {
               <Form.Item>
                 <Input
                   className="create-campaign-input"
-                  placeholder="Enter Department"
+                  placeholder="Institute of Gastrosciences"
                   value={formData.department || ""}
                   onChange={(e) =>
                     handleInputChange("department", e.target.value)
                   }
+                  disabled
                 />
                 <span className="create-campaign-input-span">
                   {" "}
