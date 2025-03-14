@@ -38,6 +38,9 @@ const DoctorDetail = () => {
     if (doctorData) {
       setFormData({ ...doctorData });
       setUploadedFile(doctorData.profile || null);
+      setIsActive(
+        doctorData.isActive !== undefined ? doctorData.isActive : true
+      );
     }
   }, [doctorData]);
 
@@ -69,12 +72,16 @@ const DoctorDetail = () => {
       formData.qualifications.some((q) => q.trim() === "") ||
       !formData.contactDetails ||
       !formData.position ||
-      !formData.experience ||
-      !formData.isActive
+      !formData.experience
     ) {
       message.error("Please fill in all required fields.");
       return;
     }
+
+    const updatedFormData = {
+      ...formData,
+      isActive: isActive,
+    };
 
     const data = new FormData();
     if (uploadedFile) {
@@ -83,12 +90,12 @@ const DoctorDetail = () => {
       data.append("profile", formData.profile);
     }
 
-    Object.keys(formData).forEach((key) => {
+    Object.keys(updatedFormData).forEach((key) => {
       if (key !== "profile") {
-        if (Array.isArray(formData[key])) {
-          data.append(key, JSON.stringify(formData[key]));
+        if (Array.isArray(updatedFormData[key])) {
+          data.append(key, JSON.stringify(updatedFormData[key]));
         } else {
-          data.append(key, formData[key]);
+          data.append(key, updatedFormData[key]);
         }
       }
     });
@@ -257,10 +264,11 @@ const DoctorDetail = () => {
                   </span>
                   <Switch
                     className="gastro-switch-button"
-                    checked={formData.isActive}
-                    onChange={(checked) =>
-                      handleInputChange("isActive", checked)
-                    }
+                    checked={isActive}
+                    onChange={(checked) => {
+                      setIsActive(checked);
+                      handleInputChange("isActive", checked);
+                    }}
                   />
                 </div>
               </div>
