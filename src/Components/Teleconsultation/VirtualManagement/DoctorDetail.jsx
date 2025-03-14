@@ -257,8 +257,10 @@ const DoctorDetail = () => {
                   </span>
                   <Switch
                     className="gastro-switch-button"
-                    checked={isActive}
-                    onChange={(checked) => setIsActive(checked)}
+                    checked={formData.isActive}
+                    onChange={(checked) =>
+                      handleInputChange("isActive", checked)
+                    }
                   />
                 </div>
               </div>
