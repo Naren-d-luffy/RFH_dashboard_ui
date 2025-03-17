@@ -533,9 +533,9 @@ ul[style*="list-style-type: square;"] li::marker {
   margin-bottom: 0px;
 }
 
-.jodit-workplace li {
+/* .jodit-workplace li {
  margin-left: 0px !important;
-}
+} */
 
 .jodit-container {
   background-color: var(--card-background-color) !important;
@@ -587,10 +587,10 @@ ul[style*="list-style-type: square;"] li::marker {
   border: 1px solid var(--black-color);
 }
 
-.jodit-wysiwyg p {
+/* .jodit-wysiwyg p {
   margin-left: 0px !important;
   padding-left: 0px !important;
   margin-bottom: 0px !important;
-}
+} */
 
 
