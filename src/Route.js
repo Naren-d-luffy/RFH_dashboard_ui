@@ -301,7 +301,8 @@ export const AppRouter = () => {
             path="/role-based"
             element={<ProtectedRoute element={<RoleBasedPage />} requiredCategory="RoleBasedAccess" />}
           />
-          <Route path="/admin/Unauthorized" element={<ProtectedRoute element={<UnAuthorizedPage />} />} />
+
+          <Route path="/admin/Unauthorized"  element={<UnAuthorizedPage />} />
           <Route
             path="/add-role-access"
             element={<ProtectedRoute element={<AddRoleBased />} />}

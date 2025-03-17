@@ -77,7 +77,6 @@ const EditVideo = ({ open, handleCancel, videoData }) => {
       <Modal
         visible={open}
         title={<span className="create-campaign-modal-title">Edit Video</span>}
-        onCancel={handleCancel}
         closeIcon={closeButtons}
         width={isMaximized ? "98%" : 680}
         style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
