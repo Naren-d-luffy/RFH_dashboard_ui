@@ -467,6 +467,7 @@ body,
   list-style-type: disc;
   margin-left: 20px;
   padding-left: 0rem;
+  margin-bottom: 0rem;
 }
 .news-content ul[style*="list-style-type: none"] {
   margin-left: 0px !important;
