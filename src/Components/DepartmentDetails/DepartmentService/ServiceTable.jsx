@@ -411,8 +411,18 @@ const ServiceTable = () => {
         </div>
       )}
 
-      <ServicesOverviewTable/>
-      <CommonProceduresServices/>
+      <ServicesOverviewTable />
+      <CommonProceduresServices />
+
+      <div className="d-flex justify-content-start mt-2">
+        <button
+          className="d-flex gap-2 align-items-center rfh-basic-button"
+          onClick={() => navigate("/department-details")}
+        >
+          <FaAngleLeft />
+          Back
+        </button>
+      </div>
 
       <AddService
         open={modals.service}
