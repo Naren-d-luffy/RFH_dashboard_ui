@@ -30,7 +30,6 @@ import {
 } from "@dnd-kit/sortable";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import CommonProceduresServices from "../DepartmentService/CommonProceduresServices";
 import CommonProcedurersConditions from "./CommonProceduresConditions";
 import ConditionOverviewTable from "./ConditionsOverviewTable";
 
@@ -94,28 +93,25 @@ const ConditionWeTreatTable = () => {
     });
   };
 
- 
-
   const fetchConditionList = useCallback(async () => {
-      setIsLoading(true);
-      try {
-        const response = await Instance.get("/depcat/treat");
-        // Sort the data by position before setting it
-        const sortedData = response.data.sort((a, b) => a.position - b.position);
-        dispatch(setConditionWeTreat(sortedData));
-        setItems(sortedData);
-        setTotalRows(sortedData.length || 0);
-      } catch (error) {
-        console.error("Error fetching conditions list:", error);
-        message.error("Failed to fetch conditions list");
-      } finally {
-        setIsLoading(false);
-      }
-    }, [dispatch]);
-  
+    setIsLoading(true);
+    try {
+      const response = await Instance.get("/depcat/treat");
+      // Sort the data by position before setting it
+      const sortedData = response.data.sort((a, b) => a.position - b.position);
+      dispatch(setConditionWeTreat(sortedData));
+      setItems(sortedData);
+      setTotalRows(sortedData.length || 0);
+    } catch (error) {
+      console.error("Error fetching conditions list:", error);
+      message.error("Failed to fetch conditions list");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dispatch]);
 
- useEffect(() => {
-  fetchConditionList(currentPage);
+  useEffect(() => {
+    fetchConditionList(currentPage);
   }, [currentPage, fetchConditionList]);
 
   useEffect(() => {
@@ -127,7 +123,6 @@ const ConditionWeTreatTable = () => {
       setItems(updatedItems);
     }
   }, [conditionwetreatList]);
-
 
   const filteredItems = useMemo(() => {
     if (!items.length) return [];
@@ -143,7 +138,7 @@ const ConditionWeTreatTable = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8, 
+        distance: 8,
       },
     })
   );
@@ -246,15 +241,18 @@ const ConditionWeTreatTable = () => {
     );
   }, [searchText, conditionwetreatList]);
 
-    const handleConditionAdded = useCallback(async (newCondition) => {
+  const handleConditionAdded = useCallback(
+    async (newCondition) => {
       // Fetch the complete list after adding new technology
       await fetchConditionList();
-      
+
       // Calculate the current page based on the new technology's position
       const newPosition = newCondition.position;
       const newPage = Math.ceil(newPosition / itemsPerPage);
       setCurrentPage(newPage);
-    }, [fetchConditionList, itemsPerPage]);
+    },
+    [fetchConditionList, itemsPerPage]
+  );
 
   const columns = [
     {
@@ -451,15 +449,29 @@ const ConditionWeTreatTable = () => {
         </div>
       )}
 
-      <ConditionOverviewTable/>
-      <CommonProcedurersConditions/>
-      <AddConditionWeTreat open={isModalOpen} handleCancel={handleCancel} onConditionAdded={handleConditionAdded} />
+      <ConditionOverviewTable />
+      <CommonProcedurersConditions />
+
+      <div className="d-flex justify-content-start mt-2">
+        <button
+          className="d-flex gap-2 align-items-center rfh-basic-button"
+          onClick={() => navigate("/department-details")}
+        >
+          <FaAngleLeft />
+          Back
+        </button>
+      </div>
+
+      <AddConditionWeTreat
+        open={isModalOpen}
+        handleCancel={handleCancel}
+        onConditionAdded={handleConditionAdded}
+      />
       <EditConditionWeTreat
         open={isEditModalOpen}
         handleCancel={handleEditCancel}
         conditionData={selectedFacility}
         onConditionAdded={handleConditionAdded}
-
       />
       <ViewConditionWeTreat
         open={isViewModalOpen}

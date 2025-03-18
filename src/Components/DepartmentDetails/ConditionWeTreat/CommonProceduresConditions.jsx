@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Table } from "antd";
 import {  FiSearch } from "react-icons/fi";
-import { FaAngleLeft } from "react-icons/fa6";
 import { Instance } from "../../../AxiosConfig";
 import Loader from "../../../Loader";
 import { useNavigate } from "react-router-dom";
@@ -136,7 +135,7 @@ const[data,setData]=useState([])
             />
           </div>
         </div>
-        <div className="d-flex justify-content-start mt-4">
+        {/* <div className="d-flex justify-content-start mt-4">
           <button
             className="d-flex gap-2 align-items-center rfh-basic-button"
             onClick={() => navigate("/department-details")}
@@ -144,7 +143,7 @@ const[data,setData]=useState([])
             <FaAngleLeft />
             Back
           </button>
-        </div>
+        </div> */}
       </>
     ) : (
       <div className="container">
