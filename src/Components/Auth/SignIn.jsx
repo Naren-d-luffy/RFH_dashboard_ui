@@ -6,7 +6,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { message, Spin, Carousel } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Instance } from "../../AxiosConfig";
-import login1 from "../../Assets/Images/login-1.png";
+import login1 from "../../Assets/Images/login-6.png";
 import login2 from "../../Assets/Images/login-5.png";
 import login3 from "../../Assets/Images/login-2.png";
 import login4 from "../../Assets/Images/login-4.png";
@@ -154,7 +154,7 @@ const SignIn = () => {
                   id="email"
                   placeholder="Enter your email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value.toLowerCase())}
                   className="signin-input"
                 />
               </div>
@@ -212,17 +212,18 @@ const SignIn = () => {
               autoplay
               dots={{ className: "custom-dots" }}
               customPaging={(i) => <CustomDot />}
-              autoplaySpeed={2000}
+              autoplaySpeed={10000}
               effect="fade"
             >
               {sliderItems.map((item, index) => (
-                <div key={index} style={{ padding: "0px" }}>
-                  <img src={item.image} alt={`Slide ${index + 1}`} />
-                  <div className="image-overlay">
-                    <h1>{item.title}</h1>
-                    <p>{item.text}</p>
-                  </div>
+                <div key={index} className="login-right-bg-image">
+                <img src={item.image} alt={`Slide ${index + 1}`} className="login-image-tag" />
+                <div className="image-overlay">
+                  <h1>{item.title}</h1>
+                  <p>{item.text}</p>
                 </div>
+              </div>
+              
               ))}
             </Carousel>
           </div>
