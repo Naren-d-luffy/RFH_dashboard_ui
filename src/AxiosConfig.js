@@ -8,7 +8,7 @@ const loginInstance = axios.create({
 
 // Instance for Other Requests
 const Instance = axios.create({
-  baseURL: "https://gastroqa.api.rfhospital.org/api/v1"
+  baseURL: "https://gastro.api.rfhospital.org/api/v1"
 });
 
 Instance.interceptors.request.use(
