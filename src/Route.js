@@ -65,8 +65,12 @@ import { UnAuthorizedPage } from "./UnAuthorizedPage";
 import ProtectedRoute from "./PrivateRoute";
 import AddRoleBased from "./Components/RoleBased/AddRoleBased";
 import EditRoleBased from "./Components/RoleBased/EditRoleAccess";
+import { useAuth } from "./AuthContext";
+import { Navigate } from "react-router-dom";
 
 export const AppRouter = () => {
+    const auth = useAuth();
+  
   return (
     <BrowserRouter>
       <Routes>
@@ -78,7 +82,7 @@ export const AppRouter = () => {
         {/* <Route path="/signup-otp" element={<SignUpOtpScreen />} /> */}
         <Route path="/confirm-password" element={<ConfirmPassword />} />
 
-        <Route element={<Layout />}>
+        <Route element={auth.isAuthenticated ? <Layout /> : <Navigate to="/" replace />} >
           <Route
             path="/user-dashboards/user-aquisition"
             element={<ProtectedRoute element={<UserAquisitionPage />} />}
