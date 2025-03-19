@@ -6,7 +6,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { message, Spin, Carousel } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Instance } from "../../AxiosConfig";
-import login1 from "../../Assets/Images/login-6.png";
+import login1 from "../../Assets/Images/login-7.png";
 import login2 from "../../Assets/Images/login-5.png";
 import login3 from "../../Assets/Images/login-2.png";
 import login4 from "../../Assets/Images/login-4.png";
@@ -212,7 +212,7 @@ const SignIn = () => {
               autoplay
               dots={{ className: "custom-dots" }}
               customPaging={(i) => <CustomDot />}
-              autoplaySpeed={1000}
+              autoplaySpeed={2000}
               effect="fade"
             >
               {sliderItems.map((item, index) => (
