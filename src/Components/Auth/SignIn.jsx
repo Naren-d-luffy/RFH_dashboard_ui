@@ -212,7 +212,7 @@ const SignIn = () => {
               autoplay
               dots={{ className: "custom-dots" }}
               customPaging={(i) => <CustomDot />}
-              autoplaySpeed={10000}
+              autoplaySpeed={1000}
               effect="fade"
             >
               {sliderItems.map((item, index) => (
