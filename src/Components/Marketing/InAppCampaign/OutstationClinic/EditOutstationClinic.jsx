@@ -125,7 +125,7 @@ const EditOutstationClinic = ({ open, handleCancel, EventData }) => {
       return false;
     }
 
-    if (selectedDoctors.length === 0) {
+    if (clinicType === "speciality" && selectedDoctors.length === 0) {
       message.error("Please select at least one doctor for the clinic.");
       return false;
     }
