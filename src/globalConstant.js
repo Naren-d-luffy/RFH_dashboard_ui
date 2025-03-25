@@ -258,6 +258,19 @@ export const editorConfig = {
 		  square: "Triangle",
 		},
 	  },
+	  lineHeight: {
+		list: {
+			// "0":"0",
+		  "0.5": "0.5",  // Add 0 as an option
+		  "1": "1",
+		  "1.1": "1.1",
+		  "1.2": "1.2",
+		  "1.3": "1.3",
+		  "1.4": "1.4",
+		  "1.5": "1.5",
+		  "2": "2"
+		}
+	  },
 	  // Customize indent behavior
 	  indent: {
 		exec: (editor) => {
