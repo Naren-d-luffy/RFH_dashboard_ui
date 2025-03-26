@@ -248,6 +248,10 @@ export const validateImage = (file, maxSizeMB = 50) => {
 
 export const editorConfig = {
 	...Jodit.defaultOptions,
+	enter: "BR",
+	style: {
+	  lineHeight: "1", // Reduce default spacing
+	},
 	controls: {
 	  ...Jodit.defaultOptions.controls,
 	  ul: {
@@ -260,8 +264,7 @@ export const editorConfig = {
 	  },
 	  lineHeight: {
 		list: {
-			// "0":"0",
-		  "0.5": "0.5",  // Add 0 as an option
+		  "0.5": "0.5", 
 		  "1": "1",
 		  "1.1": "1.1",
 		  "1.2": "1.2",
