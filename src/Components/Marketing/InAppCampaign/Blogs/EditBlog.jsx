@@ -305,8 +305,11 @@ const EditBlogs = ({ open, handleCancel, blogData }) => {
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               value={content}
               onBlur={(newContent) => {
-                const modifiedContent = formatListWithTriangleBullets(newContent);
-              setContent(modifiedContent)}}
+                const formattedContent = newContent.replace(/\r\n|\n/g, " ");
+                const modifiedContent =
+                  formatListWithTriangleBullets(formattedContent);
+                setContent(modifiedContent);
+              }}
             />
             <span className="create-campaign-input-span">Content Points</span>
           </Form.Item>

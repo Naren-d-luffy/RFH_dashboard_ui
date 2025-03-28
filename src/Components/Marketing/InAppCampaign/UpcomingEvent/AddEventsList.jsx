@@ -290,8 +290,9 @@ const AddEventsList = ({ open, handleCancel }) => {
               value={description}
               config={editorConfig}
               onBlur={(newDescription) => {
-                const modifiedContent = formatListWithTriangleBullets(newDescription);
-                setDescription(modifiedContent)}}
+                  const formattedContent = newDescription.replace(/\r\n|\n/g, " ");
+                  const modifiedContent = formatListWithTriangleBullets(formattedContent);
+                  setDescription(modifiedContent);}}
             />
             <span className="create-campaign-input-span">Description</span>
           </Form.Item>

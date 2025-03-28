@@ -26,7 +26,12 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
-const EditEventsGastroIllness = ({ open, handleCancel, EventData,  onServiceAdded }) => {
+const EditEventsGastroIllness = ({
+  open,
+  handleCancel,
+  EventData,
+  onServiceAdded,
+}) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [, setThumbnailImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -333,8 +338,11 @@ const EditEventsGastroIllness = ({ open, handleCancel, EventData,  onServiceAdde
               // config={editorConfig}
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               onBlur={(newContent) => {
-                const modifiedContent = formatListWithTriangleBullets(newContent);
-                setContent(modifiedContent)}}
+                const formattedContent = newContent.replace(/\r\n|\n/g, " ");
+                const modifiedContent =
+                  formatListWithTriangleBullets(formattedContent);
+                setContent(modifiedContent);
+              }}
             />
             <span className="create-campaign-input-span"> Content Points</span>
           </Form.Item>

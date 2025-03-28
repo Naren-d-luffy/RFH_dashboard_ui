@@ -297,6 +297,13 @@ export const editorConfig = {
 	useAceEditor: false,
 	// This might help with the indent behavior
 	beautifyHTML: false,
+	cleanHTML: {
+		fillEmptyParagraph: false, // Prevents <p><span>&nbsp;</span></p>
+		removeEmptyNodes: true, // Remove unnecessary empty elements
+	  },
+	  pastePlainText: true,
+	  stripNewLines: true,
+	  breakline: true,
 };
 
 

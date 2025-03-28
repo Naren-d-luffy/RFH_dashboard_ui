@@ -6,10 +6,13 @@ import { Instance } from "../../AxiosConfig";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import Loader from "../../Loader";
 import { addDepartment } from "../../Features/DepartmentSlice";
-import { showSuccessMessage,editorConfig, formatListWithTriangleBullets } from "../../globalConstant";
+import {
+  showSuccessMessage,
+  editorConfig,
+  formatListWithTriangleBullets,
+} from "../../globalConstant";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
-
 
 const CreateDepartmentDetails = ({ open, handleCancel }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -17,16 +20,16 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-   const [content, setContent] = useState("");
+  const [content, setContent] = useState("");
   const dispatch = useDispatch();
-    const [isMaximized, setIsMaximized] = useState(false);
-  
-    const editor = useRef(null);
-    const toggleMaximize = (e) => {
-      e.preventDefault(); // Prevent any form submission
-      e.stopPropagation(); // Stop event bubbling
-      setIsMaximized(!isMaximized);
-    };
+  const [isMaximized, setIsMaximized] = useState(false);
+
+  const editor = useRef(null);
+  const toggleMaximize = (e) => {
+    e.preventDefault(); // Prevent any form submission
+    e.stopPropagation(); // Stop event bubbling
+    setIsMaximized(!isMaximized);
+  };
 
   const resetForm = () => {
     setUploadedImage(null);
@@ -35,14 +38,10 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
     setDescription("");
   };
   const handleSave = async () => {
-      if (
-          !title ||
-          !subtitle||
-          !uploadedImage
-        ) {
-          message.error("Please fill in all required fields.");
-          return;
-        }
+    if (!title || !subtitle || !uploadedImage) {
+      message.error("Please fill in all required fields.");
+      return;
+    }
     setIsLoading(true);
     try {
       const requestData = new FormData();
@@ -74,26 +73,26 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
     }
   };
 
-    const closeButtons = (
-      <div className="d-flex items-center gap-2 pe-5">
-        <Button
-          type="button"
-          onClick={toggleMaximize}
-          icon={
-            isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
-          }
-        />
-        <Button
-          type="button"
-          className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
-          onClick={handleCancel}
-        >
-          <span>
-            <FiX size={18} />
-          </span>
-        </Button>
-      </div>
-    );
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancel}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
 
   return (
     <>
@@ -151,15 +150,18 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
               <span style={{ color: "red" }}>*</span> Subtitle
             </span>
           </Form.Item>
-         
+
           <Form.Item>
             <JoditEditor
               ref={editor}
               config={editorConfig}
               value={description}
-              onBlur={(newContent) =>{
-                const modifiedContent = formatListWithTriangleBullets(newContent);
-                 setDescription(modifiedContent)}}
+              onBlur={(newContent) => {
+                const formattedContent = newContent.replace(/\r\n|\n/g, " ");
+                const modifiedContent =
+                  formatListWithTriangleBullets(formattedContent);
+                setDescription(modifiedContent);
+              }}
             />
             <span className="create-campaign-input-span">Description</span>
           </Form.Item>
@@ -178,8 +180,10 @@ const CreateDepartmentDetails = ({ open, handleCancel }) => {
                 Drop files here or click to upload
               </p>
               <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
-                <span style={{ color: "#727880", cursor:'pointer' }}>Upload Image</span>
+                <IoCloudUploadOutline className="image-upload-icon" />{" "}
+                <span style={{ color: "#727880", cursor: "pointer" }}>
+                  Upload Image
+                </span>
               </span>
             </Upload>
             {uploadedImage && (

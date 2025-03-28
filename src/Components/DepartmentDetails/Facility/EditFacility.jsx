@@ -3,18 +3,26 @@ import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage,editorConfig, formatListWithTriangleBullets } from "../../../globalConstant";
+import {
+  showSuccessMessage,
+  validateImage,
+  editorConfig,
+  formatListWithTriangleBullets,
+} from "../../../globalConstant";
 import Loader from "../../../Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { editFacility } from "../../../Features/FacilitySlice";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
-
-
 const { TextArea } = Input;
 
-const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
+const EditFacility = ({
+  open,
+  handleCancel,
+  facilityData,
+  onFacilityAdded,
+}) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -34,11 +42,11 @@ const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
       setVideoSubHeading(facilityData.video_subHeading || "");
       setUploadedImage(facilityData.video || "");
       setThumbnailImage(facilityData.thumbnail || null);
-      setPosition(facilityData?.position || "")
+      setPosition(facilityData?.position || "");
     }
   }, [open, facilityData]);
   const [position, setPosition] = useState("");
-  
+
   const facilities = useSelector((state) => state.facility.facilities);
   const maxAllowedPosition = facilities.length;
   const handlePositionChange = (e) => {
@@ -121,7 +129,7 @@ const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
       formData.append("content", content);
       formData.append("video_heading", videoHeading);
       formData.append("video_subHeading", videoSubHeading);
-      formData.append("position",position);
+      formData.append("position", position);
 
       if (uploadedImage && typeof uploadedImage !== "string") {
         formData.append("video", uploadedImage);
@@ -136,7 +144,7 @@ const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
       );
       if (response?.status === 200 || response?.status === 201) {
         showSuccessMessage("Facility updated successfully!");
-       
+
         dispatch(editFacility(response.data));
         if (onFacilityAdded) {
           await onFacilityAdded(response.data);
@@ -253,7 +261,9 @@ const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
                     Drop files here or click to upload
                   </p>
                   <IoCloudUploadOutline />{" "}
-                  <span style={{ color: "#727880", cursor:'pointer' }}>Upload Thumbnail</span>
+                  <span style={{ color: "#727880", cursor: "pointer" }}>
+                    Upload Thumbnail
+                  </span>
                 </Upload>
                 {thumbnailImage && (
                   <div className="uploaded-image-preview">
@@ -331,8 +341,11 @@ const EditFacility = ({ open, handleCancel, facilityData,onFacilityAdded }) => {
               // config={editorConfig}
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               onBlur={(newContent) => {
-                const modifiedContent = formatListWithTriangleBullets(newContent);
-                setContent(modifiedContent)}}
+                const formattedContent = newContent.replace(/\r\n|\n/g, " ");
+                const modifiedContent =
+                  formatListWithTriangleBullets(formattedContent);
+                setContent(modifiedContent);
+              }}
               required
             />
             <span className="create-campaign-input-span">Content</span>

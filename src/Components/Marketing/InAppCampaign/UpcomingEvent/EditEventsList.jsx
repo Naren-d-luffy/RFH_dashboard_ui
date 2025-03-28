@@ -35,7 +35,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [content, setContent] = useState("")
+  // const [content, setContent] = useState("")
   const dispatch = useDispatch();
   const editor = useRef(null);
   const [isMaximized, setIsMaximized] = useState(false);
@@ -325,8 +325,10 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               value={description}
               onBlur={(newDescription) => {
-                const modifiedContent = formatListWithTriangleBullets(newDescription);
-                setDescription(modifiedContent)}}
+                const formattedContent = newDescription.replace(/\r\n|\n/g, " ");
+                const modifiedContent = formatListWithTriangleBullets(formattedContent);
+                setDescription(modifiedContent);
+              }}
               required
             />
             <span className="create-campaign-input-span">Description</span>

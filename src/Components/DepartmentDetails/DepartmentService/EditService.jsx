@@ -3,7 +3,12 @@ import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage ,editorConfig, formatListWithTriangleBullets} from "../../../globalConstant";
+import {
+  showSuccessMessage,
+  validateImage,
+  editorConfig,
+  formatListWithTriangleBullets,
+} from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { editService } from "../../../Features/ServiceSlice";
@@ -11,7 +16,7 @@ import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
-const EditService = ({ open, handleCancel, serviceData,onServiceAdded }) => {
+const EditService = ({ open, handleCancel, serviceData, onServiceAdded }) => {
   const [heading, setHeading] = useState("");
   const [subHeading, setSubHeading] = useState("");
   const [content, setContent] = useState("");
@@ -55,7 +60,6 @@ const EditService = ({ open, handleCancel, serviceData,onServiceAdded }) => {
     setIsMaximized(!isMaximized);
   };
 
- 
   const handleSave = async () => {
     if (!heading || !subHeading || !thumbnailImage || !position) {
       message.error("Please fill in all required fields.");
@@ -211,7 +215,9 @@ const EditService = ({ open, handleCancel, serviceData,onServiceAdded }) => {
                     Drop files here or click to upload
                   </p>
                   <IoCloudUploadOutline className="image-upload-icon" />{" "}
-                  <span style={{ color: "#727880", cursor:'pointer' }}>Upload Thumbnail</span>
+                  <span style={{ color: "#727880", cursor: "pointer" }}>
+                    Upload Thumbnail
+                  </span>
                 </Upload>
                 {thumbnailImage && (
                   <div className="uploaded-image-preview d-flex gap-2">
@@ -256,8 +262,11 @@ const EditService = ({ open, handleCancel, serviceData,onServiceAdded }) => {
               // config={editorConfig}
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               onBlur={(newContent) => {
-                const modifiedContent = formatListWithTriangleBullets(newContent);
-                setContent(modifiedContent)}}
+                const formattedContent = newContent.replace(/\r\n|\n/g, " ");
+                const modifiedContent =
+                  formatListWithTriangleBullets(formattedContent);
+                setContent(modifiedContent);
+              }}
               required
             />
             <span className="create-campaign-input-span">Content</span>

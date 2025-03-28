@@ -17,7 +17,12 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
-const EditTreatmentsInfo = ({ open, handleCancel, treatmentData,onServiceAdded }) => {
+const EditTreatmentsInfo = ({
+  open,
+  handleCancel,
+  treatmentData,
+  onServiceAdded,
+}) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -38,20 +43,20 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData,onServiceAdded }
   const treatmentDatas = useSelector((state) => state.treatments.treatments);
 
   const maxAllowedPosition = treatmentDatas.length;
-  
-    const handlePositionChange = (e) => {
-      const value = e.target.value;
-      if (value === "") {
-        setPosition("");
-        return;
-      }
-      const numValue = parseInt(value);
-      if (!isNaN(numValue) && numValue > 0 && numValue <= maxAllowedPosition) {
-        setPosition(numValue.toString());
-      } else if (numValue > maxAllowedPosition) {
-        message.error(`Position cannot be greater than ${maxAllowedPosition}`);
-      }
-    };
+
+  const handlePositionChange = (e) => {
+    const value = e.target.value;
+    if (value === "") {
+      setPosition("");
+      return;
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue > 0 && numValue <= maxAllowedPosition) {
+      setPosition(numValue.toString());
+    } else if (numValue > maxAllowedPosition) {
+      message.error(`Position cannot be greater than ${maxAllowedPosition}`);
+    }
+  };
   const handleUpload = (info) => {
     const file = info.file.originFileObj;
     if (!validateImage(file)) return false;
@@ -77,7 +82,7 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData,onServiceAdded }
       setContent(treatmentData.content || "");
       setUploadedImage(treatmentData.headerImage || null);
       setThumbnailImage(treatmentData.thumbnail || null);
-      setConditions(treatmentData.condition );
+      setConditions(treatmentData.condition);
       setService(treatmentData.service);
       setPosition(treatmentData.position || "");
     }
@@ -203,49 +208,49 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData,onServiceAdded }
             </span>
           </Form.Item>
           <div className="row">
-                      <div className="col-lg-8">
-                        <div
-                          className="mt-2"
-                          style={{ display: "flex", gap: "30px", alignItems: "center" }}
-                        >
-                          <div>
-                            <span style={{ color: "var(--black-color)" }}>
-                              Department Services{" "}
-                            </span>
-                            <Switch
-                              className="gastro-switch-button"
-                              checked={service}
-                              onChange={(checked) => setService(checked)}
-                            />
-                          </div>
-                          <div>
-                            <span style={{ color: "var(--black-color)" }}>
-                              Conditions we Treat{" "}
-                            </span>
-                            <Switch
-                              className="gastro-switch-button"
-                              checked={conditions}
-                              onChange={(checked) => setConditions(checked)}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-lg-4">
-                        <Form.Item>
-                          <Input
-                            value={position}
-                            onChange={handlePositionChange}
-                            placeholder="Position (positive numbers only)"
-                            required
-                            type="number"
-                            min="1"
-                          />
-                          <span className="create-campaign-input-span">
-                            <span style={{ color: "red" }}>*</span> Position
-                          </span>
-                        </Form.Item>
-                      </div>
-                    </div>
+            <div className="col-lg-8">
+              <div
+                className="mt-2"
+                style={{ display: "flex", gap: "30px", alignItems: "center" }}
+              >
+                <div>
+                  <span style={{ color: "var(--black-color)" }}>
+                    Department Services{" "}
+                  </span>
+                  <Switch
+                    className="gastro-switch-button"
+                    checked={service}
+                    onChange={(checked) => setService(checked)}
+                  />
+                </div>
+                <div>
+                  <span style={{ color: "var(--black-color)" }}>
+                    Conditions we Treat{" "}
+                  </span>
+                  <Switch
+                    className="gastro-switch-button"
+                    checked={conditions}
+                    onChange={(checked) => setConditions(checked)}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4">
+              <Form.Item>
+                <Input
+                  value={position}
+                  onChange={handlePositionChange}
+                  placeholder="Position (positive numbers only)"
+                  required
+                  type="number"
+                  min="1"
+                />
+                <span className="create-campaign-input-span">
+                  <span style={{ color: "red" }}>*</span> Position
+                </span>
+              </Form.Item>
+            </div>
+          </div>
           <div className="row mt-5">
             <div className="col-lg-6">
               <Form.Item>
@@ -359,8 +364,11 @@ const EditTreatmentsInfo = ({ open, handleCancel, treatmentData,onServiceAdded }
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               value={content}
               onBlur={(newContent) => {
-                const modifiedContent = formatListWithTriangleBullets(newContent);
-                setContent(modifiedContent)}}
+                const formattedContent = newContent.replace(/\r\n|\n/g, " ");
+                const modifiedContent =
+                  formatListWithTriangleBullets(formattedContent);
+                setContent(modifiedContent);
+              }}
             />
             <span className="create-campaign-input-span">Content Points</span>
           </Form.Item>
