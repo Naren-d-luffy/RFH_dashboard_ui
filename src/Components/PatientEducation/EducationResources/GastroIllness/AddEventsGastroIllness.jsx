@@ -26,7 +26,7 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
-const AddEventsGastroIllness = ({ open, handleCancel,  onServiceAdded }) => {
+const AddEventsGastroIllness = ({ open, handleCancel, onServiceAdded }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [, setThumbnailImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -330,9 +330,12 @@ const AddEventsGastroIllness = ({ open, handleCancel,  onServiceAdded }) => {
               ref={editor}
               value={content}
               config={editorConfig}
-              onBlur={(newContent) =>{
-                const modifiedContent = formatListWithTriangleBullets(newContent);
-                 setContent(modifiedContent)}}
+              onBlur={(newContent) => {
+                const formattedContent = newContent.replace(/\r\n|\n/g, " ");
+                const modifiedContent =
+                  formatListWithTriangleBullets(formattedContent);
+                setContent(modifiedContent);
+              }}
               required
             />
             <span className="create-campaign-input-span"> Content Points</span>

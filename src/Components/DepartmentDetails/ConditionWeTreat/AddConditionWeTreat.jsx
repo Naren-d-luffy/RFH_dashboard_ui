@@ -3,17 +3,21 @@ import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { editorConfig, formatListWithTriangleBullets, showSuccessMessage, validateImage } from "../../../globalConstant";
+import {
+  editorConfig,
+  formatListWithTriangleBullets,
+  showSuccessMessage,
+  validateImage,
+} from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { addConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
-
 const { TextArea } = Input;
 
-const AddConditionWeTreat = ({ open, handleCancel,onConditionAdded }) => {
+const AddConditionWeTreat = ({ open, handleCancel, onConditionAdded }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -214,7 +218,9 @@ const AddConditionWeTreat = ({ open, handleCancel,onConditionAdded }) => {
                     Drop files here or click to upload
                   </p>
                   <IoCloudUploadOutline className="image-upload-icon" />{" "}
-                  <span style={{ color: "#727880", cursor:'pointer' }}>Upload Thumbnail</span>
+                  <span style={{ color: "#727880", cursor: "pointer" }}>
+                    Upload Thumbnail
+                  </span>
                 </Upload>
                 {thumbnailImage && (
                   <div className="uploaded-image-preview">
@@ -247,8 +253,11 @@ const AddConditionWeTreat = ({ open, handleCancel,onConditionAdded }) => {
               value={content}
               config={editorConfig}
               onBlur={(newContent) => {
-                const modifiedContent = formatListWithTriangleBullets(newContent);
-                setContent(modifiedContent)}}
+                const formattedContent = newContent.replace(/\r\n|\n/g, " ");
+                const modifiedContent =
+                  formatListWithTriangleBullets(formattedContent);
+                setContent(modifiedContent);
+              }}
             />
             <span className="create-campaign-input-span">Content</span>
           </Form.Item>

@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage, validateImage,editorConfig, formatListWithTriangleBullets } from "../../../../globalConstant";
+import {
+  showSuccessMessage,
+  validateImage,
+  editorConfig,
+  formatListWithTriangleBullets,
+} from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { FaTrash } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -30,13 +35,13 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
   const handleAddFeatures = () => {
     setFeatures([...features, ""]);
   };
- const handleUpload = (info) => {
-     const file = info.file.originFileObj;
-     
-     if (!validateImage(file)) return; 
-   
-     setUploadedImage(file);
-   };
+  const handleUpload = (info) => {
+    const file = info.file.originFileObj;
+
+    if (!validateImage(file)) return;
+
+    setUploadedImage(file);
+  };
 
   const handleDeleteImage = () => {
     setUploadedImage(null);
@@ -63,9 +68,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
   }, [open, featuresData]);
 
   const handleSave = async () => {
-  
-    
-    if (!title || !description || !uploadedImage ) {
+    if (!title || !description || !uploadedImage) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -166,7 +169,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
               Drop files here or click to upload
             </p>
             <span className="create-campaign-ant-upload-drag-icon">
-                <IoCloudUploadOutline className="image-upload-icon"/>{" "}
+              <IoCloudUploadOutline className="image-upload-icon" />{" "}
               <span style={{ color: "#727880" }}>Upload Image</span>
             </span>
           </Upload>
@@ -214,7 +217,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
             placeholder="Title"
             required
           />
-           <span className="create-campaign-input-span">
+          <span className="create-campaign-input-span">
             <span style={{ color: "red" }}>*</span> Feature Title
           </span>
         </Form.Item>
@@ -226,7 +229,7 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
             placeholder="Description "
             required
           />
-           <span className="create-campaign-input-span">
+          <span className="create-campaign-input-span">
             <span style={{ color: "red" }}>*</span> Description
           </span>
         </Form.Item>
@@ -268,13 +271,14 @@ const EditFeaturesModal = ({ open, handleCancel, featuresData }) => {
             config={{ ...editorConfig, className: "hide-placeholder-editor" }}
             value={content}
             onBlur={(newContent) => {
-              const modifiedContent = formatListWithTriangleBullets(newContent);
-            setContent(modifiedContent)}}
+              const formattedContent = newContent.replace(/\r\n|\n/g, " ");
+              const modifiedContent =
+                formatListWithTriangleBullets(formattedContent);
+              setContent(modifiedContent);
+            }}
             required
           />
-           <span className="create-campaign-input-span">
-            Content
-          </span>
+          <span className="create-campaign-input-span">Content</span>
         </Form.Item>
       </Form>
     </Modal>

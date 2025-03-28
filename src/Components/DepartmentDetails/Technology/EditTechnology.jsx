@@ -3,7 +3,12 @@ import { Button, Modal, Form, Input, Upload, message, Switch } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage,editorConfig, formatListWithTriangleBullets } from "../../../globalConstant";
+import {
+  showSuccessMessage,
+  validateImage,
+  editorConfig,
+  formatListWithTriangleBullets,
+} from "../../../globalConstant";
 import Loader from "../../../Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { editTechnology } from "../../../Features/TechnologySlice";
@@ -12,7 +17,12 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
-const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }) => {
+const EditTechnology = ({
+  open,
+  handleCancel,
+  technologyData,
+  onTechnologyAdded,
+}) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -41,7 +51,7 @@ const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }
       setPosition(technologyData?.position);
     }
   }, [open, technologyData]);
-  
+
   const handleUploadThumbnail = (info) => {
     const file = info.file.originFileObj;
     if (!validateImage(file)) return false;
@@ -177,7 +187,9 @@ const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }
               onChange={(checked) => setIsOverview(checked)}
               className="gastro-switch-button"
             />
-            <span className="mx-2" style={{color:'var(--black-color)'}}>Overview</span>
+            <span className="mx-2" style={{ color: "var(--black-color)" }}>
+              Overview
+            </span>
           </div>
           <Form.Item>
             <Input
@@ -233,7 +245,9 @@ const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }
                         Drop files here or click to upload
                       </p>
                       <IoCloudUploadOutline className="image-upload-icon" />{" "}
-                      <span style={{ color: "#727880", cursor:'pointer' }}>Upload Thumbnail</span>
+                      <span style={{ color: "#727880", cursor: "pointer" }}>
+                        Upload Thumbnail
+                      </span>
                     </Upload>
                     {thumbnailImage && (
                       <div className="uploaded-image-preview">
@@ -273,10 +287,19 @@ const EditTechnology = ({ open, handleCancel, technologyData,onTechnologyAdded }
                   ref={editor}
                   value={content}
                   // config={editorConfig}
-                  config={{ ...editorConfig, className: "hide-placeholder-editor" }}
+                  config={{
+                    ...editorConfig,
+                    className: "hide-placeholder-editor",
+                  }}
                   onBlur={(newContent) => {
-                    const modifiedContent = formatListWithTriangleBullets(newContent);
-                    setContent(modifiedContent)}}
+                    const formattedContent = newContent.replace(
+                      /\r\n|\n/g,
+                      " "
+                    );
+                    const modifiedContent =
+                      formatListWithTriangleBullets(formattedContent);
+                    setContent(modifiedContent);
+                  }}
                 />
                 <span className="create-campaign-input-span">Content</span>
               </Form.Item>
