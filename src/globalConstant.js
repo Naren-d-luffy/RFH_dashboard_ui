@@ -252,6 +252,15 @@ export const editorConfig = {
 	style: {
 	  lineHeight: "1", // Reduce default spacing
 	},
+	uploader: {
+		insertImageAsBase64URI: true, // Stores images as Base64 (no API needed)
+	  },
+	  filebrowser: {
+		allowImageUpload: true, // Enables local image uploads
+		allowImageBrowse: true, // Enables browsing images
+	  },
+	  toolbarAdaptive: false,  // Ensures the toolbar does not collapse
+	  toolbarSticky: true, 
 	controls: {
 	  ...Jodit.defaultOptions.controls,
 	  ul: {
