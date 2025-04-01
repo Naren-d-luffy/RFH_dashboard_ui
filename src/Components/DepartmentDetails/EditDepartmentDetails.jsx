@@ -185,8 +185,10 @@ const EditDepartmentDetails = ({ open, handleCancel, departmentData }) => {
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               value={description}
               onBlur={(newContent) => {
-                const modifiedContent = formatListWithTriangleBullets(newContent);
-                setDescription(modifiedContent)}}
+               const formattedContent = newContent.replace(/\r\n|\n/g, " ");
+                               const modifiedContent =
+                                 formatListWithTriangleBullets(formattedContent);
+                               setDescription(modifiedContent);}}
               required
             />
             <span className="create-campaign-input-span">Description</span>

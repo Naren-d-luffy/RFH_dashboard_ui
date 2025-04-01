@@ -3,16 +3,20 @@ import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { showSuccessMessage, validateImage,editorConfig, formatListWithTriangleBullets } from "../../../globalConstant";
+import {
+  showSuccessMessage,
+  validateImage,
+  editorConfig,
+  formatListWithTriangleBullets,
+} from "../../../globalConstant";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Loader";
 import { addService } from "../../../Features/ServiceSlice";
 import JoditEditor from "jodit-react";
 import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
-
 const { TextArea } = Input;
-const AddService = ({ open, handleCancel,onServiceAdded }) => {
+const AddService = ({ open, handleCancel, onServiceAdded }) => {
   const [heading, setHeading] = useState("");
   const [subHeading, setSubHeading] = useState("");
   const [content, setContent] = useState("");
@@ -50,12 +54,10 @@ const AddService = ({ open, handleCancel,onServiceAdded }) => {
   };
 
   const toggleMaximize = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     e.stopPropagation();
     setIsMaximized(!isMaximized);
   };
-
-
 
   const handleSave = async () => {
     if (!heading || !subHeading || !thumbnailImage || !position) {
@@ -94,8 +96,8 @@ const AddService = ({ open, handleCancel,onServiceAdded }) => {
     }
   };
   const handleCancelClick = (e) => {
-    e.preventDefault(); 
-    e.stopPropagation(); 
+    e.preventDefault();
+    e.stopPropagation();
     setHeading("");
     setSubHeading("");
     setContent("");
@@ -208,7 +210,9 @@ const AddService = ({ open, handleCancel,onServiceAdded }) => {
                     Drop files here or click to upload
                   </p>
                   <IoCloudUploadOutline className="image-upload-icon" />{" "}
-                  <span style={{ color: "#727880", cursor:'pointer' }}>Upload Thumbnail</span>
+                  <span style={{ color: "#727880", cursor: "pointer" }}>
+                    Upload Thumbnail
+                  </span>
                 </Upload>
                 {thumbnailImage && (
                   <div className="uploaded-image-preview">
@@ -241,8 +245,11 @@ const AddService = ({ open, handleCancel,onServiceAdded }) => {
               value={content}
               config={editorConfig}
               onBlur={(newContent) => {
-                const modifiedContent = formatListWithTriangleBullets(newContent);
-                setContent(modifiedContent)}}
+                const formattedContent = newContent.replace(/\r\n|\n/g, " ");
+                const modifiedContent =
+                  formatListWithTriangleBullets(formattedContent);
+                setContent(modifiedContent);
+              }}
             />
             <span className="create-campaign-input-span">Content</span>
           </Form.Item>

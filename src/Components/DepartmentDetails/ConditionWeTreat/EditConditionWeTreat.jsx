@@ -3,7 +3,12 @@ import { Button, Modal, Form, Input, Upload, message } from "antd";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Instance } from "../../../AxiosConfig";
-import { editorConfig, formatListWithTriangleBullets, showSuccessMessage, validateImage } from "../../../globalConstant";
+import {
+  editorConfig,
+  formatListWithTriangleBullets,
+  showSuccessMessage,
+  validateImage,
+} from "../../../globalConstant";
 import Loader from "../../../Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { editConditionWeTreat } from "../../../Features/ConditionWeTreatSlice";
@@ -12,7 +17,12 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
-const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdded }) => {
+const EditConditionWeTreat = ({
+  open,
+  handleCancel,
+  conditionData,
+  onConditionAdded,
+}) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -25,7 +35,7 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdd
   const conditionwetreatList = useSelector(
     (state) => state.conditionwetreat.conditionwetreats
   );
-  const maxAllowedPosition = conditionwetreatList.length ;
+  const maxAllowedPosition = conditionwetreatList.length;
 
   const handlePositionChange = (e) => {
     const value = e.target.value;
@@ -209,7 +219,9 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdd
                     Drop files here or click to upload
                   </p>
                   <IoCloudUploadOutline className="image-upload-icon" />{" "}
-                  <span style={{ color: "#727880", cursor:'pointer' }}>Upload Thumbnail</span>
+                  <span style={{ color: "#727880", cursor: "pointer" }}>
+                    Upload Thumbnail
+                  </span>
                 </Upload>
                 {thumbnailImage && (
                   <div className="uploaded-image-preview">
@@ -242,8 +254,11 @@ const EditConditionWeTreat = ({ open, handleCancel, conditionData,onConditionAdd
               ref={editor}
               value={content}
               onBlur={(newContent) => {
-                const modifiedContent = formatListWithTriangleBullets(newContent);
-                setContent(modifiedContent)}}
+                const formattedContent = newContent.replace(/\r\n|\n/g, " ");
+                const modifiedContent =
+                  formatListWithTriangleBullets(formattedContent);
+                setContent(modifiedContent);
+              }}
               // config={editorConfig}
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               required

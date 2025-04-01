@@ -17,7 +17,7 @@ import { FiMaximize2, FiMinimize2, FiX } from "react-icons/fi";
 
 const { TextArea } = Input;
 
-const AddTreatmentsInfo = ({ open, handleCancel ,onServiceAdded}) => {
+const AddTreatmentsInfo = ({ open, handleCancel, onServiceAdded }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [thumbnailImage, setThumbnailImage] = useState(null);
   const [title, setTitle] = useState("");
@@ -33,21 +33,21 @@ const AddTreatmentsInfo = ({ open, handleCancel ,onServiceAdded}) => {
   const treatmentData = useSelector((state) => state.treatments.treatments);
 
   const maxAllowedPosition = treatmentData.length + 1;
-  
-    const handlePositionChange = (e) => {
-      const value = e.target.value;
-      if (value === "") {
-        setPosition("");
-        return;
-      }
-      const numValue = parseInt(value);
-      if (!isNaN(numValue) && numValue > 0 && numValue <= maxAllowedPosition) {
-        setPosition(numValue.toString());
-      } else if (numValue > maxAllowedPosition) {
-        message.error(`Position cannot be greater than ${maxAllowedPosition}`);
-      }
-    };
-  
+
+  const handlePositionChange = (e) => {
+    const value = e.target.value;
+    if (value === "") {
+      setPosition("");
+      return;
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue > 0 && numValue <= maxAllowedPosition) {
+      setPosition(numValue.toString());
+    } else if (numValue > maxAllowedPosition) {
+      message.error(`Position cannot be greater than ${maxAllowedPosition}`);
+    }
+  };
+
   const toggleMaximize = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -89,7 +89,6 @@ const AddTreatmentsInfo = ({ open, handleCancel ,onServiceAdded}) => {
       formData.append("condition", conditions);
       formData.append("position", position);
 
-      
       const response = await Instance.post("/education", formData);
       if (response?.status === 200 || response?.status === 201) {
         handleCancel();
@@ -349,8 +348,11 @@ const AddTreatmentsInfo = ({ open, handleCancel ,onServiceAdded}) => {
               value={content}
               config={editorConfig}
               onBlur={(newContent) => {
-                const modifiedContent = formatListWithTriangleBullets(newContent);
-                setContent(modifiedContent)}}
+                const formattedContent = newContent.replace(/\r\n|\n/g, " ");
+                const modifiedContent =
+                  formatListWithTriangleBullets(formattedContent);
+                setContent(modifiedContent);
+              }}
             />
             <span className="create-campaign-input-span"> Content Points</span>
           </Form.Item>

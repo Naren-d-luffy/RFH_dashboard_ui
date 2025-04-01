@@ -1,7 +1,12 @@
 import React, { useRef, useState } from "react";
 import { Button, Modal, Form, Input, message, Upload } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage, validateImage,editorConfig, formatListWithTriangleBullets } from "../../../../globalConstant";
+import {
+  showSuccessMessage,
+  validateImage,
+  editorConfig,
+  formatListWithTriangleBullets,
+} from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { FaTrash } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -258,8 +263,11 @@ const AddFeaturesModal = ({ open, handleCancel }) => {
             value={content}
             config={editorConfig}
             onBlur={(newContent) => {
-              const modifiedContent = formatListWithTriangleBullets(newContent);
-            setContent(modifiedContent)}}
+              const formattedContent = newContent.replace(/\r\n|\n/g, " ");
+              const modifiedContent =
+                formatListWithTriangleBullets(formattedContent);
+              setContent(modifiedContent);
+            }}
             required
           />
           <span className="create-campaign-input-span">Content</span>

@@ -368,8 +368,9 @@ const AddOutstationClinic = ({ open, handleCancel }) => {
               value={content}
               config={editorConfig}
               onBlur={(newContent) => {
+                const formattedContent = newContent.replace(/\r\n|\n/g, " ");
                 const modifiedContent =
-                  formatListWithTriangleBullets(newContent);
+                  formatListWithTriangleBullets(formattedContent);
                 setContent(modifiedContent);
               }}
             />

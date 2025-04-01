@@ -248,6 +248,10 @@ export const validateImage = (file, maxSizeMB = 50) => {
 
 export const editorConfig = {
 	...Jodit.defaultOptions,
+	enter: "BR",
+	style: {
+	  lineHeight: "1", // Reduce default spacing
+	},
 	controls: {
 	  ...Jodit.defaultOptions.controls,
 	  ul: {
@@ -257,6 +261,18 @@ export const editorConfig = {
 		  disc: "Dot",
 		  square: "Triangle",
 		},
+	  },
+	  lineHeight: {
+		list: {
+		  "0.5": "0.5", 
+		  "1": "1",
+		  "1.1": "1.1",
+		  "1.2": "1.2",
+		  "1.3": "1.3",
+		  "1.4": "1.4",
+		  "1.5": "1.5",
+		  "2": "2"
+		}
 	  },
 	  // Customize indent behavior
 	  indent: {
@@ -281,6 +297,13 @@ export const editorConfig = {
 	useAceEditor: false,
 	// This might help with the indent behavior
 	beautifyHTML: false,
+	cleanHTML: {
+		fillEmptyParagraph: false, // Prevents <p><span>&nbsp;</span></p>
+		removeEmptyNodes: true, // Remove unnecessary empty elements
+	  },
+	  pastePlainText: true,
+	  stripNewLines: true,
+	  breakline: true,
 };
 
 
