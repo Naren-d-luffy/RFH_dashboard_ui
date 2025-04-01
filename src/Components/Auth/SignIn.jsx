@@ -178,11 +178,11 @@ const SignIn = () => {
                   </button>
                 </div>
               </div>
-              <Link to="/forgot-password" className="forgot-password">
+              {/* <Link to="/forgot-password" className="forgot-password">
                 Forgot Password?
-              </Link>
+              </Link> */}
               <button
-                className="login-button"
+                className="login-button mt-3"
                 onClick={handleLogin}
                 // type="button"
                 type="submit"
