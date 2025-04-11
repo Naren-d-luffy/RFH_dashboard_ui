@@ -67,6 +67,7 @@ import AddRoleBased from "./Components/RoleBased/AddRoleBased";
 import EditRoleBased from "./Components/RoleBased/EditRoleAccess";
 import { useAuth } from "./AuthContext";
 import { Navigate } from "react-router-dom";
+import { LogPage } from "./Pages/Logs/LogPage";
 
 export const AppRouter = () => {
     const auth = useAuth();
@@ -314,6 +315,10 @@ export const AppRouter = () => {
           <Route
             path="/edit-role-access/:id"
             element={<ProtectedRoute element={<EditRoleBased />} />}
+          />
+            <Route
+            path="/logs"
+            element={<ProtectedRoute element={<LogPage />} requiredCategory="logs" />}
           />
         </Route>
       </Routes>
