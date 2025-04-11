@@ -198,6 +198,7 @@ const AddRoleBased = () => {
                   <Checkbox value="AboutHospital">About Hospital</Checkbox>
                   <Checkbox value="Configuration">Configuration</Checkbox>
                   <Checkbox value="RoleBasedAccess">Role Based Access</Checkbox>
+                  <Checkbox value="logs">Logs</Checkbox>
                 </Checkbox.Group>
               </Form.Item>
             </>

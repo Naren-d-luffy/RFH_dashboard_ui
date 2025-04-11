@@ -17,7 +17,7 @@ import {
   Settings,
 } from "lucide-react";
 import { SlGraduation, SlLock } from "react-icons/sl";
-import { IoMenu, IoNewspaperOutline, IoTelescopeOutline } from "react-icons/io5";
+import { IoListSharp, IoMenu, IoNewspaperOutline, IoTelescopeOutline } from "react-icons/io5";
 import { BiCapsule } from "react-icons/bi";
 import { useDarkMode } from "../../DarkMode";
 import { HiOutlineUserGroup } from "react-icons/hi";
@@ -279,6 +279,12 @@ const handleLogout = () => {
       label: "Role Based Access",
       icon: <SlLock className="sidebar-icon" size={14} />,
       to: "/role-based",
+    },
+    {
+      id: "logs",
+      label: "Logs",
+      icon: <IoListSharp className="sidebar-icon" size={14} />,
+      to: "/logs",
     },
     {
       id: "community post",
