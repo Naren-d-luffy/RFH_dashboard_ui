@@ -57,14 +57,27 @@ const EditRoleBased = () => {
         const userData = response.data;
         console.log("roleaccessData", userData);
 
+        // setFormData({
+        //   name: userData.name,
+        //   email: userData.email,
+        //   phone: userData.phoneNumber,
+        //   password: "",
+        //   role: userData.role,
+        //   categories: userData.categories,
+        // });
         setFormData({
           name: userData.name,
           email: userData.email,
           phone: userData.phoneNumber,
           password: "",
           role: userData.role,
-          categories: userData.categories,
+          categories: Array.isArray(userData.categories)
+            ? userData.categories[0]?.includes(",")
+              ? userData.categories[0].split(",")
+              : userData.categories
+            : [],
         });
+        
         setPreviewImage(userData.profile || "");
       } catch (error) {
         console.error("Error fetching user roles:", error);
@@ -231,6 +244,8 @@ const EditRoleBased = () => {
                   <Checkbox value="AboutHospital">About Hospital</Checkbox>
                   <Checkbox value="Configuration">Configuration</Checkbox>
                   <Checkbox value="RoleBasedAccess">Role Based Access</Checkbox>
+                  <Checkbox value="logs">Logs</Checkbox>
+
                 </Checkbox.Group>
               </div>
             </>
