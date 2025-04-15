@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import { jwtDecode } from "jwt-decode";
+import useTokenCheck from './TokenCheck';
 
 const AuthContext = createContext();
 
@@ -39,6 +40,8 @@ const AuthProvider = ({ children }) => {
     syncAuthState();
     setLoading(false);
   }, [syncAuthState]);
+
+  useTokenCheck(isAuthenticated);
 
   const hasAccess = (requiredCategory) => {
     // return userCategories.includes(requiredCategory);
