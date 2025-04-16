@@ -29,7 +29,7 @@ const AuthProvider = ({ children }) => {
         console.error("Error decoding token:", error);
       }
     } else {
-      console.log("No token found, logging out user.");
+      // console.log("No token found, logging out user.");
       setIsAuthenticated(false);
       setUserCategories([]);
       setUserRole(null);

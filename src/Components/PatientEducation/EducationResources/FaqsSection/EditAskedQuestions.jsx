@@ -95,7 +95,7 @@ const EditAskedQuestions = ({ open, handleCancel, faqsData }) => {
       closeIcon={closeButtons}
       width={isMaximized ? "98%" : 680}
       style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
-      bodyStyle={
+      styles={
         isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
       }
       footer={[

@@ -58,26 +58,26 @@ const AddVideo = ({ open, handleCancel }) => {
     setUrl("");
     handleCancel();
   };
-   const closeButtons = (
-      <div className="d-flex items-center gap-2 pe-5">
-        <Button
-          type="button"
-          onClick={toggleMaximize}
-          icon={
-            isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
-          }
-        />
-        <Button
-          type="button"
-          className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
-          onClick={handleCancelClick}
-        >
-          <span>
-            <FiX size={18} />
-          </span>
-        </Button>
-      </div>
-    );
+  const closeButtons = (
+    <div className="d-flex items-center gap-2 pe-5">
+      <Button
+        type="button"
+        onClick={toggleMaximize}
+        icon={
+          isMaximized ? <FiMinimize2 size={16} /> : <FiMaximize2 size={16} />
+        }
+      />
+      <Button
+        type="button"
+        className="p-0 w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+        onClick={handleCancelClick}
+      >
+        <span>
+          <FiX size={18} />
+        </span>
+      </Button>
+    </div>
+  );
   return (
     <>
       {isLoading && <Loader />}
@@ -88,7 +88,7 @@ const AddVideo = ({ open, handleCancel }) => {
         closeIcon={closeButtons}
         width={isMaximized ? "98%" : 680}
         style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
-        bodyStyle={
+        styles={
           isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
         }
         footer={[
@@ -117,7 +117,9 @@ const AddVideo = ({ open, handleCancel }) => {
               placeholder="Enter Title"
               required
             />
-            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Video Title</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Video Title
+            </span>
           </Form.Item>
           <Form.Item>
             <Input
@@ -126,7 +128,9 @@ const AddVideo = ({ open, handleCancel }) => {
               placeholder="Enter URL"
               required
             />
-            <span className="create-campaign-input-span"><span style={{ color: "red" }}>*</span> Video URL</span>
+            <span className="create-campaign-input-span">
+              <span style={{ color: "red" }}>*</span> Video URL
+            </span>
           </Form.Item>
         </Form>
       </Modal>
