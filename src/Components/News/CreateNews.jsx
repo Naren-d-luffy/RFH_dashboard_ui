@@ -38,7 +38,13 @@ const CreateNews = ({ open, handleCancel }) => {
   };
 
   const handleSave = async () => {
-    if (!heading || !subheading || !uploadedImage||!type || !backgroundColor) {
+    if (
+      !heading ||
+      !subheading ||
+      !uploadedImage ||
+      !type ||
+      !backgroundColor
+    ) {
       message.error("Please fill in all required fields.");
       return;
     }
@@ -115,7 +121,7 @@ const CreateNews = ({ open, handleCancel }) => {
         closeIcon={closeButtons}
         width={isMaximized ? "98%" : 680}
         style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
-        bodyStyle={
+        styles={
           isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
         }
         footer={[
@@ -206,7 +212,8 @@ const CreateNews = ({ open, handleCancel }) => {
                   required
                 />
                 <span className="create-campaign-input-span">
-                <span style={{ color: "red" }}>*</span>Sub Heading</span>{" "}
+                  <span style={{ color: "red" }}>*</span>Sub Heading
+                </span>{" "}
               </Form.Item>
             </div>
             <div className="col-lg-6">
@@ -227,7 +234,8 @@ const CreateNews = ({ open, handleCancel }) => {
                   <Option value="Interview">Interview</Option>
                 </Select>
                 <span className="create-campaign-input-span">
-                <span style={{ color: "red" }}>*</span>Type</span>
+                  <span style={{ color: "red" }}>*</span>Type
+                </span>
               </Form.Item>
             </div>
           </div>
@@ -256,7 +264,7 @@ const CreateNews = ({ open, handleCancel }) => {
                 required
               />
               <span className="create-campaign-input-span">
-              <span style={{ color: "red" }}>*</span>
+                <span style={{ color: "red" }}>*</span>
                 Background Color
               </span>
             </Form.Item>

@@ -38,4 +38,45 @@
     color: #c62828;
     border: 1px solid #e57373;
   }
+  .logs-performance-card{
+    background-color: var(--card-background-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px 10px;
+  border-right: 3px solid var(--primary-green);
+  }
+  .logs-performance-card h4 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--black-color);
+  }
   
+  .logs-performance-card p {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -2%;
+    line-height: 19.6px;
+    margin-bottom: 0px;
+    color: var(--black-color);
+  }
+  .logs-performance-icon {
+    border-radius: 5px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .logs-active-card {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    background-color: var(--primary-green);
+    opacity: 1;
+    color: var(--white-color);
+  }
+  .logs-active-card h4{
+    color: var(--white-color);
+  }
+  .logs-active-card p{
+    color: var(--white-color);
+  }

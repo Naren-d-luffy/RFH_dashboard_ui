@@ -59,18 +59,18 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
 
   const handleSave = async () => {
     if (
-          !formData.campName ||
-          !formData.date ||
-          !formData.time ||
-          !formData.description ||
-          !formData.hospitalName ||
-          !formData.location ||
-          !formData.address ||
-          !formData.pinCode
-        ) {
-          message.error("Please fill in all required fields.");
-          return;
-        }
+      !formData.campName ||
+      !formData.date ||
+      !formData.time ||
+      !formData.description ||
+      !formData.hospitalName ||
+      !formData.location ||
+      !formData.address ||
+      !formData.pinCode
+    ) {
+      message.error("Please fill in all required fields.");
+      return;
+    }
     const formattedData = {
       ...formData,
       date: formData.date?.format("YYYY-MM-DD"),
@@ -81,9 +81,9 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
       const response = await Instance.put(
         `/camp/${campDataa._id}`,
         formattedData
-      );      
+      );
       if (response?.status === 200 || response?.status === 201) {
-        dispatch(editCamp(response.data.data))
+        dispatch(editCamp(response.data.data));
         showSuccessMessage("Successfully Updated Camp");
         handleCancel();
       }
@@ -120,7 +120,7 @@ const EditCamps = ({ open, handleCancel, campDataa }) => {
       closeIcon={closeButtons}
       width={isMaximized ? "98%" : 680}
       style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
-      bodyStyle={
+      styles={
         isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
       }
       footer={[
