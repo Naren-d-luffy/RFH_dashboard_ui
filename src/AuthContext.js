@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import { jwtDecode } from "jwt-decode";
+import useTokenCheck from './TokenCheck';
 
 const AuthContext = createContext();
 
@@ -28,7 +29,7 @@ const AuthProvider = ({ children }) => {
         console.error("Error decoding token:", error);
       }
     } else {
-      console.log("No token found, logging out user.");
+      // console.log("No token found, logging out user.");
       setIsAuthenticated(false);
       setUserCategories([]);
       setUserRole(null);
@@ -39,6 +40,8 @@ const AuthProvider = ({ children }) => {
     syncAuthState();
     setLoading(false);
   }, [syncAuthState]);
+
+  useTokenCheck(isAuthenticated);
 
   const hasAccess = (requiredCategory) => {
     // return userCategories.includes(requiredCategory);

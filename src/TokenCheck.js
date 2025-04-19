@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { Instance } from "./AxiosConfig";
 import { showErrorMessage } from "./globalConstant";
 
-const useTokenCheck = () => {
+const useTokenCheck = (isAuthenticated) => {
   const refreshAccessToken = async () => {
     try {
       const refreshToken = localStorage.getItem("refreshToken");
@@ -32,6 +32,9 @@ const useTokenCheck = () => {
   };
 
   useEffect(() => {
+    // Only set up the interval if the user is authenticated
+    if (!isAuthenticated) return;
+
     const intervalId = setInterval(() => {
       const expirationTime = localStorage.getItem("accessTokenExpiration");
       const currentTime = new Date().getTime();
@@ -44,7 +47,7 @@ const useTokenCheck = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [isAuthenticated]); // Add isAuthenticated as a dependency
 };
 
 export default useTokenCheck;

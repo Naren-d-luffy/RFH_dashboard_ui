@@ -11,7 +11,12 @@ import {
   TimePicker,
 } from "antd";
 import { Instance } from "../../../../AxiosConfig";
-import { showSuccessMessage, validateImage,editorConfig, formatListWithTriangleBullets } from "../../../../globalConstant";
+import {
+  showSuccessMessage,
+  validateImage,
+  editorConfig,
+  formatListWithTriangleBullets,
+} from "../../../../globalConstant";
 import { useDispatch } from "react-redux";
 import { editEvent } from "../../../../Features/DiscoverEventsCard";
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -166,7 +171,7 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
         closeIcon={closeButtons}
         width={isMaximized ? "98%" : 680}
         style={isMaximized ? { top: 10, padding: 0, maxWidth: "98%" } : {}}
-        bodyStyle={
+        styles={
           isMaximized ? { height: "calc(100vh - 110px)", overflow: "auto" } : {}
         }
         footer={[
@@ -308,7 +313,9 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
                 style={{ display: "flex", gap: "20px", alignItems: "center" }}
               >
                 <div>
-                  <span style={{color:'var(--black-color)'}}>Active &nbsp;</span>
+                  <span style={{ color: "var(--black-color)" }}>
+                    Active &nbsp;
+                  </span>
                   <Switch
                     className="gastro-switch-button"
                     checked={isActive}
@@ -325,8 +332,12 @@ const EditEventsList = ({ open, handleCancel, eventsData }) => {
               config={{ ...editorConfig, className: "hide-placeholder-editor" }}
               value={description}
               onBlur={(newDescription) => {
-                const formattedContent = newDescription.replace(/\r\n|\n/g, " ");
-                const modifiedContent = formatListWithTriangleBullets(formattedContent);
+                const formattedContent = newDescription.replace(
+                  /\r\n|\n/g,
+                  " "
+                );
+                const modifiedContent =
+                  formatListWithTriangleBullets(formattedContent);
                 setDescription(modifiedContent);
               }}
               required
